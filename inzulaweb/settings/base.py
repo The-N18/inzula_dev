@@ -22,6 +22,9 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'rest_framework',
     'rest_framework.authtoken',
+    'trip',
+    'booking',
+    'userprofile'
 ]
 
 MIDDLEWARE = [
@@ -40,7 +43,7 @@ ROOT_URLCONF = 'inzulaweb.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'build'), os.path.join(BASE_DIR, 'public')],
+        'DIRS': [os.path.join(BASE_DIR, 'build'), os.path.join(BASE_DIR, 'build/static')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
