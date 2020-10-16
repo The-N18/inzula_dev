@@ -7,7 +7,6 @@
 **/__pycache__
 db.sqlite3
 build
-static
 package-lock.json
 npm-debug.log
 
@@ -55,4 +54,3 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
-

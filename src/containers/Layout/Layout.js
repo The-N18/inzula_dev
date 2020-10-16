@@ -12,33 +12,67 @@ import {
 } from "semantic-ui-react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { logout } from "../store/actions/auth";
+import { logout } from "../../store/actions/auth";
+import { backend_url } from "../../configurations";
+import styles from './layout.css';
 
 class CustomLayout extends React.Component {
+
+  handleOnClick = (item) => this.props.history.push(item);
+
   render() {
     const { authenticated } = this.props;
+    const options = [
+      { key: 'user', text: 'Account', icon: 'user' },
+      { key: 'settings', text: 'Settings', icon: 'settings' },
+      { key: 'sign-out', text: 'Sign Out', icon: 'sign out' },
+    ];
     return (
       <div>
-        <Menu fixed="top" inverted>
-          <Container>
-            <Link to="/">
-              <Menu.Item header>Home</Menu.Item>
-            </Link>
+        <Menu fixed="top" className={"menuclass"} secondary>
+          <Menu.Item
+            onClick={this.handleOnClick.bind(this, '/')}>
+            <Image size='small' src= {backend_url() + '/static/images/logo.png'} />
+          </Menu.Item>
+          <Menu.Menu position='right'>
+              <Menu.Item
+              onClick={this.handleOnClick.bind(this, '/dispatch')}
+              header>
+              Dispatch
+              </Menu.Item>
+              <Menu.Item
+              header
+              onClick={this.handleOnClick.bind(this, '/transport')}>
+              Transport
+              </Menu.Item>
             {authenticated ? (
-              <Menu.Item header onClick={() => this.props.logout()}>
-                Logout
+              <Menu.Item>
+                <Dropdown item text='My profile'>
+                  <Dropdown.Menu>
+                    <Dropdown.Item>Profile</Dropdown.Item>
+                    <Dropdown.Item>Reservation</Dropdown.Item>
+                    <Dropdown.Item>Messaging</Dropdown.Item>
+                    <Dropdown.Item>Alerts</Dropdown.Item>
+                    <Dropdown.Item>Finances</Dropdown.Item>
+                    <Dropdown.Item onClick={() => this.props.logout()}>Logout</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </Menu.Item>
             ) : (
               <React.Fragment>
-                <Link to="/login">
-                  <Menu.Item header>Login</Menu.Item>
-                </Link>
-                <Link to="/signup">
-                  <Menu.Item header>Signup</Menu.Item>
-                </Link>
+                  <Menu.Item
+                  header
+                  onClick={this.handleOnClick.bind(this, '/login')}>
+                  Login
+                  </Menu.Item>
+                  <Menu.Item
+                  onClick={this.handleOnClick.bind(this, '/signup')}
+                  header>
+                  Signup
+                  </Menu.Item>
               </React.Fragment>
             )}
-          </Container>
+          </Menu.Menu>
         </Menu>
 
         {this.props.children}

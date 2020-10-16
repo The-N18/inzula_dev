@@ -7,7 +7,7 @@ ALLOWED_HOSTS += ['localhost', '127.0.0.1', '15.188.83.142']
 WSGI_APPLICATION = 'inzulaweb.wsgi.prod.application'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'build/static'),
+    os.path.join(BASE_DIR, 'static'),
     ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'build/static')
 
@@ -40,13 +40,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = (
-    'http://localhost:8001',
-    'http://127.0.0.1:8001',
-    'http://15.188.83.142:8001',
-    'http://172.26.15.28:8001/',
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'http://15.188.83.142:3000',
+    'http://172.26.15.28:3000',
     'http://localhost:5000',
     'http://127.0.0.1:5000',
     'http://15.188.83.142:5000',
-    'http://172.26.15.28:5000/',
+    'http://172.26.15.28:5000',
 
 )

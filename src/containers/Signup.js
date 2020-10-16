@@ -5,32 +5,54 @@ import {
   Grid,
   Header,
   Message,
-  Segment
+  Segment,
+  Select
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { NavLink, Redirect } from "react-router-dom";
 import { authSignup } from "../store/actions/auth";
 
+const user_options = [
+  { key: 'C', text: 'Carrier', value: 'Carrier' },
+  { key: 'S', text: 'Sender', value: 'Sender' },
+]
+
 class RegistrationForm extends React.Component {
   state = {
+    first_name: "",
+    last_name: "",
     username: "",
     email: "",
     password1: "",
-    password2: ""
+    password2: "",
+    user_type: "",
+    terms_conditions: false
   };
 
   handleSubmit = e => {
     e.preventDefault();
-    const { username, email, password1, password2 } = this.state;
-    this.props.signup(username, email, password1, password2);
+    const { first_name, last_name, username, email, password1, password2, user_type, terms_conditions } = this.state;
+    this.props.signup(first_name, last_name, username, email, password1, password2, user_type, terms_conditions);
   };
 
   handleChange = e => {
+    console.log(e.target);
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  handleChangeSelect = (e, data) => {
+    console.log(e.target);
+    console.log(data.value);
+    this.setState({ [data.name]: data.value });
+  };
+
+  handleToggleCheckbox = () => {
+  const terms_conditions = !(this.state.terms_conditions);
+  this.setState({terms_conditions}); 
+}
+
   render() {
-    const { username, email, password1, password2 } = this.state;
+    const { first_name, last_name, username, email, password1, password2, user_type, terms_conditions } = this.state;
     const { error, loading, token } = this.props;
     if (token) {
       return <Redirect to="/" />;
@@ -50,15 +72,36 @@ class RegistrationForm extends React.Component {
           <React.Fragment>
             <Form size="large" onSubmit={this.handleSubmit}>
               <Segment stacked>
-                <Form.Input
-                  onChange={this.handleChange}
-                  value={username}
-                  name="username"
-                  fluid
-                  icon="user"
-                  iconPosition="left"
-                  placeholder="Username"
-                />
+              <Form.Input
+                onChange={this.handleChange}
+                value={first_name}
+                name="first_name"
+                fluid
+                icon="user"
+                iconPosition="left"
+                placeholder="First name"
+                required
+              />
+              <Form.Input
+                onChange={this.handleChange}
+                value={last_name}
+                name="last_name"
+                fluid
+                icon="user"
+                iconPosition="left"
+                placeholder="Last name"
+                required
+              />
+              <Form.Input
+                onChange={this.handleChange}
+                value={username}
+                name="username"
+                fluid
+                icon="user"
+                iconPosition="left"
+                placeholder="Username"
+                required
+              />
                 <Form.Input
                   onChange={this.handleChange}
                   value={email}
@@ -67,6 +110,7 @@ class RegistrationForm extends React.Component {
                   icon="mail"
                   iconPosition="left"
                   placeholder="E-mail address"
+                  required
                 />
                 <Form.Input
                   onChange={this.handleChange}
@@ -77,6 +121,7 @@ class RegistrationForm extends React.Component {
                   iconPosition="left"
                   placeholder="Password"
                   type="password"
+                  required
                 />
                 <Form.Input
                   onChange={this.handleChange}
@@ -87,7 +132,22 @@ class RegistrationForm extends React.Component {
                   iconPosition="left"
                   placeholder="Confirm password"
                   type="password"
+                  required
                 />
+                <Form.Field
+                  control={Select}
+                  name="user_type"
+                  label='User type'
+                  options={user_options}
+                  placeholder='User type'
+                  onChange={this.handleChangeSelect}
+                />
+
+                <Form.Checkbox
+                  name="terms_conditions"
+                  label='I agree to the Terms and Conditions'
+                  required
+                  onChange={this.handleToggleCheckbox}/>
 
                 <Button
                   color="teal"
@@ -120,8 +180,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    signup: (username, email, password1, password2) =>
-      dispatch(authSignup(username, email, password1, password2))
+    signup: (first_name, last_name, username, email, password1, password2, user_type, terms_conditions) =>
+      dispatch(authSignup(first_name, last_name, username, email, password1, password2, user_type, terms_conditions))
   };
 };
 
