@@ -1,0 +1,21 @@
+.footercontainer {
+  background-color: white !important;
+}
+
+.linkstyle {
+  color: #333 !important;
+  font-size: 14px !important;
+  line-height: 25px !important;
+}
+
+.linkstyle:hover {
+  color: #F63854 !important;
+}
+
+.reserved {
+  color: #F63854 !important;
+}
+
+.footer-icons {
+  color: #000000 !important;
+}

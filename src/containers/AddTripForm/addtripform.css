@@ -1,0 +1,27 @@
+.transportpge {
+  width: auto !important;
+}
+
+.search-button {
+  margin: auto;
+}
+
+.segment-bg-img {
+ background-image: url("http://127.0.0.1:8000/static/images/addtripbg.png") !important;
+ background-repeat: no-repeat !important;
+ background-size: cover !important;
+ min-height: 450px !important;
+ /* background-color: blue !important; */
+}
+
+.add-trip-grid {
+  min-height: 450px !important;
+}
+
+.add-trip-grid-column {
+  padding: 0px 80px 0px 80px !important;
+}
+
+.add-trip-form-header {
+  color: rgb(144 20 20) !important;
+}

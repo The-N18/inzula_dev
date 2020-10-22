@@ -5,11 +5,14 @@ import {
   Grid,
   Header,
   Message,
-  Segment
+  Segment,
+  Icon,
+  Container
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { NavLink, Redirect } from "react-router-dom";
-import { authLogin } from "../store/actions/auth";
+import { authLogin } from "../../store/actions/auth";
+import styles from './login.css';
 
 class LoginForm extends React.Component {
   state = {
@@ -40,14 +43,14 @@ class LoginForm extends React.Component {
         verticalAlign="middle"
       >
         <Grid.Column style={{ maxWidth: 450 }}>
-          <Header as="h2" color="teal" textAlign="center">
+          <Header as="h2" className={"headercolor"} textAlign="center">
             Log-in to your account
           </Header>
           {error && <p>{this.props.error.message}</p>}
 
           <React.Fragment>
             <Form size="large" onSubmit={this.handleSubmit}>
-              <Segment stacked>
+              <Segment raised className={"logincard"}>
                 <Form.Input
                   onChange={this.handleChange}
                   value={username}
@@ -69,19 +72,24 @@ class LoginForm extends React.Component {
                 />
 
                 <Button
-                  color="teal"
-                  fluid
                   size="large"
                   loading={loading}
                   disabled={loading}
+                  className={"buttoncolor"}
                 >
                   Login
                 </Button>
               </Segment>
             </Form>
-            <Message>
-              New to us? <NavLink to="/signup">Sign Up</NavLink>
-            </Message>
+            <Segment raised className={"logincard"}>
+              <Header as="h5">Login with</Header>
+              <Icon size="big" circular name='facebook' className={"facebookicon"} />
+              <Icon size="big" circular name='twitter' className={"facebookicon"} />
+              <Icon size="big" circular name='mail' className={"gmail"} />
+            </Segment>
+            <Segment raised className={"logincard"}>
+              New to Inzula? <NavLink to="/signup">Sign Up</NavLink>
+            </Segment>
           </React.Fragment>
         </Grid.Column>
       </Grid>

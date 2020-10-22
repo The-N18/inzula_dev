@@ -60,6 +60,14 @@ export const authLogin = (username, password) => {
   };
 };
 
+export const searchTrips = (departure_location, destination_location, travel_date) => {
+  console.log("searchTrips");
+}
+
+export const tripAddition = (departure_location, destination_location, travel_date) => {
+  console.log("add trip");
+}
+
 export const authSignup = (first_name, last_name, username, email, password1, password2, user_type, terms_conditions) => {
   return dispatch => {
     dispatch(authStart());

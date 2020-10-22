@@ -6,11 +6,14 @@ import {
   Header,
   Message,
   Segment,
-  Select
+  Select,
+  Icon,
+  Card
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { NavLink, Redirect } from "react-router-dom";
-import { authSignup } from "../store/actions/auth";
+import { authSignup } from "../../store/actions/auth";
+import styles from './signup.css';
 
 const user_options = [
   { key: 'C', text: 'Carrier', value: 'Carrier' },
@@ -48,7 +51,7 @@ class RegistrationForm extends React.Component {
 
   handleToggleCheckbox = () => {
   const terms_conditions = !(this.state.terms_conditions);
-  this.setState({terms_conditions}); 
+  this.setState({terms_conditions});
 }
 
   render() {
@@ -58,20 +61,21 @@ class RegistrationForm extends React.Component {
       return <Redirect to="/" />;
     }
     return (
+      <Segment style={{ padding: "2em 0em" }} vertical>
       <Grid
         textAlign="center"
         style={{ height: "100vh" }}
         verticalAlign="middle"
       >
         <Grid.Column style={{ maxWidth: 450 }}>
-          <Header as="h2" color="teal" textAlign="center">
-            Signup to your account
+          <Header as="h2" className={"headercolor"} textAlign="center">
+            Signup to Inzula
           </Header>
           {error && <p>{this.props.error.message}</p>}
 
           <React.Fragment>
             <Form size="large" onSubmit={this.handleSubmit}>
-              <Segment stacked>
+              <Segment raised className={"signupcard"}>
               <Form.Input
                 onChange={this.handleChange}
                 value={first_name}
@@ -134,14 +138,14 @@ class RegistrationForm extends React.Component {
                   type="password"
                   required
                 />
-                <Form.Field
+                {/*<Form.Field
                   control={Select}
                   name="user_type"
                   label='User type'
                   options={user_options}
                   placeholder='User type'
                   onChange={this.handleChangeSelect}
-                />
+                />*/}
 
                 <Form.Checkbox
                   name="terms_conditions"
@@ -150,8 +154,7 @@ class RegistrationForm extends React.Component {
                   onChange={this.handleToggleCheckbox}/>
 
                 <Button
-                  color="teal"
-                  fluid
+                  className={"buttoncolor"}
                   size="large"
                   loading={loading}
                   disabled={loading}
@@ -160,12 +163,19 @@ class RegistrationForm extends React.Component {
                 </Button>
               </Segment>
             </Form>
-            <Message>
+            <Segment raised className={"signupcard"}>
+              <Header as="h5">Login with</Header>
+              <Icon size="big" circular name='facebook' className={"facebookicon"} />
+              <Icon size="big" circular name='twitter' className={"facebookicon"} />
+              <Icon size="big" circular name='mail' className={"gmail"} />
+            </Segment>
+            <Segment raised className={"signupcard"}>
               Already have an account? <NavLink to="/login">Login</NavLink>
-            </Message>
+            </Segment>
           </React.Fragment>
         </Grid.Column>
       </Grid>
+      </Segment>
     );
   }
 }

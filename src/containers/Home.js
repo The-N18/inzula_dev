@@ -15,6 +15,8 @@ import {
   Sidebar,
   Visibility
 } from "semantic-ui-react";
+import HomeServiceSection from "../containers/HomeServiceSection/HomeServiceSection";
+import HomeHowInzulaWorksSection from "../containers/HomeHowInzulaWorksSection/HomeHowInzulaWorksSection";
 
 const getWidth = () => {
   const isSSR = typeof window === "undefined";
@@ -179,6 +181,8 @@ const HomepageLayout = () => (
         </Button>
       </Container>
     </Segment>
+    <HomeHowInzulaWorksSection/>
+    <HomeServiceSection/>
   </ResponsiveContainer>
 );
 export default HomepageLayout;

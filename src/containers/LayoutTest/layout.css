@@ -2,10 +2,6 @@
   width: 100% !important;
   }
 
-  body {
-    background-color: #ffffff !important;
-  }
-
   .menuclass {
   background: #fff !important;
   font-weight: 400 !important;
@@ -15,7 +11,7 @@
   font-size: 14px !important;
 }
 
-.stickyshadow {
+.floatingNav {
   box-shadow: 0px 3px 6px 3px rgba(0, 0, 0, 0.06) !important;
 }
 
@@ -87,21 +83,17 @@ a {
   color: #000;
 }
 
-/* menuheader */
+/* header */
 
-.menuheader {
+.header {
   background-color: #fff;
+  box-shadow: 1px 1px 4px 0 rgba(0,0,0,.1);
   position: fixed;
   width: 100%;
   z-index: 3;
 }
 
-.menuheader div {
-  width: 80%;
-  margin: auto;
-}
-
-.menuheader ul {
+.header ul {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -109,22 +101,20 @@ a {
   background-color: #fff;
 }
 
-.menuheader li a {
+.header li a {
   display: block;
   padding: 20px 20px;
+  border-right: 1px solid #f4f4f4;
   text-decoration: none;
-  font-weight: 100 !important;
-  height: 60px !important;
+  
 }
 
-.menuheader li a:hover,
-.menuheader .menu-btn:hover {
-  background: none !important;
-  color: #F63854 !important;
-  border-bottom: 2px solid #F63854 !important;
+.header li a:hover,
+.header .menu-btn:hover {
+  background-color: #f4f4f4;
 }
 
-.menuheader .logo {
+.header .logo {
   display: block;
   float: left;
   font-size: 2em;
@@ -134,7 +124,7 @@ a {
 
 /* menu */
 
-.menuheader .menu {
+.header .menu {
   clear: both;
   max-height: 0;
   transition: max-height .2s ease-out;
@@ -142,7 +132,7 @@ a {
 
 /* menu icon */
 
-.menuheader .menu-icon {
+.header .menu-icon {
   cursor: pointer;
   display: inline-block;
   float: right;
@@ -151,7 +141,7 @@ a {
   user-select: none;
 }
 
-.menuheader .menu-icon .navicon {
+.header .menu-icon .navicon {
   background: #333;
   display: block;
   height: 2px;
@@ -160,8 +150,8 @@ a {
   width: 18px;
 }
 
-.menuheader .menu-icon .navicon:before,
-.menuheader .menu-icon .navicon:after {
+.header .menu-icon .navicon:before,
+.header .menu-icon .navicon:after {
   background: #333;
   content: '';
   display: block;
@@ -171,88 +161,69 @@ a {
   width: 100%;
 }
 
-.menuheader .menu-icon .navicon:before {
+.header .menu-icon .navicon:before {
   top: 5px;
 }
 
-.menuheader .menu-icon .navicon:after {
+.header .menu-icon .navicon:after {
   top: -5px;
 }
 
 /* menu btn */
 
-.menuheader .menu-btn {
+.header .menu-btn {
   display: none;
 }
 
-.menuheader .menu-btn:checked ~ .menu {
+.header .menu-btn:checked ~ .menu {
   max-height: 240px;
-  overflow-y: auto;
 }
 
-.menuheader .menu-btn:checked ~ .menu-icon .navicon {
+.header .menu-btn:checked ~ .menu-icon .navicon {
   background: transparent;
 }
 
-.menuheader .menu-btn:checked ~ .menu-icon .navicon:before {
+.header .menu-btn:checked ~ .menu-icon .navicon:before {
   transform: rotate(-45deg);
 }
 
-.menuheader .menu-btn:checked ~ .menu-icon .navicon:after {
+.header .menu-btn:checked ~ .menu-icon .navicon:after {
   transform: rotate(45deg);
 }
 
-.menuheader .menu-btn:checked ~ .menu-icon:not(.steps) .navicon:before,
-.menuheader .menu-btn:checked ~ .menu-icon:not(.steps) .navicon:after {
+.header .menu-btn:checked ~ .menu-icon:not(.steps) .navicon:before,
+.header .menu-btn:checked ~ .menu-icon:not(.steps) .navicon:after {
   top: 0;
 }
 
 /* 48em = 768px */
 
 @media (min-width: 48em) {
-  .menuheader li {
+  .header li {
     float: left;
   }
-  .menuheader li a {
-    padding: 20px 20px;
+  .header li a {
+    padding: 20px 30px;
   }
-  .menuheader .menu {
+  .header .menu {
     clear: none;
     float: right;
     max-height: none;
   }
-  .menuheader .menu-icon {
+  .header .menu-icon {
     display: none;
   }
 }
 
-@media only screen and (min-width: 768px) and (max-width: 950px) {
-  .menuheader div {
-    width: 90%;
-    margin: auto;
+@media (max-width: 48em) {
+  .main {
+    margin: 0px !important;
   }
 }
 
-@media only screen and (min-width: 361px) and (max-width: 767px) {
+@media only screen and (max-width: 767px) {
   .ui.container {
       margin-left: 0px !important;
       margin-right: 0px !important;
-  }
-
-  .menuheader div {
-    width: 95%;
-    margin: auto;
-  }
-}
-
-@media only screen and (min-width: 0px) and (max-width: 360px) {
-  .ui.container {
-      margin-left: 0px !important;
-      margin-right: 0px !important;
-  }
-
-  .menuheader div {
-    width: 100%;
-    margin: auto;
   }
 }
