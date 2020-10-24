@@ -2,6 +2,7 @@
   width: auto !important;
 }
 
-.search-button {
-  margin: auto;
+.search-trips-button {
+  margin: 0px auto !important;
+  display: block !important;
 }

@@ -13,11 +13,42 @@ import { connect } from "react-redux";
 import { NavLink, Redirect } from "react-router-dom";
 import { authLogin } from "../../store/actions/auth";
 import styles from './login.css';
+import Recaptcha from 'react-recaptcha';
 
 class LoginForm extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.handleSubscribe = this.handleSubscribe.bind(this);
+    this.recaptchaLoaded = this.recaptchaLoaded.bind(this);
+    this.verifyCallback = this.verifyCallback.bind(this);
+
+  }
+
+  recaptchaLoaded() {
+    console.log('capcha successfully loaded');
+  }
+
+  handleSubscribe() {
+    if (this.state.isVerified) {
+      alert('You have successfully subscribed!');
+    } else {
+      alert('Please verify that you are a human!');
+    }
+  }
+
+  verifyCallback(response) {
+    if (response) {
+      this.setState({
+        isVerified: true
+      })
+    }
+  }
+
   state = {
     username: "",
-    password: ""
+    password: "",
+    isVerified: false
   };
 
   handleChange = e => {
@@ -37,6 +68,7 @@ class LoginForm extends React.Component {
       return <Redirect to="/" />;
     }
     return (
+      <Segment style={{ padding: "2em 0em" }} vertical>
       <Grid
         textAlign="center"
         style={{ height: "100vh" }}
@@ -70,11 +102,16 @@ class LoginForm extends React.Component {
                   placeholder="Password"
                   type="password"
                 />
-
+                <Recaptcha
+                  sitekey="6LfycNoZAAAAADPAHBVK7JjxT8V6AvayfwhVaHQa"
+                  render="explicit"
+                  onloadCallback={this.recaptchaLoaded}
+                  verifyCallback={this.verifyCallback}
+                />
                 <Button
                   size="large"
                   loading={loading}
-                  disabled={loading}
+                  disabled={!this.state.isVerified}
                   className={"buttoncolor"}
                 >
                   Login
@@ -93,6 +130,7 @@ class LoginForm extends React.Component {
           </React.Fragment>
         </Grid.Column>
       </Grid>
+      </Segment>
     );
   }
 }

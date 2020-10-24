@@ -74,11 +74,10 @@ class SearchTripsForm extends React.Component {
               />
             </Form.Group>
             <Button
-              size="large"
-              fluid
+              size="big"
               loading={loading}
               disabled={loading}
-              className={"buttoncolor search-button"}
+              className={"buttoncolor search-trips-button"}
             >
               Search
             </Button>

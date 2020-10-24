@@ -11,11 +11,14 @@ import {
   Card,
   List,
   Divider,
-  Container
+  Container,
+  Image
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { NavLink, Redirect } from "react-router-dom";
 import styles from './footer.css';
+import { backend_url } from "../../configurations";
+
 
 
 class Footer extends React.Component {
@@ -44,6 +47,14 @@ class Footer extends React.Component {
                 <List.Item as="a" href="#" className={"linkstyle"}>Insurance</List.Item>
                 <List.Item as="a" href="#" className={"linkstyle"}>Legal information</List.Item>
                 <List.Item as="a" href="#" className={"linkstyle"}>Transparency</List.Item>
+              </List>
+            </Grid.Column>
+            <Grid.Column mobile={16} tablet={16} computer={8} textAlign="center">
+              <List>
+                <Image size="tiny" inline centered className={"footer-payment-image"} src= {backend_url() + '/static/images/amex.svg'} />
+                <Image size="tiny" inline centered className={"footer-payment-image"} src= {backend_url() + '/static/images/mastercard.svg'} />
+                <Image size="tiny" inline centered className={"footer-payment-image"} src= {backend_url() + '/static/images/paypal.svg'} />
+                <Image size="tiny" inline centered src= {backend_url() + '/static/images/visa.svg'} />
               </List>
             </Grid.Column>
           </Grid>

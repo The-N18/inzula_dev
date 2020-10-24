@@ -74,7 +74,7 @@ class RegisterView(CreateAPIView):
     @transaction.atomic
     def perform_create(self, serializer, request_data):
         user = serializer.save(self.request)
-        userprofile = UserProfile.objects.create(user=user, user_type=request_data['user_type'], terms_conditions=request_data['terms_conditions'])
+        userprofile = UserProfile.objects.create(user=user, terms_conditions=request_data['terms_conditions'])
 
         if getattr(settings, 'REST_USE_JWT', False):
             self.token = jwt_encode(user)

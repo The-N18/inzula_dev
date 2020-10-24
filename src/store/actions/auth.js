@@ -68,7 +68,7 @@ export const tripAddition = (departure_location, destination_location, travel_da
   console.log("add trip");
 }
 
-export const authSignup = (first_name, last_name, username, email, password1, password2, user_type, terms_conditions) => {
+export const authSignup = (first_name, last_name, username, email, password1, password2, terms_conditions) => {
   return dispatch => {
     dispatch(authStart());
     axios
@@ -79,7 +79,6 @@ export const authSignup = (first_name, last_name, username, email, password1, pa
         email: email,
         password1: password1,
         password2: password2,
-        user_type: user_type,
         terms_conditions: terms_conditions
       })
       .then(res => {

@@ -33,13 +33,13 @@ class HomeTextImgCard extends React.Component {
       <Segment basic>
       <Grid className={"home-text-img-card-grid"}>
         <Grid.Row columns={2}>
-          <Grid.Column fluid>
+          <Grid.Column mobile={16} tablet={16} computer={8}>
             <Segment basic textAlign="left">
               <Header as='h4' className={"home-text-img-card-title"}>{title}</Header>
               {description}
             </Segment>
           </Grid.Column>
-          <Grid.Column fluid>
+          <Grid.Column mobile={16} tablet={16} computer={8}>
             <Segment basic textAlign="right">
               <Image centered src= {backend_url() + img} />
             </Segment>

@@ -14,6 +14,7 @@ import { connect } from "react-redux";
 import { NavLink, Redirect } from "react-router-dom";
 import { authSignup } from "../../store/actions/auth";
 import styles from './signup.css';
+import Recaptcha from 'react-recaptcha';
 
 const user_options = [
   { key: 'C', text: 'Carrier', value: 'Carrier' },
@@ -21,6 +22,35 @@ const user_options = [
 ]
 
 class RegistrationForm extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.handleSubscribe = this.handleSubscribe.bind(this);
+    this.recaptchaLoaded = this.recaptchaLoaded.bind(this);
+    this.verifyCallback = this.verifyCallback.bind(this);
+
+  }
+
+  recaptchaLoaded() {
+    console.log('capcha successfully loaded');
+  }
+
+  handleSubscribe() {
+    if (this.state.isVerified) {
+      alert('You have successfully subscribed!');
+    } else {
+      alert('Please verify that you are a human!');
+    }
+  }
+
+  verifyCallback(response) {
+    if (response) {
+      this.setState({
+        isVerified: true
+      })
+    }
+  }
+
   state = {
     first_name: "",
     last_name: "",
@@ -28,14 +58,14 @@ class RegistrationForm extends React.Component {
     email: "",
     password1: "",
     password2: "",
-    user_type: "",
-    terms_conditions: false
+    terms_conditions: false,
+    isVerified: false
   };
 
   handleSubmit = e => {
     e.preventDefault();
-    const { first_name, last_name, username, email, password1, password2, user_type, terms_conditions } = this.state;
-    this.props.signup(first_name, last_name, username, email, password1, password2, user_type, terms_conditions);
+    const { first_name, last_name, username, email, password1, password2, terms_conditions } = this.state;
+    this.props.signup(first_name, last_name, username, email, password1, password2, terms_conditions);
   };
 
   handleChange = e => {
@@ -55,7 +85,7 @@ class RegistrationForm extends React.Component {
 }
 
   render() {
-    const { first_name, last_name, username, email, password1, password2, user_type, terms_conditions } = this.state;
+    const { first_name, last_name, username, email, password1, password2, terms_conditions } = this.state;
     const { error, loading, token } = this.props;
     if (token) {
       return <Redirect to="/" />;
@@ -76,26 +106,28 @@ class RegistrationForm extends React.Component {
           <React.Fragment>
             <Form size="large" onSubmit={this.handleSubmit}>
               <Segment raised className={"signupcard"}>
-              <Form.Input
-                onChange={this.handleChange}
-                value={first_name}
-                name="first_name"
-                fluid
-                icon="user"
-                iconPosition="left"
-                placeholder="First name"
-                required
-              />
-              <Form.Input
-                onChange={this.handleChange}
-                value={last_name}
-                name="last_name"
-                fluid
-                icon="user"
-                iconPosition="left"
-                placeholder="Last name"
-                required
-              />
+              <Form.Group widths='equal'>
+                <Form.Input
+                  onChange={this.handleChange}
+                  value={first_name}
+                  name="first_name"
+                  fluid
+                  icon="user"
+                  iconPosition="left"
+                  placeholder="First name"
+                  required
+                />
+                <Form.Input
+                  onChange={this.handleChange}
+                  value={last_name}
+                  name="last_name"
+                  fluid
+                  icon="user"
+                  iconPosition="left"
+                  placeholder="Last name"
+                  required
+                />
+              </Form.Group>
               <Form.Input
                 onChange={this.handleChange}
                 value={username}
@@ -138,26 +170,22 @@ class RegistrationForm extends React.Component {
                   type="password"
                   required
                 />
-                {/*<Form.Field
-                  control={Select}
-                  name="user_type"
-                  label='User type'
-                  options={user_options}
-                  placeholder='User type'
-                  onChange={this.handleChangeSelect}
-                />*/}
-
                 <Form.Checkbox
                   name="terms_conditions"
                   label='I agree to the Terms and Conditions'
                   required
                   onChange={this.handleToggleCheckbox}/>
-
+                <Recaptcha
+                  sitekey="6LfycNoZAAAAADPAHBVK7JjxT8V6AvayfwhVaHQa"
+                  render="explicit"
+                  onloadCallback={this.recaptchaLoaded}
+                  verifyCallback={this.verifyCallback}
+                />
                 <Button
                   className={"buttoncolor"}
                   size="large"
                   loading={loading}
-                  disabled={loading}
+                  disabled={!this.state.isVerified}
                 >
                   Signup
                 </Button>
@@ -190,8 +218,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    signup: (first_name, last_name, username, email, password1, password2, user_type, terms_conditions) =>
-      dispatch(authSignup(first_name, last_name, username, email, password1, password2, user_type, terms_conditions))
+    signup: (first_name, last_name, username, email, password1, password2, terms_conditions) =>
+      dispatch(authSignup(first_name, last_name, username, email, password1, password2, terms_conditions))
   };
 };
 
