@@ -1,18 +1,10 @@
 .services-section {
   background-color: #ffffff;
-  /* padding-top: 100px !important; */
 }
 
 .services-section-grid {
   margin: auto !important;
 }
-
-/* .servicescard {
-  width: auto !important;
-  padding: 20px !important;
-  margin: 20px !important;
-  transition: 0.3s !important;
-} */
 
 .servicescard:hover {
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2) !important;
@@ -20,7 +12,6 @@
 }
 
 .service-title {
-  /* font-family: 'Arvo', serif !important; */
   line-height: 30px !important;
 }
 

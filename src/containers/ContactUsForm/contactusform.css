@@ -1,0 +1,55 @@
+.headercolor {
+  color: #F63854 !important;
+  margin-top: 30px !important;
+}
+
+#g-recaptcha {
+  text-align: center;
+  display: inline-block;
+}
+
+.signupcard {
+  width: auto !important;
+  padding: 20px !important;
+  transition: 0.3s !important;
+}
+
+.signupcard:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2) !important;
+  transition: 0.3s !important;
+}
+
+.buttoncolor {
+  background-color: #F63854 !important;
+  color: #ffffff !important;
+  border-radius: 30px !important;
+  margin: auto !important;
+  border: 1px solid #F63854 !important;
+}
+
+.buttoncolor:hover {
+  background-color: #ffffff !important;
+  color: #F63854 !important;
+  border: 1px solid #F63854 !important;
+  border-radius: 30px !important;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.3s ease 0s !important;
+  transform: translateY(-2px) !important;
+}
+
+.facebookicon {
+  color: #3b5998 !important;
+}
+
+.facebookicon:hover, .twitter:hover, .gmail:hover {
+  background-color: #F63854 !important;
+  color: #ffffff !important;
+}
+
+.twitter {
+  color: #00acee !important;
+}
+
+.gmail {
+  color: #D44638 !important;
+}

@@ -1,23 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
-  Button,
-  Form,
   Grid,
   Header,
-  Message,
   Segment,
-  Select,
-  Icon,
-  Card,
-  List,
-  Divider,
-  Container,
   Image,
-  Tab
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { NavLink, Redirect } from "react-router-dom";
 import styles from './hometextimgcard.css';
 import { backend_url } from "../../configurations";
 
@@ -36,7 +25,7 @@ class HomeTextImgCard extends React.Component {
           <Grid.Column mobile={16} tablet={16} computer={8}>
             <Segment basic textAlign="left">
               <Header as='h4' className={"home-text-img-card-title"}>{title}</Header>
-              {description}
+              <span className={"home-text-img-card-description"}>{description}</span>
             </Segment>
           </Grid.Column>
           <Grid.Column mobile={16} tablet={16} computer={8}>
@@ -52,9 +41,11 @@ class HomeTextImgCard extends React.Component {
 }
 
 const mapStateToProps = state => {
+  return {};
 };
 
 const mapDispatchToProps = dispatch => {
+  return {};
 };
 
 HomeTextImgCard.propTypes = {

@@ -1,21 +1,14 @@
 import React from "react";
 import {
-  Button,
-  Form,
   Grid,
-  Header,
-  Message,
   Segment,
-  Select,
   Icon,
-  Card,
   List,
   Divider,
   Container,
   Image
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { NavLink, Redirect } from "react-router-dom";
 import styles from './footer.css';
 import { backend_url } from "../../configurations";
 
@@ -102,9 +95,11 @@ class Footer extends React.Component {
 }
 
 const mapStateToProps = state => {
+  return {};
 };
 
 const mapDispatchToProps = dispatch => {
+  return {};
 };
 
 export default connect(

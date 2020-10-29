@@ -2,6 +2,14 @@
   background-color: #ffffff;
 }
 
+.home-text-img-card-title {
+  line-height: 60px !important;
+}
+
+.home-text-img-card-description {
+  line-height: 25px !important;
+}
+
 .how-it-works-tab .menu {
   text-align: center !important;
   width: 25% !important;

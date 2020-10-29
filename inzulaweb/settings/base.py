@@ -24,7 +24,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'trip',
     'booking',
-    'userprofile'
+    'userprofile',
 ]
 
 MIDDLEWARE = [
@@ -43,7 +43,7 @@ ROOT_URLCONF = 'inzulaweb.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'build'), os.path.join(BASE_DIR, 'build/static'), os.path.join(BASE_DIR, 'public')],
+        'DIRS': [os.path.join(BASE_DIR, 'public'), os.path.join(BASE_DIR, 'build'), os.path.join(BASE_DIR, 'build/static')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -71,10 +71,23 @@ SITE_ID = 1
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     ),
+    'DEFAULT_RENDERER_CLASSES': [
+    'rest_framework.renderers.BrowsableAPIRenderer',
+    'rest_framework.renderers.JSONRenderer',
+    'rest_framework.renderers.TemplateHTMLRenderer',
+    'rest_framework.renderers.MultiPartRenderer',
+    'rest_framework.renderers.HTMLFormRenderer'
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+    'rest_framework.parsers.JSONParser',
+    'rest_framework.parsers.FormParser',
+    'rest_framework.parsers.MultiPartParser'
+    ],
 }
 
 ACCOUNT_EMAIL_REQUIRED = False

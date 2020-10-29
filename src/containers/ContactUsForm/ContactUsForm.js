@@ -4,16 +4,24 @@ import {
   Form,
   Grid,
   Header,
+  Message,
   Segment,
+  Select,
   Icon,
+  Card
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { NavLink, Redirect } from "react-router-dom";
 import { authSignup } from "../../store/actions/auth";
-import styles from './signup.css';
+import styles from './contactusform.css';
 import Recaptcha from 'react-recaptcha';
 
-class RegistrationForm extends React.Component {
+const user_options = [
+  { key: 'C', text: 'Carrier', value: 'Carrier' },
+  { key: 'S', text: 'Sender', value: 'Sender' },
+]
+
+class ContactUsForm extends React.Component {
   constructor(props) {
     super(props)
 
@@ -77,7 +85,7 @@ class RegistrationForm extends React.Component {
 }
 
   render() {
-    const { first_name, last_name, username, email, password1, password2 } = this.state;
+    const { first_name, last_name, username, email, password1, password2, terms_conditions } = this.state;
     const { error, loading, token } = this.props;
     if (token) {
       return <Redirect to="/" />;
@@ -218,4 +226,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(RegistrationForm);
+)(ContactUsForm);

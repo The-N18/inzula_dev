@@ -1,21 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Button,
   Form,
   Grid,
   Header,
-  Message,
   Segment,
-  Icon,
-  Container,
   Radio
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { NavLink, Redirect, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { tripAddition } from "../../store/actions/auth";
 import styles from './addtripform.css';
 import Recaptcha from 'react-recaptcha';
-import DateTimePicker from 'react-datetime-picker';
+import { DateInput } from 'semantic-ui-calendar-react';
+
 
 class AddTripForm extends React.Component {
 
@@ -52,19 +50,15 @@ class AddTripForm extends React.Component {
   state = {
     departure_location: "",
     destination_location: "",
-    travel_date: "",
+    depart_date: "",
+    comeback_date: null,
     isVerified: false,
-    trip_type: "round_trip"
+    trip_type: "round_trip",
   };
 
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
-
-  handleDateTimeChange = e => {
-    console.log(e);
-    console.log(new Date(e));
-  }
 
   handleRadioChange = (e, data) => {
     console.log(data.value);
@@ -77,19 +71,30 @@ class AddTripForm extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const { departure_location, destination_location, travel_date } = this.state;
+    const { departure_location, destination_location, depart_date, comeback_date, trip_type } = this.state;
     if(this.props.authenticated) {
-      this.props.addTrip(departure_location, destination_location, travel_date);
+      this.props.addTrip(departure_location, destination_location, depart_date, comeback_date, trip_type);
     } else {
       this.handleRedirectToLogin('/login');
     }
   };
 
-  // const [value, onChange] = useState(new Date());
+  handleDateTimeChange = (event, {name, value}) => {
+    if (this.state.hasOwnProperty(name)) {
+      this.setState({ [name]: value });
+    }
+  }
+
+  handleOnClick = (item) => {
+    this.props.history.push(item);
+    // $(document.body).animate({
+    //     'scrollTop':   $('#howitworks').offset().top
+    // }, 2000);
+  };
 
   render() {
-    const { error, loading, token, authenticated } = this.props;
-    const { departure_location, destination_location, travel_date } = this.state;
+    const { loading } = this.props;
+    const { departure_location, destination_location, depart_date, comeback_date, trip_type } = this.state;
     return (
       <Segment style={{ padding: "2em 0em" }} vertical>
         <Segment basic className={"segment-bg-img"}>
@@ -106,6 +111,7 @@ class AddTripForm extends React.Component {
               <Button
                 size="small"
                 className={"buttoncolor search-button"}
+                onClick={this.handleOnClick.bind(this, '/')}
               >
                 How does it work?
               </Button>
@@ -124,7 +130,7 @@ class AddTripForm extends React.Component {
                     label='Round trip'
                     name='radioGroup'
                     value='round_trip'
-                    checked={this.state.trip_type === 'round_trip'}
+                    checked={trip_type === 'round_trip'}
                     onChange={this.handleRadioChange}
                   />
                 </Form.Field>
@@ -133,7 +139,7 @@ class AddTripForm extends React.Component {
                     label='One way'
                     name='radioGroup'
                     value='one_way_trip'
-                    checked={this.state.trip_type === 'one_way_trip'}
+                    checked={trip_type === 'one_way_trip'}
                     onChange={this.handleRadioChange}
                   />
                 </Form.Field>
@@ -156,21 +162,22 @@ class AddTripForm extends React.Component {
                   iconPosition="left"
                   placeholder="Destination"
                 />
-                <Form.Input
-                  onChange={this.handleChange}
-                  fluid
-                  value={travel_date}
-                  name="travel_date"
-                  icon="calendar alternate outline"
+                <DateInput
+                  name="depart_date"
+                  placeholder="Departure Date"
+                  value={depart_date}
                   iconPosition="left"
-                  placeholder="Travel Date"
-                />
-                <DateTimePicker
                   onChange={this.handleDateTimeChange}
-                  value={travel_date}
-                  maxDetail={"second"}
-                  disableClock={"true"}
+                  dateFormat="YYYY-MM-DD"
                 />
+                {trip_type === "round_trip" ? <DateInput
+                  name="comeback_date"
+                  placeholder="Come back Date"
+                  value={comeback_date}
+                  iconPosition="left"
+                  onChange={this.handleDateTimeChange}
+                  dateFormat="YYYY-MM-DD"
+                /> : "" }
               <Recaptcha
                 sitekey="6LfycNoZAAAAADPAHBVK7JjxT8V6AvayfwhVaHQa"
                 render="explicit"
@@ -208,7 +215,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addTrip: (departure_location, destination_location, travel_date) => dispatch(tripAddition(departure_location, destination_location, travel_date))
+    addTrip: (departure_location, destination_location, depart_date, comeback_date, trip_type) => dispatch(tripAddition(departure_location, destination_location, depart_date, comeback_date, trip_type))
   };
 };
 

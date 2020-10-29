@@ -4,10 +4,8 @@ import {
   Form,
   Grid,
   Header,
-  Message,
   Segment,
   Icon,
-  Container
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { NavLink, Redirect } from "react-router-dom";

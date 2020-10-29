@@ -3,17 +3,15 @@ import {
   Segment,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './transport.css';
-import AddTripForm from "../../containers/AddTripForm/AddTripForm";
-import SearchTripsForm from "../../containers/SearchTripsForm/SearchTripsForm";
+import styles from './sendpage.css';
+import SendPackage from "../../containers/SendPackage/SendPackage";
 
-class Transport extends React.Component {
+class SendPage extends React.Component {
 
   render() {
     return (
       <Segment style={{ padding: "8em 0em" }} vertical>
-        <AddTripForm/>
-        <SearchTripsForm/>
+        <SendPackage/>
       </Segment>
     );
   }
@@ -32,4 +30,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Transport);
+)(SendPage);

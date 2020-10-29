@@ -2,17 +2,13 @@ import React from "react";
 import {
   Button,
   Form,
-  Grid,
   Header,
-  Message,
   Segment,
-  Icon,
-  Container
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { NavLink, Redirect } from "react-router-dom";
 import { searchTrips } from "../../store/actions/auth";
 import styles from './searchtripsform.css';
+import { DateInput } from 'semantic-ui-calendar-react';
 
 class SearchTripsForm extends React.Component {
 
@@ -26,6 +22,12 @@ class SearchTripsForm extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  handleDateTimeChange = (event, {name, value}) => {
+    if (this.state.hasOwnProperty(name)) {
+      this.setState({ [name]: value });
+    }
+  }
+
   handleSubmit = e => {
     e.preventDefault();
     const { departure_location, destination_location, travel_date } = this.state;
@@ -33,7 +35,7 @@ class SearchTripsForm extends React.Component {
   };
 
   render() {
-    const { error, loading, token } = this.props;
+    const { loading } = this.props;
     const { departure_location, destination_location, travel_date } = this.state;
     return (
       <Segment>
@@ -63,14 +65,13 @@ class SearchTripsForm extends React.Component {
                 iconPosition="left"
                 placeholder="Destination"
               />
-              <Form.Input
-                onChange={this.handleChange}
-                fluid
-                value={travel_date}
+              <DateInput
                 name="travel_date"
-                icon="calendar alternate outline"
-                iconPosition="left"
                 placeholder="Travel Date"
+                value={travel_date}
+                iconPosition="left"
+                onChange={this.handleDateTimeChange}
+                dateFormat="YYYY-MM-DD"
               />
             </Form.Group>
             <Button

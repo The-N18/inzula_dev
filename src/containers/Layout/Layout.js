@@ -1,17 +1,9 @@
 import React from "react";
 import {
   Container,
-  Divider,
-  Dropdown,
-  Grid,
-  Header,
   Image,
-  List,
-  Menu,
-  Segment,
-  Icon
 } from "semantic-ui-react";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { logout } from "../../store/actions/auth";
 import { backend_url } from "../../configurations";
@@ -21,6 +13,10 @@ import Footer from "../../containers/Footer/Footer";
 
 
 class CustomLayout extends React.Component {
+
+  state = {
+    isMobile: false
+  }
 
   handleOnClick = (item) => this.props.history.push(item);
 
@@ -36,10 +32,8 @@ class CustomLayout extends React.Component {
   }
 
   handleScreenSize = () => {
-    console.log($(window).width());
-    console.log(window.innerWidth);
-    if($(window).width() <= 360) {
-      console.log("Is mobile");
+    if($(window).width() <= 768) {
+      this.setState({ isMobile: true });
     }
   }
 
@@ -54,26 +48,47 @@ class CustomLayout extends React.Component {
     window.removeEventListener('resize', this.handleScreenSize);
   }
 
+
+
+
   render() {
     const { authenticated } = this.props;
-    const options = [
-      { key: 'user', text: 'Account', icon: 'user' },
-      { key: 'settings', text: 'Settings', icon: 'settings' },
-      { key: 'sign-out', text: 'Sign Out', icon: 'sign out' },
-    ];
+
+    let mobileMenu = this.state.isMobile ? (
+      <span><li><a onClick={this.handleOnClick.bind(this, '/profile')}>Profile</a></li>
+      <li><a >Reservation</a></li>
+      <li><a >Messaging</a></li>
+      <li><a >Alerts</a></li>
+      <li><a >Finances</a></li>
+      <li><a onClick={() => this.props.logout()}>Logout</a></li></span>) : (
+        <li>
+          <a href="">
+            <Image bordered circular size='small' className={"profile-image"} src={backend_url() + '/static/images/avatar.png'} />
+          </a>
+          <ul>
+              <li><a onClick={this.handleOnClick.bind(this, '/profile')}>Profile</a></li>
+              <li><a >Reservation</a></li>
+              <li><a >Messaging</a></li>
+              <li><a >Alerts</a></li>
+              <li><a >Finances</a></li>
+              <li><a onClick={() => this.props.logout()}>Logout</a></li>
+          </ul>
+          </li>
+      );
+
     return (
       <Container className="main">
         <header className="menuheader">
           <div>
             <a href="" className="logo" onClick={this.handleOnClick.bind(this, '/')}>
-              <Image size='small' src= {backend_url() + '/static/images/logo.png'} />
+              <Image size='small' src={backend_url() + '/static/images/logo.png'} />
             </a>
             <input className="menu-btn" type="checkbox" id="menu-btn" />
-            <label className="menu-icon" for="menu-btn"><span className="navicon"></span></label>
+            <label className="menu-icon" htmlFor="menu-btn"><span className="navicon"></span></label>
             <ul className="menu">
               <li><a href="" onClick={this.handleOnClick.bind(this, '/dispatch')}>Dispatch</a></li>
               <li><a href="" onClick={this.handleOnClick.bind(this, '/transport')}>Transport</a></li>
-              {authenticated ? (<li><a href="">My profile</a></li>) :
+              {authenticated ? (mobileMenu) :
               (<span>
                 <li><a href="" onClick={this.handleOnClick.bind(this, '/login')}>Login</a></li>
                 <li><a href="" onClick={this.handleOnClick.bind(this, '/signup')}>Sign up</a></li>

@@ -61,11 +61,51 @@ export const authLogin = (username, password) => {
 };
 
 export const searchTrips = (departure_location, destination_location, travel_date) => {
-  console.log("searchTrips");
+  return dispatch => {
+    dispatch(authStart());
+    axios
+      .post(backend_url() + "/trip_search/", {
+        departure_location: departure_location,
+        destination_location: destination_location,
+        travel_date: travel_date,
+      })
+      .then(res => {
+        const token = res.data.key;
+        const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
+        localStorage.setItem("token", token);
+        localStorage.setItem("expirationDate", expirationDate);
+        dispatch(authSuccess(token));
+        dispatch(checkAuthTimeout(3600));
+      })
+      .catch(err => {
+        dispatch(authFail(err));
+      });
+  };
 }
 
-export const tripAddition = (departure_location, destination_location, travel_date) => {
-  console.log("add trip");
+export const tripAddition = (departure_location, destination_location, depart_date, comeback_date, trip_type) => {
+  return dispatch => {
+    dispatch(authStart());
+    axios
+      .post(backend_url() + "/trips/", {
+        departure_location: departure_location,
+        destination_location: destination_location,
+        depart_date: depart_date,
+        comeback_date: comeback_date,
+        trip_type: trip_type
+      })
+      .then(res => {
+        const token = res.data.key;
+        const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
+        localStorage.setItem("token", token);
+        localStorage.setItem("expirationDate", expirationDate);
+        dispatch(authSuccess(token));
+        dispatch(checkAuthTimeout(3600));
+      })
+      .catch(err => {
+        dispatch(authFail(err));
+      });
+  };
 }
 
 export const authSignup = (first_name, last_name, username, email, password1, password2, terms_conditions) => {

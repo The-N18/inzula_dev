@@ -17,18 +17,27 @@ class ParcelType(models.Model):
 
 class Space(models.Model):
     volume = models.IntegerField(default=0)
-    units = models.CharField(max_length=50)
+    units = models.CharField(max_length=50, default="m3")
+
+    def __str__(self):
+        return "{0} - {1}".format(self.volume, self.units)
 
 class Location(models.Model):
     latitude = models.IntegerField(default=0)
     longitude = models.IntegerField(default=0)
-    long_address = models.CharField(max_length=250)
+    long_address = models.CharField(max_length=250, null=True, blank=True)
     city = models.CharField(max_length=250)
-    country = models.CharField(max_length=250)
+    country = models.CharField(max_length=250, null=True, blank=True)
+
+    def __str__(self):
+        return self.city
 
 class Weight(models.Model):
     weight = models.IntegerField(default=0)
-    units = models.CharField(max_length=50)
+    units = models.CharField(max_length=50, default="kg")
+
+    def __str__(self):
+        return "{0} - {1}".format(self.weight, self.units)
 
 class UserSettings(models.Model):
     keep_me_logged_in = models.BooleanField(default=True)
@@ -42,3 +51,6 @@ class UserProfile(models.Model):
     user_type = models.CharField(max_length=50, choices=USER_TYPE_OPTIONS)
     id_document = models.FileField(upload_to='uploads/')
     terms_conditions = models.BooleanField(default=False)
+
+    def __str__(self):
+        return "{0}: {1} - {2}".format(self.user.username, self.user.first_name, self.user.last_name)

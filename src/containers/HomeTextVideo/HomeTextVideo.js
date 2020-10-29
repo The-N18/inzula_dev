@@ -1,27 +1,19 @@
 import React from "react";
 import {
   Button,
-  Form,
   Grid,
   Header,
-  Message,
   Segment,
-  Select,
-  Icon,
-  Card,
-  List,
-  Divider,
-  Container,
-  Image
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { NavLink, Redirect } from "react-router-dom";
 import styles from './hometextvideo.css';
-import { backend_url } from "../../configurations";
 import ReactPlayer from 'react-player'
+import { withRouter } from "react-router-dom";
 
 
 class HomeTextVideo extends React.Component {
+
+  handleOnClick = (item) => this.props.history.push(item);
 
   render() {
     return (
@@ -40,12 +32,14 @@ class HomeTextVideo extends React.Component {
               <Button
                 size="small"
                 className={"buttoncolor homevideo-button"}
+                onClick={this.handleOnClick.bind(this, '/transport')}
               >
                 Earn money while travelling
               </Button>
               <Button
                 size="small"
                 className={"buttoncolor homevideo-button"}
+                onClick={this.handleOnClick.bind(this, '/dispatch')}
               >
                 Ship items now
               </Button>
@@ -55,10 +49,10 @@ class HomeTextVideo extends React.Component {
               <div className={"player-wrapper"}>
                 <ReactPlayer
                   url='https://www.youtube.com/watch?v=ysz5S6PUM-U'
-                  loop='true'
-                  playing='false'
-                  pip='true'
-                  controls='true'
+                  loop={true}
+                  playing={false}
+                  pip={true}
+                  controls={true}
                   width='100%'
                   height='100%'
                   className={"react-player"} />
@@ -73,12 +67,16 @@ class HomeTextVideo extends React.Component {
 }
 
 const mapStateToProps = state => {
+  return {};
 };
 
 const mapDispatchToProps = dispatch => {
+  return {};
 };
 
-export default connect(
+export default withRouter(
+  connect(
   mapStateToProps,
   mapDispatchToProps
-)(HomeTextVideo);
+)(HomeTextVideo)
+);

@@ -21,7 +21,8 @@ from django.conf.urls import url
 from trip.urls import urlpatterns as trip_urls
 
 urlpatterns = [
-    path('api-auth/', include('rest_framework.urls')),
+    # path('api-auth/', include('rest_framework.urls')),
+    # path(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('rest-auth/', include('rest_auth.urls')),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
     path('trips/', include(trip_urls)),
