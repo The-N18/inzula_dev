@@ -39,15 +39,14 @@ AUTH_PASSWORD_VALIDATORS = [
 # STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
-    'http://15.188.83.142:3000',
-    'http://172.26.15.28:3000',
-    'http://localhost:5000',
-    'http://127.0.0.1:5000',
-    'http://15.188.83.142:5000',
-    'http://172.26.15.28:5000',
-
-)
+# CORS_ORIGIN_WHITELIST = (
+#     'http://localhost:3000',
+#     'http://127.0.0.1:3000',
+#     'http://15.188.83.142:3000',
+#     'http://172.26.15.28:3000',
+#     'http://localhost:5000',
+#     'http://127.0.0.1:5000',
+#     'http://15.188.83.142:5000',
+#     'http://172.26.15.28:5000',
+#
+# )

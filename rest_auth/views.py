@@ -22,13 +22,13 @@ from .app_settings import (
 )
 from .models import TokenModel
 from .utils import jwt_encode
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 sensitive_post_parameters_m = method_decorator(
     sensitive_post_parameters(
         'password', 'old_password', 'new_password1', 'new_password2'
     )
 )
-
 
 class LoginView(GenericAPIView):
     """
@@ -84,7 +84,11 @@ class LoginView(GenericAPIView):
             serializer = serializer_class(instance=self.token,
                                           context={'request': self.request})
 
-        response = Response(serializer.data, status=status.HTTP_200_OK)
+        response = Response({
+            'key': str(self.token),
+            'user_id': self.user.pk,
+            'username': self.user.username,
+            'user_profile_id': self.user.profile.pk}, status=status.HTTP_200_OK)
         if getattr(settings, 'REST_USE_JWT', False):
             from rest_framework_jwt.settings import api_settings as jwt_settings
             if jwt_settings.JWT_AUTH_COOKIE:

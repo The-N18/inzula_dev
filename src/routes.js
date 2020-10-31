@@ -4,6 +4,8 @@ import Hoc from "./hoc/hoc";
 
 import Login from "./containers/Login/Login";
 import Signup from "./containers/Signup/Signup";
+import LoginParent from "./containers/LoginParent/LoginParent";
+import SignupParent from "./containers/SignupParent/SignupParent";
 import MyProfile from "./containers/MyProfile/MyProfile";
 import Transport from "./containers/Transport/Transport";
 import HomepageLayout from "./containers/Home";
@@ -11,8 +13,10 @@ import SendPage from "./containers/SendPage/SendPage";
 
 const BaseRouter = () => (
   <Hoc>
-    <Route path="/login" component={Login} />
-    <Route path="/signup" component={Signup} />
+    <Route path="/login" component={LoginParent} />
+    <Route path="/signup" component={SignupParent} />
+    <Route path="/loginemail" component={Login} />
+    <Route path="/signupemail" component={Signup} />
     <Route path="/profile" component={MyProfile} />
     <Route path="/transport" component={Transport} />
     <Route path="/dispatch" component={SendPage} />

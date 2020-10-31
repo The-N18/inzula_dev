@@ -9,7 +9,7 @@ USER_TYPE_OPTIONS = [
 ]
 
 class Price(models.Model):
-    amount = models.IntegerField(default=0)
+    amount = models.CharField(max_length=50)
     currency = models.CharField(max_length=50)
 
 class ParcelType(models.Model):
@@ -44,12 +44,12 @@ class UserSettings(models.Model):
     can_take_parcel = models.BooleanField(default=True)
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.PROTECT, primary_key=True, related_name='+')
-    settings = models.ForeignKey(UserSettings, on_delete=models.PROTECT, related_name='+', null=True)
-    phone_number = models.IntegerField(default=0)
-    pay_mode = models.CharField(max_length=50)
-    user_type = models.CharField(max_length=50, choices=USER_TYPE_OPTIONS)
-    id_document = models.FileField(upload_to='uploads/')
+    user = models.OneToOneField(User, on_delete=models.PROTECT, primary_key=True, related_name='profile')
+    settings = models.ForeignKey(UserSettings, on_delete=models.PROTECT, related_name='+', null=True, blank=True)
+    phone_number = models.IntegerField(default=0, null=True, blank=True)
+    pay_mode = models.CharField(max_length=50, null=True, blank=True)
+    user_type = models.CharField(max_length=50, choices=USER_TYPE_OPTIONS, null=True, blank=True)
+    id_document = models.FileField(upload_to='uploads/', null=True, blank=True)
     terms_conditions = models.BooleanField(default=False)
 
     def __str__(self):

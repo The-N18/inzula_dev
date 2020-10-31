@@ -13,7 +13,9 @@ import { tripAddition } from "../../store/actions/auth";
 import styles from './addtripform.css';
 import Recaptcha from 'react-recaptcha';
 import { DateInput } from 'semantic-ui-calendar-react';
-
+import CSRFToken from "../../containers/CSRFToken";
+import DjangoCSRFToken from 'django-react-csrftoken';
+import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
 
 class AddTripForm extends React.Component {
 
@@ -54,6 +56,7 @@ class AddTripForm extends React.Component {
     comeback_date: null,
     isVerified: false,
     trip_type: "round_trip",
+    created_by: null
   };
 
   handleChange = e => {
@@ -70,13 +73,38 @@ class AddTripForm extends React.Component {
   }
 
   handleSubmit = e => {
+    const {userId, createNotification} = this.props;
     e.preventDefault();
     const { departure_location, destination_location, depart_date, comeback_date, trip_type } = this.state;
-    if(this.props.authenticated) {
-      this.props.addTrip(departure_location, destination_location, depart_date, comeback_date, trip_type);
-    } else {
-      this.handleRedirectToLogin('/login');
-    }
+    const createdBy = {"user": userId};
+    const departureLocation = {
+            "id": null,
+            "latitude": 0,
+            "longitude": 0,
+            "long_address": null,
+            "city": departure_location,
+            "country": null
+        };
+    const destinationLocation = {
+            "id": null,
+            "latitude": 0,
+            "longitude": 0,
+            "long_address": null,
+            "city": destination_location,
+            "country": null
+        };
+    this.props.addTrip(createdBy, departureLocation, destinationLocation, depart_date, comeback_date, trip_type);
+    createNotification({
+      message: 'Your trip has been added',
+      type: NOTIFICATION_TYPE_SUCCESS,
+      duration: 0,
+      canDismiss: true,
+    });
+    // if(this.props.authenticated) {
+    //   this.props.addTrip(createdBy, departureLocation, destinationLocation, depart_date, comeback_date, trip_type);
+    // } else {
+    //   this.handleRedirectToLogin('/login');
+    // }
   };
 
   handleDateTimeChange = (event, {name, value}) => {
@@ -123,6 +151,7 @@ class AddTripForm extends React.Component {
               Add information about your trip to earn money.
             </Header>
             <Form size="large" onSubmit={this.handleSubmit}>
+              <DjangoCSRFToken/>
               <Segment basic textAlign="center">
               <Form.Group widths='equal'>
                 <Form.Field>
@@ -178,12 +207,12 @@ class AddTripForm extends React.Component {
                   onChange={this.handleDateTimeChange}
                   dateFormat="YYYY-MM-DD"
                 /> : "" }
-              <Recaptcha
+              {/* <Recaptcha
                 sitekey="6LfycNoZAAAAADPAHBVK7JjxT8V6AvayfwhVaHQa"
                 render="explicit"
                 onloadCallback={this.recaptchaLoaded}
                 verifyCallback={this.verifyCallback}
-              />
+              /> */}
               <Button
                 size="large"
                 loading={loading}
@@ -209,13 +238,17 @@ const mapStateToProps = state => {
     loading: state.auth.loading,
     error: state.auth.error,
     token: state.auth.token,
+    userId: state.auth.userId,
+    userProfileId: state.auth.userProfileId,
+    username: state.auth.username,
     authenticated: state.auth.token !== null
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    addTrip: (departure_location, destination_location, depart_date, comeback_date, trip_type) => dispatch(tripAddition(departure_location, destination_location, depart_date, comeback_date, trip_type))
+    addTrip: (created_by, departure_location, destination_location, depart_date, comeback_date, trip_type) => dispatch(tripAddition(created_by, departure_location, destination_location, depart_date, comeback_date, trip_type)),
+    createNotification: (config) => {dispatch(createNotification(config))},
   };
 };
 

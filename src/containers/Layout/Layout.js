@@ -10,6 +10,8 @@ import { backend_url } from "../../configurations";
 import styles from './layout.css';
 import $ from "jquery";
 import Footer from "../../containers/Footer/Footer";
+import 'react-redux-notify/dist/ReactReduxNotify.css';
+import { Notify } from 'react-redux-notify';
 
 
 class CustomLayout extends React.Component {
@@ -78,6 +80,7 @@ class CustomLayout extends React.Component {
 
     return (
       <Container className="main">
+      <Notify />
         <header className="menuheader">
           <div>
             <a href="" className="logo" onClick={this.handleOnClick.bind(this, '/')}>

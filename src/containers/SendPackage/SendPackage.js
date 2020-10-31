@@ -19,6 +19,9 @@ import styles from './sendpackage.css';
 import PropTypes from "prop-types";
 import { backend_url } from "../../configurations";
 import ImageUploader from 'react-images-upload';
+import { DateInput } from 'semantic-ui-calendar-react';
+import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
+import { bookingAddition } from "../../store/actions/auth";
 
 class SendPackage extends React.Component {
 
@@ -41,12 +44,20 @@ class SendPackage extends React.Component {
     delivery_date: "",
     pickup_address: "",
     recipient_name: "",
-    recipient_phone_number: ""
+    recipient_phone_number: "",
+    terms_conditions: false,
+    user_agreement: false,
+    isNextValid: false
   }
 
   handleChange = e => {
     console.log("handle change here");
     this.setState({ [e.target.name]: e.target.value });
+    if(this.state.product_name !== "") {
+      this.setState({ isNextValid: true});
+    } else {
+      this.setState({ isNextValid: false});
+    }
   };
 
   handleButtonClick = (e) => {
@@ -73,9 +84,41 @@ class SendPackage extends React.Component {
       });
   }
 
+  handleToggleCheckbox = () => {
+    const terms_conditions = !(this.state.terms_conditions);
+    this.setState({terms_conditions});
+  }
+
+  handleToggleUserAgreementCheckbox = () => {
+    const user_agreement = !(this.state.user_agreement);
+    this.setState({user_agreement});
+  }
+
+  handleDateTimeChange = (event, {name, value}) => {
+    if (this.state.hasOwnProperty(name)) {
+      this.setState({ [name]: value });
+    }
+  }
+
+  handleSubmit = e => {
+    const {userId, userProfileId, createNotification} = this.props;
+    e.preventDefault();
+    const { pictures, product_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, pickup_address, recipient_name,
+    recipient_phone_number, terms_conditions, user_agreement} = this.state;
+    const created_by = {"user": userId};
+    this.props.addRequest(created_by, pictures, product_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, pickup_address, recipient_name,
+    recipient_phone_number, terms_conditions, user_agreement);
+    createNotification({
+      message: 'Your request has been added',
+      type: NOTIFICATION_TYPE_SUCCESS,
+      duration: 0,
+      canDismiss: true,
+    });
+  };
+
   render() {
     const { token } = this.props;
-    const { activeStep, product_location, proposed_price, product_description, product_name, product_category, product_weight, product_size, product_value, delivery_date, pickup_address, recipient_name, recipient_phone_number  } = this.state;
+    const { isNextValid, user_agreement, terms_conditions, activeStep, product_location, proposed_price, product_description, product_name, product_category, product_weight, product_size, product_value, delivery_date, pickup_address, recipient_name, recipient_phone_number  } = this.state;
     // if(token === null) {
     //   console.log("TOKEN");
     //   console.log(token);
@@ -119,8 +162,42 @@ class SendPackage extends React.Component {
                   </Segment>
                 </Grid.Column>
                 <Grid.Column mobile={16} tablet={16} computer={12}>
+                {activeStep === 2 ? <Grid
+                  textAlign="center"
+                  verticalAlign="middle"
+                >
+                  <Grid.Row columns={2}>
+                    <Grid.Column mobile={16} tablet={8} computer={4}>
+                      <span className={"form-details-display"}><b>Product name:</b> {this.state.product_name}</span>
+                      <span className={"form-details-display"}><b>Product location:</b> {this.state.product_location}</span>
+                      <span className={"form-details-display"}><b>Delivery date:</b> {this.state.delivery_date}</span>
+                      <span className={"form-details-display"}><b>Product category:</b> {this.state.product_category}</span>
+                      <span className={"form-details-display"}><b>Product size:</b> {this.state.product_size}</span>
+                      <span className={"form-details-display"}><b>Proposed price:</b> {this.state.proposed_price}</span>
+                      <span className={"form-details-display"}><b>Recipient name:</b> {this.state.recipient_name}</span>
+                      <span className={"form-details-display"}><b>Recipient phone number:</b> {this.state.recipient_phone_number}</span>
+                    </Grid.Column>
+                    <Grid.Column mobile={16} tablet={8} computer={4}>
+                      <span className={"form-details-display"}><b>Product description:</b> {this.state.product_description}</span>
+                      <span className={"form-details-display"}><b>Pickup address:</b> {this.state.pickup_address}</span>
+                      <span className={"form-details-display"}><b>Weight:</b> {this.state.product_weight}</span>
+                      <span className={"form-details-display"}><b>Product value:</b> {this.state.product_value}</span>
+                      <span className={"form-details-display"}><b>Recipient name:</b> {this.state.recipient_name}</span>
+                      <span className={"form-details-display"}><b>Recipient phone number:</b> {this.state.recipient_phone_number}</span>
+                    </Grid.Column>
+                  </Grid.Row>
+                  </Grid> : ''}
                 {activeStep === 1 ?
                   <Form.Group widths='equal'>
+                  <Form.Input
+                    onChange={this.handleChange}
+                    value={product_name}
+                    name="product_name"
+                    fluid
+                    icon="text cursor"
+                    iconPosition="left"
+                    placeholder="Product name"
+                  />
                   <Form.Input
                       onChange={this.handleChange}
                       value={product_location}
@@ -130,23 +207,13 @@ class SendPackage extends React.Component {
                       iconPosition="left"
                       placeholder="Product location"
                     />
-                    <Form.Input
-                      onChange={this.handleChange}
-                      value={product_description}
-                      name="product_description"
-                      fluid
-                      icon="text cursor"
-                      iconPosition="left"
-                      placeholder="Product description"
-                    />
-                    <Form.Input
-                      onChange={this.handleChange}
-                      value={delivery_date}
+                    <DateInput
                       name="delivery_date"
-                      fluid
-                      icon="calendar"
+                      placeholder="Delivery Date"
+                      value={delivery_date}
                       iconPosition="left"
-                      placeholder="Delivery date"
+                      onChange={this.handleDateTimeChange}
+                      dateFormat="YYYY-MM-DD"
                     />
                   </Form.Group> : ''}
                   {activeStep === 1 ?
@@ -160,27 +227,6 @@ class SendPackage extends React.Component {
                         iconPosition="left"
                         placeholder="Pickup address"
                       />
-                      <Form.Input
-                        onChange={this.handleChange}
-                        value={recipient_name}
-                        name="recipient_name"
-                        fluid
-                        icon="user"
-                        iconPosition="left"
-                        placeholder="Reciever's name"
-                      />
-                      <Form.Input
-                        onChange={this.handleChange}
-                        value={recipient_phone_number}
-                        name="recipient_phone_number"
-                        fluid
-                        icon="phone"
-                        iconPosition="left"
-                        placeholder="Reciever's phone number"
-                      />
-                    </Form.Group> : ''}
-                    {activeStep === 1 ?
-                      <Form.Group widths='equal'>
                       <Form.Input
                           onChange={this.handleChange}
                           value={product_category}
@@ -198,37 +244,65 @@ class SendPackage extends React.Component {
                           icon="weight"
                           iconPosition="left"
                           placeholder="Weight (kg)"
+                          type='number'
                         />
-                        <Form.Input
+
+
+                    </Form.Group> : ''}
+                    {activeStep === 1 ?
+                      <Form.Group widths='equal'>
+                      <Form.Input
+                        onChange={this.handleChange}
+                        value={product_size}
+                        name="product_size"
+                        fluid
+                        icon="user"
+                        iconPosition="left"
+                        placeholder="Size (length * width * height)"
+                         type='number'
+                      />
+                      <Form.Input
                           onChange={this.handleChange}
-                          value={product_size}
-                          name="product_size"
+                          value={product_value}
+                          name="product_value"
                           fluid
                           icon="user"
                           iconPosition="left"
-                          placeholder="Size (length * width * height)"
+                          placeholder="Value"
                         />
+                        <Form.Input
+                          onChange={this.handleChange}
+                          value={proposed_price}
+                          name="proposed_price"
+                          fluid
+                          icon="money bill alternate outline"
+                          iconPosition="left"
+                          placeholder="Proposed price"
+                        />
+
+
                       </Form.Group> : ''}
                       {activeStep === 1 ?
                         <Form.Group widths='equal'>
                         <Form.Input
-                            onChange={this.handleChange}
-                            value={product_value}
-                            name="product_value"
-                            fluid
-                            icon="user"
-                            iconPosition="left"
-                            placeholder="Value"
-                          />
-                          <Form.Input
-                            onChange={this.handleChange}
-                            value={proposed_price}
-                            name="proposed_price"
-                            fluid
-                            icon="money bill alternate outline"
-                            iconPosition="left"
-                            placeholder="Proposed price"
-                          />
+                          onChange={this.handleChange}
+                          value={recipient_name}
+                          name="recipient_name"
+                          fluid
+                          icon="user"
+                          iconPosition="left"
+                          placeholder="Reciever's name"
+                        />
+                        <Form.Input
+                          onChange={this.handleChange}
+                          value={recipient_phone_number}
+                          name="recipient_phone_number"
+                          fluid
+                          icon="phone"
+                          iconPosition="left"
+                          placeholder="Reciever's phone number"
+                          type='number'
+                        />
                         </Form.Group> : ''}
                         {activeStep === 1 ?
                           <TextArea
@@ -236,6 +310,22 @@ class SendPackage extends React.Component {
                           onChange={this.handleChange}
                           value={product_description}
                           name="product_description" /> : '' }
+                        {activeStep === 2 ?
+                          <Form.Checkbox
+                            name="terms_conditions"
+                            label='I have read and accept the terms and conditions'
+                            required
+                            checked={terms_conditions}
+                            onChange={this.handleToggleCheckbox}/> :
+                          ''}
+                        {activeStep === 2 ?
+                          <Form.Checkbox
+                            name="user_agreement"
+                            label='I agree to the user agreement'
+                            checked={user_agreement}
+                            required
+                            onChange={this.handleToggleUserAgreementCheckbox}/> :
+                          ''}
                         {activeStep === 2 ? <Button icon labelPosition='left'
                           className={"buttoncolor step-button"}
                           size="large"
@@ -247,11 +337,11 @@ class SendPackage extends React.Component {
                         <Button icon labelPosition='right'
                           className={"buttoncolor step-button"}
                           size="large"
-                          disabled={false}
-                          onClick={this.handleButtonClick.bind(this)}
+                          disabled={!isNextValid}
+                          onClick={activeStep === 1 ? this.handleButtonClick.bind(this) : this.handleSubmit.bind(this)}
                         >
-                          {activeStep === 1 ? <span>Next
-                          <Icon name='right arrow' /></span> : <span>Confirm request <Icon name='check' /></span>}
+                          {activeStep === 1 ? <span className={"form-details-display"}>Next
+                          <Icon name='right arrow' /></span> : <span className={"form-details-display"}>Confirm request <Icon name='check' /></span>}
                         </Button>
                 </Grid.Column>
               </Grid.Row>
@@ -266,12 +356,21 @@ class SendPackage extends React.Component {
 const mapStateToProps = state => {
   return {
     loading: state.auth.loading,
-    token: state.auth.token
+    error: state.auth.error,
+    token: state.auth.token,
+    userId: state.auth.userId,
+    userProfileId: state.auth.userProfileId,
+    username: state.auth.username,
+    authenticated: state.auth.token !== null
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    addRequest: (created_by, pictures, product_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, pickup_address, recipient_name,
+    recipient_phone_number, terms_conditions, user_agreement) => dispatch(bookingAddition(created_by, pictures, product_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, pickup_address, recipient_name,
+    recipient_phone_number, terms_conditions, user_agreement)),
+    createNotification: (config) => {dispatch(createNotification(config))},
   };
 };
 

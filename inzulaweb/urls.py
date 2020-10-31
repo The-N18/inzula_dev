@@ -19,6 +19,7 @@ from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls import url
 from trip.urls import urlpatterns as trip_urls
+from booking.urls import urlpatterns as booking_urls
 
 urlpatterns = [
     # path('api-auth/', include('rest_framework.urls')),
@@ -26,6 +27,7 @@ urlpatterns = [
     path('rest-auth/', include('rest_auth.urls')),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
     path('trips/', include(trip_urls)),
+    path('bookings/', include(booking_urls)),
     path('admin/', admin.site.urls),
     url(r'^', TemplateView.as_view(template_name="index.html")),
 ]

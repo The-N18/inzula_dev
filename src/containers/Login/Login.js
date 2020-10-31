@@ -66,10 +66,10 @@ class LoginForm extends React.Component {
       return <Redirect to="/" />;
     }
     return (
-      <Segment style={{ padding: "2em 0em" }} vertical>
+      <Segment style={{ padding: "1em 0em" }} vertical>
       <Grid
         textAlign="center"
-        style={{ height: "100vh" }}
+        style={{ height: "80vh" }}
         verticalAlign="middle"
       >
         <Grid.Column style={{ maxWidth: 450 }}>
@@ -100,28 +100,28 @@ class LoginForm extends React.Component {
                   placeholder="Password"
                   type="password"
                 />
-                <Recaptcha
+                {/*<Recaptcha
                   sitekey="6LfycNoZAAAAADPAHBVK7JjxT8V6AvayfwhVaHQa"
                   render="explicit"
                   onloadCallback={this.recaptchaLoaded}
                   verifyCallback={this.verifyCallback}
-                />
+                /> */}
                 <Button
                   size="large"
                   loading={loading}
-                  disabled={!this.state.isVerified}
+                  disabled={this.state.isVerified}
                   className={"buttoncolor"}
                 >
                   Login
                 </Button>
               </Segment>
             </Form>
-            <Segment raised className={"logincard"}>
+            {/*<Segment raised className={"logincard"}>
               <Header as="h5">Login with</Header>
               <Icon size="big" circular name='facebook' className={"facebookicon"} />
               <Icon size="big" circular name='twitter' className={"facebookicon"} />
               <Icon size="big" circular name='mail' className={"gmail"} />
-            </Segment>
+            </Segment> */}
             <Segment raised className={"logincard"}>
               New to Inzula? <NavLink to="/signup">Sign Up</NavLink>
             </Segment>
@@ -137,7 +137,8 @@ const mapStateToProps = state => {
   return {
     loading: state.auth.loading,
     error: state.auth.error,
-    token: state.auth.token
+    token: state.auth.token,
+    userId: state.auth.userId
   };
 };
 

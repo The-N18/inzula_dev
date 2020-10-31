@@ -66,8 +66,11 @@ class RegisterView(CreateAPIView):
         serializer.is_valid(raise_exception=True)
         user = self.perform_create(serializer, request.data)
         headers = self.get_success_headers(serializer.data)
-
-        return Response(self.get_response_data(user),
+        return Response({
+            'key': self.get_response_data(user)['key'],
+            'user_id': user.pk,
+            'username': user.username,
+            'user_profile_id': user.profile.pk},
                         status=status.HTTP_201_CREATED,
                         headers=headers)
 

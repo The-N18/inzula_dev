@@ -86,7 +86,7 @@ class RegistrationForm extends React.Component {
       <Segment style={{ padding: "2em 0em" }} vertical>
       <Grid
         textAlign="center"
-        style={{ height: "100vh" }}
+        style={{ height: "80vh" }}
         verticalAlign="middle"
       >
         <Grid.Column style={{ maxWidth: 450 }}>
@@ -167,28 +167,28 @@ class RegistrationForm extends React.Component {
                   label='I agree to the Terms and Conditions'
                   required
                   onChange={this.handleToggleCheckbox}/>
-                <Recaptcha
+                {/*<Recaptcha
                   sitekey="6LfycNoZAAAAADPAHBVK7JjxT8V6AvayfwhVaHQa"
                   render="explicit"
                   onloadCallback={this.recaptchaLoaded}
                   verifyCallback={this.verifyCallback}
-                />
+                /> */}
                 <Button
                   className={"buttoncolor"}
                   size="large"
                   loading={loading}
-                  disabled={!this.state.isVerified}
+                  disabled={this.state.isVerified}
                 >
                   Signup
                 </Button>
               </Segment>
             </Form>
-            <Segment raised className={"signupcard"}>
+            {/*<Segment raised className={"signupcard"}>
               <Header as="h5">Login with</Header>
               <Icon size="big" circular name='facebook' className={"facebookicon"} />
               <Icon size="big" circular name='twitter' className={"facebookicon"} />
               <Icon size="big" circular name='mail' className={"gmail"} />
-            </Segment>
+            </Segment> */}
             <Segment raised className={"signupcard"}>
               Already have an account? <NavLink to="/login">Login</NavLink>
             </Segment>
