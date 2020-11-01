@@ -10,7 +10,8 @@ import {
   Container,
   Step,
   Image,
-  TextArea
+  TextArea,
+  Select
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { NavLink, Redirect } from "react-router-dom";
@@ -52,11 +53,21 @@ class SendPackage extends React.Component {
 
   handleChange = e => {
     console.log("handle change here");
+    const {activeStep, user_agreement, terms_conditions, product_name, recipient_name, recipient_phone_number, pickup_address, product_value, product_location} = this.state;
     this.setState({ [e.target.name]: e.target.value });
-    if(this.state.product_name !== "") {
-      this.setState({ isNextValid: true});
-    } else {
-      this.setState({ isNextValid: false});
+    if(activeStep === 1) {
+      if(product_name !== "" && recipient_name !== "" && recipient_phone_number !== "" && pickup_address !== "" && product_value !== "" && product_location !== "") {
+        this.setState({ isNextValid: true});
+      } else {
+        this.setState({ isNextValid: false});
+      }
+    }
+    if(activeStep === 2) {
+      if(user_agreement !== false && terms_conditions !== false && product_name !== "" && recipient_name !== "" && recipient_phone_number !== "" && pickup_address !== "" && product_value !== "" && product_location !== "") {
+        this.setState({ isNextValid: true});
+      } else {
+        this.setState({ isNextValid: false});
+      }
     }
   };
 
@@ -89,6 +100,10 @@ class SendPackage extends React.Component {
     this.setState({terms_conditions});
   }
 
+  handleSizeChange = (e, data) => {
+    this.setState({ [data.name]: data.value });
+  }
+
   handleToggleUserAgreementCheckbox = () => {
     const user_agreement = !(this.state.user_agreement);
     this.setState({user_agreement});
@@ -116,6 +131,7 @@ class SendPackage extends React.Component {
     });
   };
 
+
   render() {
     const { token } = this.props;
     const { isNextValid, user_agreement, terms_conditions, activeStep, product_location, proposed_price, product_description, product_name, product_category, product_weight, product_size, product_value, delivery_date, pickup_address, recipient_name, recipient_phone_number  } = this.state;
@@ -124,6 +140,16 @@ class SendPackage extends React.Component {
     //   console.log(token);
     //   return <Redirect to="/" />;
     // }
+    const sizeOptions = [
+  { key: 'xxs', value: 'xxs', text: 'Extra Extra Small' },
+  { key: 'xs', value: 'xs', text: 'Extra small' },
+  { key: 's', value: 's', text: 'Small' },
+  { key: 'm', value: 'm', text: 'Medium' },
+  { key: 'l', value: 'l', text: 'Large' },
+  { key: 'xl', value: 'xl', text: 'Extra Large' },
+  { key: 'xxl', value: 'xxl', text: 'Extra Extra Large' },
+  { key: 'xxxl', value: 'xxxl', text: 'Extra Extra Extra Large' },
+];
     return (
       <Segment style={{ padding: "2em 0em" }} vertical textAlign="center">
         <Step.Group ordered unstackable>
@@ -167,7 +193,7 @@ class SendPackage extends React.Component {
                   verticalAlign="middle"
                 >
                   <Grid.Row columns={2}>
-                    <Grid.Column mobile={16} tablet={8} computer={4}>
+                    <Grid.Column mobile={16} tablet={8} computer={8}>
                       <span className={"form-details-display"}><b>Product name:</b> {this.state.product_name}</span>
                       <span className={"form-details-display"}><b>Product location:</b> {this.state.product_location}</span>
                       <span className={"form-details-display"}><b>Delivery date:</b> {this.state.delivery_date}</span>
@@ -177,8 +203,8 @@ class SendPackage extends React.Component {
                       <span className={"form-details-display"}><b>Recipient name:</b> {this.state.recipient_name}</span>
                       <span className={"form-details-display"}><b>Recipient phone number:</b> {this.state.recipient_phone_number}</span>
                     </Grid.Column>
-                    <Grid.Column mobile={16} tablet={8} computer={4}>
-                      <span className={"form-details-display"}><b>Product description:</b> {this.state.product_description}</span>
+                    <Grid.Column mobile={16} tablet={8} computer={8}>
+                      <span className={"form-details-display"} title={this.state.product_description}><b>Product description:</b> {this.state.product_description}</span>
                       <span className={"form-details-display"}><b>Pickup address:</b> {this.state.pickup_address}</span>
                       <span className={"form-details-display"}><b>Weight:</b> {this.state.product_weight}</span>
                       <span className={"form-details-display"}><b>Product value:</b> {this.state.product_value}</span>
@@ -251,7 +277,7 @@ class SendPackage extends React.Component {
                     </Form.Group> : ''}
                     {activeStep === 1 ?
                       <Form.Group widths='equal'>
-                      <Form.Input
+                      {/*<Form.Input
                         onChange={this.handleChange}
                         value={product_size}
                         name="product_size"
@@ -260,7 +286,13 @@ class SendPackage extends React.Component {
                         iconPosition="left"
                         placeholder="Size (length * width * height)"
                          type='number'
-                      />
+                      />*/}
+                      <Select
+                        onChange={this.handleSizeChange}
+                        name="product_size"
+                        fluid
+                        placeholder='Product size'
+                        options={sizeOptions} />
                       <Form.Input
                           onChange={this.handleChange}
                           value={product_value}
@@ -312,6 +344,7 @@ class SendPackage extends React.Component {
                           name="product_description" /> : '' }
                         {activeStep === 2 ?
                           <Form.Checkbox
+                            className={"checkboxes-align-left"}
                             name="terms_conditions"
                             label='I have read and accept the terms and conditions'
                             required
@@ -320,6 +353,7 @@ class SendPackage extends React.Component {
                           ''}
                         {activeStep === 2 ?
                           <Form.Checkbox
+                            className={"checkboxes-align-left"}
                             name="user_agreement"
                             label='I agree to the user agreement'
                             checked={user_agreement}
@@ -334,15 +368,31 @@ class SendPackage extends React.Component {
                         >
                           <Icon name='left arrow' /> Back
                         </Button> : ''}
-                        <Button icon labelPosition='right'
+                        {activeStep === 1 ? <Button icon labelPosition='right'
                           className={"buttoncolor step-button"}
                           size="large"
                           disabled={!isNextValid}
+                          onClick={this.handleButtonClick.bind(this)}
+                        >
+                          <Icon name='right arrow' /> Next
+                        </Button> : ''}
+                        {activeStep === 2 ? <Button icon labelPosition='right'
+                          className={"buttoncolor step-button"}
+                          size="large"
+                          disabled={!isNextValid}
+                          onClick={this.handleSubmit.bind(this)}
+                        >
+                          <Icon name='check' /> Confirm request
+                        </Button> : ''}
+                        {/*<Button icon labelPosition='right'
+                          className={"buttoncolor step-button"}
+                          size="large"
+                          disabled={isNextValid}
                           onClick={activeStep === 1 ? this.handleButtonClick.bind(this) : this.handleSubmit.bind(this)}
                         >
                           {activeStep === 1 ? <span className={"form-details-display"}>Next
                           <Icon name='right arrow' /></span> : <span className={"form-details-display"}>Confirm request <Icon name='check' /></span>}
-                        </Button>
+                        </Button> */}
                 </Grid.Column>
               </Grid.Row>
             </Grid>

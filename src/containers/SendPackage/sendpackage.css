@@ -42,4 +42,11 @@
 
 .form-details-display {
   display: block !important;
+  text-align: left !important;
+  word-wrap: break-word !important;
+}
+
+.checkboxes-align-left {
+  margin-top: 10px !important;
+  text-align: left !important;
 }

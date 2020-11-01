@@ -20,6 +20,9 @@ from django.conf import settings
 from django.conf.urls import url
 from trip.urls import urlpatterns as trip_urls
 from booking.urls import urlpatterns as booking_urls
+from django.views.static import serve
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     # path('api-auth/', include('rest_framework.urls')),
@@ -29,7 +32,15 @@ urlpatterns = [
     path('trips/', include(trip_urls)),
     path('bookings/', include(booking_urls)),
     path('admin/', admin.site.urls),
-    url(r'^', TemplateView.as_view(template_name="index.html")),
 ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        url(r'^media/(?P<path>.*)$', serve, {
+            'document_root': settings.MEDIA_ROOT,
+        }),
+    url(r'^', TemplateView.as_view(template_name="index.html")),
+    ]
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # urlpatterns += [settings.STATIC_URL, settings.MEDIA_URL]

@@ -6,9 +6,10 @@ import {
   Segment,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { searchTrips } from "../../store/actions/auth";
+import { searchTrips } from "../../store/actions/searchbookings";
 import styles from './searchtripsform.css';
 import { DateInput } from 'semantic-ui-calendar-react';
+import BookingCard from "../../containers/BookingCard/BookingCard";
 
 class SearchTripsForm extends React.Component {
 
@@ -35,7 +36,7 @@ class SearchTripsForm extends React.Component {
   };
 
   render() {
-    const { loading } = this.props;
+    const { loading, error, bookings } = this.props;
     const { departure_location, destination_location, travel_date } = this.state;
     return (
       <Segment>
@@ -83,6 +84,22 @@ class SearchTripsForm extends React.Component {
               Search
             </Button>
           </Form>
+          {bookings.length > 0 ? <Segment raised>
+            {/*bookings.forEach((item) => {
+              console.log(item["product"]["name"]);
+              return (<BookingCard title={item["product"]["name"]}/>);
+            })*/}
+            {bookings.map((item, i) => {
+               console.log(item["product"]["name"]);
+               // Return the element. Also pass key
+               return (<BookingCard
+                 title={item["product"]["name"]}
+                 arrival_date={item["product"]["arrival_date"]}
+                 description={item["product"]["description"]}
+                 departure_location={item["product"]["departure_location"]["city"]}
+                 pickup_location={item["product"]["pickup_location"]["city"]}/>);
+            })}
+          </Segment> : ''}
         </Segment>
     );
   }
@@ -90,9 +107,9 @@ class SearchTripsForm extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    loading: state.auth.loading,
-    error: state.auth.error,
-    token: state.auth.token
+    loading: state.searchbookings.loading,
+    error: state.searchbookings.error,
+    bookings: state.searchbookings.bookings,
   };
 };
 

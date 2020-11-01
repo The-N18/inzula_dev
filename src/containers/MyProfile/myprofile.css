@@ -34,3 +34,7 @@
 .gmail {
   color: #D44638 !important;
 }
+
+.pushleft {
+  float: right !important;
+}

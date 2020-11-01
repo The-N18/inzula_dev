@@ -4,14 +4,26 @@ from trip.models import Trip
 
 # Create your models here.
 
+PRODUCT_SIZE_OPTIONS = [
+    ('xxs', 'Extra Extra Small'),
+    ('xs', 'Extra small'),
+    ('s', 'Small'),
+    ('m', 'Medium'),
+    ('l', 'Large'),
+    ('xl', 'Extra Large'),
+    ('xxl', 'Extra Extra Large'),
+    ('xxl', 'Extra Extra Extra Large')
+]
+
 class Product(models.Model):
     departure_date = models.DateField(null=True, blank=True)
     arrival_date = models.DateField()
     departure_location = models.ForeignKey(Location, on_delete=models.PROTECT, related_name='+')
     pickup_location = models.ForeignKey(Location, on_delete=models.PROTECT, related_name='+')
     destination_location = models.ForeignKey(Location, on_delete=models.PROTECT, related_name='+', null=True, blank=True)
-    space = models.ForeignKey(Space, on_delete=models.PROTECT, related_name='+')
+    # space = models.ForeignKey(Space, on_delete=models.PROTECT, related_name='+')
     weight = models.ForeignKey(Weight, on_delete=models.PROTECT, related_name='+')
+    space = models.CharField(max_length=50, choices=PRODUCT_SIZE_OPTIONS)
     price = models.ForeignKey(Price, on_delete=models.PROTECT, related_name='+')
     created_by = models.ForeignKey(UserProfile, on_delete=models.PROTECT, related_name='+')
     creation_date = models.DateField(null=True, blank=True)
@@ -27,7 +39,7 @@ class Product(models.Model):
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, default=None, on_delete=models.CASCADE)
-    images = models.FileField(upload_to = 'uploads/')
+    image = models.ImageField(upload_to='uploads/', blank=True, null=True)
 
     def __str__(self):
         return self.product.name

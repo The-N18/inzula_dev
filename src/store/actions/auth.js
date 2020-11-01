@@ -151,27 +151,38 @@ export const bookingAddition = (created_by, pictures, product_location, product_
   delivery_date, pickup_address, recipient_name,
 recipient_phone_number, terms_conditions, user_agreement) => {
   console.log("in bookingAddition");
+  console.log(pictures);
+  const config = {
+            headers: { 'content-type': 'multipart/form-data' }
+          };
+  const data2 = {
+    created_by: created_by["user"],
+    product_location: product_location,
+    product_description: product_description,
+    product_name: product_name,
+    product_category: product_category,
+    product_weight: product_weight,
+    product_size: product_size,
+    product_value: product_value,
+    proposed_price: proposed_price,
+    delivery_date: delivery_date,
+    pickup_address: pickup_address,
+    recipient_name: recipient_name,
+    recipient_phone_number: recipient_phone_number,
+    terms_conditions: terms_conditions,
+    user_agreement: user_agreement
+  };
+  let data = new FormData();
+  for( let key in data2 ) {
+    data.append(key, data2[key]);
+  }
+  Array.from(pictures).forEach(image => {
+    data.append('pictures', image, image['name']);
+  });
   return dispatch => {
     dispatch(addBookingStart());
     axios
-      .post(backend_url() + "/bookings/add_request", {
-        created_by: created_by,
-        pictures: pictures,
-        product_location: product_location,
-        product_description: product_description,
-        product_name: product_name,
-        product_category: product_category,
-        product_weight: product_weight,
-        product_size: product_size,
-        product_value: product_value,
-        proposed_price: proposed_price,
-        delivery_date: delivery_date,
-        pickup_address: pickup_address,
-        recipient_name: recipient_name,
-        recipient_phone_number: recipient_phone_number,
-        terms_conditions: terms_conditions,
-        user_agreement: user_agreement
-      })
+      .post(backend_url() + "/bookings/add_request", data, config)
       .then(res => {
         console.log(res.data)
         dispatch(checkAuthTimeout(3600));

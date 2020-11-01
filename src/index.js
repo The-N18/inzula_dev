@@ -8,12 +8,14 @@ import thunk from "redux-thunk";
 import notifyReducer from 'react-redux-notify';
 
 import authReducer from "./store/reducers/auth";
+import searchbookingsReducer from "./store/reducers/searchbookings";
 import axios from 'axios';
 
 const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
   auth: authReducer,
+  searchbookings: searchbookingsReducer,
   notifications: notifyReducer
 });
 

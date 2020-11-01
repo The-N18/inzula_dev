@@ -16,10 +16,10 @@ class LoginParent extends React.Component {
         <Segment basic textAlign="center" className={"signupparent-segment"}>
         <Segment raised className={"signupparentcard"} textAlign="center">
           <Button fluid color='facebook' className={"signupparent-button"}>
-            <Icon name='facebook' /> Connect with Facebook
+            <Icon name='facebook' /> Sign in with Facebook
           </Button>
           <Button fluid color='google plus' className={"signupparent-button"}>
-            <Icon name='google plus' /> Connect with Gmail
+            <Icon name='google plus' /> Sign in with Gmail
           </Button>
           <NavLink to="/loginemail"><Button fluid color='white' className={"signupparent-button"}>
             <Icon name='mail' /> Use email address

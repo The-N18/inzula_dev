@@ -2,6 +2,7 @@ import React from "react";
 import {
   Container,
   Image,
+  Dropdown
 } from "semantic-ui-react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -78,6 +79,21 @@ class CustomLayout extends React.Component {
           </li>
       );
 
+      const languageOptions = [
+              {
+                key: 'en',
+                text: 'English',
+                value: 'English',
+                image: { avatar: true, src: '../../../media/uploads/im1.jpg' },
+              },
+              {
+                key: 'fr',
+                text: 'Francais',
+                value: 'Francais',
+                image: { avatar: true, src: '/images/avatar/small/elliot.jpg' },
+              }
+            ];
+
     return (
       <Container className="main">
       <Notify />
@@ -98,6 +114,11 @@ class CustomLayout extends React.Component {
               </span>
             )}
             </ul>
+            <Dropdown
+              inline
+              options={languageOptions}
+              defaultValue={languageOptions[0].value}
+            />
           </div>
         </header>
         <Container className={"layoutcontainer"}>

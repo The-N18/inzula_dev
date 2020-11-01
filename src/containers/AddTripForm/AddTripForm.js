@@ -124,8 +124,8 @@ class AddTripForm extends React.Component {
     const { loading } = this.props;
     const { departure_location, destination_location, depart_date, comeback_date, trip_type } = this.state;
     return (
-      <Segment style={{ padding: "2em 0em" }} vertical>
-        <Segment basic className={"segment-bg-img"}>
+      <Segment style={{ padding: "2em 0em" }} vertical className={"segment-bg-img"}>
+        <Segment basic>
         <Grid verticalAlign="middle">
           <Grid.Row verticalAlign="middle" className={"add-trip-grid"}>
             <Grid.Column  mobile={16} tablet={16} computer={8} textAlign="center" verticalAlign="middle" className={"add-trip-grid-column"}>

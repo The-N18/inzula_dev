@@ -3,9 +3,12 @@
 }
 
 .signupparentcard {
-  width: auto !important;
+  /* width: auto !important; */
   padding: 20px !important;
   transition: 0.3s !important;
+  max-width: 450px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 .signupparentcard:hover {
@@ -16,6 +19,12 @@
 .signupparent-button {
   margin: 13px auto !important;
 }
+
+/* .signupparent-segment {
+  border: 0px !important;
+  padding: 0em 15em 0em 15em !important;
+  max-width: 450px !important;
+} */
 
 .signupparent-segment {
   border: 0px !important;
