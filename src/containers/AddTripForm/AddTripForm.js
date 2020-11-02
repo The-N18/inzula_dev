@@ -9,7 +9,7 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { tripAddition } from "../../store/actions/auth";
+import { tripAddition } from "../../store/actions/addTrip";
 import styles from './addtripform.css';
 import Recaptcha from 'react-recaptcha';
 import { DateInput } from 'semantic-ui-calendar-react';
@@ -235,12 +235,12 @@ class AddTripForm extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    loading: state.auth.loading,
-    error: state.auth.error,
+    loading: state.addTrip.loading,
+    error: state.addTrip.error,
     token: state.auth.token,
-    userId: state.auth.userId,
-    userProfileId: state.auth.userProfileId,
-    username: state.auth.username,
+    userId: state.userInfo.userId,
+    userProfileId: state.userInfo.userProfileId,
+    username: state.userInfo.username,
     authenticated: state.auth.token !== null
   };
 };

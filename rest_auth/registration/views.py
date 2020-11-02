@@ -70,6 +70,12 @@ class RegisterView(CreateAPIView):
             'key': self.get_response_data(user)['key'],
             'user_id': user.pk,
             'username': user.username,
+            'email': user.email,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'date_joined': user.date_joined,
+            'phone_number': user.profile.phone_number,
+            'profile_pic': user.profile.profile_pic,
             'user_profile_id': user.profile.pk},
                         status=status.HTTP_201_CREATED,
                         headers=headers)

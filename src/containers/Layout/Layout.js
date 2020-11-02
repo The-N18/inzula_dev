@@ -55,7 +55,7 @@ class CustomLayout extends React.Component {
 
 
   render() {
-    const { authenticated } = this.props;
+    const { authenticated, profile_pic } = this.props;
 
     let mobileMenu = this.state.isMobile ? (
       <span><li><a onClick={this.handleOnClick.bind(this, '/profile')}>Profile</a></li>
@@ -66,7 +66,7 @@ class CustomLayout extends React.Component {
       <li><a onClick={() => this.props.logout()}>Logout</a></li></span>) : (
         <li>
           <a href="">
-            <Image bordered circular size='small' className={"profile-image"} src={backend_url() + '/static/images/avatar.png'} />
+            <Image bordered circular size='small' className={"profile-image"} src={backend_url() + profile_pic} />
           </a>
           <ul>
               <li><a onClick={this.handleOnClick.bind(this, '/profile')}>Profile</a></li>
@@ -132,7 +132,8 @@ class CustomLayout extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    authenticated: state.auth.token !== null
+    authenticated: state.auth.token !== null,
+    profile_pic: state.userInfo.profile_pic
   };
 };
 

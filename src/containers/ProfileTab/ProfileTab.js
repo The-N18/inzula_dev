@@ -27,15 +27,19 @@ class ProfileTab extends React.Component {
     phone_number: "",
     email: "",
     passport_number: "",
-    pictures: []
+    picture: ""
   };
 
   onDrop = (picture) => {
     console.log(picture);
       this.setState({
-          pictures: this.state.pictures.concat(picture),
+          picture: this.state.picture.concat(picture),
       });
   }
+
+  // componentDidMount: function() {
+  //   console.log("get profile details")
+  // }
 
   render() {
     const countryOptions = [
@@ -64,19 +68,19 @@ class ProfileTab extends React.Component {
       { key: 'bj', value: 'bj', text: 'Benin' },
     ];
     const { first_name, last_name, phone_number, email, passport_number } = this.state;
-    const { loading } = this.props;
+    const { loading, date_joined, profile_pic } = this.props;
     return (
       <Segment basic className={"profile-tab-section"}>
       <Grid className={"profile-tab-section-grid"}>
         <Grid.Row columns={2}>
           <Grid.Column mobile={16} tablet={16} computer={5}>
             <Segment className={"profile-tab-card"}>
-              <Image centered bordered circular src= {backend_url() + '/static/images/convenient.png'} />
+              <Image centered bordered circular src= {backend_url() + profile_pic} />
               <Segment basic textAlign="center">
-              <Header as='h4' className={"profile-tab-card-title"}>John Doe</Header>
-              <p >Member since: December 2020</p>
-              <p >Phone number: +000000000</p>
-              <p >Email: johndoe@gmail.com</p>
+              <Header as='h4' className={"profile-tab-card-title"}>{this.props.first_name} {this.props.last_name}</Header>
+              <p >Member since: {date_joined}</p>
+              <p >Phone number: {this.props.phone_number}</p>
+              <p >Email: {this.props.email}</p>
               <p >Passport number: 0000000</p>
               </Segment>
             </Segment>
@@ -86,7 +90,7 @@ class ProfileTab extends React.Component {
             <Grid.Row columns={2}>
               <Grid.Column mobile={16} tablet={16} computer={5}>
                 <Segment basic>
-                  <Image centered bordered circular src= {backend_url() + '/static/images/convenient.png'} />
+                  <Image centered bordered circular src= {backend_url() + profile_pic} />
                   <ImageUploader
                       withIcon={true}
                       buttonText='Choose profile image'
@@ -101,19 +105,23 @@ class ProfileTab extends React.Component {
               <Grid.Column mobile={16} tablet={16} computer={11}>
                 <Segment basic textAlign="center">
                 <Header as='h4' className={"profile-tab-card-title"}>Personal information</Header>
-                <Form size="large" onSubmit={this.handleSubmit}>
+                <Form size="large" onSubmit={this.handleSubmit} initialValues={this.props.initialValues}>
                   <Segment basic>
                   <Form.Group widths='equal'>
-                    <Form.Input
+                    <Form.Field>
+                      <label>First Name</label>
+                      <Form.Input
                       onChange={this.handleChange}
                       value={first_name}
                       name="first_name"
                       fluid
                       icon="user"
                       iconPosition="left"
-                      placeholder="First name"
-                      required
-                    />
+                      placeholder={"First name"}
+                      required />
+                    </Form.Field>
+                    <Form.Field>
+                      <label>Last Name</label>
                     <Form.Input
                       onChange={this.handleChange}
                       value={last_name}
@@ -124,8 +132,11 @@ class ProfileTab extends React.Component {
                       placeholder="Last name"
                       required
                     />
+                    </Form.Field>
                   </Form.Group>
                   <Form.Group widths='equal'>
+                  <Form.Field>
+                    <label>Phone number</label>
                     <Form.Input
                       onChange={this.handleChange}
                       value={phone_number}
@@ -136,6 +147,9 @@ class ProfileTab extends React.Component {
                       placeholder="Phone number"
                       required
                     />
+                    </Form.Field>
+                    <Form.Field>
+                      <label>Email</label>
                       <Form.Input
                         onChange={this.handleChange}
                         value={email}
@@ -146,11 +160,17 @@ class ProfileTab extends React.Component {
                         placeholder="E-mail address"
                         required
                       />
+                      </Form.Field>
                     </Form.Group>
                     <Form.Group widths='equal'>
+                    <Form.Field>
+                      <label>Country</label>
                       <Select
                         placeholder='Select your country'
                         options={countryOptions} />
+                        </Form.Field>
+                        <Form.Field>
+                          <label>Passport number</label>
                       <Form.Input
                         onChange={this.handleChange}
                         value={passport_number}
@@ -161,6 +181,7 @@ class ProfileTab extends React.Component {
                         placeholder="Passport number"
                         required
                       />
+                      </Form.Field>
                     </Form.Group>
                     <Button
                       className={"buttoncolor"}
@@ -188,6 +209,15 @@ const mapStateToProps = state => {
   return {
     loading: state.auth.loading,
     error: state.auth.error,
+    first_name: state.userInfo.first_name,
+    last_name: state.userInfo.last_name,
+    email: state.userInfo.email,
+    date_joined: state.userInfo.date_joined,
+    phone_number: state.userInfo.phone_number,
+    profile_pic: state.userInfo.profile_pic,
+    initialValues: {
+      first_name: "ksdjfksjdfnksdjf"
+    }
   };
 };
 

@@ -4,13 +4,25 @@ export const AUTH_FAIL = "AUTH_FAIL";
 export const AUTH_LOGOUT = "AUTH_LOGOUT";
 export const SET_USER_ID = "SET_USER_ID";
 export const TOKEN_SUCCESS = "TOKEN_SUCCESS";
+
+
 export const ADD_TRIP_SUCCESS = "ADD_TRIP_SUCCESS";
 export const ADD_TRIP_START = "ADD_TRIP_START";
+export const ADD_TRIP_FAIL = "ADD_TRIP_FAIL";
 
 export const ADD_BOOKING_SUCCESS = "ADD_BOOKING_SUCCESS";
 export const ADD_BOOKING_START = "ADD_BOOKING_START";
+export const ADD_BOOKING_FAIL = "ADD_BOOKING_FAIL";
 
 
-export const SEARCH_FAIL = "SEARCH_FAIL"
-export const SEARCH_START = "SEARCH_START"
-export const SEARCH_SUCCESS = "SEARCH_SUCCESS"
+export const SEARCH_FAIL = "SEARCH_FAIL";
+export const SEARCH_START = "SEARCH_START";
+export const SEARCH_SUCCESS = "SEARCH_SUCCESS";
+
+export const SET_USER_INFO = "SET_USER_INFO";
+export const CLEAR_USER_INFO = "CLEAR_USER_INFO";
+
+
+export const GET_TRIPS_START = "GET_TRIPS_START";
+export const GET_TRIPS_SUCCESS = "GET_TRIPS_SUCCESS";
+export const GET_TRIPS_FAIL = "GET_TRIPS_FAIL";

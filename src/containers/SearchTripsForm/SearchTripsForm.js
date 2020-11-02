@@ -6,7 +6,7 @@ import {
   Segment,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { searchTrips } from "../../store/actions/searchbookings";
+import { searchTrips } from "../../store/actions/searchBookings";
 import styles from './searchtripsform.css';
 import { DateInput } from 'semantic-ui-calendar-react';
 import BookingCard from "../../containers/BookingCard/BookingCard";
@@ -107,9 +107,9 @@ class SearchTripsForm extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    loading: state.searchbookings.loading,
-    error: state.searchbookings.error,
-    bookings: state.searchbookings.bookings,
+    loading: state.searchBookings.loading,
+    error: state.searchBookings.error,
+    bookings: state.searchBookings.bookings,
   };
 };
 

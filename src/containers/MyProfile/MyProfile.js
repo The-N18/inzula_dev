@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import styles from './myprofile.css';
 import ProfileTab from "../../containers/ProfileTab/ProfileTab";
+import TripsReservationsList from "../../containers/TripsReservationsList/TripsReservationsList";
 
 class MyProfile extends React.Component {
 
@@ -32,9 +33,9 @@ class MyProfile extends React.Component {
   render() {
     const { token } = this.props;
     const {activeIndex, profileType} = this.state;
-    if (token === null) {
-      return <Redirect to="/" />;
-    }
+    // if (token === null) {
+    //   return <Redirect to="/" />;
+    // }
     const panes = [
       {
         menuItem: { key: 'profile', icon: 'user', content: 'Profile' },
@@ -42,7 +43,7 @@ class MyProfile extends React.Component {
       },
       {
         menuItem: { key: 'reservation', icon: 'calendar', content: profileType === "sender" ? 'Reservations' : 'Trips' },
-        render: () => <Tab.Pane attached={false}>Tab 2 Content</Tab.Pane>,
+        render: () => <Tab.Pane attached={false}><TripsReservationsList profileType={profileType}/></Tab.Pane>,
       },
       {
         menuItem: { key: 'messaging', icon: 'comments', content: 'Messaging' },

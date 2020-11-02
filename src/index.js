@@ -8,14 +8,22 @@ import thunk from "redux-thunk";
 import notifyReducer from 'react-redux-notify';
 
 import authReducer from "./store/reducers/auth";
-import searchbookingsReducer from "./store/reducers/searchbookings";
+import searchbookingsReducer from "./store/reducers/searchBookings";
+import userinfoReducer from "./store/reducers/userInfo";
+import addbookingReducer from "./store/reducers/addBooking";
+import addTripReducer from "./store/reducers/addTrip";
+import userTripsReducer from "./store/reducers/userTrips";
 import axios from 'axios';
 
 const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  searchbookings: searchbookingsReducer,
+  searchBookings: searchbookingsReducer,
+  userInfo: userinfoReducer,
+  addBooking: addbookingReducer,
+  addTrip: addTripReducer,
+  userTrips: userTripsReducer,
   notifications: notifyReducer
 });
 

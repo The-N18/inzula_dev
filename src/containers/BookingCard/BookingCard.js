@@ -33,8 +33,7 @@ class BookingCard extends React.Component {
           </Grid.Column>
           <Grid.Column mobile={16} tablet={16} computer={8}>
             <Segment basic textAlign="right">
-              <Image src={"http://localhost:8000/media/uploads/im2.jpg"}/>
-              {/*<Image centered src= {backend_url() + img} />*/}
+              <Image centered src= {backend_url() + img} />
             </Segment>
           </Grid.Column>
         </Grid.Row>

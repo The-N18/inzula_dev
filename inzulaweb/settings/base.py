@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'trip',
     'booking',
     'userprofile',
+    'django_extensions'
 ]
 
 MIDDLEWARE = [

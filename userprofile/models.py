@@ -49,7 +49,8 @@ class UserProfile(models.Model):
     phone_number = models.IntegerField(default=0, null=True, blank=True)
     pay_mode = models.CharField(max_length=50, null=True, blank=True)
     user_type = models.CharField(max_length=50, choices=USER_TYPE_OPTIONS, null=True, blank=True)
-    id_document = models.FileField(upload_to='uploads/', null=True, blank=True)
+    id_document = models.FileField(upload_to='uploads/id_documents/', null=True, blank=True)
+    profile_pic = models.ImageField(upload_to='uploads/profile_images/', blank=True, null=True)
     terms_conditions = models.BooleanField(default=False)
 
     def __str__(self):

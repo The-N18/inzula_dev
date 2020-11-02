@@ -14,20 +14,26 @@ from rest_auth.registration.app_settings import RegisterSerializer, register_per
 from rest_framework.generics import CreateAPIView, ListAPIView, GenericAPIView
 from django.db import transaction
 from userprofile.models import Location, UserProfile
+from rest_framework import generics
 
 
-class TripViewSet(viewsets.ModelViewSet):
+class TripsListView(generics.ListAPIView):
     """
     This viewset automatically provides `list`, `create`, `retrieve`,
     `update` and `destroy` actions.
 
     """
-    queryset = Trip.objects.all()
     serializer_class = TripSerializer
+    model = serializer_class.Meta.model
     permission_classes = [permissions.AllowAny]
 
-    def perform_create(self, serializer):
-        serializer.save()
+    def get_queryset(self):
+        user_id = self.request.query_params.get('user_id', None)
+        queryset = self.model.objects.all()
+        if user_id is not None:
+            queryset = queryset.filter(created_by=user_id)
+        return queryset.order_by('-depart_date')
+
 
 @api_view(['POST', 'GET'])
 @ensure_csrf_cookie

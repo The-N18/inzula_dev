@@ -22,7 +22,7 @@ import { backend_url } from "../../configurations";
 import ImageUploader from 'react-images-upload';
 import { DateInput } from 'semantic-ui-calendar-react';
 import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
-import { bookingAddition } from "../../store/actions/auth";
+import { bookingAddition } from "../../store/actions/addBooking";
 
 class SendPackage extends React.Component {
 
@@ -176,7 +176,7 @@ class SendPackage extends React.Component {
               <Grid.Row columns={2}>
                 <Grid.Column mobile={16} tablet={16} computer={4}>
                   <Segment basic>
-                    <Image centered bordered circular src= {backend_url() + '/static/images/convenient.png'} />
+                    <Image centered bordered circular src= {backend_url() + '/static/images/box.jpg'} />
                     <ImageUploader
                         withIcon={true}
                         buttonText='Choose product images'
@@ -405,12 +405,12 @@ class SendPackage extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    loading: state.auth.loading,
-    error: state.auth.error,
+    loading: state.addBooking.loading,
+    error: state.addBooking.error,
     token: state.auth.token,
-    userId: state.auth.userId,
-    userProfileId: state.auth.userProfileId,
-    username: state.auth.username,
+    userId: state.userInfo.userId,
+    userProfileId: state.userInfo.userProfileId,
+    username: state.userInfo.username,
     authenticated: state.auth.token !== null
   };
 };
