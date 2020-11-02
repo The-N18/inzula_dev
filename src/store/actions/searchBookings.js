@@ -39,7 +39,7 @@ export const searchTrips = (departure_location, destination_location, travel_dat
           }})
       .then(res => {
         console.log(res.data)
-        dispatch(searchSuccess(res.data));
+        dispatch(searchSuccess(res.data["results"]));
       })
       .catch(err => {
         dispatch(searchFail(err));
