@@ -66,6 +66,9 @@ class RegisterView(CreateAPIView):
         serializer.is_valid(raise_exception=True)
         user = self.perform_create(serializer, request.data)
         headers = self.get_success_headers(serializer.data)
+        profile_pic_url = None
+        if user.profile.profile_pic != None:
+            profile_pic_url = user.profile.profile_pic.url
         return Response({
             'key': self.get_response_data(user)['key'],
             'user_id': user.pk,
@@ -75,7 +78,7 @@ class RegisterView(CreateAPIView):
             'last_name': user.last_name,
             'date_joined': user.date_joined,
             'phone_number': user.profile.phone_number,
-            'profile_pic': user.profile.profile_pic,
+            'profile_pic': profile_pic_url,
             'user_profile_id': user.profile.pk},
                         status=status.HTTP_201_CREATED,
                         headers=headers)

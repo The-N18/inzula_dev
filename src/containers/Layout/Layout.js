@@ -114,11 +114,11 @@ class CustomLayout extends React.Component {
               </span>
             )}
             </ul>
-            <Dropdown
+            {/*<Dropdown
               inline
               options={languageOptions}
               defaultValue={languageOptions[0].value}
-            />
+            />*/}
           </div>
         </header>
         <Container className={"layoutcontainer"}>
