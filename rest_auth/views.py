@@ -85,7 +85,7 @@ class LoginView(GenericAPIView):
         else:
             serializer = serializer_class(instance=self.token,
                                           context={'request': self.request})
-        if self.user.profile.profile_pic != None:
+        if self.user.profile.profile_pic != None and hasattr(self.user.profile.profile_pic, 'url'):
             profile_pic_url = self.user.profile.profile_pic.url
         response = Response({
             'key': str(self.token),
