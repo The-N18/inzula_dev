@@ -67,7 +67,7 @@ class RegisterView(CreateAPIView):
         user = self.perform_create(serializer, request.data)
         headers = self.get_success_headers(serializer.data)
         profile_pic_url = None
-        if user.profile.profile_pic != None and hasattr(user.profile.profile_pic, 'url'):
+        if user.profile.profile_pic:
             profile_pic_url = user.profile.profile_pic.url
         return Response({
             'key': self.get_response_data(user)['key'],
