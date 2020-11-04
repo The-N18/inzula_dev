@@ -10,6 +10,7 @@ import { searchTrips } from "../../store/actions/searchBookings";
 import styles from './searchtripsform.css';
 import { DateInput } from 'semantic-ui-calendar-react';
 import BookingCard from "../../containers/BookingCard/BookingCard";
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 class SearchTripsForm extends React.Component {
 
@@ -32,11 +33,19 @@ class SearchTripsForm extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     const { departure_location, destination_location, travel_date } = this.state;
-    this.props.findTrip(departure_location, destination_location, travel_date);
+    const { user_id, next_url, count } = this.props;
+    this.props.findTrip(departure_location, destination_location, travel_date, user_id, next_url, count);
   };
 
+  fetchMoreData = () => {
+    console.log("fetch more data")
+    const { departure_location, destination_location, travel_date } = this.state;
+    const { user_id, next_url, count } = this.props;
+    this.props.findTrip(departure_location, destination_location, travel_date, user_id, next_url, count);
+  }
+
   render() {
-    const { loading, error, bookings } = this.props;
+    const { loading, error, bookings, next_url, count } = this.props;
     const { departure_location, destination_location, travel_date } = this.state;
     return (
       <Segment>
@@ -84,11 +93,38 @@ class SearchTripsForm extends React.Component {
               Search
             </Button>
           </Form>
-          {bookings.length > 0 ? <Segment raised>
-            {/*bookings.forEach((item) => {
-              console.log(item["product"]["name"]);
-              return (<BookingCard title={item["product"]["name"]}/>);
-            })*/}
+          <div
+            id="scrollableDiv"
+            style={{
+              height: 300,
+              overflow: 'auto',
+              display: bookings.length > 0 ? "block": "none"
+            }}
+          >
+            <InfiniteScroll
+              dataLength={bookings.length}
+              next={this.fetchMoreData}
+              hasMore={count !== null && next_url !== null}
+              loader={<h4>Loading...</h4>}
+              scrollableTarget="scrollableDiv"
+            >
+              {bookings.map((item, index) => (
+                <div style={{
+                  height: 320,
+                  margin: 6,
+                  padding: 8
+                }} key={index}>
+                  <BookingCard
+                    title={item["product"]["name"]}
+                    arrival_date={item["product"]["arrival_date"]}
+                    description={item["product"]["description"]}
+                    departure_location={item["product"]["departure_location"]["city"]}
+                    pickup_location={item["product"]["pickup_location"]["city"]}/>
+                </div>
+              ))}
+            </InfiniteScroll>
+          </div>
+          {/*bookings.length > 0 ? <Segment raised>
             {bookings.map((item, i) => {
                console.log(item["product"]["name"]);
                // Return the element. Also pass key
@@ -99,7 +135,7 @@ class SearchTripsForm extends React.Component {
                  departure_location={item["product"]["departure_location"]["city"]}
                  pickup_location={item["product"]["pickup_location"]["city"]}/>);
             })}
-          </Segment> : ''}
+          </Segment> : ''*/}
         </Segment>
     );
   }
@@ -110,12 +146,15 @@ const mapStateToProps = state => {
     loading: state.searchBookings.loading,
     error: state.searchBookings.error,
     bookings: state.searchBookings.bookings,
+    next_url: state.searchBookings.next_url,
+    count: state.searchBookings.count,
+    user_id: state.userInfo.user_id,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    findTrip: (departure_location, destination_location, travel_date) => dispatch(searchTrips(departure_location, destination_location, travel_date))
+    findTrip: (departure_location, destination_location, travel_date, user_id, next_url, count) => dispatch(searchTrips(departure_location, destination_location, travel_date, user_id, next_url, count))
   };
 };
 

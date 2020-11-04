@@ -4,22 +4,22 @@ import { updateObject } from "../utility";
 const initialState = {
   error: null,
   loading: false,
-  bookings: [],
+  reservations: [],
   next_url: null,
   count: null,
 };
 
-const searchStart = (state, action) => {
+const getReservationsStart = (state, action) => {
   return updateObject(state, {
     error: null,
     loading: true
   });
 };
 
-const searchSuccess = (state, action) => {
+const getReservationsSuccess = (state, action) => {
   console.log(action);
   return updateObject(state, {
-    bookings: state.bookings.concat(action.bookings),
+    reservations: state.reservations.concat(action.reservations),
     error: null,
     loading: false,
     next_url: action.next_url,
@@ -27,7 +27,7 @@ const searchSuccess = (state, action) => {
   });
 };
 
-const searchFail = (state, action) => {
+const getReservationsFail = (state, action) => {
   return updateObject(state, {
     error: action.error,
     loading: false
@@ -36,12 +36,12 @@ const searchFail = (state, action) => {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.SEARCH_START:
-      return searchStart(state, action);
-    case actionTypes.SEARCH_SUCCESS:
-      return searchSuccess(state, action);
-    case actionTypes.SEARCH_FAIL:
-      return searchFail(state, action);
+    case actionTypes.GET_RESERVATIONS_START:
+      return getReservationsStart(state, action);
+    case actionTypes.GET_RESERVATIONS_SUCCESS:
+      return getReservationsSuccess(state, action);
+    case actionTypes.GET_RESERVATIONS_FAIL:
+      return getReservationsFail(state, action);
     default:
       return state;
   }

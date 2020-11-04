@@ -14,6 +14,7 @@ import styles from './tripsreservationslist.css';
 import { backend_url } from "../../configurations";
 import ImageUploader from 'react-images-upload';
 import UserTripsList from "../../containers/UserTripsList/UserTripsList";
+import UserReservationsList from "../../containers/UserReservationsList/UserReservationsList";
 
 
 class TripsReservationsList extends React.Component {
@@ -28,7 +29,8 @@ class TripsReservationsList extends React.Component {
     const { profileType } = this.props;
     return (
       <Segment basic className={"profile-tab-section"}>
-        <UserTripsList/>
+        {profileType === "sender" ? <UserReservationsList/> : <UserTripsList/>}
+
       </Segment>
     );
   }

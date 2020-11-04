@@ -23,6 +23,24 @@ from rest_framework.pagination import PageNumberPagination
 # Create your views here.
 
 
+class UserBookingsRequestListView(generics.ListAPIView):
+    """
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+
+    """
+    serializer_class = BookingRequestSerializer
+    model = serializer_class.Meta.model
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        user_id = self.request.query_params.get('user_id', None)
+        queryset = self.model.objects.all()
+        if user_id is not None:
+            queryset = queryset.filter(request_by=user_id)
+        return queryset.order_by('-made_on')
+
+
 class BookingRequestViewSet(viewsets.ModelViewSet):
     """
     This viewset automatically provides `list`, `create`, `retrieve`,
