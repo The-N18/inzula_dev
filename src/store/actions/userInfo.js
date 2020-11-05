@@ -3,6 +3,7 @@ import * as actionTypes from "./actionTypes";
 import { backend_url } from "../../configurations";
 
 export const clearUserInfo = () => {
+  console.log("Clear user info");
   return {
     type: actionTypes.CLEAR_USER_INFO,
     userId: null,

@@ -7,7 +7,8 @@ import {
   Header,
   Segment,
   Select,
-  Image
+  Image,
+  Divider
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './usertripslist.css';
@@ -45,7 +46,7 @@ class UserTripsList extends React.Component {
       <div
         id="scrollableDiv"
         style={{
-          height: 300,
+          height: 340,
           overflow: 'auto',
         }}
       >
@@ -57,13 +58,17 @@ class UserTripsList extends React.Component {
           loader={<h4>Loading...</h4>}
           scrollableTarget="scrollableDiv"
         >
-          {trips.map((_, index) => (
+          {trips.map((item, index) => (
             <div style={{
-              height: 35,
+              height: 160,
               margin: 6,
               padding: 8
             }} key={index}>
-              div - #{index}
+            <p>Departure date: {item["depart_date"]}</p>
+            <p>Comeback date: {item["comeback_date"]}</p>
+            <p>Departure location: {item["departure_location"]["city"]}</p>
+            <p>Destination location: {item["destination_location"] ? item["destination_location"]["city"] : ""}</p>
+            <Divider/>
             </div>
           ))}
         </InfiniteScroll>

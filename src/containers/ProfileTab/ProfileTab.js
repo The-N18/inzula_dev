@@ -75,7 +75,7 @@ class ProfileTab extends React.Component {
         <Grid.Row columns={2}>
           <Grid.Column mobile={16} tablet={16} computer={5}>
             <Segment className={"profile-tab-card"}>
-              <Image centered bordered circular src= {backend_url() + profile_pic} />
+              <Image centered bordered circular src= {profile_pic !== null ? backend_url() + profile_pic : backend_url() + '/static/images/user_avatar.png'} />
               <Segment basic textAlign="center">
               <Header as='h4' className={"profile-tab-card-title"}>{this.props.first_name} {this.props.last_name}</Header>
               <p >Member since: {date_joined}</p>
@@ -90,7 +90,7 @@ class ProfileTab extends React.Component {
             <Grid.Row columns={2}>
               <Grid.Column mobile={16} tablet={16} computer={5}>
                 <Segment basic>
-                  <Image centered bordered circular src= {backend_url() + profile_pic} />
+                  <Image centered bordered circular src= {profile_pic !== null ? backend_url() + profile_pic : backend_url() + '/static/images/user_avatar.png'} />
                   <ImageUploader
                       withIcon={true}
                       buttonText='Choose profile image'

@@ -23,6 +23,14 @@ const authSuccess = (state, action) => {
   });
 };
 
+const authTokenSuccess = (state, action) => {
+  return updateObject(state, {
+    token: action.token,
+    error: null,
+    loading: false
+  });
+};
+
 const authFail = (state, action) => {
   return updateObject(state, {
     error: action.error,
@@ -46,6 +54,8 @@ const reducer = (state = initialState, action) => {
       return authFail(state, action);
     case actionTypes.AUTH_LOGOUT:
       return authLogout(state, action);
+    case actionTypes.AUTH_TOKEN_SUCCESS:
+      return authTokenSuccess(state, action);
     default:
       return state;
   }

@@ -7,6 +7,7 @@ import {
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { logout } from "../../store/actions/auth";
+import { clearUserInfo } from "../../store/actions/userInfo"
 import { backend_url } from "../../configurations";
 import styles from './layout.css';
 import $ from "jquery";
@@ -51,6 +52,12 @@ class CustomLayout extends React.Component {
     window.removeEventListener('resize', this.handleScreenSize);
   }
 
+  logoutUtil = () => {
+    this.props.logout();
+    this.props.clearUserInfo();
+    this.props.history.push('/');
+  }
+
 
 
 
@@ -63,10 +70,10 @@ class CustomLayout extends React.Component {
       <li><a >Messaging</a></li>
       <li><a >Alerts</a></li>
       <li><a >Finances</a></li>
-      <li><a onClick={() => this.props.logout()}>Logout</a></li></span>) : (
+      <li><a onClick={this.logoutUtil.bind(this)}>Logout</a></li></span>) : (
         <li>
           <a href="">
-            <Image bordered circular size='small' className={"profile-image"} src={backend_url() + profile_pic} />
+            <Image bordered circular size='small' className={"profile-image"} src={profile_pic !== null ? backend_url() + profile_pic : backend_url() + '/static/images/user_avatar.png'} />
           </a>
           <ul>
               <li><a onClick={this.handleOnClick.bind(this, '/profile')}>Profile</a></li>
@@ -74,7 +81,7 @@ class CustomLayout extends React.Component {
               <li><a >Messaging</a></li>
               <li><a >Alerts</a></li>
               <li><a >Finances</a></li>
-              <li><a onClick={() => this.props.logout()}>Logout</a></li>
+              <li><a onClick={this.logoutUtil.bind(this)}>Logout</a></li>
           </ul>
           </li>
       );
@@ -139,7 +146,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    logout: () => dispatch(logout())
+    logout: () => dispatch(logout()),
+    clearUserInfo: () => dispatch(clearUserInfo())
   };
 };
 

@@ -14,7 +14,7 @@ import TripsReservationsList from "../../containers/TripsReservationsList/TripsR
 class MyProfile extends React.Component {
 
   state = {
-    activeIndex: 1,
+    activeIndex: 0,
     profileType: "sender",
   };
 

@@ -38,20 +38,28 @@ export const logoutAction = () => {
 };
 
 export const logout = expirationTime => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("expirationDate");
+  localStorage.removeItem("userId");
+  localStorage.removeItem("userProfileId");
+  localStorage.removeItem("username");
   return dispatch => {
-      dispatch(logoutAction());
-      dispatch(clearUserInfo());
+      type: actionTypes.AUTH_LOGOUT
+    };
+};
+
+export const doNothing = expirationTime => {
+  return dispatch => {
     };
 };
 
 export const checkAuthTimeout = expirationTime => {
-  return dispatch => {
-    setTimeout(() => {
-      dispatch(logout());
-      dispatch(clearUserInfo());
-    }, expirationTime * 1000);
-  };
-};
+   return dispatch => {
+     setTimeout(() => {
+       dispatch(logout());
+     }, expirationTime * 100000);
+   };
+ };
 
 export const authLogin = (username, password) => {
   return dispatch => {
@@ -76,10 +84,10 @@ export const authLogin = (username, password) => {
         const profile_pic = res.data.profile_pic;
         const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
         localStorage.setItem("token", token);
+        localStorage.setItem("expirationDate", expirationDate);
         localStorage.setItem("userId", userId);
         localStorage.setItem("username", username);
         localStorage.setItem("userProfileId", userProfileId);
-        localStorage.setItem("expirationDate", expirationDate);
         dispatch(authSuccess(token));
         dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic));
         dispatch(checkAuthTimeout(3600));
@@ -118,11 +126,11 @@ export const authSignup = (first_name, last_name, username, email, password1, pa
         const profile_pic = res.data.profile_pic;
         const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
         localStorage.setItem("token", token);
-        localStorage.setItem("userId", userId);
-        localStorage.setItem("userProfileId", userProfileId);
-        localStorage.setItem("username", username);
         localStorage.setItem("expirationDate", expirationDate);
-        dispatch(authSuccess(token, userId, username, userProfileId));
+        localStorage.setItem("userId", userId);
+        localStorage.setItem("username", username);
+        localStorage.setItem("userProfileId", userProfileId);
+        dispatch(authSuccess(token));
         dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic));
         dispatch(checkAuthTimeout(3600));
       })
@@ -133,31 +141,56 @@ export const authSignup = (first_name, last_name, username, email, password1, pa
 };
 
 export const authCheckState = () => {
-  console.log("in authCheckState");
-  return dispatch => {
-    const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId");
-    const userProfileId = localStorage.getItem("userProfileId");
-    const username = localStorage.getItem("username");
-    if (token === undefined) {
-      dispatch(logout());
-      const userId = localStorage.setItem("userId", null);
-      const userProfileId = localStorage.setItem("userProfileId", null);
-      const username = localStorage.setItem("username", null);
-    } else {
-      const expirationDate = new Date(localStorage.getItem("expirationDate"));
-      if (expirationDate <= new Date()) {
-        dispatch(logout());
-        const userId = localStorage.setItem("userId", null);
-        const userProfileId = localStorage.setItem("userProfileId", null);
-        const username = localStorage.setItem("username", null);
-      } else {
-        dispatch(
-          checkAuthTimeout(
-            (expirationDate.getTime() - new Date().getTime()) / 1000
-          )
-        );
-      }
-    }
-  };
-};
+   return dispatch => {
+     const token = localStorage.getItem("token");
+     const userId = localStorage.getItem("userId");
+     const userProfileId = localStorage.getItem("userProfileId");
+     const username = localStorage.getItem("username");
+     console.log(token);
+     if (token === undefined) {
+       dispatch(logout());
+     } else {
+       const expirationDate = new Date(localStorage.getItem("expirationDate"));
+       if (expirationDate <= new Date()) {
+         dispatch(logout());
+       } else {
+         dispatch(authSuccess(token));
+         dispatch(setUserInfo(userId, username, userProfileId, null, null, null, null, null, null));
+         dispatch(
+           checkAuthTimeout(
+             (expirationDate.getTime() - new Date().getTime()) / 1000
+           )
+         );
+       }
+     }
+   };
+ };
+
+// export const authCheckState = () => {
+//   console.log("in authCheckState");
+//   const token = localStorage.getItem("token");
+//   const userId = localStorage.getItem("userId");
+//   const userProfileId = localStorage.getItem("userProfileId");
+//   const username = localStorage.getItem("username");
+//   console.log("in authCheckState -------2");
+//   return dispatch => {
+//     if (token === undefined) {
+//       console.log("in authCheckState -------4");
+//       console.log("logout for null token");
+//       return dispatch => {dispatch(logout())};
+//     } else {
+//       console.log("in authCheckState -------6");
+//       const expirationDate = new Date(localStorage.getItem("expirationDate"));
+//       console.log(expirationDate);
+//       console.log(new Date());
+//       if (expirationDate <= new Date()) {
+//         console.log("in authCheckState -------7");
+//         console.log("logout for expirationTime");
+//         return dispatch => {dispatch(logout())};
+//         console.log("in authCheckState -------8");
+//       } else {
+//         dispatch(doNothing())
+//       }
+//     }
+//   };
+// };

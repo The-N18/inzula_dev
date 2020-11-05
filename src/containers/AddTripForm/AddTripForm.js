@@ -77,34 +77,39 @@ class AddTripForm extends React.Component {
     e.preventDefault();
     const { departure_location, destination_location, depart_date, comeback_date, trip_type } = this.state;
     const createdBy = {"user": userId};
-    const departureLocation = {
-            "id": null,
-            "latitude": 0,
-            "longitude": 0,
-            "long_address": null,
-            "city": departure_location,
-            "country": null
-        };
-    const destinationLocation = {
-            "id": null,
-            "latitude": 0,
-            "longitude": 0,
-            "long_address": null,
-            "city": destination_location,
-            "country": null
-        };
-    this.props.addTrip(createdBy, departureLocation, destinationLocation, depart_date, comeback_date, trip_type);
-    createNotification({
-      message: 'Your trip has been added',
-      type: NOTIFICATION_TYPE_SUCCESS,
-      duration: 0,
-      canDismiss: true,
-    });
-    // if(this.props.authenticated) {
-    //   this.props.addTrip(createdBy, departureLocation, destinationLocation, depart_date, comeback_date, trip_type);
-    // } else {
-    //   this.handleRedirectToLogin('/login');
-    // }
+    if(this.props.authenticated) {
+      const departureLocation = {
+              "id": null,
+              "latitude": 0,
+              "longitude": 0,
+              "long_address": null,
+              "city": departure_location,
+              "country": null
+          };
+      const destinationLocation = {
+              "id": null,
+              "latitude": 0,
+              "longitude": 0,
+              "long_address": null,
+              "city": destination_location,
+              "country": null
+          };
+      this.props.addTrip(createdBy, departureLocation, destinationLocation, depart_date, comeback_date, trip_type);
+      createNotification({
+        message: 'Your trip has been added',
+        type: NOTIFICATION_TYPE_SUCCESS,
+        duration: 0,
+        canDismiss: true,
+      });
+    } else {
+      createNotification({
+        message: 'Please login to add a new trip',
+        type: NOTIFICATION_TYPE_SUCCESS,
+        duration: 0,
+        canDismiss: true,
+      });
+      this.handleRedirectToLogin('/login');
+    }
   };
 
   handleDateTimeChange = (event, {name, value}) => {
@@ -121,7 +126,7 @@ class AddTripForm extends React.Component {
   };
 
   render() {
-    const { loading } = this.props;
+    const { loading, userId } = this.props;
     const { departure_location, destination_location, depart_date, comeback_date, trip_type } = this.state;
     return (
       <Segment style={{ padding: "2em 0em" }} vertical className={"segment-bg-img"}>
@@ -151,7 +156,7 @@ class AddTripForm extends React.Component {
               Add information about your trip to earn money.
             </Header>
             <Form size="large" onSubmit={this.handleSubmit}>
-              <DjangoCSRFToken/>
+              <CSRFToken/>
               <Segment basic textAlign="center">
               <Form.Group widths='equal'>
                 <Form.Field>
@@ -207,17 +212,18 @@ class AddTripForm extends React.Component {
                   onChange={this.handleDateTimeChange}
                   dateFormat="YYYY-MM-DD"
                 /> : "" }
-              {/* <Recaptcha
+              <Recaptcha
                 sitekey="6LfycNoZAAAAADPAHBVK7JjxT8V6AvayfwhVaHQa"
                 render="explicit"
                 onloadCallback={this.recaptchaLoaded}
                 verifyCallback={this.verifyCallback}
-              /> */}
+              />
               <Button
                 size="large"
                 loading={loading}
                 disabled={loading}
                 className={"buttoncolor transport-add-trip-button"}
+                title={"Please login to add a new trip"}
               >
                 Add your trip
               </Button>
