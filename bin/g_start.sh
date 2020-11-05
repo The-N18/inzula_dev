@@ -8,7 +8,7 @@ SOCKFILE=/opt/bitnami/projects/inzula_env/run/gunicorn.sock
 # the user to run as
 USER=bitnami
 # the group to run as
-GROUP=projects
+GROUP=bitnami
 # how many worker processes should Gunicorn spawn
 NUM_WORKERS=3
 # which settings file should Django use

@@ -56,6 +56,7 @@ class CustomLayout extends React.Component {
     this.props.logout();
     this.props.clearUserInfo();
     this.props.history.push('/');
+    window.location.href = '/'
   }
 
 
