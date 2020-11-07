@@ -8,7 +8,10 @@ import thunk from "redux-thunk";
 import notifyReducer from 'react-redux-notify';
 
 import authReducer from "./store/reducers/auth";
+import appConfigReducer from "./store/reducers/appConfig";
 import searchbookingsReducer from "./store/reducers/searchBookings";
+import searchtripsReducer from "./store/reducers/searchTrips";
+import sendPackageModalReducer from "./store/reducers/sendPackageModal";
 import userinfoReducer from "./store/reducers/userInfo";
 import addbookingReducer from "./store/reducers/addBooking";
 import addTripReducer from "./store/reducers/addTrip";
@@ -20,7 +23,10 @@ const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
   auth: authReducer,
+  appConfig: appConfigReducer,
   searchBookings: searchbookingsReducer,
+  searchTrips: searchtripsReducer,
+  sendPackageModal: sendPackageModalReducer,
   userInfo: userinfoReducer,
   addBooking: addbookingReducer,
   addTrip: addTripReducer,

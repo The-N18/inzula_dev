@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import {
   Button,
   Form,
@@ -21,6 +22,10 @@ class RegistrationForm extends React.Component {
     this.recaptchaLoaded = this.recaptchaLoaded.bind(this);
     this.verifyCallback = this.verifyCallback.bind(this);
 
+  }
+
+  componentWillUnmount() {
+    this.props.setDiscountText(null);
   }
 
   recaptchaLoaded() {
@@ -78,6 +83,7 @@ class RegistrationForm extends React.Component {
 
   render() {
     const { first_name, last_name, username, email, password1, password2 } = this.state;
+    const { discountText } = this.props;
     const { error, loading, token } = this.props;
     if (token) {
       return <Redirect to="/" />;
@@ -90,9 +96,11 @@ class RegistrationForm extends React.Component {
         verticalAlign="middle"
       >
         <Grid.Column style={{ maxWidth: 450 }}>
-          <Header as="h2" className={"headercolor"} textAlign="center">
+          {discountText !== null ? <Header as="h2" textAlign="center" color="teal" className={"discountheader"}>
+            {discountText}
+          </Header> : <Header as="h2" className={"headercolor"} textAlign="center">
             Signup to Inzula
-          </Header>
+          </Header>}
           {error && <p>{this.props.error.message}</p>}
 
           <React.Fragment>
@@ -204,7 +212,8 @@ const mapStateToProps = state => {
   return {
     loading: state.auth.loading,
     error: state.auth.error,
-    token: state.auth.token
+    token: state.auth.token,
+    discountText: state.auth.discountText,
   };
 };
 

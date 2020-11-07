@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import styles from './hometextvideo.css';
 import ReactPlayer from 'react-player'
 import { withRouter } from "react-router-dom";
+import {FormattedMessage} from 'react-intl'
 
 
 class HomeTextVideo extends React.Component {
@@ -24,24 +25,37 @@ class HomeTextVideo extends React.Component {
             <Grid.Column  mobile={16} tablet={16} computer={8} textAlign="center" verticalAlign="middle" className={"add-trip-grid-column"}>
               <Segment basic>
               <Header as="h1" textAlign="center">
-                Send parcels to your loved ones, via contacts in your network
+              <FormattedMessage
+                id="home_text_video.send_parcels"
+                defaultMessage="Send parcels to your loved ones, via contacts in your network"
+              />
+
               </Header>
               <Header textAlign="center">
-                INZULA connects travelers with kgs available and people in their network wanting to ship at low cost
+              <FormattedMessage
+                id="home_text_video.inzula_use"
+                defaultMessage="INZULA connects travelers with kgs available and people in their network wanting to ship at low cost"
+              />
               </Header>
               <Button
                 size="small"
                 className={"buttoncolor homevideo-button"}
                 onClick={this.handleOnClick.bind(this, '/transport')}
               >
-                Earn money while travelling
+              <FormattedMessage
+                id="home_text_video.earn_money"
+                defaultMessage="Earn money while travelling"
+              />
               </Button>
               <Button
                 size="small"
                 className={"buttoncolor homevideo-button"}
                 onClick={this.handleOnClick.bind(this, '/dispatch')}
               >
-                Ship items now
+              <FormattedMessage
+                id="home_text_video.ship_now"
+                defaultMessage="Ship items now"
+              />
               </Button>
               </Segment>
             </Grid.Column>

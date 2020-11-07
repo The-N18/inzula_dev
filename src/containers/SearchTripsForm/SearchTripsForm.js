@@ -4,13 +4,17 @@ import {
   Form,
   Header,
   Segment,
+  Divider
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { searchTrips } from "../../store/actions/searchBookings";
+import { searchTrips } from "../../store/actions/searchTrips";
 import styles from './searchtripsform.css';
 import { DateInput } from 'semantic-ui-calendar-react';
-import BookingCard from "../../containers/BookingCard/BookingCard";
+import TripCard from "../../containers/TripCard/TripCard";
+import BookingRequestCard from "../../containers/BookingRequestCard/BookingRequestCard";
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { openModal, closeModal } from "../../store/actions/sendPackageModal";
+
 
 class SearchTripsForm extends React.Component {
 
@@ -45,7 +49,7 @@ class SearchTripsForm extends React.Component {
   }
 
   render() {
-    const { loading, error, bookings, next_url, count } = this.props;
+    const { loading, error, trips, next_url, count } = this.props;
     const { departure_location, destination_location, travel_date } = this.state;
     return (
       <Segment>
@@ -54,6 +58,9 @@ class SearchTripsForm extends React.Component {
           </Header>
           <Header as="h4" textAlign="center">
             No worries, you can add the country of departure and destination of your trip and thus access the requests for available expeditions.
+          </Header>
+          <Header as="h4" textAlign="center">
+            Can't find a trip? <Button inverted color='green' onClick={() => this.props.openPackageModal()}>click here to save a booking request</Button> so you can be later contacted by travellers.
           </Header>
           <Form size="large" onSubmit={this.handleSubmit}>
             <Form.Group widths='equal'>
@@ -93,39 +100,44 @@ class SearchTripsForm extends React.Component {
               Search
             </Button>
           </Form>
+          <Divider/>
           <div
             id="scrollableDiv"
             style={{
-              height: 300,
+              height: 800,
               overflow: 'auto',
-              display: bookings.length > 0 ? "block": "none"
+              borderTop: '1px solid #f1f1f1',
+              boxShadow: '0px 0 10px #d4d4d5',
+              display: trips.length > 0 ? "block": "none"
             }}
           >
             <InfiniteScroll
-              dataLength={bookings.length}
+              dataLength={trips.length}
               next={this.fetchMoreData}
               hasMore={count !== null && next_url !== null}
               loader={<h4>Loading...</h4>}
               scrollableTarget="scrollableDiv"
             >
-              {bookings.map((item, index) => (
+              {trips.map((item, index) => (
                 <div style={{
-                  height: 320,
+                  height: 240,
                   margin: 6,
                   padding: 8
                 }} key={index}>
-                  <BookingCard
-                    title={item["product"]["name"]}
-                    arrival_date={item["product"]["arrival_date"]}
-                    description={item["product"]["description"]}
-                    departure_location={item["product"]["departure_location"]["city"]}
-                    pickup_location={item["product"]["pickup_location"]["city"]}/>
+                  <TripCard
+                    trip_type={item["trip_type"]}
+                    comeback_date={item["comeback_date"]}
+                    depart_date={item["depart_date"]}
+                    departure_location={item["departure_location"]["city"]}
+                    destination_location={item["destination_location"]["city"]}
+                    img={item["created_by"]["profile_pic"] === null ? '' : item["created_by"]["profile_pic"]}
+                    username={item["created_by"]["username"]}/>
                 </div>
               ))}
             </InfiniteScroll>
           </div>
-          {/*bookings.length > 0 ? <Segment raised>
-            {bookings.map((item, i) => {
+          {/*trips.length > 0 ? <Segment raised>
+            {trips.map((item, i) => {
                console.log(item["product"]["name"]);
                // Return the element. Also pass key
                return (<BookingCard
@@ -143,17 +155,19 @@ class SearchTripsForm extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    loading: state.searchBookings.loading,
-    error: state.searchBookings.error,
-    bookings: state.searchBookings.bookings,
-    next_url: state.searchBookings.next_url,
-    count: state.searchBookings.count,
+    loading: state.searchTrips.loading,
+    error: state.searchTrips.error,
+    trips: state.searchTrips.trips,
+    next_url: state.searchTrips.next_url,
+    count: state.searchTrips.count,
     user_id: state.userInfo.user_id,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    openPackageModal: () => dispatch(openModal()),
+    closePackageModal: () => dispatch(closeModal()),
     findTrip: (departure_location, destination_location, travel_date, user_id, next_url, count) => dispatch(searchTrips(departure_location, destination_location, travel_date, user_id, next_url, count))
   };
 };

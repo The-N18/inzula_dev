@@ -5,7 +5,8 @@ import {
 import { connect } from "react-redux";
 import styles from './transport.css';
 import AddTripForm from "../../containers/AddTripForm/AddTripForm";
-import SearchTripsForm from "../../containers/SearchTripsForm/SearchTripsForm";
+import TransportHowToMakeMoney from "../../containers/TransportHowToMakeMoney/TransportHowToMakeMoney";
+import SearchBookingRequestsForm from "../../containers/SearchBookingRequestsForm/SearchBookingRequestsForm";
 
 class Transport extends React.Component {
 
@@ -13,7 +14,8 @@ class Transport extends React.Component {
     return (
       <Segment style={{ padding: "8em 0em" }} vertical>
         <AddTripForm/>
-        <SearchTripsForm/>
+        <SearchBookingRequestsForm/>
+        <TransportHowToMakeMoney/>
       </Segment>
     );
   }

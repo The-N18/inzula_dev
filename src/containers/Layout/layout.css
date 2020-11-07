@@ -2,6 +2,10 @@
   width: 100% !important;
   }
 
+.red {
+  color: red !important;
+}
+
   body {
     background-color: #ffffff !important;
   }
@@ -111,7 +115,7 @@ a {
 
 .menuheader li a {
   display: block;
-  padding: 20px 20px;
+  padding: 20px 10px;
   text-decoration: none;
   font-weight: 100 !important;
   height: 60px !important;
@@ -254,7 +258,7 @@ li > a:only-child:after { content: ''; }
     float: left;
   }
   .menuheader li a {
-    padding: 20px 20px;
+    padding: 20px 10px;
   }
   .menuheader .menu {
     clear: none;

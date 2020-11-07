@@ -1,0 +1,20 @@
+.services-section {
+  background-color: #ffffff;
+}
+
+.services-section-grid {
+  margin: auto !important;
+}
+
+.servicescard:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2) !important;
+  transition: 0.3s !important;
+}
+
+.service-title {
+  line-height: 30px !important;
+}
+
+.footer-payment-image {
+  margin-right: 15px !important;
+}

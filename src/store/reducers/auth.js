@@ -5,12 +5,19 @@ const initialState = {
   token: null,
   error: null,
   loading: false,
+  discountText: null
 };
 
 const authStart = (state, action) => {
   return updateObject(state, {
     error: null,
     loading: true
+  });
+};
+
+const authSetDiscountText = (state, action) => {
+  return updateObject(state, {
+    discountText: action.discountText,
   });
 };
 
@@ -56,6 +63,8 @@ const reducer = (state = initialState, action) => {
       return authLogout(state, action);
     case actionTypes.AUTH_TOKEN_SUCCESS:
       return authTokenSuccess(state, action);
+    case actionTypes.AUTH_SET_DISCOUNT_TEXT:
+      return authSetDiscountText(state, action);
     default:
       return state;
   }

@@ -8,15 +8,23 @@ axios.defaults.xsrfCookieName = "csrftoken";
 
 export const searchStart = () => {
   return {
-    type: actionTypes.SEARCH_START
+    type: actionTypes.SEARCH_BOOKINGS_START
   };
 };
 
 export const searchSuccess = (bookings, next, count) => {
-  console.log("get search ReservationsSuccess")
-  console.log(next)
   return {
-    type: actionTypes.SEARCH_SUCCESS,
+    type: actionTypes.SEARCH_BOOKINGS_SUCCESS,
+    bookings: bookings,
+    loading: false,
+    next_url: next,
+    count: count
+  };
+};
+
+export const searchSuccessOverride = (bookings, next, count) => {
+  return {
+    type: actionTypes.SEARCH_BOOKINGS_SUCCESS_OVERRIDE,
     bookings: bookings,
     loading: false,
     next_url: next,
@@ -26,13 +34,12 @@ export const searchSuccess = (bookings, next, count) => {
 
 export const searchFail = error => {
   return {
-    type: actionTypes.SEARCH_FAIL,
+    type: actionTypes.SEARCH_BOOKINGS_FAIL,
     error: error
   };
 };
 
 export const searchTrips = (departure_location, destination_location, travel_date, user_id, next_url, page_count) => {
-  console.log("in searchTrips");
   if(next_url !== "" && next_url !== null) {
     return dispatch => {
       dispatch(searchStart());
@@ -59,7 +66,7 @@ export const searchTrips = (departure_location, destination_location, travel_dat
             }})
         .then(res => {
           console.log(res.data)
-          dispatch(searchSuccess(res.data["results"], res.data["next"], res.data["count"]));
+          dispatch(searchSuccessOverride(res.data["results"], res.data["next"], res.data["count"]));
           dispatch(checkAuthTimeout(3600));
         })
         .catch(err => {

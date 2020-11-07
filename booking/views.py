@@ -19,7 +19,7 @@ from .serializers import ProductSerializer, BookingRequestSerializer, ProductIma
 from userprofile.models import Location, UserProfile, Price, Weight, Space
 from django.db.models import Q
 from django.core.serializers import serialize
-from rest_framework.pagination import PageNumberPagination
+from utils.pagination import SearchResultsSetPagination
 # Create your views here.
 
 
@@ -101,22 +101,13 @@ class BookingRequestView(CreateAPIView):
             return TokenSerializer(user.auth_token).data
 
     def create(self, request, *args, **kwargs):
-        print("request.FILES")
-        print("-------------------")
-        print(request.FILES)
-        print("-------------------")
-        # print(request.POST.get('pictures', None))
-        # print(request.POST['pictures'])
-        # pictures=request.POST["pictures"]
         pictures = request.FILES.getlist('pictures')
-        print("-------------------0")
         depart_location = Location.objects.create(city=request.data["product_location"])
         pickup_address = Location.objects.create(city=request.data["pickup_address"])
         userprofile = UserProfile.objects.get(user=request.data["created_by"])
-        price = Price.objects.create(amount=request.data["product_value"])
-        print("-------------------1")
+        price = request.data["product_value"]
         space = request.data["product_size"]
-        weight = Weight.objects.create(weight=request.data["product_weight"])
+        weight = request.data["product_weight"]
         product = Product.objects.create(arrival_date=request.data["delivery_date"],
         departure_location=depart_location,
         pickup_location=pickup_address,
@@ -132,19 +123,11 @@ class BookingRequestView(CreateAPIView):
         terms_conditions=request.data["terms_conditions"].capitalize(),
         user_agreement=request.data["user_agreement"].capitalize(),
         created_by=userprofile)
-        print("-------------------2")
         booking_request = BookingRequest.objects.create(product=product, request_by=userprofile)
-        print("pictures")
-        print(pictures)
-        print("-------------------3")
         if len(pictures) > 0:
             for item in pictures:
-                print(item)
-                print("++++++++++++++")
                 img = ProductImage(image=item, product=product)
                 img.save()
-                # product_images = ProductImage.objects.create(product=product, image=item)
-        print("-------------------4")
         serializer = self.get_serializer(booking_request)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data,
@@ -152,17 +135,10 @@ class BookingRequestView(CreateAPIView):
                         headers=headers)
 
 
-class LargeResultsSetPagination(PageNumberPagination):
-    page_size = 2
-    page_size_query_param = 'page_size'
-    max_page_size = 2
-
-
-
-class BookingRequestListView(generics.ListAPIView):
+class BookingRequestSearchView(generics.ListAPIView):
     serializer_class = BookingRequestSerializer
     model = serializer_class.Meta.model
-    pagination_class = LargeResultsSetPagination
+    pagination_class = SearchResultsSetPagination
 
     def get_queryset(self):
         departure_location = self.request.query_params.get('departure_location', '')

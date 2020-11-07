@@ -46,10 +46,6 @@ class MyProfile extends React.Component {
         render: () => <Tab.Pane attached={false}><TripsReservationsList profileType={profileType}/></Tab.Pane>,
       },
       {
-        menuItem: { key: 'messaging', icon: 'comments', content: 'Messaging' },
-        render: () => <Tab.Pane attached={false}>Tab 3 Content</Tab.Pane>,
-      },
-      {
         menuItem: { key: 'alerts', icon: 'bell', content: 'Alerts' },
         render: () => <Tab.Pane attached={false}>Tab 4 Content</Tab.Pane>,
       },

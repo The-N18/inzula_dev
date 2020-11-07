@@ -1,0 +1,18 @@
+export const msg = {
+  myMessage: "Today is {ts, date, ::yyyyMMdd}",
+  'layout.discount': "15% discount",
+  'layout.dispatch': "Dispatch",
+  'layout.transport': "Transport",
+  'layout.login': "Login",
+  'layout.signup': "Sign up",
+  'layout.profile': "Profile",
+  'layout.booking': "Reservation",
+  'layout.messages': "Messaging",
+  'layout.alerts': "Alerts",
+  'layout.finances': "Finances",
+  'layout.logout': "Logout",
+  'home_text_video.send_parcels': "Send parcels to your loved ones, via contacts in your network",
+  'home_text_video.inzula_use': "INZULA connects travelers with kgs available and people in their network wanting to ship at low cost",
+  'home_text_video.ship_now': "Ship items now",
+  'home_text_video.earn_money': "Earn money while travelling",
+};

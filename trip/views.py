@@ -3,7 +3,7 @@ from rest_framework import viewsets, permissions
 from .models import Trip
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .serializers import TripSerializer
+from .serializers import TripSerializer, TripSearchSerializer
 from rest_framework import status
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -15,6 +15,7 @@ from rest_framework.generics import CreateAPIView, ListAPIView, GenericAPIView
 from django.db import transaction
 from userprofile.models import Location, UserProfile
 from rest_framework import generics
+from utils.pagination import SearchResultsSetPagination
 
 
 class TripsListView(generics.ListAPIView):
@@ -74,3 +75,18 @@ class TripView(CreateAPIView):
         return Response(serializer.data,
                         status=status.HTTP_201_CREATED,
                         headers=headers)
+
+
+class TripSearchView(generics.ListAPIView):
+    serializer_class = TripSearchSerializer
+    model = serializer_class.Meta.model
+    pagination_class = SearchResultsSetPagination
+
+    def get_queryset(self):
+        departure_location = self.request.query_params.get('departure_location', '')
+        departure_locations = Location.objects.filter(city__startswith=departure_location)
+        destination_location = self.request.query_params.get('destination_location', '')
+        destination_locations = Location.objects.filter(city__startswith=destination_location)
+        depart_date = self.request.query_params.get('depart_date', '')
+        queryset = self.model.objects.filter(departure_location__city__contains=departure_location, destination_location__city__contains=destination_location)
+        return queryset.order_by('-depart_date')

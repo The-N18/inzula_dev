@@ -4,14 +4,16 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './sendpage.css';
-import SendPackage from "../../containers/SendPackage/SendPackage";
+import SearchTripsForm from "../../containers/SearchTripsForm/SearchTripsForm";
+import SendPackageModal from "../../containers/SendPackageModal/SendPackageModal";
 
 class SendPage extends React.Component {
 
   render() {
     return (
       <Segment style={{ padding: "8em 0em" }} vertical>
-        <SendPackage/>
+        <SendPackageModal/>
+        <SearchTripsForm/>
       </Segment>
     );
   }

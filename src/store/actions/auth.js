@@ -12,6 +12,13 @@ export const authStart = () => {
   };
 };
 
+export const authSetDiscountText = (text) => {
+  return {
+    type: actionTypes.AUTH_SET_DISCOUNT_TEXT,
+    discountText: text
+  };
+};
+
 export const authSuccess = (token) => {
   return {
     type: actionTypes.AUTH_SUCCESS,

@@ -100,9 +100,10 @@ class SendPackage extends React.Component {
     this.setState({terms_conditions});
   }
 
-  handleSizeChange = (e, data) => {
+  handleSelectChange = (e, data) => {
     this.setState({ [data.name]: data.value });
   }
+
 
   handleToggleUserAgreementCheckbox = () => {
     const user_agreement = !(this.state.user_agreement);
@@ -129,6 +130,15 @@ class SendPackage extends React.Component {
       duration: 0,
       canDismiss: true,
     });
+    this.setState({ product_location: '', product_description: '',
+                    product_name: '', product_category: '',
+                    product_weight: '', product_size: '',
+                    product_value: '', proposed_price: '',
+                    delivery_date: '', pickup_address: '',
+                    recipient_name: '', recipient_phone_number: '',
+                    terms_conditions: false,
+                    user_agreement: false,
+                    pictures: [], activeStep: 1 });
   };
 
 
@@ -141,18 +151,51 @@ class SendPackage extends React.Component {
     //   return <Redirect to="/" />;
     // }
     const sizeOptions = [
-  { key: 'xxs', value: 'xxs', text: 'Extra Extra Small' },
-  { key: 'xs', value: 'xs', text: 'Extra small' },
-  { key: 's', value: 's', text: 'Small' },
-  { key: 'm', value: 'm', text: 'Medium' },
-  { key: 'l', value: 'l', text: 'Large' },
-  { key: 'xl', value: 'xl', text: 'Extra Large' },
-  { key: 'xxl', value: 'xxl', text: 'Extra Extra Large' },
-  { key: 'xxxl', value: 'xxxl', text: 'Extra Extra Extra Large' },
-];
+      { key: 'xxs', value: 'xxs', text: 'Extra Extra Small' },
+      { key: 'xs', value: 'xs', text: 'Extra small' },
+      { key: 's', value: 's', text: 'Small' },
+      { key: 'm', value: 'm', text: 'Medium' },
+      { key: 'l', value: 'l', text: 'Large' },
+      { key: 'xl', value: 'xl', text: 'Extra Large' },
+      { key: 'xxl', value: 'xxl', text: 'Extra Extra Large' },
+      { key: 'xxxl', value: 'xxxl', text: 'Extra Extra Extra Large' },
+    ];
+
+    const categoryOptions = [
+      { key: 'food', value: 'food', text: 'Food' },
+      { key: 'elec', value: 'elec', text: 'Electronics' },
+      { key: 'dress', value: 'dress', text: 'Dresses' },
+      { key: 'shoe', value: 'shoe', text: 'Shoes' },
+      { key: 'doc', value: 'doc', text: 'Documents' },
+      { key: 'uts', value: 'uts', text: 'Kitchen utensils' },
+      { key: 'app', value: 'app', text: 'Electrical appliances' },
+      { key: 'skin', value: 'skin', text: 'Skin care' },
+      { key: 'jel', value: 'jel', text: 'Jewelry' },
+      { key: 'misc', value: 'misc', text: 'Miscellaneous' },
+    ];
+
+    const weightOptions = [
+      { key: '500g', value: '500g', text: '0.1 - 500g' },
+      { key: '1kg', value: '1kg', text: '500g - 1kg' },
+      { key: '5kg', value: '5kg', text: '1.1kg - 5kg' },
+      { key: '10kg', value: '10kg', text: '5.1kg - 10kg' },
+      { key: '20kg', value: '20kg', text: '10.1kg - 20kg' },
+      { key: '30kg', value: '30kg', text: '20.1kg - 30kg' },
+      { key: '40kg', value: '40kg', text: '30.1kg - 40kg' },
+      { key: 'huge', value: 'huge', text: '40.1kg +' },
+    ];
+
+    const valueOptions = [
+      { key: 'low', value: 'low', text: 'Low value' },
+      { key: 'mid', value: 'mid', text: 'Medium value' },
+      { key: 'high', value: 'high', text: 'High value' },
+      { key: 'lux', value: 'lux', text: 'Luxury item' },
+      { key: 'exc', value: 'exc', text: 'Exclusive' },
+    ];
+
     return (
-      <Segment style={{ padding: "2em 0em" }} vertical textAlign="center">
-        <Step.Group ordered unstackable>
+      <Segment style={{ padding: "0em 0em" }} vertical textAlign="center">
+        <Step.Group ordered stackable>
           <Step active={activeStep === 1}>
             <Step.Content>
               <Step.Title>Product details</Step.Title>
@@ -253,63 +296,43 @@ class SendPackage extends React.Component {
                         iconPosition="left"
                         placeholder="Pickup address"
                       />
-                      <Form.Input
-                          onChange={this.handleChange}
-                          value={product_category}
+                        <Select
+                          onChange={this.handleSelectChange}
                           name="product_category"
                           fluid
-                          icon="user"
-                          iconPosition="left"
-                          placeholder="Product category"
-                        />
-                        <Form.Input
-                          onChange={this.handleChange}
-                          value={product_weight}
+                          placeholder='Product category'
+                          options={categoryOptions} />
+                        <Select
+                          onChange={this.handleSelectChange}
                           name="product_weight"
                           fluid
-                          icon="weight"
-                          iconPosition="left"
-                          placeholder="Weight (kg)"
-                          type='number'
-                        />
+                          placeholder='Product weight'
+                          options={weightOptions} />
 
 
                     </Form.Group> : ''}
                     {activeStep === 1 ?
                       <Form.Group widths='equal'>
-                      {/*<Form.Input
-                        onChange={this.handleChange}
-                        value={product_size}
-                        name="product_size"
-                        fluid
-                        icon="user"
-                        iconPosition="left"
-                        placeholder="Size (length * width * height)"
-                         type='number'
-                      />*/}
                       <Select
-                        onChange={this.handleSizeChange}
+                        onChange={this.handleSelectChange}
                         name="product_size"
                         fluid
                         placeholder='Product size'
                         options={sizeOptions} />
-                      <Form.Input
-                          onChange={this.handleChange}
-                          value={product_value}
+                        <Select
+                          onChange={this.handleSelectChange}
                           name="product_value"
                           fluid
-                          icon="user"
-                          iconPosition="left"
-                          placeholder="Value"
-                        />
+                          placeholder='Product value'
+                          options={valueOptions} />
                         <Form.Input
-                          onChange={this.handleChange}
                           value={proposed_price}
                           name="proposed_price"
                           fluid
                           icon="money bill alternate outline"
                           iconPosition="left"
                           placeholder="Proposed price"
+                          readOnly
                         />
 
 
