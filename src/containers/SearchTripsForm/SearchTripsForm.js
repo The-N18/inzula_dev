@@ -108,17 +108,17 @@ class SearchTripsForm extends React.Component {
               overflow: 'auto',
               borderTop: '1px solid #f1f1f1',
               boxShadow: '0px 0 10px #d4d4d5',
-              display: trips.length > 0 ? "block": "none"
+              display: trips && trips.length > 0 ? "block": "none"
             }}
           >
             <InfiniteScroll
-              dataLength={trips.length}
+              dataLength={trips ? trips.length : 0}
               next={this.fetchMoreData}
               hasMore={count !== null && next_url !== null}
               loader={<h4>Loading...</h4>}
               scrollableTarget="scrollableDiv"
             >
-              {trips.map((item, index) => (
+              {trips && trips.length > 0 ? trips.map((item, index) => (
                 <div style={{
                   height: 240,
                   margin: 6,
@@ -135,7 +135,7 @@ class SearchTripsForm extends React.Component {
                     trip_id={item["pk"]}
                     no_book={false}/>
                 </div>
-              ))}
+              )) : ''}
             </InfiniteScroll>
           </div>
           {/*trips.length > 0 ? <Segment raised>
