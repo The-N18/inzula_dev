@@ -19,7 +19,7 @@ class SignupParentWithDiscount extends React.Component {
   render() {
     return (
       <Segment basic style={{ padding: "12em 0em" }} textAlign="center">
-      <Header as="h2" textAlign="center" color="teal">
+      <Header as="h4" textAlign="center" color="teal">
         Signup now to benefit from a 5% discount for each of your first three parcel epeditions.
       </Header>
         <Segment basic textAlign="center" className={"signupparent-segment"}>

@@ -108,6 +108,7 @@ class BookingRequestView(CreateAPIView):
         price = request.data["product_value"]
         space = request.data["product_size"]
         weight = request.data["product_weight"]
+        tripId = request.data["tripId"]
         product = Product.objects.create(arrival_date=request.data["delivery_date"],
         departure_location=depart_location,
         pickup_location=pickup_address,
@@ -123,7 +124,10 @@ class BookingRequestView(CreateAPIView):
         terms_conditions=request.data["terms_conditions"].capitalize(),
         user_agreement=request.data["user_agreement"].capitalize(),
         created_by=userprofile)
-        booking_request = BookingRequest.objects.create(product=product, request_by=userprofile)
+        trip = None
+        if tripId is not None:
+            trip = Trip.objects.get(pk=tripId)
+        booking_request = BookingRequest.objects.create(product=product, request_by=userprofile, trip=trip)
         if len(pictures) > 0:
             for item in pictures:
                 img = ProductImage(image=item, product=product)
@@ -142,10 +146,24 @@ class BookingRequestSearchView(generics.ListAPIView):
 
     def get_queryset(self):
         departure_location = self.request.query_params.get('departure_location', '')
+
+        product_category = self.request.query_params.get('product_category', None)
+        product_size = self.request.query_params.get('product_size', None)
+        proposed_price_min = self.request.query_params.get('proposed_price_min', '')
+        proposed_price_max = self.request.query_params.get('proposed_price_max', '')
+        weight_min = self.request.query_params.get('weight_min', '')
+        weight_max = self.request.query_params.get('weight_max', '')
+
         departure_locations = Location.objects.filter(city__startswith=departure_location)
         destination_location = self.request.query_params.get('destination_location', '')
         destination_locations = Location.objects.filter(city__startswith=destination_location)
         arrival_date = self.request.query_params.get('delivery_date', '')
         products = Product.objects.filter(departure_location__city__contains=departure_location, pickup_location__city__contains=destination_location)
+        if product_category is not None:
+            products = products.filter(product_category=product_category)
+        if product_size is not None:
+            products = products.filter(space=product_size)
+        if product_size is not None:
+            products = products.filter(space=product_size)
         queryset = self.model.objects.filter(product__in=products)
         return queryset.order_by('-product')

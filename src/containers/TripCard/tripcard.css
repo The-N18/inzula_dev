@@ -31,6 +31,13 @@
   color: #F63854 !important;
 }
 
+.trip-card-button {
+  margin: auto !important;
+  margin-bottom: 20px !important;
+  margin-top: 20px !important;
+  float: right !important;
+}
+
 /* .home-text-img-card-grid:hover {
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2) !important;
   transition: 0.3s !important;
@@ -43,6 +50,13 @@
     width: 40% !important;
     margin: 0 auto !important;
   }
+  .trip-card-button {
+    margin: auto !important;
+    display: block !important;
+    margin-bottom: 20px !important;
+    margin-top: 20px !important;
+
+  }
 }
 
 @media only screen and (min-width: 361px) and (max-width: 767px) {
@@ -51,6 +65,12 @@
     width: 50% !important;
     margin: 0 auto !important;
   }
+  .trip-card-button {
+    margin-bottom: 20px !important;
+    margin-top: 20px !important;
+    margin: auto !important;
+    display: block !important;
+  }
 }
 
 @media only screen and (min-width: 0px) and (max-width: 360px) {
@@ -58,5 +78,12 @@
     text-align: center !important;
     width: 75% !important;
     margin: 0 auto !important;
+  }
+
+  .trip-card-button {
+    margin-bottom: 20px !important;
+    margin-top: 20px !important;
+    margin: auto !important;
+    display: block !important;
   }
 }

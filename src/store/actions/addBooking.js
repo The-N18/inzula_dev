@@ -26,7 +26,7 @@ export const addBookingFail = error => {
 };
 
 
-export const bookingAddition = (created_by, pictures, product_location, product_description,
+export const bookingAddition = (tripId, created_by, pictures, product_location, product_description,
   product_name, product_category, product_weight, product_size, product_value, proposed_price,
   delivery_date, pickup_address, recipient_name,
 recipient_phone_number, terms_conditions, user_agreement) => {
@@ -36,6 +36,7 @@ recipient_phone_number, terms_conditions, user_agreement) => {
             headers: { 'content-type': 'multipart/form-data' }
           };
   const data2 = {
+    tripId: tripId,
     created_by: created_by["user"],
     product_location: product_location,
     product_description: product_description,

@@ -10,15 +10,21 @@ import { Redirect } from "react-router-dom";
 import styles from './myprofile.css';
 import ProfileTab from "../../containers/ProfileTab/ProfileTab";
 import TripsReservationsList from "../../containers/TripsReservationsList/TripsReservationsList";
+import { setActiveIndex } from "../../store/actions/myProfile";
+
+
 
 class MyProfile extends React.Component {
 
   state = {
-    activeIndex: 0,
     profileType: "sender",
   };
 
-  handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
+  // handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
+
+  handleTabChange = (e, { activeIndex }) => {
+    this.props.setActiveIndex(activeIndex);
+  }
 
   handleRadioChange = (e, data) => {
     const { profileType } = this.state;
@@ -31,8 +37,8 @@ class MyProfile extends React.Component {
   };
 
   render() {
-    const { token } = this.props;
-    const {activeIndex, profileType} = this.state;
+    const { token, activeIndex } = this.props;
+    const {profileType} = this.state;
     // if (token === null) {
     //   return <Redirect to="/" />;
     // }
@@ -81,12 +87,14 @@ class MyProfile extends React.Component {
 const mapStateToProps = state => {
   return {
     loading: state.auth.loading,
-    token: state.auth.token
+    token: state.auth.token,
+    activeIndex: state.myProfile.activeIndex
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    setActiveIndex: (activeIndex) => dispatch(setActiveIndex(activeIndex)),
   };
 };
 

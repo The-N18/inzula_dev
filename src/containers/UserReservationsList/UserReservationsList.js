@@ -16,6 +16,7 @@ import { backend_url } from "../../configurations";
 import ImageUploader from 'react-images-upload';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { getReservations } from "../../store/actions/userReservations";
+import BookingCard from "../../containers/BookingCard/BookingCard";
 
 class UserReservationsList extends React.Component {
   constructor(props) {
@@ -39,14 +40,14 @@ class UserReservationsList extends React.Component {
 
 
   render() {
-    const { loading, reservations, next_url, count } = this.props;
+    const { loading, reservations, next_url, count, selectable } = this.props;
     const dataLength = reservations ? reservations.length : 0;
     return (
       <Segment basic className={"profile-tab-section"}>
       <div
         id="scrollableDiv"
         style={{
-          height: 340,
+          height: 400,
           overflow: 'auto',
         }}
       >
@@ -60,16 +61,18 @@ class UserReservationsList extends React.Component {
         >
           {reservations.map((item, index) => (
             <div style={{
-              height: 160,
+              height: 200,
               margin: 6,
               padding: 8
             }} key={index}>
-              <p>Name: {item["product"]["name"]}</p>
-              <p>description: {item["product"]["description"]}</p>
-              <p>Arrival date: {item["product"]["arrival_date"]}</p>
-              <p>Departure location: {item["product"]["departure_location"]["city"]}</p>
-              <p>Destination location: {item["product"]["destination_location"] ? item["product"]["destination_location"]["city"] : ""}</p>
-              <Divider/>
+              <BookingCard
+                selectable={selectable}
+                title={item["product"]["name"]}
+                arrival_date={item["product"]["arrival_date"]}
+                description={item["product"]["description"]}
+                departure_location={item["product"]["departure_location"]["city"]}
+                pickup_location={item["product"]["destination_location"] !== null ? item["product"]["destination_location"]["city"] : ''}
+                img={item["product"]["images"].length === 0 ? '' : item["product"]["images"][0]['image']}/>
             </div>
           ))}
         </InfiniteScroll>
@@ -99,6 +102,7 @@ const mapDispatchToProps = dispatch => {
 
 UserReservationsList.propTypes = {
   profileType: PropTypes.string,
+  selectable: PropTypes.boolean,
 };
 
 export default connect(

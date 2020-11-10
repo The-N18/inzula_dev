@@ -117,12 +117,12 @@ class SendPackage extends React.Component {
   }
 
   handleSubmit = e => {
-    const {userId, userProfileId, createNotification} = this.props;
+    const {userId, userProfileId, createNotification, tripId} = this.props;
     e.preventDefault();
     const { pictures, product_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, pickup_address, recipient_name,
     recipient_phone_number, terms_conditions, user_agreement} = this.state;
     const created_by = {"user": userId};
-    this.props.addRequest(created_by, pictures, product_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, pickup_address, recipient_name,
+    this.props.addRequest(tripId, created_by, pictures, product_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, pickup_address, recipient_name,
     recipient_phone_number, terms_conditions, user_agreement);
     createNotification({
       message: 'Your request has been added',
@@ -143,7 +143,7 @@ class SendPackage extends React.Component {
 
 
   render() {
-    const { token } = this.props;
+    const { token, tripId } = this.props;
     const { isNextValid, user_agreement, terms_conditions, activeStep, product_location, proposed_price, product_description, product_name, product_category, product_weight, product_size, product_value, delivery_date, pickup_address, recipient_name, recipient_phone_number  } = this.state;
     // if(token === null) {
     //   console.log("TOKEN");
@@ -440,8 +440,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addRequest: (created_by, pictures, product_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, pickup_address, recipient_name,
-    recipient_phone_number, terms_conditions, user_agreement) => dispatch(bookingAddition(created_by, pictures, product_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, pickup_address, recipient_name,
+    addRequest: (tripId, created_by, pictures, product_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, pickup_address, recipient_name,
+    recipient_phone_number, terms_conditions, user_agreement) => dispatch(bookingAddition(tripId, created_by, pictures, product_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, pickup_address, recipient_name,
     recipient_phone_number, terms_conditions, user_agreement)),
     createNotification: (config) => {dispatch(createNotification(config))},
   };
@@ -449,6 +449,7 @@ const mapDispatchToProps = dispatch => {
 
 SendPackage.propTypes = {
   token: PropTypes.string,
+  tripId: PropTypes.tripId,
 };
 
 export default connect(

@@ -9,6 +9,7 @@ import notifyReducer from 'react-redux-notify';
 
 import authReducer from "./store/reducers/auth";
 import appConfigReducer from "./store/reducers/appConfig";
+import myProfileReducer from "./store/reducers/myProfile";
 import searchbookingsReducer from "./store/reducers/searchBookings";
 import searchtripsReducer from "./store/reducers/searchTrips";
 import sendPackageModalReducer from "./store/reducers/sendPackageModal";
@@ -24,6 +25,7 @@ const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const rootReducer = combineReducers({
   auth: authReducer,
   appConfig: appConfigReducer,
+  myProfile: myProfileReducer,
   searchBookings: searchbookingsReducer,
   searchTrips: searchtripsReducer,
   sendPackageModal: sendPackageModalReducer,

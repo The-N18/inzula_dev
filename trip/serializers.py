@@ -20,4 +20,4 @@ class TripSearchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Trip
-        fields = ['depart_date', 'created_by', 'comeback_date', 'trip_type', 'departure_location', 'destination_location']
+        fields = ['pk', 'depart_date', 'created_by', 'comeback_date', 'trip_type', 'departure_location', 'destination_location']

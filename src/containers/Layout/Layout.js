@@ -7,7 +7,7 @@ import {
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { logout } from "../../store/actions/auth";
-import { clearUserInfo } from "../../store/actions/userInfo"
+import { clearUserInfo } from "../../store/actions/userInfo";
 import { setLang } from "../../store/actions/appConfig";
 import { backend_url } from "../../configurations";
 import styles from './layout.css';
@@ -17,6 +17,7 @@ import LanguageSwitcherSelector from "../../containers/LanguageSwitcherSelector/
 import 'react-redux-notify/dist/ReactReduxNotify.css';
 import { Notify } from 'react-redux-notify';
 import {FormattedMessage} from 'react-intl'
+import { setActiveIndex } from "../../store/actions/myProfile";
 
 
 class CustomLayout extends React.Component {
@@ -26,6 +27,26 @@ class CustomLayout extends React.Component {
   }
 
   handleOnClick = (item) => this.props.history.push(item);
+
+  handleOnProfileClick = () => {
+    this.props.history.push("/profile");
+    this.props.setActiveIndex(0);
+  }
+
+  handleOnReservationClick = () => {
+    this.props.history.push("/profile");
+    this.props.setActiveIndex(1);
+  }
+
+  handleOnAlertClick = () => {
+    this.props.history.push("/profile");
+    this.props.setActiveIndex(2);
+  }
+
+  handleOnFinanceClick = () => {
+    this.props.history.push("/profile");
+    this.props.setActiveIndex(3);
+  }
 
   handleScroll = () => {
     console.log("on scroll");
@@ -73,30 +94,24 @@ class CustomLayout extends React.Component {
     const { authenticated, profile_pic } = this.props;
 
     let mobileMenu = this.state.isMobile ? (
-      <span><li><a onClick={this.handleOnClick.bind(this, '/profile')}>
+      <span><li><a onClick={this.handleOnProfileClick.bind(this)}>
       <FormattedMessage
         id="layout.profile"
         defaultMessage="Profile"
       /></a></li>
-      <li><a >
+      <li><a onClick={this.handleOnReservationClick.bind(this)}>
       <FormattedMessage
         id="layout.booking"
         defaultMessage="Reservation"
       />
       </a></li>
-      <li><a >
-      <FormattedMessage
-        id="layout.messages"
-        defaultMessage="Messaging"
-      />
-      </a></li>
-      <li><a >
+      <li><a onClick={this.handleOnAlertClick.bind(this)}>
       <FormattedMessage
         id="layout.alerts"
         defaultMessage="Alerts"
       />
       </a></li>
-      <li><a >
+      <li><a onClick={this.handleOnFinanceClick.bind(this)}>
       <FormattedMessage
         id="layout.finances"
         defaultMessage="Finances"
@@ -109,35 +124,29 @@ class CustomLayout extends React.Component {
       />
       </a></li></span>) : (
         <li>
-          <a href="">
+          <a href="" className={"pad-13"}>
             <Image bordered circular size='small' className={"profile-image"} src={profile_pic !== null ? backend_url() + profile_pic : backend_url() + '/static/images/user_avatar.png'} />
           </a>
           <ul>
-              <li><a onClick={this.handleOnClick.bind(this, '/profile')}>
+              <li><a onClick={this.handleOnProfileClick.bind(this)}>
               <FormattedMessage
                 id="layout.profile"
                 defaultMessage="Profile"
               />
               </a></li>
-              <li><a >
+              <li><a onClick={this.handleOnReservationClick.bind(this)}>
               <FormattedMessage
                 id="layout.booking"
                 defaultMessage="Reservation"
               />
               </a></li>
-              <li><a >
-              <FormattedMessage
-                id="layout.messages"
-                defaultMessage="Messaging"
-              />
-              </a></li>
-              <li><a >
+              <li><a onClick={this.handleOnAlertClick.bind(this)}>
               <FormattedMessage
                 id="layout.alerts"
                 defaultMessage="Alerts"
               />
               </a></li>
-              <li><a >
+              <li><a onClick={this.handleOnFinanceClick.bind(this)}>
               <FormattedMessage
                 id="layout.finances"
                 defaultMessage="Finances"
@@ -221,7 +230,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     logout: () => dispatch(logout()),
-    clearUserInfo: () => dispatch(clearUserInfo())
+    clearUserInfo: () => dispatch(clearUserInfo()),
+    setActiveIndex: (activeIndex) => dispatch(setActiveIndex(activeIndex))
   };
 };
 

@@ -11,6 +11,13 @@ export const openModal = () => {
   };
 };
 
+export const openModalForTrip = (tripId) => {
+  return {
+    type: actionTypes.SEND_PACKAGE_OPEN_MODAL_FOR_TRIP,
+    tripId: tripId,
+  };
+};
+
 export const closeModal = () => {
   return {
     type: actionTypes.SEND_PACKAGE_CLOSE_MODAL,

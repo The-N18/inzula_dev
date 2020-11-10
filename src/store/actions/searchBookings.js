@@ -39,7 +39,7 @@ export const searchFail = error => {
   };
 };
 
-export const searchTrips = (departure_location, destination_location, travel_date, user_id, next_url, page_count) => {
+export const searchBookings = (departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight, user_id, next_url, page_count) => {
   if(next_url !== "" && next_url !== null) {
     return dispatch => {
       dispatch(searchStart());
@@ -63,6 +63,12 @@ export const searchTrips = (departure_location, destination_location, travel_dat
               departure_location: departure_location,
               destination_location: destination_location,
               travel_date: travel_date,
+              product_category: product_category,
+              product_size: product_size,
+              proposed_price_min: proposed_price[0],
+              proposed_price_max: proposed_price[1],
+              weight_min: weight[0],
+              weight_max: weight[1],
             }})
         .then(res => {
           console.log(res.data)
@@ -74,4 +80,31 @@ export const searchTrips = (departure_location, destination_location, travel_dat
         });
     };
   }
+}
+
+export const filterBookings = (departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight, user_id, next_url, page_count) => {
+  return dispatch => {
+    dispatch(searchStart());
+    axios
+      .get(backend_url() + "/bookings/search_bookings", {
+          params: {
+            departure_location: departure_location,
+            destination_location: destination_location,
+            travel_date: travel_date,
+            product_category: product_category,
+            product_size: product_size,
+            proposed_price_min: proposed_price[0],
+            proposed_price_max: proposed_price[1],
+            weight_min: weight[0],
+            weight_max: weight[1],
+          }})
+      .then(res => {
+        console.log(res.data)
+        dispatch(searchSuccessOverride(res.data["results"], res.data["next"], res.data["count"]));
+        dispatch(checkAuthTimeout(3600));
+      })
+      .catch(err => {
+        dispatch(searchFail(err));
+      });
+  };
 }

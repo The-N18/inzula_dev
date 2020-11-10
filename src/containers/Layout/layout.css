@@ -6,6 +6,10 @@
   color: red !important;
 }
 
+.pad-13 {
+  padding-top: 13px !important;
+}
+
   body {
     background-color: #ffffff !important;
   }
@@ -248,7 +252,7 @@ a {
 
 
 /* Change this in order to change the Dropdown symbol */
-li > a:after { content:  ' +'; }
+li > a:after { content:  ' '; }
 li > a:only-child:after { content: ''; }
 
 /* 48em = 768px */

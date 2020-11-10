@@ -5,7 +5,8 @@ import {
   Header,
   Segment,
   Image,
-  Card
+  Card,
+  Checkbox
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './bookingcard.css';
@@ -17,17 +18,22 @@ class BookingCard extends React.Component {
 
   render() {
 
-    const {title, description, img, arrival_date, departure_location, pickup_location} = this.props;
+    const {title, description, img, arrival_date, departure_location, pickup_location, selectable} = this.props;
 
     return (
       <Card raised fluid centered className={"home-text-img-card-grid"}>
       <Grid>
-        <Grid.Row columns={2}>
-          <Grid.Column mobile={16} tablet={16} computer={5}>
-            <Segment basic textAlign="right">
-              <Image centered src={backend_url() + img} rounded bordered verticalAlign="middle" size="massive"/>
-            </Segment>
-          </Grid.Column>
+        <Grid.Row columns={selectable ? 3: 2}>
+        {selectable ? <Grid.Column mobile={1} tablet={1} computer={1}>
+          <Segment compact basic>
+            <Checkbox />
+          </Segment>
+        </Grid.Column> : ''}
+        <Grid.Column mobile={16} tablet={16} computer={4}>
+          <Segment basic textAlign="right">
+            <Image centered src={backend_url() + img} rounded bordered verticalAlign="middle" size="massive"/>
+          </Segment>
+        </Grid.Column>
           <Grid.Column mobile={16} tablet={16} computer={11}>
             <Segment basic textAlign="left">
               <Header as='h4' className={"booking-card-title"}>{title}</Header>
@@ -59,6 +65,7 @@ BookingCard.propTypes = {
   departure_location: PropTypes.string,
   pickup_location: PropTypes.string,
   img: PropTypes.string,
+  selectable: PropTypes.boolean
 };
 
 export default connect(

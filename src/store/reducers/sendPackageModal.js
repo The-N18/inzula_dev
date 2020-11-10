@@ -3,6 +3,7 @@ import { updateObject } from "../utility";
 
 const initialState = {
   open: false,
+  tripId: null,
 };
 
 const openModal = (state, action) => {
@@ -11,9 +12,19 @@ const openModal = (state, action) => {
   });
 };
 
+const openModalForTrip = (state, action) => {
+  console.log(action);
+  return updateObject(state, {
+    open: true,
+    tripId: action.tripId
+  });
+};
+
+
 const closeModal = (state, action) => {
   return updateObject(state, {
-    open: false
+    open: false,
+    tripId: null,
   });
 };
 
@@ -23,6 +34,8 @@ const reducer = (state = initialState, action) => {
       return openModal(state, action);
     case actionTypes.SEND_PACKAGE_CLOSE_MODAL:
       return closeModal(state, action);
+    case actionTypes.SEND_PACKAGE_OPEN_MODAL_FOR_TRIP:
+      return openModalForTrip(state, action);
     default:
       return state;
   }

@@ -5,30 +5,42 @@ import {
   Header,
   Segment,
   Image,
-  Card
+  Card,
+  Button,
+  Icon
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './tripcard.css';
 import { backend_url } from "../../configurations";
+import { openModalForTrip } from "../../store/actions/sendPackageModal";
 
 
 class TripCard extends React.Component {
 
+  handleViewDetails = () => {
+    console.log("view details");
+  }
+
+  handleBook = () => {
+    console.log("book");
+    const {trip_id} = this.props;
+    this.props.openPackageModalForTrip(trip_id);
+  }
 
   render() {
 
-    const {title, trip_type, depart_date, img, comeback_date, departure_location, destination_location, username} = this.props;
+    const {title, trip_type, depart_date, img, comeback_date, departure_location, destination_location, username, no_book} = this.props;
 
     return (
       <Card raised fluid centered className={"home-text-img-card-grid"}>
       <Grid>
-        <Grid.Row columns={2}>
-          <Grid.Column mobile={16} tablet={16} computer={5}>
+        <Grid.Row columns={3}>
+          <Grid.Column mobile={16} tablet={8} computer={4}>
             <Segment basic textAlign="right">
               <Image centered src={backend_url() + img} rounded bordered verticalAlign="middle" size="massive"/>
             </Segment>
           </Grid.Column>
-          <Grid.Column mobile={16} tablet={16} computer={11}>
+          <Grid.Column mobile={16} tablet={8} computer={9}>
             <Segment basic textAlign="left">
               <Header as='h4' className={"booking-card-title"}>{trip_type}</Header>
               <p className={"home-text-img-card-description"}>User name: {username}</p>
@@ -37,6 +49,22 @@ class TripCard extends React.Component {
               <p className={"home-text-img-card-description"}>Departure: {departure_location}</p>
               <p className={"home-text-img-card-description"}>Destination: {destination_location}</p>
             </Segment>
+          </Grid.Column>
+          <Grid.Column mobile={16} tablet={16} computer={2}>
+            <Button icon labelPosition='right'
+              size="large"
+              className={"buttoncolor trip-card-button"}
+              onClick={this.handleViewDetails.bind(this)}
+            >
+              <Icon name='eye' /> View details
+            </Button>
+            {no_book ? '' : <Button icon labelPosition='right'
+              size="large"
+              className={"buttoncolor trip-card-button"}
+              onClick={this.handleBook.bind(this)}
+            >
+              <Icon name='check' /> Book
+            </Button>}
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -50,7 +78,9 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    openPackageModalForTrip: (tripId) => dispatch(openModalForTrip(tripId)),
+  };
 };
 
 TripCard.propTypes = {
@@ -61,6 +91,8 @@ TripCard.propTypes = {
   departure_location: PropTypes.string,
   destination_location: PropTypes.string,
   img: PropTypes.string,
+  trip_id: PropTypes.number,
+  no_book: PropTypes.boolean,
 };
 
 export default connect(

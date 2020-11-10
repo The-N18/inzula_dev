@@ -10,6 +10,30 @@
     cursor: pointer !important;
   }
 
+  .lang-span {
+    max-width: 30px !important;
+    height: 30px !important;
+    vertical-align: middle !important;
+    cursor: pointer !important;
+    text-transform: uppercase !important;
+  }
+
+  .lang-en::after {
+      content: " | " !important;
+  }
+
+  .lang-fr::before {
+      content: " | " !important;
+  }
+
+  .active-lang {
+    text-decoration: underline !important;
+  }
+
+  .lang-span:hover {
+    font-weight: bold !important;
+  }
+
   .languageSwitcher{
   min-width: 600px !important;
   display: flex !important;
@@ -41,7 +65,7 @@ p{
   /* display: flex !important; */
   flex-direction: column !important;
   align-items: center !important;
-  margin-top: 15px !important;
+  margin-top: 20px !important;
   width: 60px !important;
   /* width: 40px !important; */
 }

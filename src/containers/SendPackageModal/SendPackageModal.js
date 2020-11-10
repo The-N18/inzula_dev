@@ -36,7 +36,7 @@ class SendPackageModal extends React.Component {
   }
 
   render() {
-    const { open } = this.props;
+    const { open, tripId } = this.props;
 
     return (
       <Modal
@@ -48,7 +48,7 @@ class SendPackageModal extends React.Component {
     >
       <Modal.Header>Add a booking request</Modal.Header>
       <Modal.Content scrolling>
-          <SendPackage/>
+          <SendPackage tripId={tripId}/>
       </Modal.Content>
       <Modal.Actions>
         <Button negative onClick={() => this.props.closePackageModal()} primary>
@@ -63,6 +63,7 @@ class SendPackageModal extends React.Component {
 const mapStateToProps = state => {
   return {
     open: state.sendPackageModal.open,
+    tripId: state.sendPackageModal.tripId,
   };
 };
 

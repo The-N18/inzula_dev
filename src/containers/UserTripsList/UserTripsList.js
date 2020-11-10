@@ -16,6 +16,7 @@ import { backend_url } from "../../configurations";
 import ImageUploader from 'react-images-upload';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { getTrips } from "../../store/actions/userTrips";
+import TripCard from "../../containers/TripCard/TripCard";
 
 class UserTripsList extends React.Component {
   constructor(props) {
@@ -46,7 +47,7 @@ class UserTripsList extends React.Component {
       <div
         id="scrollableDiv"
         style={{
-          height: 340,
+          height: 400,
           overflow: 'auto',
         }}
       >
@@ -60,15 +61,19 @@ class UserTripsList extends React.Component {
         >
           {trips.map((item, index) => (
             <div style={{
-              height: 160,
+              height: 240,
               margin: 6,
               padding: 8
             }} key={index}>
-            <p>Departure date: {item["depart_date"]}</p>
-            <p>Comeback date: {item["comeback_date"]}</p>
-            <p>Departure location: {item["departure_location"]["city"]}</p>
-            <p>Destination location: {item["destination_location"] ? item["destination_location"]["city"] : ""}</p>
-            <Divider/>
+              <TripCard
+                trip_type={item["trip_type"]}
+                comeback_date={item["comeback_date"]}
+                depart_date={item["depart_date"]}
+                departure_location={item["departure_location"]["city"]}
+                destination_location={item["destination_location"]["city"]}
+                img={item["created_by"]["profile_pic"] === null ? '' : item["created_by"]["profile_pic"]}
+                username={item["created_by"]["username"]}
+                no_book={true}/>
             </div>
           ))}
         </InfiniteScroll>

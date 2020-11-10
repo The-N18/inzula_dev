@@ -9,7 +9,7 @@ import {
   Select
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { searchTrips } from "../../store/actions/searchBookings";
+import { searchBookings, filterBookings } from "../../store/actions/searchBookings";
 import styles from './searchbookingrequestsform.css';
 import { DateInput } from 'semantic-ui-calendar-react';
 import BookingCard from "../../containers/BookingCard/BookingCard";
@@ -24,8 +24,10 @@ class SearchBookingRequestsForm extends React.Component {
     departure_location: "",
     destination_location: "",
     travel_date: "",
+    product_category: null,
+    product_size: null,
     weight: [0, 100],
-    proposed_price: [0, 100]
+    proposed_price: [0, 100],
   };
 
   handleChange = e => {
@@ -40,43 +42,49 @@ class SearchBookingRequestsForm extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const { departure_location, destination_location, travel_date } = this.state;
+    const { departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight } = this.state;
     const { user_id, next_url, count } = this.props;
-    this.props.findTrip(departure_location, destination_location, travel_date, user_id, next_url, count);
+    this.props.searchBookings(departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight, user_id, next_url, count);
   };
 
   fetchMoreData = () => {
-    console.log("fetch more data")
-    const { departure_location, destination_location, travel_date } = this.state;
+    const { departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight } = this.state;
     const { user_id, next_url, count } = this.props;
-    this.props.findTrip(departure_location, destination_location, travel_date, user_id, next_url, count);
-  }
-
-  handleOnSliderChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
+    this.props.searchBookings(departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight, user_id, next_url, count);
   }
 
   handleOnPriceRangeChange = (val) => {
-    console.log(val);
     this.setState({proposed_price: val });
   }
 
   handleOnWeightRangeChange = (val) => {
-    console.log(val);
     this.setState({weight: val });
   }
 
   handleSelectChange = (e, data) => {
+    const { departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight } = this.state;
+    const { user_id, next_url, count } = this.props;
     this.setState({ [data.name]: data.value });
+    const pCat = data.name === "product_category" ? data.value : product_category;
+    const pSize = data.name === "product_size" ? data.value : product_size;
+    this.props.filterBookings(departure_location, destination_location, travel_date, pCat, pSize, proposed_price, weight, user_id, next_url, count);
   }
 
-  handleOnSliderAPICall = (e) => {
-    console.log("call the api");
+  handleOnSliderPriceAPICall = (e) => {
+    const { departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight } = this.state;
+    const { user_id, next_url, count } = this.props;
+    this.props.filterBookings(departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight, user_id, next_url, count);
+  }
+
+  handleOnSliderWeightAPICall = (e) => {
+    const { departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight } = this.state;
+    const { user_id, next_url, count } = this.props;
+    this.props.filterBookings(departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight, user_id, next_url, count);
   }
 
   render() {
     const { loading, error, bookings, next_url, count, api_been_called } = this.props;
-    const { departure_location, destination_location, travel_date, weight, proposed_price } = this.state;
+    const { departure_location, destination_location, travel_date, weight, proposed_price, product_category, product_size } = this.state;
     const sizeOptions = [
       { key: 'xxs', value: 'xxs', text: 'Extra Extra Small' },
       { key: 'xs', value: 'xs', text: 'Extra small' },
@@ -160,7 +168,7 @@ class SearchBookingRequestsForm extends React.Component {
                   value={proposed_price}
                   dots={true}
                   onChange={this.handleOnPriceRangeChange}
-                  onAfterChange={this.handleOnSliderAPICall}
+                  onAfterChange={this.handleOnSliderPriceAPICall}
                   tipFormatter={value => proposed_price}/>
               </div>
               </Grid.Column>
@@ -175,7 +183,7 @@ class SearchBookingRequestsForm extends React.Component {
                   value={weight}
                   dots={true}
                   onChange={this.handleOnWeightRangeChange}
-                  onAfterChange={this.handleOnSliderAPICall}
+                  onAfterChange={this.handleOnSliderWeightAPICall}
                   tipFormatter={value => weight}/>
               </div>
               </Grid.Column>
@@ -184,6 +192,7 @@ class SearchBookingRequestsForm extends React.Component {
               <Select
                 onChange={this.handleSelectChange}
                 name="product_size"
+                value={product_size}
                 fluid
                 placeholder='Product size'
                 options={sizeOptions} />
@@ -194,6 +203,7 @@ class SearchBookingRequestsForm extends React.Component {
               <Select
                 onChange={this.handleSelectChange}
                 name="product_category"
+                value={product_category}
                 fluid
                 placeholder='Product category'
                 options={categoryOptions} />
@@ -267,7 +277,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    findTrip: (departure_location, destination_location, travel_date, user_id, next_url, count) => dispatch(searchTrips(departure_location, destination_location, travel_date, user_id, next_url, count))
+    searchBookings: (departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight, user_id, next_url, count) => dispatch(searchBookings(departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight, user_id, next_url, count)),
+    filterBookings: (departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight, user_id, next_url, count) => dispatch(filterBookings(departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight, user_id, next_url, count)),
   };
 };
 

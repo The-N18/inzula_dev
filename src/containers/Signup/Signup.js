@@ -96,7 +96,7 @@ class RegistrationForm extends React.Component {
         verticalAlign="middle"
       >
         <Grid.Column style={{ maxWidth: 450 }}>
-          {discountText !== null ? <Header as="h2" textAlign="center" color="teal" className={"discountheader"}>
+          {discountText !== null ? <Header as="h4" textAlign="center" color="teal" className={"discountheader"}>
             {discountText}
           </Header> : <Header as="h2" className={"headercolor"} textAlign="center">
             Signup to Inzula
