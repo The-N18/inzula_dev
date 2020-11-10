@@ -63,9 +63,9 @@ class MyProfile extends React.Component {
 
     return (
       <Segment style={{ padding: "7em 0em" }} vertical>
-        <Message>
+        <Message className={"pushleft"}>
           You are in {profileType} mode. Switch?
-          <div className={"pushleft"}>
+          <div>
             <Radio
               toggle
               checked={profileType === "sender"}
