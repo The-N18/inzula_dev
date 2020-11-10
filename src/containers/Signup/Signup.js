@@ -10,7 +10,7 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { NavLink, Redirect } from "react-router-dom";
-import { authSignup } from "../../store/actions/auth";
+import { authSignup, authSetDiscountText } from "../../store/actions/auth";
 import styles from './signup.css';
 import Recaptcha from 'react-recaptcha';
 
@@ -220,7 +220,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     signup: (first_name, last_name, username, email, password1, password2, terms_conditions) =>
-      dispatch(authSignup(first_name, last_name, username, email, password1, password2, terms_conditions))
+      dispatch(authSignup(first_name, last_name, username, email, password1, password2, terms_conditions)),
+    setDiscountText: (discountText) => dispatch(authSetDiscountText(discountText)),
   };
 };
 
