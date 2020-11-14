@@ -145,7 +145,7 @@ class CustomLayout extends React.Component {
       />
       </a></li></span>) : (
         <li>
-          <a href="" className={"pad-13"}>
+          <a className={"pad-13"}>
             <Image bordered circular size='small' className={"profile-image"} src={profile_pic !== null && profile_pic !== "null" ? profile_pic : backend_url() + '/static/images/user_avatar.png'} />
           </a>
           <ul>
@@ -197,31 +197,31 @@ class CustomLayout extends React.Component {
             <input className="menu-btn" type="checkbox" id="menu-btn" />
             <label className="menu-icon" htmlFor="menu-btn"><span className="navicon"></span></label>
             <ul className="menu">
-              <li><a  className="red" href="#" onClick={this.handleOnClick.bind(this, '/signupdiscount')}>
+              <li><a  className="red" onClick={this.handleOnClick.bind(this, '/signupdiscount')}>
               <FormattedMessage
                 id="layout.discount"
                 defaultMessage="15% discount"
               /></a></li>
-              <li><a href="#" onClick={this.handleOnClick.bind(this, '/dispatch')}>
+              <li><a onClick={this.handleOnClick.bind(this, '/dispatch')}>
               <FormattedMessage
                 id="layout.dispatch"
                 defaultMessage="Dispatch"
               />
               </a></li>
-              <li><a href="#" onClick={this.handleOnClick.bind(this, '/transport')}>
+              <li><a onClick={this.handleOnClick.bind(this, '/transport')}>
               <FormattedMessage
                 id="layout.transport"
                 defaultMessage="Transport"
               /></a></li>
               {authenticated ? (mobileMenu) :
               (<span>
-                <li><a href="#" onClick={this.handleOnModalOpen.bind(this, 'login')}>
+                <li><a onClick={this.handleOnModalOpen.bind(this, 'login')}>
                 <FormattedMessage
                   id="layout.login"
                   defaultMessage="Login"
                 />
                 </a></li>
-                <li><a href="#" onClick={this.handleOnModalOpen.bind(this, 'signup')}>
+                <li><a onClick={this.handleOnModalOpen.bind(this, 'signup')}>
                 <FormattedMessage
                   id="layout.signup"
                   defaultMessage="Sign up"
