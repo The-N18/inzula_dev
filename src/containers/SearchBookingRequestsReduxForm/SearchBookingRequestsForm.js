@@ -22,6 +22,7 @@ import Multiselect from 'react-widgets/lib/Multiselect'
 import MultiSelect from "@khanacademy/react-multi-select";
 import 'react-widgets/dist/css/react-widgets.css';
 import { Field, reduxForm } from 'redux-form'
+import { withRouter } from "react-router-dom";
 
 class SearchBookingRequestsForm extends React.Component {
 
@@ -49,8 +50,8 @@ class SearchBookingRequestsForm extends React.Component {
                     destination_location: val['destination_location'] ? val['destination_location'] : ""});
     this.props.searchBookings(val['departure_location'], val['destination_location'], travel_date, product_category, product_size, proposed_price, weight, user_id, next_url, count);
     if(!inNewPage) {
-      window.location.href = '/search_bookings';
-      // this.props.history.push("/search_bookings");
+      // window.location.href = '/search_bookings';
+      this.props.history.push("/search_bookings");
     }
   };
 
@@ -322,7 +323,7 @@ SearchBookingRequestsForm.PropTypes = {
 //   mapDispatchToProps
 // )(SearchBookingRequestsForm);
 
-export default connect(
+export default withRouter(connect(
     mapStateToProps,
     mapDispatchToProps
-)(reduxForm({ form: "search_bookings" })(SearchBookingRequestsForm));
+)(reduxForm({ form: "search_bookings" })(SearchBookingRequestsForm)));
