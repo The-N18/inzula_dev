@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { backend_url } from "../../configurations";
+import { api_url } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 
@@ -59,7 +59,7 @@ export const getAlerts = (user_id, next_url, page_count) => {
   //   return dispatch => {
   //     dispatch(getAlertsStart());
   //     axios
-  //       .get(backend_url() + "/bookings/bookings_list", {
+  //       .get(api_url() + "/bookings/bookings_list", {
   //             params: {user_id: user_id}
   //           })
   //       .then(res => {

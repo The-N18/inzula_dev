@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { backend_url } from "../../configurations";
+import { api_url } from "../../configurations";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import {checkAuthTimeout} from "./auth";
 
@@ -36,7 +36,7 @@ export const closeModal = () => {
 export const bookTrip = (tripId, selectedBookings) => {
   return dispatch => {
     axios
-      .post(backend_url() + "/trips/add_bookings", {
+      .post(api_url() + "/trips/add_bookings", {
         tripId: tripId,
         selectedBookings: selectedBookings
       })

@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { backend_url } from "../../configurations";
+import { api_url } from "../../configurations";
 
 export const setActiveIndex = (activeIndex) => {
   return {

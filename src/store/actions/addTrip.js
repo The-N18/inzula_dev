@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { backend_url } from "../../configurations";
+import { api_url } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
 
@@ -33,7 +33,7 @@ export const tripAddition = (created_by, departure_location, destination_locatio
   return dispatch => {
     dispatch(addTripStart());
     axios
-      .post(backend_url() + "/trips/add_trip", {
+      .post(api_url() + "/trips/add_trip", {
         created_by: created_by,
         departure_location: departure_location,
         destination_location: destination_location,

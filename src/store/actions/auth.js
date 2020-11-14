@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { backend_url } from "../../configurations";
+import { api_url } from "../../configurations";
 import {clearUserInfo, setUserInfo} from "./userInfo";
 import { closeLoginModal } from "./loginModal";
 import { closeLoginParentModal } from "./loginParentModal";
@@ -83,7 +83,7 @@ export const checkAuthTimeout = expirationTime => {
    return dispatch => {
      dispatch(authStart());
      axios
-       .post(backend_url() + "/rest-auth/login/", {
+       .post(api_url() + "/rest-auth/login/", {
          username: username,
          password: password
        })
@@ -147,7 +147,7 @@ export const checkAuthTimeout = expirationTime => {
    return dispatch => {
      dispatch(authStart());
      axios
-       .post(backend_url() + "/rest-auth/registration/", {
+       .post(api_url() + "/rest-auth/registration/", {
          first_name: first_name,
          last_name: last_name,
          username: username,
@@ -233,7 +233,7 @@ export const checkAuthTimeout = expirationTime => {
    return dispatch => {
      dispatch(authStart());
      axios
-       .post(backend_url() + "/user/update_profile", data, config)
+       .post(api_url() + "/user/update_profile", data, config)
        .then(res => {
          const token = res.data.key;
          const userId = res.data.user_id;

@@ -146,8 +146,7 @@ class CustomLayout extends React.Component {
       </a></li></span>) : (
         <li>
           <a href="" className={"pad-13"}>
-            {/*<Image bordered circular size='small' className={"profile-image"} src={profile_pic !== null && profile_pic !== "null" ? backend_url() + profile_pic : backend_url() + '/static/images/user_avatar.png'} />*/}
-            <Image bordered circular size='small' className={"profile-image"} src={profile_pic !== null && profile_pic !== "null" ? profile_pic : backend_url() + '/static/images/user_avatar.png'} />
+            <Image bordered circular size='small' className={"profile-image"} src={profile_pic !== null && profile_pic !== "null" ? backend_url() + profile_pic : backend_url() + '/static/images/user_avatar.png'} />
           </a>
           <ul>
               <li><a onClick={this.handleOnProfileClick.bind(this)}>
