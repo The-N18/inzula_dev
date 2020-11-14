@@ -49,7 +49,7 @@ class UpdateProfileView(CreateAPIView):
         email = request.data["email"]
         country = request.data["country"]
         passport_number = request.data["passport_number"]
-        picture = request.FILES.get('profile_pic')
+        picture = request.FILES.get('profile_pic', None)
 
         userprofile = None
         if user_profile_id:
