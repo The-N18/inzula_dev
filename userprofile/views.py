@@ -50,8 +50,6 @@ class UpdateProfileView(CreateAPIView):
         country = request.data["country"]
         passport_number = request.data["passport_number"]
         picture = request.FILES.get('profile_pic')
-        print("picture")
-        print(picture)
 
         userprofile = None
         if user_profile_id:
@@ -63,8 +61,6 @@ class UpdateProfileView(CreateAPIView):
             userprofile.phone_number=phone_number
             userprofile.country=country
             userprofile.passport_number=passport_number
-            # userprofile.update(profile_pic=picture, phone_number=phone_number, country=country, passport_number=passport_number)
-            # userprofile.user.update(first_name=first_name, last_name=last_name, email=email)
             userprofile.user.first_name=first_name
             userprofile.user.last_name=last_name
             userprofile.user.email=email
