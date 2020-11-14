@@ -13,11 +13,19 @@ import { backend_url } from "../../configurations";
 import styles from './layout.css';
 import $ from "jquery";
 import Footer from "../../containers/Footer/Footer";
+import SignupParentModal from "../../containers/SignupParentModal/SignupParentModal";
+import SignupModal from "../../containers/SignupReduxFormModal/SignupModal";
+
+import LoginParentModal from "../../containers/LoginParentModal/LoginParentModal";
+import LoginModal from "../../containers/LoginReduxFormModal/LoginModal";
+
 import LanguageSwitcherSelector from "../../containers/LanguageSwitcherSelector/LanguageSwitcherSelector";
 import 'react-redux-notify/dist/ReactReduxNotify.css';
 import { Notify } from 'react-redux-notify';
 import {FormattedMessage} from 'react-intl'
 import { setActiveIndex } from "../../store/actions/myProfile";
+import { openSignupParentModal } from "../../store/actions/signupParentModal";
+import { openLoginParentModal } from "../../store/actions/loginParentModal";
 
 
 class CustomLayout extends React.Component {
@@ -85,6 +93,19 @@ class CustomLayout extends React.Component {
 
   changeLanguageHandler = (lang) => {
     this.props.setLang(lang);
+  }
+
+  handleOnModalOpen = (item) => {
+    switch (item) {
+      case "signup":
+        this.props.openSignupModal();
+        break;
+      case "login":
+        this.props.openLoginModal();
+        break;
+      default:
+
+    }
   }
 
 
@@ -165,6 +186,10 @@ class CustomLayout extends React.Component {
     return (
       <Container className="main">
       <Notify />
+      <SignupParentModal />
+      <SignupModal />
+      <LoginParentModal />
+      <LoginModal />
         <header className="menuheader">
           <div>
             <a href="" className="logo" onClick={this.handleOnClick.bind(this, '/')}>
@@ -173,31 +198,31 @@ class CustomLayout extends React.Component {
             <input className="menu-btn" type="checkbox" id="menu-btn" />
             <label className="menu-icon" htmlFor="menu-btn"><span className="navicon"></span></label>
             <ul className="menu">
-              <li><a  className="red" href="" onClick={this.handleOnClick.bind(this, '/signupdiscount')}>
+              <li><a  className="red" href="#" onClick={this.handleOnClick.bind(this, '/signupdiscount')}>
               <FormattedMessage
                 id="layout.discount"
                 defaultMessage="15% discount"
               /></a></li>
-              <li><a href="" onClick={this.handleOnClick.bind(this, '/dispatch')}>
+              <li><a href="#" onClick={this.handleOnClick.bind(this, '/dispatch')}>
               <FormattedMessage
                 id="layout.dispatch"
                 defaultMessage="Dispatch"
               />
               </a></li>
-              <li><a href="" onClick={this.handleOnClick.bind(this, '/transport')}>
+              <li><a href="#" onClick={this.handleOnClick.bind(this, '/transport')}>
               <FormattedMessage
                 id="layout.transport"
                 defaultMessage="Transport"
               /></a></li>
               {authenticated ? (mobileMenu) :
               (<span>
-                <li><a href="" onClick={this.handleOnClick.bind(this, '/login')}>
+                <li><a href="#" onClick={this.handleOnModalOpen.bind(this, 'login')}>
                 <FormattedMessage
                   id="layout.login"
                   defaultMessage="Login"
                 />
                 </a></li>
-                <li><a href="" onClick={this.handleOnClick.bind(this, '/signup')}>
+                <li><a href="#" onClick={this.handleOnModalOpen.bind(this, 'signup')}>
                 <FormattedMessage
                   id="layout.signup"
                   defaultMessage="Sign up"
@@ -232,7 +257,9 @@ const mapDispatchToProps = dispatch => {
   return {
     logout: () => dispatch(logout()),
     clearUserInfo: () => dispatch(clearUserInfo()),
-    setActiveIndex: (activeIndex) => dispatch(setActiveIndex(activeIndex))
+    setActiveIndex: (activeIndex) => dispatch(setActiveIndex(activeIndex)),
+    openSignupModal: () => dispatch(openSignupParentModal()),
+    openLoginModal: () => dispatch(openLoginParentModal()),
   };
 };
 

@@ -20,6 +20,10 @@ import userTripsReducer from "./store/reducers/userTrips";
 import userReservationsReducer from "./store/reducers/userReservations";
 import selectReservationsModalReducer from "./store/reducers/selectReservationsModal";
 import userAlertsReducer from "./store/reducers/userAlerts";
+import signupParentModalReducer from "./store/reducers/signupParentModal";
+import loginParentModalReducer from "./store/reducers/loginParentModal";
+import signupModalReducer from "./store/reducers/signupModal";
+import loginModalReducer from "./store/reducers/loginModal";
 import { reducer as formReducer } from 'redux-form'
 import axios from 'axios';
 
@@ -40,7 +44,11 @@ const rootReducer = combineReducers({
   userTrips: userTripsReducer,
   userReservations: userReservationsReducer,
   userAlerts: userAlertsReducer,
-  notifications: notifyReducer
+  notifications: notifyReducer,
+  signupParentModal: signupParentModalReducer,
+  loginParentModal: loginParentModalReducer,
+  signupModal: signupModalReducer,
+  loginModal: loginModalReducer,
 });
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";

@@ -1,0 +1,51 @@
+.search-button {
+  margin: auto;
+}
+
+.signupparentcard {
+  /* width: auto !important; */
+  padding: 20px !important;
+  transition: 0.3s !important;
+  max-width: 450px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.signupparentcard:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2) !important;
+  transition: 0.3s !important;
+}
+
+.signupparent-button {
+  margin: 13px auto !important;
+}
+
+/* .signupparent-segment {
+  border: 0px !important;
+  padding: 0em 15em 0em 15em !important;
+  max-width: 450px !important;
+} */
+
+.signupparent-segment {
+  border: 0px !important;
+  padding: 0em 15em 0em 15em !important;
+}
+
+
+@media only screen and (min-width: 768px) and (max-width: 950px) {
+  .signupparent-segment {
+    padding: 0em 8em 0em 8em !important;
+  }
+}
+
+@media only screen and (min-width: 361px) and (max-width: 767px) {
+  .signupparent-segment {
+    padding: 0em 4em 0em 4em !important;
+  }
+}
+
+@media only screen and (min-width: 0px) and (max-width: 360px) {
+  .signupparent-segment {
+    padding: 0em 1em 0em 1em !important;
+  }
+}

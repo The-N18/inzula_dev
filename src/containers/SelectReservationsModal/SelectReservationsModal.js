@@ -23,7 +23,7 @@ import { backend_url } from "../../configurations";
 import ImageUploader from 'react-images-upload';
 import { DateInput } from 'semantic-ui-calendar-react';
 import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
-import { openModal, closeModal } from "../../store/actions/selectReservationsModal";
+import { openModal, closeModal, bookTrip } from "../../store/actions/selectReservationsModal";
 import TripsReservationsList from "../../containers/TripsReservationsList/TripsReservationsList";
 import UserReservationsList from "../../containers/UserReservationsList/UserReservationsList";
 import { openModalForTrip } from "../../store/actions/sendPackageModal";
@@ -41,6 +41,12 @@ class SelectReservationsModal extends React.Component {
   handleBook = () => {
     const {trip_id} = this.props;
     this.props.openPackageModalForTrip(trip_id);
+  }
+
+  handleBookTripWithReservations = () => {
+    console.log("book?");
+    const {tripId, selected} = this.props;
+    this.props.bookTrip(tripId, selected);
   }
 
   render() {
@@ -68,6 +74,9 @@ class SelectReservationsModal extends React.Component {
           <UserReservationsList selectable={true}/>
       </Modal.Content>
       <Modal.Actions>
+        <Button color='green' onClick={this.handleBookTripWithReservations.bind(this)}>
+          Book with these reservations <Icon name='check' />
+        </Button>
         <Button negative onClick={() => this.props.closePackageModal()} primary>
           Cancel <Icon name='cancel right' />
         </Button>
@@ -81,6 +90,7 @@ const mapStateToProps = state => {
   return {
     open: state.selectReservationsModal.open,
     tripId: state.selectReservationsModal.tripId,
+    selected: state.selectReservationsModal.selected
   };
 };
 
@@ -89,6 +99,7 @@ const mapDispatchToProps = dispatch => {
     openPackageModal: () => dispatch(openModal()),
     closePackageModal: () => dispatch(closeModal()),
     openPackageModalForTrip: (tripId) => dispatch(openModalForTrip(tripId)),
+    bookTrip: (tripId, selected) => dispatch(bookTrip(tripId, selected)),
   };
 };
 

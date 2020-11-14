@@ -14,6 +14,7 @@ from rest_auth.registration.app_settings import RegisterSerializer, register_per
 from rest_framework.generics import CreateAPIView, ListAPIView, GenericAPIView
 from django.db import transaction
 from userprofile.models import Location, UserProfile
+from booking.models import BookingRequest
 from rest_framework import generics
 from utils.pagination import SearchResultsSetPagination
 
@@ -74,6 +75,40 @@ class TripView(CreateAPIView):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data,
                         status=status.HTTP_201_CREATED,
+                        headers=headers)
+
+
+class AddBookingsToTripView(CreateAPIView):
+    serializer_class = TripSerializer
+    permission_classes = register_permission_classes()
+
+    def dispatch(self, *args, **kwargs):
+        return super(AddBookingsToTripView, self).dispatch(*args, **kwargs)
+
+    def get_response_data(self, user):
+        if getattr(settings, 'REST_USE_JWT', False):
+            data = {
+                'user': user,
+                'token': self.token
+            }
+            return JWTSerializer(data).data
+        else:
+            return TokenSerializer(user.auth_token).data
+
+    def create(self, request, *args, **kwargs):
+        tripId = request.data["tripId"]
+        bookingListIds = request.data["selectedBookings"]
+        trip = None
+        if tripId is not None:
+            trip = Trip.objects.get(pk=tripId)
+            for item in bookingListIds:
+                bookingRequest = BookingRequest.objects.get(pk=item)
+                bookingRequest.trip = trip
+                bookingRequest.save()
+        serializer = self.get_serializer(trip)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data,
+                        status=status.HTTP_200_OK,
                         headers=headers)
 
 

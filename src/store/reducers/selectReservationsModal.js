@@ -4,11 +4,18 @@ import { updateObject } from "../utility";
 const initialState = {
   open: false,
   tripId: null,
+  selected: []
 };
 
 const openModal = (state, action) => {
   return updateObject(state, {
     open: true,
+  });
+};
+
+const selectBooking = (state, action) => {
+  return updateObject(state, {
+    selected: action.selected,
   });
 };
 
@@ -36,6 +43,8 @@ const reducer = (state = initialState, action) => {
       return closeModal(state, action);
     case actionTypes.SELECT_RESERVATIONS_OPEN_MODAL_FOR_TRIP:
       return openModalSelectReservations(state, action);
+    case actionTypes.MODAL_SELECT_RESERVATION:
+      return selectBooking(state, action);
     default:
       return state;
   }

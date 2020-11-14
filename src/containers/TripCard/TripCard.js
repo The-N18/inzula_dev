@@ -39,7 +39,8 @@ class TripCard extends React.Component {
         <Grid.Row columns={3}>
           <Grid.Column mobile={16} tablet={8} computer={4}>
             <Segment basic textAlign="right">
-              <Image centered src={backend_url() + img} rounded bordered verticalAlign="middle" size="massive"/>
+              {/*<Image centered src={backend_url() + img} rounded bordered verticalAlign="middle" size="massive"/>*/}
+              <Image centered src={img} rounded bordered verticalAlign="middle" size="massive"/>
             </Segment>
           </Grid.Column>
           <Grid.Column mobile={16} tablet={8} computer={9}>

@@ -17,11 +17,11 @@ import SignupParentWithDiscount from "./containers/SignupParentWithDiscount/Sign
 
 const BaseRouter = () => (
   <Hoc>
-    <Route path="/login" component={LoginParent} />
+    {/*<Route path="/login" component={LoginParent} />
     <Route path="/signup" component={SignupParent} />
     <Route path="/signupdiscount" component={SignupParentWithDiscount} />
     <Route path="/loginemail" component={LoginRedux} />
-    <Route path="/signupemail" component={SignupRedux} />
+    <Route path="/signupemail" component={SignupRedux} />*/}
     <Route path="/profile" component={MyProfile} />
     <Route path="/transport" component={Transport} />
     <Route path="/dispatch" component={SendPage} />

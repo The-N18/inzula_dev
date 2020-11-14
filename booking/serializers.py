@@ -20,7 +20,7 @@ class ProductSerializer(serializers.ModelSerializer):
         "departure_location", "pickup_location", "destination_location",
         "space", "weight", "price", "created_by", "creation_date",
         "name", "description", "recipient_name", "recipient_phone_number",
-        "product_category", "proposed_price", "images"]
+        "product_category", "proposed_price", "images", "pk"]
 
     def get_images(self, obj):
         images = ProductImage.objects.filter(product=obj)
@@ -34,4 +34,4 @@ class BookingRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookingRequest
         fields = ["request_by", "trip", "product",
-        "confirmed_by_sender", "made_on", "collector_id"]
+        "confirmed_by_sender", "made_on", "collector_id", "pk"]

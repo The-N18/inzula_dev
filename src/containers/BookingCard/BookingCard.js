@@ -11,14 +11,28 @@ import {
 import { connect } from "react-redux";
 import styles from './bookingcard.css';
 import { backend_url } from "../../configurations";
+import { selectBooking } from "../../store/actions/selectReservationsModal";
 
 
 class BookingCard extends React.Component {
 
+  handleToggleCheckbox = (pk) => {
+    console.log("Selected booking " + pk);
+    const {selected} = this.props;
+    const selectedBookings = [...selected];
+    const index = selectedBookings.indexOf(pk);
+    if(index === -1) {
+      selectedBookings.push(pk)
+    } else {
+      selectedBookings.splice(index, 1);
+    }
+    console.log(selectedBookings)
+    this.props.selectBooking(selectedBookings);
+  }
 
   render() {
 
-    const {title, description, img, arrival_date, departure_location, pickup_location, selectable} = this.props;
+    const {pk, title, description, img, arrival_date, departure_location, pickup_location, selectable} = this.props;
 
     return (
       <Card raised fluid centered className={"home-text-img-card-grid"}>
@@ -26,7 +40,7 @@ class BookingCard extends React.Component {
         <Grid.Row columns={selectable ? 3: 2}>
         {selectable ? <Grid.Column mobile={1} tablet={1} computer={1}>
           <Segment compact basic>
-            <Checkbox />
+            <Checkbox onChange={this.handleToggleCheckbox.bind(this, pk)}/>
           </Segment>
         </Grid.Column> : ''}
         <Grid.Column mobile={16} tablet={16} computer={4}>
@@ -51,11 +65,15 @@ class BookingCard extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    selected: state.selectReservationsModal.selected
+  };
 };
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    selectBooking: (selected) => dispatch(selectBooking(selected))
+  };
 };
 
 BookingCard.propTypes = {

@@ -67,6 +67,7 @@ class UserAlertsList extends React.Component {
             }} key={index}>
               <BookingCard
                 selectable={selectable}
+                pk={item["product"]["pk"]}
                 title={item["product"]["name"]}
                 arrival_date={item["product"]["arrival_date"]}
                 description={item["product"]["description"]}
