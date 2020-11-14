@@ -156,28 +156,28 @@ class BookingRequestSearchView(generics.ListAPIView):
         arrival_date = self.request.query_params.get('delivery_date', '')
         products = Product.objects.all()
         if departure_location:
-            products.filter(departure_location__city__contains=departure_location)
+            products = products.filter(departure_location__city__contains=departure_location)
         if destination_location:
-            products.filter(pickup_location__city__contains=destination_location)
+            products = products.filter(pickup_location__city__contains=destination_location)
         if len(weight) > 0:
             q_objects = Q()
             for item in weight:
                 q_objects |= Q(weight=item)
-            products = Product.objects.filter(q_objects)
+            products = products.filter(q_objects)
         if len(product_category) > 0:
             q_objects = Q()
             for item in product_category:
                 q_objects |= Q(product_category=item)
-            products = Product.objects.filter(q_objects)
+            products = products.filter(q_objects)
         if len(proposed_price) > 0:
             q_objects = Q()
             for item in proposed_price:
                 q_objects |= Q(price=item)
-            products = Product.objects.filter(q_objects)
+            products = products.filter(q_objects)
         if len(product_size) > 0:
             q_objects = Q()
             for item in product_size:
                 q_objects |= Q(space=item)
-            products = Product.objects.filter(q_objects)
+            products = products.filter(q_objects)
         queryset = self.model.objects.filter(product__in=products)
         return queryset.order_by('-product')
