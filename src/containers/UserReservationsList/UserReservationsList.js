@@ -44,7 +44,7 @@ class UserReservationsList extends React.Component {
     const dataLength = reservations ? reservations.length : 0;
     return (
       <Segment basic className={"profile-tab-section"}>
-      <div
+      {reservations.length === 0 ? <div>You have no reservations</div> : <div
         id="scrollableDiv"
         style={{
           height: 400,
@@ -76,7 +76,7 @@ class UserReservationsList extends React.Component {
             </div>
           ))}
         </InfiniteScroll>
-      </div>
+      </div>}
 
       </Segment>
     );

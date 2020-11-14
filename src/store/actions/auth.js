@@ -2,6 +2,7 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { backend_url } from "../../configurations";
 import {clearUserInfo, setUserInfo} from "./userInfo";
+import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -50,6 +51,12 @@ export const logout = expirationTime => {
   localStorage.removeItem("userId");
   localStorage.removeItem("userProfileId");
   localStorage.removeItem("username");
+  localStorage.removeItem("first_name");
+  localStorage.removeItem("last_name");
+  localStorage.removeItem("email");
+  localStorage.removeItem("phone_number");
+  localStorage.removeItem("profile_pic");
+
   return dispatch => {
       type: actionTypes.AUTH_LOGOUT
     };
@@ -68,84 +75,204 @@ export const checkAuthTimeout = expirationTime => {
    };
  };
 
-export const authLogin = (username, password) => {
-  return dispatch => {
-    dispatch(authStart());
-    axios
-      .post(backend_url() + "/rest-auth/login/", {
-        username: username,
-        password: password
-      })
-      .then(res => {
-        console.log(res.data);
-        console.log(res.headers);
-        const token = res.data.key;
-        const userId = res.data.user_id;
-        const userProfileId = res.data.user_profile_id;
-        const username = res.data.username;
-        const first_name = res.data.first_name;
-        const last_name = res.data.last_name;
-        const email = res.data.email;
-        const date_joined = res.data.date_joined;
-        const phone_number = res.data.phone_number;
-        const profile_pic = res.data.profile_pic;
-        const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
-        localStorage.setItem("token", token);
-        localStorage.setItem("expirationDate", expirationDate);
-        localStorage.setItem("userId", userId);
-        localStorage.setItem("username", username);
-        localStorage.setItem("userProfileId", userProfileId);
-        dispatch(authSuccess(token));
-        dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic));
-        dispatch(checkAuthTimeout(3600));
-      })
-      .catch(err => {
-        dispatch(authFail(err));
-      });
-  };
-};
+ export const authLogin = (username, password) => {
+   return dispatch => {
+     dispatch(authStart());
+     axios
+       .post(backend_url() + "/rest-auth/login/", {
+         username: username,
+         password: password
+       })
+       .then(res => {
+         console.log(res.data);
+         console.log(res.headers);
+         const token = res.data.key;
+         const userId = res.data.user_id;
+         const userProfileId = res.data.user_profile_id;
+         const username = res.data.username;
+         const first_name = res.data.first_name;
+         const last_name = res.data.last_name;
+         const email = res.data.email;
+         const date_joined = res.data.date_joined;
+         const phone_number = res.data.phone_number;
+         const profile_pic = res.data.profile_pic;
+         const passport_number = res.data.passport_number;
+         const country = res.data.country;
+         const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
+         localStorage.setItem("token", token);
+         localStorage.setItem("expirationDate", expirationDate);
+         localStorage.setItem("userId", userId);
+         localStorage.setItem("username", username);
+         localStorage.setItem("userProfileId", userProfileId);
+         localStorage.setItem("first_name", first_name);
+         localStorage.setItem("last_name", last_name);
+         localStorage.setItem("email", email);
+         localStorage.setItem("phone_number", phone_number);
+         localStorage.setItem("profile_pic", profile_pic);
+         localStorage.setItem("passport_number", passport_number);
+         localStorage.setItem("country", country);
+         dispatch(authSuccess(token));
+         dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country));
+         dispatch(checkAuthTimeout(3600));
+         dispatch(createNotification({
+           message: "Login successful.",
+           type: NOTIFICATION_TYPE_SUCCESS,
+           duration: 10000,
+           canDismiss: true,
+         }));
+       })
+       .catch(err => {
+         dispatch(authFail(err));
+         console.log(err.response.data)
+         dispatch(createNotification({
+           message: "Login failed. Please check your username and password.",
+           type: NOTIFICATION_TYPE_ERROR,
+           duration: 10000,
+           canDismiss: true,
+         }));
+       });
+   };
+ };
 
 
-export const authSignup = (first_name, last_name, username, email, password1, password2, terms_conditions) => {
-  console.log("in authSignup");
-  return dispatch => {
-    dispatch(authStart());
-    axios
-      .post(backend_url() + "/rest-auth/registration/", {
-        first_name: first_name,
-        last_name: last_name,
-        username: username,
-        email: email,
-        password1: password1,
-        password2: password2,
-        terms_conditions: terms_conditions
-      })
-      .then(res => {
-        const token = res.data.key;
-        const userId = res.data.user_id;
-        const username = res.data.username;
-        const userProfileId = res.data.user_profile_id;
-        const first_name = res.data.first_name;
-        const last_name = res.data.last_name;
-        const email = res.data.email;
-        const date_joined = res.data.date_joined;
-        const phone_number = res.data.phone_number;
-        const profile_pic = res.data.profile_pic;
-        const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
-        localStorage.setItem("token", token);
-        localStorage.setItem("expirationDate", expirationDate);
-        localStorage.setItem("userId", userId);
-        localStorage.setItem("username", username);
-        localStorage.setItem("userProfileId", userProfileId);
-        dispatch(authSuccess(token));
-        dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic));
-        dispatch(checkAuthTimeout(3600));
-      })
-      .catch(err => {
-        dispatch(authFail(err));
-      });
-  };
-};
+
+ export const authSignup = (first_name, last_name, username, email, password1, password2, terms_conditions) => {
+   console.log("in authSignup");
+   return dispatch => {
+     dispatch(authStart());
+     axios
+       .post(backend_url() + "/rest-auth/registration/", {
+         first_name: first_name,
+         last_name: last_name,
+         username: username,
+         email: email,
+         password1: password1,
+         password2: password2,
+         terms_conditions: terms_conditions
+       })
+       .then(res => {
+         const token = res.data.key;
+         const userId = res.data.user_id;
+         const username = res.data.username;
+         const userProfileId = res.data.user_profile_id;
+         const first_name = res.data.first_name;
+         const last_name = res.data.last_name;
+         const email = res.data.email;
+         const date_joined = res.data.date_joined;
+         const phone_number = res.data.phone_number;
+         const profile_pic = res.data.profile_pic;
+         const passport_number = res.data.passport_number;
+         const country = res.data.country;
+         const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
+         localStorage.setItem("token", token);
+         localStorage.setItem("expirationDate", expirationDate);
+         localStorage.setItem("userId", userId);
+         localStorage.setItem("username", username);
+         localStorage.setItem("userProfileId", userProfileId);
+         localStorage.setItem("first_name", first_name);
+         localStorage.setItem("last_name", last_name);
+         localStorage.setItem("email", email);
+         localStorage.setItem("phone_number", phone_number);
+         localStorage.setItem("profile_pic", profile_pic);
+         localStorage.setItem("passport_number", passport_number);
+         localStorage.setItem("country", country);
+         dispatch(authSuccess(token));
+         dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country));
+         dispatch(checkAuthTimeout(3600));
+         dispatch(createNotification({
+           message: "Signup and Login successful.",
+           type: NOTIFICATION_TYPE_SUCCESS,
+           duration: 10000,
+           canDismiss: true,
+         }));
+       })
+       .catch(err => {
+         dispatch(authFail(err));
+         dispatch(createNotification({
+           message: "Signup failed. Please check your information.",
+           type: NOTIFICATION_TYPE_ERROR,
+           duration: 10000,
+           canDismiss: true,
+         }));
+       });
+   };
+ };
+
+ export const updateUserProfile = (first_name, last_name, phone_number, email, country, passport_number, profile_pic) => {
+   console.log("in updateProfile");
+   console.log(profile_pic);
+   const config = {
+             headers: { 'content-type': 'multipart/form-data' }
+           };
+   let data2 = {
+     user_id: localStorage.getItem("userId"),
+     user_profile_id: localStorage.getItem("userProfileId"),
+     first_name: first_name,
+     last_name: last_name,
+     phone_number: phone_number,
+     email: email,
+     country: country,
+     passport_number: passport_number,
+   }
+   let data = new FormData();
+   for( let key in data2 ) {
+     data.append(key, data2[key]);
+   }
+   console.log(profile_pic[0]);
+   if(profile_pic && profile_pic[0] && profile_pic !== null && profile_pic !== "") {
+     data.append('profile_pic', profile_pic[0], profile_pic[0]['name']);
+   }
+   return dispatch => {
+     dispatch(authStart());
+     axios
+       .post(backend_url() + "/user/update_profile", data, config)
+       .then(res => {
+         const token = res.data.key;
+         const userId = res.data.user_id;
+         const username = res.data.username;
+         const userProfileId = res.data.user_profile_id;
+         const first_name = res.data.first_name;
+         const last_name = res.data.last_name;
+         const email = res.data.email;
+         const date_joined = res.data.date_joined;
+         const phone_number = res.data.phone_number;
+         const profile_pic = res.data.profile_pic;
+         const passport_number = res.data.passport_number;
+         const country = res.data.country;
+         const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
+         localStorage.setItem("token", token);
+         localStorage.setItem("expirationDate", expirationDate);
+         localStorage.setItem("userId", userId);
+         localStorage.setItem("username", username);
+         localStorage.setItem("userProfileId", userProfileId);
+         localStorage.setItem("first_name", first_name);
+         localStorage.setItem("last_name", last_name);
+         localStorage.setItem("email", email);
+         localStorage.setItem("phone_number", phone_number);
+         localStorage.setItem("profile_pic", profile_pic);
+         localStorage.setItem("passport_number", passport_number);
+         localStorage.setItem("country", country);
+         dispatch(authSuccess(token));
+         dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country));
+         dispatch(checkAuthTimeout(3600));
+         dispatch(createNotification({
+           message: "Profile updated successfully",
+           type: NOTIFICATION_TYPE_SUCCESS,
+           duration: 10000,
+           canDismiss: true,
+         }));
+       })
+       .catch(err => {
+         dispatch(authFail(err));
+         dispatch(createNotification({
+           message: "Failed to update profile. Check your entry",
+           type: NOTIFICATION_TYPE_ERROR,
+           duration: 10000,
+           canDismiss: true,
+         }));
+       });
+   };
+ };
 
 export const authCheckState = () => {
    return dispatch => {
@@ -153,6 +280,13 @@ export const authCheckState = () => {
      const userId = localStorage.getItem("userId");
      const userProfileId = localStorage.getItem("userProfileId");
      const username = localStorage.getItem("username");
+     const first_name = localStorage.getItem("first_name");
+     const last_name = localStorage.getItem("last_name");
+     const email = localStorage.getItem("email");
+     const phone_number = localStorage.getItem("phone_number");
+     const profile_pic = localStorage.getItem("profile_pic");
+     const passport_number = localStorage.getItem("passport_number");
+     const country = localStorage.getItem("country");
      console.log(token);
      if (token === undefined) {
        dispatch(logout());
@@ -162,7 +296,7 @@ export const authCheckState = () => {
          dispatch(logout());
        } else {
          dispatch(authSuccess(token));
-         dispatch(setUserInfo(userId, username, userProfileId, null, null, null, null, null, null));
+         dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, null, phone_number, profile_pic, passport_number, country));
          dispatch(
            checkAuthTimeout(
              (expirationDate.getTime() - new Date().getTime()) / 1000

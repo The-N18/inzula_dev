@@ -2,6 +2,7 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { backend_url } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
+import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -46,6 +47,12 @@ export const getReservations = (user_id, next_url, page_count) => {
         })
         .catch(err => {
           dispatch(getReservationsFail(err));
+          dispatch(createNotification({
+            message: "Failed to get your reservations",
+            type: NOTIFICATION_TYPE_ERROR,
+            duration: 10000,
+            canDismiss: true,
+          }));
         });
     };
   } else {
@@ -62,6 +69,12 @@ export const getReservations = (user_id, next_url, page_count) => {
         })
         .catch(err => {
           dispatch(getReservationsFail(err));
+          dispatch(createNotification({
+            message: "Failed to get your reservations",
+            type: NOTIFICATION_TYPE_ERROR,
+            duration: 10000,
+            canDismiss: true,
+          }));
         });
     };
   }

@@ -48,6 +48,8 @@ class UserProfile(models.Model):
     settings = models.ForeignKey(UserSettings, on_delete=models.PROTECT, related_name='+', null=True, blank=True)
     phone_number = models.IntegerField(default=0, null=True, blank=True)
     pay_mode = models.CharField(max_length=50, null=True, blank=True)
+    passport_number = models.CharField(max_length=50, null=True, blank=True)
+    country = models.CharField(max_length=50, null=True, blank=True)
     user_type = models.CharField(max_length=50, choices=USER_TYPE_OPTIONS, null=True, blank=True)
     id_document = models.FileField(upload_to='uploads/id_documents/', null=True, blank=True)
     profile_pic = models.ImageField(upload_to='uploads/profile_images/', blank=True, null=True)

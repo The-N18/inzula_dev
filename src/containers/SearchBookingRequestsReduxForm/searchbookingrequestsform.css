@@ -1,0 +1,24 @@
+.transportpge {
+  width: auto !important;
+}
+
+.search-booking-requests-button {
+  margin: 0px auto !important;
+  display: block !important;
+}
+
+.range-style {
+  width: 150px;
+}
+
+.range-div {
+  width: 100%;
+}
+
+.select-div {
+  margin-top: 10px;
+}
+
+.select-item {
+  text-align: left !important;
+}

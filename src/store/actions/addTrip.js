@@ -2,6 +2,7 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { backend_url } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
+import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";

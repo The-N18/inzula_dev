@@ -65,10 +65,8 @@ export const searchBookings = (departure_location, destination_location, travel_
               travel_date: travel_date,
               product_category: product_category,
               product_size: product_size,
-              proposed_price_min: proposed_price[0],
-              proposed_price_max: proposed_price[1],
-              weight_min: weight[0],
-              weight_max: weight[1],
+              proposed_price: proposed_price,
+              weight: weight,
             }})
         .then(res => {
           console.log(res.data)

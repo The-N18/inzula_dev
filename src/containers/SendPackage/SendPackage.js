@@ -21,7 +21,7 @@ import PropTypes from "prop-types";
 import { backend_url } from "../../configurations";
 import ImageUploader from 'react-images-upload';
 import { DateInput } from 'semantic-ui-calendar-react';
-import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
+import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import { bookingAddition } from "../../store/actions/addBooking";
 
 class SendPackage extends React.Component {
@@ -122,14 +122,17 @@ class SendPackage extends React.Component {
     const { pictures, product_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, pickup_address, recipient_name,
     recipient_phone_number, terms_conditions, user_agreement} = this.state;
     const created_by = {"user": userId};
-    this.props.addRequest(tripId, created_by, pictures, product_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, pickup_address, recipient_name,
-    recipient_phone_number, terms_conditions, user_agreement);
-    createNotification({
-      message: 'Your request has been added',
-      type: NOTIFICATION_TYPE_SUCCESS,
-      duration: 0,
-      canDismiss: true,
-    });
+    if(userProfileId === null && userId === null) {
+      createNotification({
+        message: 'Please login to add your request',
+        type: NOTIFICATION_TYPE_WARNING,
+        duration: 10000,
+        canDismiss: true,
+      });
+    } else {
+      this.props.addRequest(tripId, created_by, pictures, product_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, pickup_address, recipient_name,
+      recipient_phone_number, terms_conditions, user_agreement);
+    }
     this.setState({ product_location: '', product_description: '',
                     product_name: '', product_category: '',
                     product_weight: '', product_size: '',

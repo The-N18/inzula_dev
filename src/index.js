@@ -18,22 +18,28 @@ import addbookingReducer from "./store/reducers/addBooking";
 import addTripReducer from "./store/reducers/addTrip";
 import userTripsReducer from "./store/reducers/userTrips";
 import userReservationsReducer from "./store/reducers/userReservations";
+import selectReservationsModalReducer from "./store/reducers/selectReservationsModal";
+import userAlertsReducer from "./store/reducers/userAlerts";
+import { reducer as formReducer } from 'redux-form'
 import axios from 'axios';
 
 const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
+  form: formReducer,
   auth: authReducer,
   appConfig: appConfigReducer,
   myProfile: myProfileReducer,
   searchBookings: searchbookingsReducer,
   searchTrips: searchtripsReducer,
   sendPackageModal: sendPackageModalReducer,
+  selectReservationsModal: selectReservationsModalReducer,
   userInfo: userinfoReducer,
   addBooking: addbookingReducer,
   addTrip: addTripReducer,
   userTrips: userTripsReducer,
   userReservations: userReservationsReducer,
+  userAlerts: userAlertsReducer,
   notifications: notifyReducer
 });
 

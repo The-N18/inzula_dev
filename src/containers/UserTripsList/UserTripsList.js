@@ -44,7 +44,7 @@ class UserTripsList extends React.Component {
     const dataLength = trips ? trips.length : 0;
     return (
       <Segment basic className={"profile-tab-section"}>
-      <div
+      {trips.length === 0 ? <div>You have no trips</div> : <div
         id="scrollableDiv"
         style={{
           height: 400,
@@ -77,7 +77,7 @@ class UserTripsList extends React.Component {
             </div>
           ))}
         </InfiniteScroll>
-      </div>
+      </div>}
 
       </Segment>
     );

@@ -125,7 +125,7 @@ class BookingRequestView(CreateAPIView):
         user_agreement=request.data["user_agreement"].capitalize(),
         created_by=userprofile)
         trip = None
-        if tripId is not None:
+        if tripId != None and tripId != 'null':
             trip = Trip.objects.get(pk=tripId)
         booking_request = BookingRequest.objects.create(product=product, request_by=userprofile, trip=trip)
         if len(pictures) > 0:
@@ -146,24 +146,38 @@ class BookingRequestSearchView(generics.ListAPIView):
 
     def get_queryset(self):
         departure_location = self.request.query_params.get('departure_location', '')
-
-        product_category = self.request.query_params.get('product_category', None)
-        product_size = self.request.query_params.get('product_size', None)
-        proposed_price_min = self.request.query_params.get('proposed_price_min', '')
-        proposed_price_max = self.request.query_params.get('proposed_price_max', '')
-        weight_min = self.request.query_params.get('weight_min', '')
-        weight_max = self.request.query_params.get('weight_max', '')
-
+        product_category = self.request.query_params.getlist('product_category[]', [])
+        product_size = self.request.query_params.getlist('product_size[]', [])
+        proposed_price = self.request.query_params.getlist('proposed_price[]', [])
+        weight = self.request.query_params.getlist('weight[]', [])
         departure_locations = Location.objects.filter(city__startswith=departure_location)
         destination_location = self.request.query_params.get('destination_location', '')
         destination_locations = Location.objects.filter(city__startswith=destination_location)
         arrival_date = self.request.query_params.get('delivery_date', '')
-        products = Product.objects.filter(departure_location__city__contains=departure_location, pickup_location__city__contains=destination_location)
-        if product_category is not None:
-            products = products.filter(product_category=product_category)
-        if product_size is not None:
-            products = products.filter(space=product_size)
-        if product_size is not None:
-            products = products.filter(space=product_size)
+        products = Product.objects.all()
+        if departure_location:
+            products.filter(departure_location__city__contains=departure_location)
+        if destination_location:
+            products.filter(pickup_location__city__contains=destination_location)
+        if len(weight) > 0:
+            q_objects = Q()
+            for item in weight:
+                q_objects |= Q(weight=item)
+            products = Product.objects.filter(q_objects)
+        if len(product_category) > 0:
+            q_objects = Q()
+            for item in product_category:
+                q_objects |= Q(product_category=item)
+            products = Product.objects.filter(q_objects)
+        if len(proposed_price) > 0:
+            q_objects = Q()
+            for item in proposed_price:
+                q_objects |= Q(price=item)
+            products = Product.objects.filter(q_objects)
+        if len(product_size) > 0:
+            q_objects = Q()
+            for item in product_size:
+                q_objects |= Q(space=item)
+            products = Product.objects.filter(q_objects)
         queryset = self.model.objects.filter(product__in=products)
         return queryset.order_by('-product')

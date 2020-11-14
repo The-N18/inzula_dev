@@ -11,6 +11,9 @@ const initialState = {
   date_joined: null,
   phone_number: null,
   profile_pic: null,
+  passport_number: null,
+  country: null,
+  profileData: {}
 };
 
 const setUserInfo = (state, action) => {
@@ -23,7 +26,18 @@ const setUserInfo = (state, action) => {
     email: action.email,
     date_joined: action.date_joined,
     phone_number: action.phone_number,
-    profile_pic: action.profile_pic
+    profile_pic: action.profile_pic,
+    passport_number: action.passport_number,
+    country: action.country,
+    profileData: {
+      first_name: action.first_name,
+      last_name: action.last_name,
+      email: action.email,
+      phone_number: action.phone_number,
+      passport_number: action.passport_number,
+      country: action.country,
+      userProfileId: action.userProfileId,
+    }
   });
 };
 
@@ -38,6 +52,9 @@ const clearUserInfo = (state, action) => {
     date_joined: null,
     phone_number: null,
     profile_pic: null,
+    passport_number: null,
+    country: null,
+    profileData: {}
   });
 };
 

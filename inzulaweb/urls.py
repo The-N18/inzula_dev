@@ -20,6 +20,7 @@ from django.conf import settings
 from django.conf.urls import url
 from trip.urls import urlpatterns as trip_urls
 from booking.urls import urlpatterns as booking_urls
+from userprofile.urls import urlpatterns as userprofile_urls
 from django.views.static import serve
 from django.conf.urls.static import static
 
@@ -31,6 +32,7 @@ urlpatterns = [
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
     path('trips/', include(trip_urls)),
     path('bookings/', include(booking_urls)),
+    path('user/', include(userprofile_urls)),
     path('admin/', admin.site.urls),
 ]
 

@@ -8,8 +8,11 @@ import {
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import styles from './myprofile.css';
-import ProfileTab from "../../containers/ProfileTab/ProfileTab";
+// import ProfileTab from "../../containers/ProfileTab/ProfileTab";
+import ProfileTab from "../../containers/ProfileTabReduxForm/ProfileTab";
 import TripsReservationsList from "../../containers/TripsReservationsList/TripsReservationsList";
+import UserAlertsList from "../../containers/UserAlertsList/UserAlertsList";
+import UserFinance from "../../containers/UserFinance/UserFinance";
 import { setActiveIndex } from "../../store/actions/myProfile";
 
 
@@ -53,19 +56,19 @@ class MyProfile extends React.Component {
       },
       {
         menuItem: { key: 'alerts', icon: 'bell', content: 'Alerts' },
-        render: () => <Tab.Pane attached={false}>Tab 4 Content</Tab.Pane>,
+        render: () => <Tab.Pane attached={false}><UserAlertsList/></Tab.Pane>,
       },
       {
         menuItem: { key: 'finances', icon: 'money bill alternate outline', content: 'Finances' },
-        render: () => <Tab.Pane attached={false}>Tab 5 Content</Tab.Pane>,
+        render: () => <Tab.Pane attached={false}><UserFinance/></Tab.Pane>,
       },
     ];
 
     return (
       <Segment style={{ padding: "7em 0em" }} vertical>
-        <Message className={"pushleft"}>
-          You are in {profileType} mode. Switch?
-          <div>
+        <Message>
+        You are in {profileType} mode. Switch?
+          <div className={"pushleft"}>
             <Radio
               toggle
               checked={profileType === "sender"}

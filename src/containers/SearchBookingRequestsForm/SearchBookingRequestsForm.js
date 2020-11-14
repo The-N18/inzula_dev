@@ -17,6 +17,7 @@ import BookingRequestCard from "../../containers/BookingRequestCard/BookingReque
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Slider, { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';
+import { Field, reduxForm } from 'redux-form'
 
 class SearchBookingRequestsForm extends React.Component {
 

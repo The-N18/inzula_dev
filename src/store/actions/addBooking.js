@@ -2,6 +2,7 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { backend_url } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
+import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -68,9 +69,21 @@ recipient_phone_number, terms_conditions, user_agreement) => {
         console.log(res.data)
         dispatch(checkAuthTimeout(3600));
         dispatch(addBookingSuccess(res.data));
+        dispatch(createNotification({
+          message: 'Your request has been added',
+          type: NOTIFICATION_TYPE_SUCCESS,
+          duration: 10000,
+          canDismiss: true,
+        }));
       })
       .catch(err => {
         dispatch(addBookingFail(err));
+        dispatch(createNotification({
+          message: 'Failed to add your request',
+          type: NOTIFICATION_TYPE_ERROR,
+          duration: 10000,
+          canDismiss: true,
+        }));
       });
   };
 }

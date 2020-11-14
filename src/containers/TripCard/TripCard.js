@@ -13,6 +13,7 @@ import { connect } from "react-redux";
 import styles from './tripcard.css';
 import { backend_url } from "../../configurations";
 import { openModalForTrip } from "../../store/actions/sendPackageModal";
+import { openModalSelectReservations } from "../../store/actions/selectReservationsModal";
 
 
 class TripCard extends React.Component {
@@ -24,7 +25,8 @@ class TripCard extends React.Component {
   handleBook = () => {
     console.log("book");
     const {trip_id} = this.props;
-    this.props.openPackageModalForTrip(trip_id);
+    // this.props.openPackageModalForTrip(trip_id);
+    this.props.openReservationsList(trip_id);
   }
 
   render() {
@@ -80,6 +82,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     openPackageModalForTrip: (tripId) => dispatch(openModalForTrip(tripId)),
+    openReservationsList: (tripId) => dispatch(openModalSelectReservations(tripId)),
   };
 };
 
