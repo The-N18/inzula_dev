@@ -44,7 +44,7 @@ class SignupParentModal extends React.Component {
           <Button fluid color='google plus' className={"signupparent-button"}>
             <Icon name='google plus' /> Sign up with Gmail
           </Button>
-          <Button fluid color='white' className={"signupparent-button"} onClick={() => this.props.openSignupModal()}>
+          <Button fluid className={"signupparent-button"} onClick={() => this.props.openSignupModal()}>
             <Icon name='mail' /> Use email address
           </Button>
         </Segment>
@@ -56,7 +56,7 @@ class SignupParentModal extends React.Component {
       </Modal.Content>
       <Modal.Actions>
         <Button negative onClick={() => this.props.closeSignupParentModal()} primary>
-          Cancel <Icon name='cancel right' />
+          Cancel <Icon name='cancel' />
         </Button>
       </Modal.Actions>
     </Modal>

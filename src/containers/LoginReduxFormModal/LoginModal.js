@@ -113,7 +113,7 @@ class LoginForm extends Component {
 </Modal.Content>
 <Modal.Actions>
   <Button negative onClick={() => this.props.closeLoginModal()} primary>
-    Cancel <Icon name='cancel right' />
+    Cancel <Icon name='cancel' />
   </Button>
 </Modal.Actions>
 </Modal>

@@ -155,7 +155,7 @@ class RegistrationForm extends Component {
 </Modal.Content>
 <Modal.Actions>
   <Button negative onClick={() => this.props.closeSignupModal()} primary>
-    Cancel <Icon name='cancel right' />
+    Cancel <Icon name='cancel' />
   </Button>
 </Modal.Actions>
 </Modal>

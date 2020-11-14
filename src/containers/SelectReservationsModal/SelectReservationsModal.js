@@ -78,7 +78,7 @@ class SelectReservationsModal extends React.Component {
           Book with these reservations <Icon name='check' />
         </Button>
         <Button negative onClick={() => this.props.closePackageModal()} primary>
-          Cancel <Icon name='cancel right' />
+          Cancel <Icon name='cancel' />
         </Button>
       </Modal.Actions>
     </Modal>
