@@ -2,6 +2,10 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { backend_url } from "../../configurations";
 import {clearUserInfo, setUserInfo} from "./userInfo";
+import { closeLoginModal } from "./loginModal";
+import { closeLoginParentModal } from "./loginParentModal";
+import { closeSignupModal } from "./signupModal";
+import { closeSignupParentModal } from "./signupParentModal";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
@@ -120,6 +124,8 @@ export const checkAuthTimeout = expirationTime => {
            duration: 10000,
            canDismiss: true,
          }));
+         dispatch(closeLoginModal());
+         dispatch(closeLoginParentModal());
        })
        .catch(err => {
          dispatch(authFail(err));
@@ -185,6 +191,8 @@ export const checkAuthTimeout = expirationTime => {
            duration: 10000,
            canDismiss: true,
          }));
+         dispatch(closeSignupModal());
+         dispatch(closeSignupParentModal());
        })
        .catch(err => {
          dispatch(authFail(err));

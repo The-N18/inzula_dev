@@ -185,11 +185,11 @@ class CustomLayout extends React.Component {
 
     return (
       <Container className="main">
-      <Notify />
       <SignupParentModal />
       <SignupModal />
       <LoginParentModal />
       <LoginModal />
+      <Notify />
         <header className="menuheader">
           <div>
             <a href="" className="logo" onClick={this.handleOnClick.bind(this, '/')}>
