@@ -14,10 +14,18 @@ export const getTripsStart = () => {
 };
 
 export const getTripsSuccess = (trips, next, count) => {
-  console.log("getTripsSuccess")
-  console.log(next)
   return {
     type: actionTypes.GET_TRIPS_SUCCESS,
+    trips: trips,
+    loading: false,
+    next_url: next,
+    count: count
+  };
+};
+
+export const getInitialTripsSuccess = (trips, next, count) => {
+  return {
+    type: actionTypes.GET_INITIAL_TRIPS_SUCCESS,
     trips: trips,
     loading: false,
     next_url: next,
@@ -31,6 +39,31 @@ export const getTripsFail = error => {
     error: error
   };
 };
+
+export const getInitialTrips = (user_id, next_url, page_count) => {
+  return dispatch => {
+    dispatch(getTripsStart());
+    axios
+      .get(api_url() + "/trips/trips_list", {
+            params: {user_id: user_id}
+          })
+      .then(res => {
+        console.log(res.data)
+        dispatch(checkAuthTimeout(3600));
+        dispatch(getInitialTripsSuccess(res.data["results"], res.data["next"], res.data["count"]));
+      })
+      .catch(err => {
+        dispatch(getTripsFail(err));
+        dispatch(createNotification({
+          message: "Failed to get your trips",
+          type: NOTIFICATION_TYPE_ERROR,
+          duration: 10000,
+          canDismiss: true,
+        }));
+      });
+  };
+}
+
 
 export const getTrips = (user_id, next_url, page_count) => {
   console.log("in searchTrips");

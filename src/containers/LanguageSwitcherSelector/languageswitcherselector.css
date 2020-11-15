@@ -54,7 +54,7 @@ h2{
 
 p{
   font-family: 'Roboto', sans-serif !important;
-  text-transform: uppercase !important;
+  /* text-transform: uppercase !important; */
   font-weight: 700 !important;
   &.small{
     font-size: 13px !important;

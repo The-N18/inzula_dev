@@ -13,6 +13,7 @@ import { authSignup, authSetDiscountText } from "../../store/actions/auth";
 import { connect } from "react-redux";
 import { validate } from "./validation";
 import Recaptcha from 'react-recaptcha';
+import {renderField} from "../../containers/ReduxForm/renderField";
 
 
 class RegistrationForm extends Component {
@@ -59,7 +60,7 @@ class RegistrationForm extends Component {
         placeholder="First name"
         label="First name"
         className={"custom-field"}
-        component={this.renderField.bind(this)}
+        component={renderField}
       />
       <Field
         name="last_name"
@@ -68,7 +69,7 @@ class RegistrationForm extends Component {
         placeholder="Last name"
         label="Last name"
         className={"custom-field"}
-        component={this.renderField.bind(this)}
+        component={renderField}
       />
       <Field
         name="username"
@@ -77,7 +78,7 @@ class RegistrationForm extends Component {
         placeholder="Username"
         label="Username"
         className={"custom-field"}
-        component={this.renderField.bind(this)}
+        component={renderField}
       />
         <Field
           name="email"
@@ -86,7 +87,7 @@ class RegistrationForm extends Component {
           placeholder="Email address"
           label="Email address"
           className={"custom-field"}
-          component={this.renderField.bind(this)}
+          component={renderField}
         />
         <Field
           name="password1"
@@ -95,7 +96,7 @@ class RegistrationForm extends Component {
           placeholder="Password"
           label="Password"
           className={"custom-field"}
-          component={this.renderField.bind(this)}
+          component={renderField}
         />
         <Field
           name="password2"
@@ -104,7 +105,7 @@ class RegistrationForm extends Component {
           placeholder="Confirm Password"
           label="Confirm Password"
           className={"custom-field"}
-          component={this.renderField.bind(this)}
+          component={renderField}
         />
         <div>
           <label htmlFor="terms_conditions">I agree to the Terms and Conditions</label>

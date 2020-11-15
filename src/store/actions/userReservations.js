@@ -14,10 +14,18 @@ export const getReservationsStart = () => {
 };
 
 export const getReservationsSuccess = (reservations, next, count) => {
-  console.log("getReservationsSuccess")
-  console.log(next)
   return {
     type: actionTypes.GET_RESERVATIONS_SUCCESS,
+    reservations: reservations,
+    loading: false,
+    next_url: next,
+    count: count
+  };
+};
+
+export const getInitialReservationsSuccess = (reservations, next, count) => {
+  return {
+    type: actionTypes.GET_INITIAL_RESERVATIONS_SUCCESS,
     reservations: reservations,
     loading: false,
     next_url: next,
@@ -31,6 +39,31 @@ export const getReservationsFail = error => {
     error: error
   };
 };
+
+export const getInitialReservations = (user_id, next_url, page_count) => {
+  return dispatch => {
+    dispatch(getReservationsStart());
+    axios
+      .get(api_url() + "/bookings/bookings_list", {
+            params: {user_id: user_id}
+          })
+      .then(res => {
+        console.log(res.data)
+        dispatch(checkAuthTimeout(3600));
+        dispatch(getInitialReservationsSuccess(res.data["results"], res.data["next"], res.data["count"]));
+      })
+      .catch(err => {
+        dispatch(getReservationsFail(err));
+        dispatch(createNotification({
+          message: "Failed to get your reservations",
+          type: NOTIFICATION_TYPE_ERROR,
+          duration: 10000,
+          canDismiss: true,
+        }));
+      });
+  };
+}
+
 
 export const getReservations = (user_id, next_url, page_count) => {
   console.log("in search Reservations");

@@ -27,6 +27,17 @@ const getTripsSuccess = (state, action) => {
   });
 };
 
+const getInitialTripsSuccess = (state, action) => {
+  console.log(action);
+  return updateObject(state, {
+    trips: action.trips,
+    error: null,
+    loading: false,
+    next_url: action.next_url,
+    count: action.count
+  });
+};
+
 const getTripsFail = (state, action) => {
   return updateObject(state, {
     error: action.error,
@@ -40,6 +51,8 @@ const reducer = (state = initialState, action) => {
       return getTripsStart(state, action);
     case actionTypes.GET_TRIPS_SUCCESS:
       return getTripsSuccess(state, action);
+    case actionTypes.GET_INITIAL_TRIPS_SUCCESS:
+      return getInitialTripsSuccess(state, action);
     case actionTypes.GET_TRIPS_FAIL:
       return getTripsFail(state, action);
     default:

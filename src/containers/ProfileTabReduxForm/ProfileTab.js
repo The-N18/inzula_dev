@@ -12,13 +12,15 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './profiletab.css';
-import { backend_url } from "../../configurations";
+import { backend_url, get_img_url } from "../../configurations";
 import ImageUploader from 'react-images-upload';
 import { updateUserProfile } from "../../store/actions/auth";
 import { validate } from "./validation";
 import {countries} from "../../utils/countries";
 import CSRFToken from "../../containers/CSRFToken";
 import DjangoCSRFToken from 'django-react-csrftoken';
+import {renderField} from "../../containers/ReduxForm/renderField";
+import {FormattedMessage, FormattedDate} from 'react-intl'
 
 class ProfileTab extends React.Component {
   constructor(props) {
@@ -41,31 +43,27 @@ class ProfileTab extends React.Component {
     this.props.updateProfile(val['first_name'], val['last_name'], val['phone_number'], val['email'], val['country'], val['passport_number'], this.state.picture);
   }
 
-  renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
-    <div>
-      {/*<label>{label}</label>*/}
-      <div>
-        <input {...input} placeholder={label} type={type} className={"custom-field"}/>
-        {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
-      </div>
-    </div>
-  );
-
   render () {
-    const {handleSubmit, token, loading, pristine, reset, submitting, invalid, date_joined, profile_pic} = this.props;
+    const {handleSubmit, token, loading, pristine, reset, submitting, invalid, date_joined, profile_pic, passport_number, phone_number, email} = this.props;
     return (
       <Segment basic className={"profile-tab-section"}>
       <Grid className={"profile-tab-section-grid"}>
         <Grid.Row columns={2}>
           <Grid.Column mobile={16} tablet={16} computer={5}>
             <Segment className={"profile-tab-card"}>
-              <Image centered bordered circular src= {profile_pic !== null && profile_pic !== "null" ? backend_url() + profile_pic : backend_url() + '/static/images/user_avatar.png'} />
+              <Image centered bordered circular src= {profile_pic !== null && profile_pic !== "null" ? get_img_url(profile_pic) : backend_url() + '/static/images/user_avatar.png'} />
               <Segment basic textAlign="center">
               <Header as='h4' className={"profile-tab-card-title"}>{this.props.first_name} {this.props.last_name}</Header>
-              <p >Member since: {date_joined}</p>
-              <p >Phone number: {this.props.phone_number}</p>
-              <p >Email: {this.props.email}</p>
-              <p >Passport number: {this.props.passport_number}</p>
+              {date_joined ? <p>Member since: <FormattedDate
+                                  value={date_joined}
+                                  year="numeric"
+                                  month="long"
+                                  day="numeric"
+                                  weekday="long"
+                                /></p> : ''}
+              {phone_number ? <p>Phone number: {phone_number}</p> : ''}
+              {email ? <p>Email: {email}</p> : ''}
+              {passport_number ? <p>Passport number: {passport_number}</p> : ''}
               </Segment>
             </Segment>
           </Grid.Column>
@@ -74,7 +72,7 @@ class ProfileTab extends React.Component {
             <Grid.Row columns={2}>
               <Grid.Column mobile={16} tablet={16} computer={5}>
                 <Segment basic>
-                  <Image centered bordered circular src= {profile_pic !== null && profile_pic !== "null" ? backend_url() + profile_pic : backend_url() + '/static/images/user_avatar.png'} />
+                  <Image centered bordered circular src= {profile_pic !== null && profile_pic !== "null" ? get_img_url(profile_pic) : backend_url() + '/static/images/user_avatar.png'} />
                   <ImageUploader
                       withIcon={true}
                       buttonText='Choose profile image'
@@ -103,7 +101,7 @@ class ProfileTab extends React.Component {
                         placeholder="First name"
                         label="First name"
                         className={"custom-field"}
-                        component={this.renderField.bind(this)}
+                        component={renderField}
                       />
                       </div>
                     </div>
@@ -117,7 +115,7 @@ class ProfileTab extends React.Component {
                         placeholder="Last name"
                         label="Last name"
                         className={"custom-field"}
-                        component={this.renderField.bind(this)}
+                        component={renderField}
                       />
                       </div>
                     </div>
@@ -131,7 +129,7 @@ class ProfileTab extends React.Component {
                       placeholder="Phone number"
                       label="Phone number"
                       className={"custom-field"}
-                      component={this.renderField.bind(this)}
+                      component={renderField}
                     />
                     </div>
                   </div>
@@ -145,7 +143,7 @@ class ProfileTab extends React.Component {
                         placeholder="Email address"
                         label="Email address"
                         className={"custom-field"}
-                        component={this.renderField.bind(this)}
+                        component={renderField}
                       />
                       </div>
                     </div>
@@ -182,7 +180,7 @@ class ProfileTab extends React.Component {
                         placeholder="Passport number"
                         label="Passport number"
                         className={"custom-field"}
-                        component={this.renderField.bind(this)}
+                        component={renderField}
                       />
                       </div>
                     </div>

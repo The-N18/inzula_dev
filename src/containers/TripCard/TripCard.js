@@ -11,9 +11,10 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './tripcard.css';
-import { backend_url } from "../../configurations";
+import { backend_url, get_img_url } from "../../configurations";
 import { openModalForTrip } from "../../store/actions/sendPackageModal";
 import { openModalSelectReservations } from "../../store/actions/selectReservationsModal";
+import {FormattedMessage, FormattedDate} from 'react-intl'
 
 
 class TripCard extends React.Component {
@@ -36,18 +37,30 @@ class TripCard extends React.Component {
     return (
       <Card raised fluid centered className={"home-text-img-card-grid"}>
       <Grid>
-        <Grid.Row columns={3}>
+        <Grid.Row>
           <Grid.Column mobile={16} tablet={8} computer={4}>
             <Segment basic textAlign="right">
-              <Image centered src={img} rounded bordered verticalAlign="middle" size="massive"/>
+              <Image centered src={!no_book || img ? get_img_url(img) : backend_url() + '/static/images/default_trips_image.jpg'} rounded bordered verticalAlign="middle" size="massive" className={"trip-card-img"}/>
             </Segment>
           </Grid.Column>
           <Grid.Column mobile={16} tablet={8} computer={9}>
             <Segment basic textAlign="left">
               <Header as='h4' className={"booking-card-title"}>{trip_type}</Header>
               <p className={"home-text-img-card-description"}>User name: {username}</p>
-              <p className={"home-text-img-card-description"}>Comeback date: {comeback_date}</p>
-              <p className={"home-text-img-card-description"}>Depart date: {depart_date}</p>
+              {comeback_date ? <p className={"home-text-img-card-description"}>Comeback date: <FormattedDate
+                                                                              value={comeback_date}
+                                                                              year="numeric"
+                                                                              month="long"
+                                                                              day="numeric"
+                                                                              weekday="long"
+                                                                            /></p> : ''}
+              {depart_date ? <p className={"home-text-img-card-description"}>Depart date: <FormattedDate
+                                                                              value={depart_date}
+                                                                              year="numeric"
+                                                                              month="long"
+                                                                              day="numeric"
+                                                                              weekday="long"
+                                                                            /></p> : ''}
               <p className={"home-text-img-card-description"}>Departure: {departure_location}</p>
               <p className={"home-text-img-card-description"}>Destination: {destination_location}</p>
             </Segment>
@@ -58,7 +71,7 @@ class TripCard extends React.Component {
               className={"buttoncolor trip-card-button"}
               onClick={this.handleViewDetails.bind(this)}
             >
-              <Icon name='eye' /> View details
+              <Icon name='eye' /> View
             </Button>
             {no_book ? '' : <Button icon labelPosition='right'
               size="large"

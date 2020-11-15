@@ -86,4 +86,8 @@
     margin: auto !important;
     display: block !important;
   }
+  .trip-card-img {
+    max-width: 277px !important;
+    max-height: 156px !important;
+  }
 }

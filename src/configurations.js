@@ -12,3 +12,12 @@ export const backend_url = () => {
 export const api_url = () => {
   return BACKEND_HTTP_PROTOCOL + "://" + BACKEND_HOST_ADDRESS + ":" + BACKEND_HOST_PORT;
 }
+
+export const get_img_url = (img) => {
+  console.log("img");
+  console.log(img);
+  if(img && img !== '' && img.includes("http")) {
+    return img;
+  }
+  return backend_url() + img;
+}

@@ -144,43 +144,43 @@ class CustomLayout extends React.Component {
         defaultMessage="Logout"
       />
       </a></li></span>) : (
-        <li>
-          <a className={"pad-13"}>
-            <Image bordered circular size='small' className={"profile-image"} src={profile_pic !== null && profile_pic !== "null" ? profile_pic : backend_url() + '/static/images/user_avatar.png'} />
-          </a>
-          <ul>
-              <li><a onClick={this.handleOnProfileClick.bind(this)}>
-              <FormattedMessage
-                id="layout.profile"
-                defaultMessage="Profile"
-              />
-              </a></li>
-              <li><a onClick={this.handleOnReservationClick.bind(this)}>
-              <FormattedMessage
-                id="layout.booking"
-                defaultMessage="Reservation"
-              />
-              </a></li>
-              <li><a onClick={this.handleOnAlertClick.bind(this)}>
-              <FormattedMessage
-                id="layout.alerts"
-                defaultMessage="Alerts"
-              />
-              </a></li>
-              <li><a onClick={this.handleOnFinanceClick.bind(this)}>
-              <FormattedMessage
-                id="layout.finances"
-                defaultMessage="Finances"
-              />
-              </a></li>
-              <li><a onClick={this.logoutUtil.bind(this)}>
-              <FormattedMessage
-                id="layout.logout"
-                defaultMessage="Logout"
-              /></a></li>
-          </ul>
-          </li>
-      );
+      <li>
+        <a className={"pad-13"}>
+          <Image bordered circular size='small' className={"profile-image"} onClick={this.handleOnProfileClick.bind(this)} src={profile_pic !== null && profile_pic !== "null" ? profile_pic : backend_url() + '/static/images/user_avatar.png'} />
+        </a>
+        <ul>
+            <li><a onClick={this.handleOnProfileClick.bind(this)}>
+            <FormattedMessage
+              id="layout.profile"
+              defaultMessage="Profile"
+            />
+            </a></li>
+            <li><a onClick={this.handleOnReservationClick.bind(this)}>
+            <FormattedMessage
+              id="layout.booking"
+              defaultMessage="Reservation"
+            />
+            </a></li>
+            <li><a onClick={this.handleOnAlertClick.bind(this)}>
+            <FormattedMessage
+              id="layout.alerts"
+              defaultMessage="Alerts"
+            />
+            </a></li>
+            <li><a onClick={this.handleOnFinanceClick.bind(this)}>
+            <FormattedMessage
+              id="layout.finances"
+              defaultMessage="Finances"
+            />
+            </a></li>
+            <li><a onClick={this.logoutUtil.bind(this)}>
+            <FormattedMessage
+              id="layout.logout"
+              defaultMessage="Logout"
+            /></a></li>
+        </ul>
+        </li>
+    );
 
     return (
       <Container className="main">

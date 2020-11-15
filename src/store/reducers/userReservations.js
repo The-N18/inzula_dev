@@ -27,6 +27,17 @@ const getReservationsSuccess = (state, action) => {
   });
 };
 
+const getInitialReservationsSuccess = (state, action) => {
+  console.log(action);
+  return updateObject(state, {
+    reservations: action.reservations,
+    error: null,
+    loading: false,
+    next_url: action.next_url,
+    count: action.count
+  });
+};
+
 const getReservationsFail = (state, action) => {
   return updateObject(state, {
     error: action.error,
@@ -40,6 +51,8 @@ const reducer = (state = initialState, action) => {
       return getReservationsStart(state, action);
     case actionTypes.GET_RESERVATIONS_SUCCESS:
       return getReservationsSuccess(state, action);
+    case actionTypes.GET_INITIAL_RESERVATIONS_SUCCESS:
+      return getInitialReservationsSuccess(state, action);
     case actionTypes.GET_RESERVATIONS_FAIL:
       return getReservationsFail(state, action);
     default:

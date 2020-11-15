@@ -14,6 +14,7 @@ import TripsReservationsList from "../../containers/TripsReservationsList/TripsR
 import UserAlertsList from "../../containers/UserAlertsList/UserAlertsList";
 import UserFinance from "../../containers/UserFinance/UserFinance";
 import { setActiveIndex } from "../../store/actions/myProfile";
+import $ from "jquery";
 
 
 
@@ -21,7 +22,27 @@ class MyProfile extends React.Component {
 
   state = {
     profileType: "sender",
+    isMobile: false,
+    isTablet: false
   };
+
+  handleScreenSize = () => {
+    if($(window).width() < 768) {
+      this.setState({ isMobile: true });
+    }
+    if($(window).width() >= 768) {
+      this.setState({ isTablet: true });
+    }
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.handleScreenSize, false);
+    this.handleScreenSize();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleScreenSize);
+  }
 
   // handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
 
@@ -41,13 +62,13 @@ class MyProfile extends React.Component {
 
   render() {
     const { token, activeIndex } = this.props;
-    const {profileType} = this.state;
+    const {profileType, isMobile} = this.state;
     // if (token === null) {
     //   return <Redirect to="/" />;
     // }
     const panes = [
       {
-        menuItem: { key: 'profile', icon: 'user', content: 'Profile' },
+        menuItem: { key: 'profile', icon: 'user', content: isMobile ? '' : 'Profile' },
         render: () => <Tab.Pane attached={false}><ProfileTab profileType={profileType}/></Tab.Pane>,
       },
       {
@@ -55,11 +76,11 @@ class MyProfile extends React.Component {
         render: () => <Tab.Pane attached={false}><TripsReservationsList profileType={profileType}/></Tab.Pane>,
       },
       {
-        menuItem: { key: 'alerts', icon: 'bell', content: 'Alerts' },
+        menuItem: { key: 'alerts', icon: 'bell', content: isMobile ? '' : 'Alerts' },
         render: () => <Tab.Pane attached={false}><UserAlertsList/></Tab.Pane>,
       },
       {
-        menuItem: { key: 'finances', icon: 'money bill alternate outline', content: 'Finances' },
+        menuItem: { key: 'finances', icon: 'money bill alternate outline', content: isMobile ? '' : 'Finances' },
         render: () => <Tab.Pane attached={false}><UserFinance/></Tab.Pane>,
       },
     ];

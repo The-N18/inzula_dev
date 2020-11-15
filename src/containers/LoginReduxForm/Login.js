@@ -12,6 +12,7 @@ import { NavLink, Redirect } from "react-router-dom";
 import { authLogin } from "../../store/actions/auth";
 import { connect } from "react-redux";
 import { validate } from "./validation";
+import {renderField} from "../../containers/ReduxForm/renderField";
 
 
 class LoginForm extends Component {
@@ -58,7 +59,7 @@ class LoginForm extends Component {
           placeholder="Username"
           label="Username"
           className={"custom-field"}
-          component={this.renderField.bind(this)}
+          component={renderField}
         />
         <Field
           name="password"
@@ -67,7 +68,7 @@ class LoginForm extends Component {
           placeholder="Password"
           label="Password"
           className={"custom-field"}
-          component={this.renderField.bind(this)}
+          component={renderField}
         />
         <Button
           type="submit"

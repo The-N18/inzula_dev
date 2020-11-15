@@ -14,7 +14,6 @@ import { searchBookings, filterBookings } from "../../store/actions/searchBookin
 import styles from './searchbookingrequestsform.css';
 import { DateInput } from 'semantic-ui-calendar-react';
 import BookingCard from "../../containers/BookingCard/BookingCard";
-import BookingRequestCard from "../../containers/BookingRequestCard/BookingRequestCard";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Slider, { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';
@@ -23,6 +22,7 @@ import MultiSelect from "@khanacademy/react-multi-select";
 import 'react-widgets/dist/css/react-widgets.css';
 import { Field, reduxForm } from 'redux-form'
 import { withRouter } from "react-router-dom";
+import $ from "jquery";
 
 class SearchBookingRequestsForm extends React.Component {
 
@@ -33,7 +33,27 @@ class SearchBookingRequestsForm extends React.Component {
     weight: [],
     proposed_price: [],
     product_category: [],
-    product_size: []
+    product_size: [],
+    isMobile: false,
+    isTablet: false
+  }
+
+  handleScreenSize = () => {
+    if($(window).width() < 768) {
+      this.setState({ isMobile: true });
+    }
+    if($(window).width() >= 768) {
+      this.setState({ isTablet: true });
+    }
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.handleScreenSize, false);
+    this.handleScreenSize();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleScreenSize);
   }
 
   handleDateChange = (event, {name, value}) => {
@@ -50,7 +70,6 @@ class SearchBookingRequestsForm extends React.Component {
                     destination_location: val['destination_location'] ? val['destination_location'] : ""});
     this.props.searchBookings(val['departure_location'], val['destination_location'], travel_date, product_category, product_size, proposed_price, weight, user_id, next_url, count);
     if(!inNewPage) {
-      // window.location.href = '/search_bookings';
       this.props.history.push("/search_bookings");
     }
   };
@@ -184,8 +203,8 @@ class SearchBookingRequestsForm extends React.Component {
             >
               Search
             </Button>
-          {api_been_called === true ? <Divider/> : ''}
-          {api_been_called === true ? <Grid>
+          {inNewPage && api_been_called === true ? <Divider/> : ''}
+          {inNewPage && api_been_called === true ? <Grid>
             <Grid.Row columns={2}>
               <Grid.Column mobile={16} tablet={8} computer={4}>
               <div className={"range-div"}>
@@ -241,9 +260,9 @@ class SearchBookingRequestsForm extends React.Component {
               </Grid.Row>
             </Grid> : ''}
             </form>
-          <Divider/>
-          {bookings.length === 0 ? <div> No search results. Please try a more general search.</div> : ''}
-          <div
+          {inNewPage && <Divider/>}
+          {inNewPage && bookings.length === 0 ? <div> No search results. Please try a more general search.</div> : ''}
+          {inNewPage ? <div
             id="scrollableDiv"
             style={{
               height: 800,
@@ -262,7 +281,7 @@ class SearchBookingRequestsForm extends React.Component {
             >
               {bookings.map((item, index) => (
                 <div style={{
-                  height: 200,
+                  height: this.state.isMobile ? 330 : 200,
                   margin: 6,
                   padding: 8
                 }} key={index}>
@@ -273,23 +292,12 @@ class SearchBookingRequestsForm extends React.Component {
                     description={item["product"]["description"]}
                     departure_location={item["product"]["departure_location"]["city"]}
                     pickup_location={item["product"]["pickup_location"]["city"]}
-                    img={item["product"]["images"].length === 0 ? '' : item["product"]["images"][0]['image']}/>
+                    img={item["product"]["images"].length === 0 ? '' : item["product"]["images"][0]['image']}
+                    editable={false}/>
                 </div>
               ))}
             </InfiniteScroll>
-          </div>
-          {/*bookings.length > 0 ? <Segment raised>
-            {bookings.map((item, i) => {
-               console.log(item["product"]["name"]);
-               // Return the element. Also pass key
-               return (<BookingCard
-                 title={item["product"]["name"]}
-                 arrival_date={item["product"]["arrival_date"]}
-                 description={item["product"]["description"]}
-                 departure_location={item["product"]["departure_location"]["city"]}
-                 pickup_location={item["product"]["pickup_location"]["city"]}/>);
-            })}
-          </Segment> : ''*/}
+          </div> : ''}
         </Segment>
     );
   }

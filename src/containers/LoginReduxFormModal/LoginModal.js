@@ -17,6 +17,7 @@ import { validate } from "./validation";
 import { openLoginModal, closeLoginModal } from "../../store/actions/loginModal";
 import { closeLoginParentModal } from "../../store/actions/loginParentModal";
 import { openSignupParentModal } from "../../store/actions/signupParentModal";
+import {renderField} from "../../containers/ReduxForm/renderField";
 
 
 
@@ -81,7 +82,7 @@ class LoginForm extends Component {
           placeholder="Username"
           label="Username"
           className={"custom-field"}
-          component={this.renderField.bind(this)}
+          component={renderField}
         />
         <Field
           name="password"
@@ -90,7 +91,7 @@ class LoginForm extends Component {
           placeholder="Password"
           label="Password"
           className={"custom-field"}
-          component={this.renderField.bind(this)}
+          component={renderField}
         />
         <Button
           type="submit"

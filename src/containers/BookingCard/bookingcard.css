@@ -10,10 +10,17 @@
   line-height: 25px !important;
 }
 
+.white-trash {
+  color: white !important;
+}
+
 .how-it-works-tab .menu {
   text-align: center !important;
   width: 25% !important;
   margin: 0 auto !important;
+}
+
+.booking-card-img {
 }
 
 .how-it-works-tab .menu .item {
@@ -58,5 +65,9 @@
     text-align: center !important;
     width: 75% !important;
     margin: 0 auto !important;
+  }
+  .booking-card-img {
+    max-width: 277px !important;
+    max-height: 156px !important;
   }
 }

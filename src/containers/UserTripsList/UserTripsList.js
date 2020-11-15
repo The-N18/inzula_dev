@@ -15,8 +15,9 @@ import styles from './usertripslist.css';
 import { backend_url } from "../../configurations";
 import ImageUploader from 'react-images-upload';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { getTrips } from "../../store/actions/userTrips";
+import { getTrips, getInitialTrips } from "../../store/actions/userTrips";
 import TripCard from "../../containers/TripCard/TripCard";
+import $ from "jquery";
 
 class UserTripsList extends React.Component {
   constructor(props) {
@@ -24,12 +25,28 @@ class UserTripsList extends React.Component {
   }
 
   state = {
+    isMobile: false,
+    isTablet: false
   };
+
+  handleScreenSize = () => {
+    if($(window).width() < 768) {
+      this.setState({ isMobile: true });
+    }
+    if($(window).width() >= 768) {
+      this.setState({ isTablet: true });
+    }
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleScreenSize);
+  }
 
   componentDidMount = () => {
     console.log("in component did mount");
     const { user_id, next_url, count } = this.props;
-    this.props.getUserTrips(user_id, next_url, count);
+    this.props.getInitialUserTrips(user_id, next_url, count);
+    window.addEventListener('resize', this.handleScreenSize, false);
+    this.handleScreenSize();
     }
 
   fetchMoreData = () => {
@@ -73,7 +90,8 @@ class UserTripsList extends React.Component {
                 destination_location={item["destination_location"]["city"]}
                 img={item["created_by"]["profile_pic"] === null ? '' : item["created_by"]["profile_pic"]}
                 username={item["created_by"]["username"]}
-                no_book={true}/>
+                no_book={true}
+                editable={true}/>
             </div>
           ))}
         </InfiniteScroll>
@@ -97,7 +115,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getUserTrips: (user_id, next_url, count) => dispatch(getTrips(user_id, next_url, count))
+    getUserTrips: (user_id, next_url, count) => dispatch(getTrips(user_id, next_url, count)),
+    getInitialUserTrips: (user_id, next_url, count) => dispatch(getInitialTrips(user_id, next_url, count))
   };
 };
 

@@ -1,5 +1,7 @@
 .profile-tab-section {
   background-color: #ffffff;
+  margin: 0px !important;
+  padding: 0px !important;
 }
 
 .profile-tab-section-grid {
@@ -23,3 +25,7 @@
 .infinite-scroll-component {
   overflow: hidden !important;
 }
+
+/* .ui.segment {
+  margin: 0px !important;
+} */

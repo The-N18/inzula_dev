@@ -52,7 +52,7 @@ class UserProfile(models.Model):
     country = models.CharField(max_length=50, null=True, blank=True)
     user_type = models.CharField(max_length=50, choices=USER_TYPE_OPTIONS, null=True, blank=True)
     id_document = models.FileField(upload_to='uploads/id_documents/', null=True, blank=True)
-    profile_pic = models.ImageField(upload_to='uploads/profile_images/', blank=True, null=True)
+    profile_pic = models.ImageField(upload_to='uploads/profile_images/', blank=True, null=True, default='default.jpg')
     terms_conditions = models.BooleanField(default=False)
 
     def __str__(self):

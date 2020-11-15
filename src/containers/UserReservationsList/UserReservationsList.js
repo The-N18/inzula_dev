@@ -15,8 +15,9 @@ import styles from './userreservations.css';
 import { backend_url } from "../../configurations";
 import ImageUploader from 'react-images-upload';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { getReservations } from "../../store/actions/userReservations";
+import { getReservations, getInitialReservations } from "../../store/actions/userReservations";
 import BookingCard from "../../containers/BookingCard/BookingCard";
+import $ from "jquery";
 
 class UserReservationsList extends React.Component {
   constructor(props) {
@@ -24,12 +25,28 @@ class UserReservationsList extends React.Component {
   }
 
   state = {
+    isMobile: false,
+    isTablet: false
   };
+
+  handleScreenSize = () => {
+    if($(window).width() < 768) {
+      this.setState({ isMobile: true });
+    }
+    if($(window).width() >= 768) {
+      this.setState({ isTablet: true });
+    }
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleScreenSize);
+  }
 
   componentDidMount = () => {
     console.log("in component did mount");
     const { user_id, next_url, count } = this.props;
-    this.props.getUserReservations(user_id, next_url, count);
+    this.props.getInitialUserReservations(user_id, next_url, count);
+    window.addEventListener('resize', this.handleScreenSize, false);
+    this.handleScreenSize();
     }
 
   fetchMoreData = () => {
@@ -61,7 +78,7 @@ class UserReservationsList extends React.Component {
         >
           {reservations.map((item, index) => (
             <div style={{
-              height: 200,
+              height: this.state.isMobile ? 330 : 200,
               margin: 6,
               padding: 8
             }} key={index}>
@@ -73,7 +90,8 @@ class UserReservationsList extends React.Component {
                 description={item["product"]["description"]}
                 departure_location={item["product"]["departure_location"]["city"]}
                 pickup_location={item["product"]["destination_location"] !== null ? item["product"]["destination_location"]["city"] : ''}
-                img={item["product"]["images"].length === 0 ? '' : item["product"]["images"][0]['image']}/>
+                img={item["product"]["images"].length === 0 ? '' : item["product"]["images"][0]['image']}
+                editable={true}/>
             </div>
           ))}
         </InfiniteScroll>
@@ -97,7 +115,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getUserReservations: (user_id, next_url, count) => dispatch(getReservations(user_id, next_url, count))
+    getUserReservations: (user_id, next_url, count) => dispatch(getReservations(user_id, next_url, count)),
+    getInitialUserReservations: (user_id, next_url, count) => dispatch(getInitialReservations(user_id, next_url, count)),
   };
 };
 

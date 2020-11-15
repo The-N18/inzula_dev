@@ -18,6 +18,7 @@ import { closeSignupParentModal } from "../../store/actions/signupParentModal";
 import { connect } from "react-redux";
 import { validate } from "./validation";
 import Recaptcha from 'react-recaptcha';
+import {renderField} from "../../containers/ReduxForm/renderField";
 
 
 class RegistrationForm extends Component {
@@ -59,39 +60,45 @@ class RegistrationForm extends Component {
         Signup
         </Modal.Header>
         <Modal.Content scrolling>
-      <Segment style={{ padding: "2em 0em" }} vertical>
+      <Segment vertical>
       <Grid
         textAlign="center"
-        style={{ height: "80vh" }}
+        style={{ height: "60vh" }}
         verticalAlign="middle"
       >
         <Grid.Column style={{ maxWidth: 450 }}>
           {discountText !== null ? <Header as="h4" textAlign="center" color="teal" className={"discountheader"}>
             {discountText}
-          </Header> : <Header as="h2" className={"headercolor"} textAlign="center">
-            Signup to Inzula
-          </Header>}
+          </Header> : ''}
           <React.Fragment>
       <form onSubmit={handleSubmit(this.submitForm)}>
       <Segment raised className={"signupcard"}>
-      <Field
-        name="first_name"
-        component="input"
-        type="text"
-        placeholder="First name"
-        label="First name"
-        className={"custom-field"}
-        component={this.renderField.bind(this)}
-      />
-      <Field
-        name="last_name"
-        component="input"
-        type="text"
-        placeholder="Last name"
-        label="Last name"
-        className={"custom-field"}
-        component={this.renderField.bind(this)}
-      />
+      <Grid>
+        <Grid.Row columns={2}>
+          <Grid.Column mobile={16} tablet={16} computer={8}>
+          <Field
+            name="first_name"
+            component="input"
+            type="text"
+            placeholder="First name"
+            label="First name"
+            className={"custom-field"}
+            component={renderField}
+          />
+          </Grid.Column>
+        <Grid.Column mobile={16} tablet={16} computer={8}>
+          <Field
+            name="last_name"
+            component="input"
+            type="text"
+            placeholder="Last name"
+            label="Last name"
+            className={"custom-field"}
+            component={renderField}
+          />
+        </Grid.Column>
+        </Grid.Row>
+      </Grid>
       <Field
         name="username"
         component="input"
@@ -99,7 +106,7 @@ class RegistrationForm extends Component {
         placeholder="Username"
         label="Username"
         className={"custom-field"}
-        component={this.renderField.bind(this)}
+        component={renderField}
       />
         <Field
           name="email"
@@ -108,7 +115,7 @@ class RegistrationForm extends Component {
           placeholder="Email address"
           label="Email address"
           className={"custom-field"}
-          component={this.renderField.bind(this)}
+          component={renderField}
         />
         <Field
           name="password1"
@@ -117,7 +124,7 @@ class RegistrationForm extends Component {
           placeholder="Password"
           label="Password"
           className={"custom-field"}
-          component={this.renderField.bind(this)}
+          component={renderField}
         />
         <Field
           name="password2"
@@ -126,13 +133,11 @@ class RegistrationForm extends Component {
           placeholder="Confirm Password"
           label="Confirm Password"
           className={"custom-field"}
-          component={this.renderField.bind(this)}
+          component={renderField}
         />
-        <div>
-          <label htmlFor="terms_conditions">I agree to the Terms and Conditions</label>
-          <div>
+        <div className={"push-left"}>
             <Field name="terms_conditions" id="terms_conditions" component="input" type="checkbox"/>
-          </div>
+            <label htmlFor="terms_conditions">I agree to the Terms and Conditions</label>
         </div>
         <Button
           type="submit"
@@ -141,7 +146,7 @@ class RegistrationForm extends Component {
           loading={loading}
           disabled={invalid}
         >
-          Login
+          Signup
         </Button>
         </Segment>
       </form>
