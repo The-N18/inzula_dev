@@ -16,6 +16,7 @@
 
 .max-h-190px {
   overflow: hidden !important;
+  height: 100% !important;
 }
 
 p {
