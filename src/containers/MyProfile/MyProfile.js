@@ -87,15 +87,16 @@ class MyProfile extends React.Component {
 
     return (
       <Segment style={{ padding: "7em 0em" }} vertical>
-        <Message>
-        You are in {profileType} mode. Switch?
-          <div className={"pushleft"}>
+        <Message floating size={"large"}>
+          Welcome!
+          <span className={"pushleft"}>
+            You are in {profileType} mode. Switch?
             <Radio
               toggle
               checked={profileType === "sender"}
               onChange={this.handleRadioChange}
               />
-          </div>
+          </span>
         </Message>
         <Tab
           activeIndex={activeIndex}
