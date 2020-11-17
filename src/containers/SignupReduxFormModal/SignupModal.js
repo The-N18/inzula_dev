@@ -27,16 +27,6 @@ class RegistrationForm extends Component {
     this.props.signup(val['first_name'], val['last_name'], val['username'], val['email'], val['password1'], val['password2'], val['terms_conditions']);
   }
 
-  renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
-    <div>
-      {/*<label>{label}</label>*/}
-      <div>
-        <input {...input} placeholder={label} type={type} className={"custom-field"}/>
-        {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
-      </div>
-    </div>
-  );
-
   handleSignin = () => {
     this.props.closeSignupModal();
     this.props.closeSignupParentModal();

@@ -18,6 +18,8 @@ import SignupModal from "../../containers/SignupReduxFormModal/SignupModal";
 
 import LoginParentModal from "../../containers/LoginParentModal/LoginParentModal";
 import LoginModal from "../../containers/LoginReduxFormModal/LoginModal";
+import DeleteBookingConfirm from "../../containers/DeleteBookingConfirm/DeleteBookingConfirm";
+import DeleteTripConfirm from "../../containers/DeleteTripConfirm/DeleteTripConfirm";
 
 import LanguageSwitcherSelector from "../../containers/LanguageSwitcherSelector/LanguageSwitcherSelector";
 import 'react-redux-notify/dist/ReactReduxNotify.css';
@@ -188,6 +190,8 @@ class CustomLayout extends React.Component {
       <SignupModal />
       <LoginParentModal />
       <LoginModal />
+      <DeleteBookingConfirm />
+      <DeleteTripConfirm />
       <Notify />
         <header className="menuheader">
           <div>

@@ -84,6 +84,7 @@ class UserTripsList extends React.Component {
             }} key={index}>
               <TripCard
                 trip_type={item["trip_type"]}
+                pk={item["pk"]}
                 comeback_date={item["comeback_date"]}
                 depart_date={item["depart_date"]}
                 departure_location={item["departure_location"]["city"]}

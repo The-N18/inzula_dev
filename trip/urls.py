@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import trip_search, TripView, TripsListView, TripSearchView, AddBookingsToTripView
+from .views import trip_search, TripView, TripDetail, TripsListView, TripSearchView, AddBookingsToTripView
 
 # Create a router and register our viewsets with it.
 # router = DefaultRouter()
@@ -12,6 +12,7 @@ urlpatterns = [
     path('trip_search/', trip_search),
     path('add_trip', TripView.as_view()),
     path('add_bookings', AddBookingsToTripView.as_view()),
+    path('trip/<int:pk>/', TripDetail.as_view()),
     path('trips_list', TripsListView.as_view()),
     path('search_trips', TripSearchView.as_view()),
 ]

@@ -13,8 +13,6 @@ export const searchStart = () => {
 };
 
 export const searchSuccess = (trips, next, count) => {
-  console.log("get search Trips Success")
-  console.log(next)
   return {
     type: actionTypes.SEARCH_TRIPS_SUCCESS,
     trips: trips,

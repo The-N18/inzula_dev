@@ -23,6 +23,7 @@ import 'react-widgets/dist/css/react-widgets.css';
 import { Field, reduxForm } from 'redux-form'
 import { withRouter } from "react-router-dom";
 import $ from "jquery";
+import {renderField} from "../../containers/ReduxForm/renderField";
 
 class SearchBookingRequestsForm extends React.Component {
 
@@ -79,16 +80,6 @@ class SearchBookingRequestsForm extends React.Component {
     const { user_id, next_url, count } = this.props;
     this.props.searchBookings(departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight, user_id, next_url, count);
   }
-
-  renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
-    <div>
-      {/*<label>{label}</label>*/}
-      <div>
-        <input {...input} placeholder={label} type={type} className={"custom-field"}/>
-        {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
-      </div>
-    </div>
-  );
 
   render() {
     const { loading, error, bookings, next_url, count, api_been_called, handleSubmit, inNewPage } = this.props;
@@ -157,7 +148,7 @@ class SearchBookingRequestsForm extends React.Component {
                 placeholder="Departure location"
                 label="Departure location"
                 className={"custom-field"}
-                component={this.renderField.bind(this)}
+                component={renderField}
               />
               </div>
             </div>
@@ -173,7 +164,7 @@ class SearchBookingRequestsForm extends React.Component {
                   placeholder="Destination location"
                   label="Destination location"
                   className={"custom-field"}
-                  component={this.renderField.bind(this)}
+                  component={renderField}
                 />
                 </div>
               </div>

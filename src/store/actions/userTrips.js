@@ -40,7 +40,7 @@ export const getTripsFail = error => {
   };
 };
 
-export const getInitialTrips = (user_id, next_url, page_count) => {
+export const getInitialTrips = (user_id) => {
   return dispatch => {
     dispatch(getTripsStart());
     axios

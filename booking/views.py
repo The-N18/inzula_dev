@@ -20,6 +20,7 @@ from userprofile.models import Location, UserProfile, Price, Weight, Space
 from django.db.models import Q
 from django.core.serializers import serialize
 from utils.pagination import SearchResultsSetPagination
+from django.http import Http404
 # Create your views here.
 
 
@@ -137,6 +138,57 @@ class BookingRequestView(CreateAPIView):
         return Response(serializer.data,
                         status=status.HTTP_201_CREATED,
                         headers=headers)
+
+
+# class DelBookingRequestView(CreateAPIView):
+#     permission_classes = register_permission_classes()
+#
+#     def dispatch(self, *args, **kwargs):
+#         return super(DelBookingRequestView, self).dispatch(*args, **kwargs)
+#
+#     def get_response_data(self, user):
+#         if getattr(settings, 'REST_USE_JWT', False):
+#             data = {
+#                 'user': user,
+#                 'token': self.token
+#             }
+#             return JWTSerializer(data).data
+#         else:
+#             return TokenSerializer(user.auth_token).data
+#
+#     def create(self, request, *args, **kwargs):
+#         booking_id = request.data["booking_id"]
+#         BookingRequest.objects.get(pk=booking_id).delete()
+#         return Response(status=status.HTTP_200_OK)
+
+
+class BookingRequestDetail(APIView):
+    """
+    Retrieve, update or delete a booking_request instance.
+    """
+    def get_object(self, pk):
+        try:
+            return BookingRequest.objects.get(pk=pk)
+        except BookingRequest.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        booking_request = self.get_object(pk)
+        serializer = BookingRequestSerializer(booking_request)
+        return Response(serializer.data)
+
+    def put(self, request, pk, format=None):
+        booking_request = self.get_object(pk)
+        serializer = BookingRequestSerializer(booking_request, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        booking_request = self.get_object(pk)
+        booking_request.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class BookingRequestSearchView(generics.ListAPIView):

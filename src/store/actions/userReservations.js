@@ -40,7 +40,7 @@ export const getReservationsFail = error => {
   };
 };
 
-export const getInitialReservations = (user_id, next_url, page_count) => {
+export const getInitialReservations = (user_id) => {
   return dispatch => {
     dispatch(getReservationsStart());
     axios

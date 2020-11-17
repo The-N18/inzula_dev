@@ -24,6 +24,8 @@ import signupParentModalReducer from "./store/reducers/signupParentModal";
 import loginParentModalReducer from "./store/reducers/loginParentModal";
 import signupModalReducer from "./store/reducers/signupModal";
 import loginModalReducer from "./store/reducers/loginModal";
+import deleteBookingConfirmReducer from "./store/reducers/deleteBookingConfirm";
+import deleteTripConfirmReducer from "./store/reducers/deleteTripConfirm";
 import { reducer as formReducer } from 'redux-form'
 import axios from 'axios';
 
@@ -49,6 +51,8 @@ const rootReducer = combineReducers({
   loginParentModal: loginParentModalReducer,
   signupModal: signupModalReducer,
   loginModal: loginModalReducer,
+  deleteBookingConfirm: deleteBookingConfirmReducer,
+  deleteTripConfirm: deleteTripConfirmReducer,
 });
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";

@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import styles from './signupparentwithdiscount.css';
 import { NavLink, Redirect } from "react-router-dom";
 import { authSetDiscountText } from "../../store/actions/auth";
+import { openSignupModal } from "../../store/actions/signupModal";
 
 class SignupParentWithDiscount extends React.Component {
 
@@ -30,12 +31,9 @@ class SignupParentWithDiscount extends React.Component {
           <Button fluid color='google plus' className={"signupparent-button"}>
             <Icon name='google plus' /> Sign up with Gmail
           </Button>
-          <NavLink to="/signupemail"><Button fluid color='white' className={"signupparent-button"}>
+          <Button fluid color='white' className={"signupparent-button"} onClick={() => this.props.openSignupModal()}>
             <Icon name='mail' /> Use email address
-          </Button></NavLink>
-        </Segment>
-        <Segment raised className={"signupparentcard"} textAlign="center">
-          Already a member? <NavLink to="/login">Sign In</NavLink>
+          </Button>
         </Segment>
       </Segment>
       </Segment>
@@ -50,7 +48,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setDiscountText: (text) => dispatch(authSetDiscountText(text))
+    setDiscountText: (text) => dispatch(authSetDiscountText(text)),
+    openSignupModal: () => dispatch(openSignupModal()),
   };
 };
 

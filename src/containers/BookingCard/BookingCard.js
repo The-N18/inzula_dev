@@ -14,13 +14,13 @@ import { connect } from "react-redux";
 import styles from './bookingcard.css';
 import { backend_url, get_img_url } from "../../configurations";
 import { selectBooking } from "../../store/actions/selectReservationsModal";
+import { openDeleteBookingConfirm, setBookingDeleteBookingConfirm } from "../../store/actions/deleteBookingConfirm";
 import {FormattedMessage, FormattedDate} from 'react-intl'
 
 
 class BookingCard extends React.Component {
 
   handleToggleCheckbox = (pk) => {
-    console.log("Selected booking " + pk);
     const {selected} = this.props;
     const selectedBookings = [...selected];
     const index = selectedBookings.indexOf(pk);
@@ -29,8 +29,15 @@ class BookingCard extends React.Component {
     } else {
       selectedBookings.splice(index, 1);
     }
-    console.log(selectedBookings)
     this.props.selectBooking(selectedBookings);
+  }
+
+  deleteBooking = () => {
+    const {pk, user_id} = this.props;
+    // this.props.deleteBooking(pk);
+    this.props.setBookingDeleteBookingConfirm(pk);
+    this.props.openDeleteBookingConfirm();
+
   }
 
   render() {
@@ -68,10 +75,8 @@ class BookingCard extends React.Component {
             </Grid.Column>
             {editable ? <Grid.Column mobile={2} tablet={2} computer={2}>
               <Segment compact basic>
-              <Button color='blue' icon='edit'/>
-              </Segment>
-              <Segment compact basic>
-              <Button color='orange' icon='trash' className={"white-trash"}/>
+                <Button color='blue' icon='edit' className={"booking-card-delete-button"}/>
+                <Button color='orange' icon='trash' className={"white-trash"} onClick={this.deleteBooking.bind(this)}/>
               </Segment>
             </Grid.Column> : ''}
           </Grid.Row>
@@ -83,13 +88,15 @@ class BookingCard extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    selected: state.selectReservationsModal.selected
+    selected: state.selectReservationsModal.selected,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    selectBooking: (selected) => dispatch(selectBooking(selected))
+    selectBooking: (selected) => dispatch(selectBooking(selected)),
+    openDeleteBookingConfirm: () => dispatch(openDeleteBookingConfirm()),
+    setBookingDeleteBookingConfirm: (bookingId) => dispatch(setBookingDeleteBookingConfirm(bookingId)),
   };
 };
 
@@ -102,6 +109,7 @@ BookingCard.propTypes = {
   img: PropTypes.string,
   selectable: PropTypes.boolean,
   editable: PropTypes.boolean,
+  pk: PropTypes.number,
 };
 
 export default connect(

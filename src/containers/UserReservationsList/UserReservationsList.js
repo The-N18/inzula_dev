@@ -42,15 +42,13 @@ class UserReservationsList extends React.Component {
   }
 
   componentDidMount = () => {
-    console.log("in component did mount");
-    const { user_id, next_url, count } = this.props;
-    this.props.getInitialUserReservations(user_id, next_url, count);
+    const { user_id } = this.props;
+    this.props.getInitialUserReservations(user_id);
     window.addEventListener('resize', this.handleScreenSize, false);
     this.handleScreenSize();
     }
 
   fetchMoreData = () => {
-    console.log("fetch more data")
     const { user_id, next_url, count } = this.props;
     this.props.getUserReservations(user_id, next_url, count);
   }
@@ -85,7 +83,7 @@ class UserReservationsList extends React.Component {
               <BookingCard
                 selectable={selectable}
                 title={item["product"]["name"]}
-                pk={item["product"]["pk"]}
+                pk={item["pk"]}
                 arrival_date={item["product"]["arrival_date"]}
                 description={item["product"]["description"]}
                 departure_location={item["product"]["departure_location"]["city"]}
@@ -116,7 +114,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getUserReservations: (user_id, next_url, count) => dispatch(getReservations(user_id, next_url, count)),
-    getInitialUserReservations: (user_id, next_url, count) => dispatch(getInitialReservations(user_id, next_url, count)),
+    getInitialUserReservations: (user_id) => dispatch(getInitialReservations(user_id)),
   };
 };
 

@@ -17,6 +17,7 @@ from userprofile.models import Location, UserProfile
 from booking.models import BookingRequest
 from rest_framework import generics
 from utils.pagination import SearchResultsSetPagination
+from django.http import Http404
 
 
 class TripsListView(generics.ListAPIView):
@@ -125,3 +126,32 @@ class TripSearchView(generics.ListAPIView):
         depart_date = self.request.query_params.get('depart_date', '')
         queryset = self.model.objects.filter(departure_location__city__contains=departure_location, destination_location__city__contains=destination_location)
         return queryset.order_by('-depart_date')
+
+
+class TripDetail(APIView):
+    """
+    Retrieve, update or delete a trip instance.
+    """
+    def get_object(self, pk):
+        try:
+            return Trip.objects.get(pk=pk)
+        except Trip.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        trip = self.get_object(pk)
+        serializer = TripSerializer(trip)
+        return Response(serializer.data)
+
+    def put(self, request, pk, format=None):
+        trip = self.get_object(pk)
+        serializer = TripSerializer(trip, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        trip = self.get_object(pk)
+        trip.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

@@ -17,6 +17,7 @@ import { openModal, closeModal } from "../../store/actions/sendPackageModal";
 import MultiSelect from "@khanacademy/react-multi-select";
 import 'react-widgets/dist/css/react-widgets.css';
 import { Field, reduxForm } from 'redux-form'
+import {renderField} from "../../containers/ReduxForm/renderField";
 
 class SearchTripsForm extends React.Component {
 
@@ -51,15 +52,6 @@ class SearchTripsForm extends React.Component {
     this.props.findTrip(departure_location, destination_location, travel_date, user_id, next_url, count);
   }
 
-  renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
-    <div>
-      {/*<label>{label}</label>*/}
-      <div>
-        <input {...input} placeholder={label} type={type} className={"custom-field"}/>
-        {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
-      </div>
-    </div>
-  );
 
   render() {
     const { loading, error, trips, next_url, count, handleSubmit } = this.props;
@@ -89,7 +81,7 @@ class SearchTripsForm extends React.Component {
                 placeholder="Departure location"
                 label="Departure location"
                 className={"custom-field"}
-                component={this.renderField.bind(this)}
+                component={renderField}
               />
               </div>
             </div>
@@ -105,7 +97,7 @@ class SearchTripsForm extends React.Component {
                   placeholder="Destination location"
                   label="Destination location"
                   className={"custom-field"}
-                  component={this.renderField.bind(this)}
+                  component={renderField}
                 />
                 </div>
               </div>

@@ -29,16 +29,6 @@ class LoginForm extends Component {
     this.props.login(val['username'], val['password']);
   }
 
-  renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
-    <div>
-      {/*<label>{label}</label>*/}
-      <div>
-        <input {...input} placeholder={label} type={type} className={"custom-field"}/>
-        {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
-      </div>
-    </div>
-  );
-
   handleSignup = () => {
     this.props.closeLoginModal();
     this.props.closeLoginParentModal();

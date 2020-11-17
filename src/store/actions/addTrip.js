@@ -2,7 +2,8 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { api_url } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
-import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
+import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
+import {getInitialTrips} from "./userTrips";
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -45,9 +46,52 @@ export const tripAddition = (created_by, departure_location, destination_locatio
         console.log(res.data)
         dispatch(checkAuthTimeout(3600));
         dispatch(addTripSuccess(res.data));
+        dispatch(createNotification({
+          message: 'Your trip has been added',
+          type: NOTIFICATION_TYPE_SUCCESS,
+          duration: 10000,
+          canDismiss: true,
+        }));
       })
       .catch(err => {
         dispatch(addTripFail(err));
+        dispatch(createNotification({
+          message: 'Failed to add your trip',
+          type: NOTIFICATION_TYPE_ERROR,
+          duration: 10000,
+          canDismiss: true,
+        }));
+      });
+  };
+}
+
+
+export const deleteTrip = (tripId) => {
+  const userProfileId = localStorage.getItem("userProfileId");
+  const config = {
+            headers: { 'content-type': 'multipart/form-data' }
+          };
+  return dispatch => {
+    axios
+      .delete(api_url() + "/trips/trip/"+tripId+"/", {}, config)
+      .then(res => {
+        console.log(res.data)
+        dispatch(checkAuthTimeout(3600));
+        dispatch(createNotification({
+          message: 'Your trip has been deleted',
+          type: NOTIFICATION_TYPE_SUCCESS,
+          duration: 10000,
+          canDismiss: true,
+        }));
+        dispatch(getInitialTrips(userProfileId));
+      })
+      .catch(err => {
+        dispatch(createNotification({
+          message: 'Failed to delete your trip',
+          type: NOTIFICATION_TYPE_ERROR,
+          duration: 10000,
+          canDismiss: true,
+        }));
       });
   };
 }

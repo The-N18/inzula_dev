@@ -15,6 +15,7 @@ import { backend_url, get_img_url } from "../../configurations";
 import { openModalForTrip } from "../../store/actions/sendPackageModal";
 import { openModalSelectReservations } from "../../store/actions/selectReservationsModal";
 import {FormattedMessage, FormattedDate} from 'react-intl'
+import { openDeleteTripConfirm, setTripDeleteTripConfirm } from "../../store/actions/deleteTripConfirm";
 
 
 class TripCard extends React.Component {
@@ -28,6 +29,13 @@ class TripCard extends React.Component {
     const {trip_id} = this.props;
     // this.props.openPackageModalForTrip(trip_id);
     this.props.openReservationsList(trip_id);
+  }
+
+  deleteTrip = () => {
+    const {pk, user_id} = this.props;
+    this.props.setTripDeleteTripConfirm(pk);
+    this.props.openDeleteTripConfirm();
+
   }
 
   render() {
@@ -80,6 +88,10 @@ class TripCard extends React.Component {
             >
               <Icon name='check' /> Book
             </Button>}
+            {!no_book ? '' : <Segment compact basic>
+              <Button color='blue' icon='edit' className={"trip-card-delete-button"}/>
+              <Button color='orange' icon='trash' className={"white-trash"} onClick={this.deleteTrip.bind(this)}/>
+            </Segment>}
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -96,6 +108,8 @@ const mapDispatchToProps = dispatch => {
   return {
     openPackageModalForTrip: (tripId) => dispatch(openModalForTrip(tripId)),
     openReservationsList: (tripId) => dispatch(openModalSelectReservations(tripId)),
+    openDeleteTripConfirm: () => dispatch(openDeleteTripConfirm()),
+    setTripDeleteTripConfirm: (tripId) => dispatch(setTripDeleteTripConfirm(tripId)),
   };
 };
 
@@ -109,6 +123,7 @@ TripCard.propTypes = {
   img: PropTypes.string,
   trip_id: PropTypes.number,
   no_book: PropTypes.boolean,
+  pk: PropTypes.number,
 };
 
 export default connect(
