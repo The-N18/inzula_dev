@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import { logout } from "../../store/actions/auth";
 import { clearUserInfo } from "../../store/actions/userInfo";
 import { setLang } from "../../store/actions/appConfig";
-import { backend_url } from "../../configurations";
+import { backend_url, get_img_url } from "../../configurations";
 import styles from './layout.css';
 import $ from "jquery";
 import Footer from "../../containers/Footer/Footer";
@@ -148,7 +148,7 @@ class CustomLayout extends React.Component {
       </a></li></span>) : (
       <li>
         <a className={"pad-13"}>
-          <Image bordered circular size='small' className={"profile-image"} onClick={this.handleOnProfileClick.bind(this)} src={profile_pic !== null && profile_pic !== "null" ? profile_pic : backend_url() + '/static/images/user_avatar.png'} />
+          <Image bordered circular size='small' className={"profile-image"} onClick={this.handleOnProfileClick.bind(this)} src={profile_pic !== null && profile_pic !== "null" ? get_img_url(profile_pic) : backend_url() + '/static/images/user_avatar.png'} />
         </a>
         <ul>
             <li><a onClick={this.handleOnProfileClick.bind(this)}>

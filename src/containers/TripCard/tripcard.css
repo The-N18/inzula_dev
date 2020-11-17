@@ -16,6 +16,17 @@
   margin: 0 auto !important;
 }
 
+.max-h-190px {
+  overflow: hidden !important;
+}
+
+p {
+    margin: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
 .how-it-works-tab .menu .item {
   text-align: center !important;
   display:inline-block !important;

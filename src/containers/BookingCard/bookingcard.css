@@ -14,6 +14,17 @@
   color: white !important;
 }
 
+.max-h-190px {
+  overflow: hidden !important;
+}
+
+p {
+    margin: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
 .booking-card-delete-button {
   margin-bottom: 5px !important;
 }

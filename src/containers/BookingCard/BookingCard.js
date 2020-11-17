@@ -45,7 +45,7 @@ class BookingCard extends React.Component {
     const {pk, title, description, img, arrival_date, departure_location, pickup_location, selectable, editable} = this.props;
 
     return (
-      <Card raised fluid centered className={"home-text-img-card-grid"}>
+      <Card raised fluid centered className={"home-text-img-card-grid max-h-190px"}>
         <Grid>
           <Grid.Row>
           {selectable ? <Grid.Column mobile={1} tablet={1} computer={1}>

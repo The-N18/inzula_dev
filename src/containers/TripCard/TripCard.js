@@ -43,7 +43,7 @@ class TripCard extends React.Component {
     const {title, trip_type, depart_date, img, comeback_date, departure_location, destination_location, username, no_book} = this.props;
 
     return (
-      <Card raised fluid centered className={"home-text-img-card-grid"}>
+      <Card raised fluid centered className={"home-text-img-card-grid  max-h-190px"}>
       <Grid>
         <Grid.Row>
           <Grid.Column mobile={16} tablet={8} computer={4}>
