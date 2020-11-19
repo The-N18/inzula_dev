@@ -16,6 +16,7 @@ import { openModalForTrip } from "../../store/actions/sendPackageModal";
 import { openModalSelectReservations } from "../../store/actions/selectReservationsModal";
 import {FormattedMessage, FormattedDate} from 'react-intl'
 import { openDeleteTripConfirm, setTripDeleteTripConfirm } from "../../store/actions/deleteTripConfirm";
+import { updateTripOpenModal, updateTripCloseModal } from "../../store/actions/updateTripModal";
 
 
 class TripCard extends React.Component {
@@ -38,9 +39,21 @@ class TripCard extends React.Component {
 
   }
 
+  updateTrip = () => {
+    const {title, trip_type, depart_date, img, comeback_date, departure_location, destination_location, creator_user_name, no_book, pk} = this.props;
+    const data = {
+      "trip_type": trip_type,
+      "departure_location": departure_location,
+      "destination_location": destination_location,
+      "depart_date": depart_date,
+      "comeback_date": comeback_date,
+    };
+    this.props.updateTripOpenModal(data, pk);
+  }
+
   render() {
 
-    const {title, trip_type, depart_date, img, comeback_date, departure_location, destination_location, username, no_book} = this.props;
+    const {title, trip_type, depart_date, img, comeback_date, departure_location, destination_location, creator_user_name, no_book} = this.props;
 
     return (
       <Card raised fluid centered className={"home-text-img-card-grid  max-h-190px"}>
@@ -54,7 +67,7 @@ class TripCard extends React.Component {
           <Grid.Column mobile={16} tablet={8} computer={9}>
             <Segment basic textAlign="left">
               <Header as='h4' className={"booking-card-title"}>{trip_type}</Header>
-              <p className={"home-text-img-card-description"}>User name: {username}</p>
+              <p className={"home-text-img-card-description"}>User name: {creator_user_name}</p>
               {comeback_date ? <p className={"home-text-img-card-description"}>Comeback date: <FormattedDate
                                                                               value={comeback_date}
                                                                               year="numeric"
@@ -89,7 +102,7 @@ class TripCard extends React.Component {
               <Icon name='check' /> Book
             </Button>}
             {!no_book ? '' : <Segment compact basic>
-              <Button color='blue' icon='edit' className={"trip-card-delete-button"}/>
+              <Button color='blue' icon='edit' className={"trip-card-delete-button"} onClick={this.updateTrip.bind(this)}/>
               <Button color='orange' icon='trash' className={"white-trash"} onClick={this.deleteTrip.bind(this)}/>
             </Segment>}
           </Grid.Column>
@@ -110,13 +123,14 @@ const mapDispatchToProps = dispatch => {
     openReservationsList: (tripId) => dispatch(openModalSelectReservations(tripId)),
     openDeleteTripConfirm: () => dispatch(openDeleteTripConfirm()),
     setTripDeleteTripConfirm: (tripId) => dispatch(setTripDeleteTripConfirm(tripId)),
+    updateTripOpenModal: (tripInfo, pk) => dispatch(updateTripOpenModal(tripInfo, pk)),
   };
 };
 
 TripCard.propTypes = {
   trip_type: PropTypes.string,
   comeback_date: PropTypes.string,
-  username: PropTypes.string,
+  creator_user_name: PropTypes.string,
   depart_date: PropTypes.string,
   departure_location: PropTypes.string,
   destination_location: PropTypes.string,

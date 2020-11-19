@@ -3,7 +3,8 @@ import {
   Message,
   Segment,
   Tab,
-  Radio
+  Radio,
+  Grid
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
@@ -15,13 +16,13 @@ import UserAlertsList from "../../containers/UserAlertsList/UserAlertsList";
 import UserFinance from "../../containers/UserFinance/UserFinance";
 import { setActiveIndex } from "../../store/actions/myProfile";
 import $ from "jquery";
+import { toggleProfileType } from "../../store/actions/userInfo";
 
 
 
 class MyProfile extends React.Component {
 
   state = {
-    profileType: "sender",
     isMobile: false,
     isTablet: false
   };
@@ -51,29 +52,24 @@ class MyProfile extends React.Component {
   }
 
   handleRadioChange = (e, data) => {
-    const { profileType } = this.state;
-    if(profileType === "sender") {
-      this.setState({ profileType: "carrier" });
-    } else {
-      this.setState({ profileType: "sender" });
-    }
-
+    const {profileType} = this.props;
+    this.props.toggleProfileType(profileType === "sender" ? "carrier" : "sender");
   };
 
   render() {
-    const { token, activeIndex } = this.props;
-    const {profileType, isMobile} = this.state;
+    const { token, activeIndex, profileType } = this.props;
+    const {isMobile} = this.state;
     // if (token === null) {
     //   return <Redirect to="/" />;
     // }
     const panes = [
       {
         menuItem: { key: 'profile', icon: 'user', content: isMobile ? '' : 'Profile' },
-        render: () => <Tab.Pane attached={false}><ProfileTab profileType={profileType}/></Tab.Pane>,
+        render: () => <Tab.Pane attached={false}><ProfileTab/></Tab.Pane>,
       },
       {
         menuItem: { key: 'reservation', icon: 'calendar', content: profileType === "sender" ? 'Reservations' : 'Trips' },
-        render: () => <Tab.Pane attached={false}><TripsReservationsList profileType={profileType}/></Tab.Pane>,
+        render: () => <Tab.Pane attached={false}><TripsReservationsList/></Tab.Pane>,
       },
       {
         menuItem: { key: 'alerts', icon: 'bell', content: isMobile ? '' : 'Alerts' },
@@ -87,17 +83,26 @@ class MyProfile extends React.Component {
 
     return (
       <Segment style={{ padding: "7em 0em" }} vertical>
-        <Message floating size={"large"}>
-          Welcome!
-          <span className={"pushleft"}>
-            You are in {profileType} mode. Switch?
-            <Radio
-              toggle
-              checked={profileType === "sender"}
-              onChange={this.handleRadioChange}
-              />
-          </span>
-        </Message>
+        <Grid verticalAlign="middle">
+          <Grid.Row verticalAlign="middle" columns={3}>
+            <Grid.Column mobile={16} tablet={16} computer={6}>
+            </Grid.Column>
+            <Grid.Column mobile={16} tablet={16} computer={6}>
+            </Grid.Column>
+            <Grid.Column mobile={16} tablet={16} computer={4} textAlign={"right"} float={"right"}>
+              <div>
+                <Message floating compact info>
+                    You are in {profileType} mode. Switch?
+                    <Radio
+                      toggle
+                      checked={profileType === "sender"}
+                      onChange={this.handleRadioChange}
+                      />
+                </Message>
+              </div>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
         <Tab
           activeIndex={activeIndex}
           menu={{ borderless: true, attached: false, tabular: false }}
@@ -113,13 +118,15 @@ const mapStateToProps = state => {
   return {
     loading: state.auth.loading,
     token: state.auth.token,
-    activeIndex: state.myProfile.activeIndex
+    activeIndex: state.myProfile.activeIndex,
+    profileType: state.userInfo.profileType
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     setActiveIndex: (activeIndex) => dispatch(setActiveIndex(activeIndex)),
+    toggleProfileType: (profileType) => dispatch(toggleProfileType(profileType)),
   };
 };
 

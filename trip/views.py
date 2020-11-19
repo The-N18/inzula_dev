@@ -3,7 +3,7 @@ from rest_framework import viewsets, permissions
 from .models import Trip
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .serializers import TripSerializer, TripSearchSerializer
+from .serializers import TripSerializer, TripSearchSerializer, TripUpdateSerializer
 from rest_framework import status
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -18,7 +18,7 @@ from booking.models import BookingRequest
 from rest_framework import generics
 from utils.pagination import SearchResultsSetPagination
 from django.http import Http404
-
+import datetime
 
 class TripsListView(generics.ListAPIView):
     """
@@ -71,7 +71,13 @@ class TripView(CreateAPIView):
         depart_location = Location.objects.create(city=request.data["departure_location"]["city"])
         dest_location = Location.objects.create(city=request.data["destination_location"]["city"])
         userprofile = UserProfile.objects.get(user=request.data["created_by"]["user"])
-        trip = Trip.objects.create(departure_location=depart_location, destination_location=dest_location, created_by=userprofile, depart_date=request.data["depart_date"], comeback_date=request.data["comeback_date"], trip_type=request.data["trip_type"])
+        depDate = request.data["depart_date"]
+        start_date = datetime.datetime.strptime(depDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
+        depDate2 = start_date.strftime('%Y-%m-%d')
+        cbDate = request.data["comeback_date"]
+        end_date = datetime.datetime.strptime(cbDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
+        cbDate2 = end_date.strftime('%Y-%m-%d')
+        trip = Trip.objects.create(departure_location=depart_location, destination_location=dest_location, created_by=userprofile, depart_date=depDate2, comeback_date=cbDate2, trip_type=request.data["trip_type"])
         serializer = self.get_serializer(trip)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data,
@@ -127,6 +133,13 @@ class TripSearchView(generics.ListAPIView):
         queryset = self.model.objects.filter(departure_location__city__contains=departure_location, destination_location__city__contains=destination_location)
         return queryset.order_by('-depart_date')
 
+def validate(date_text):
+    try:
+        if date_text != datetime.datetime.strptime(date_text, "%Y-%m-%d").strftime('%Y-%m-%d'):
+            raise ValueError
+        return True
+    except ValueError:
+        return False
 
 class TripDetail(APIView):
     """
@@ -145,11 +158,26 @@ class TripDetail(APIView):
 
     def put(self, request, pk, format=None):
         trip = self.get_object(pk)
-        serializer = TripSerializer(trip, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        dta = request.data
+        depDate = dta["depart_date"]
+        cbDate = dta["comeback_date"]
+        depDate2 = dta["depart_date"]
+        cbDate2 = dta["comeback_date"]
+        if not validate(depDate):
+            start_date = datetime.datetime.strptime(depDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
+            depDate2 = start_date.strftime('%Y-%m-%d')
+        if not validate(cbDate):
+            end_date = datetime.datetime.strptime(cbDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
+            cbDate2 = end_date.strftime('%Y-%m-%d')
+        trip.depart_date = depDate2
+        trip.comeback_date = cbDate2
+        depart_location = Location.objects.create(city=dta["departure_location"]["city"])
+        dest_location = Location.objects.create(city=dta["destination_location"]["city"])
+        trip.departure_location = depart_location
+        trip.destination_location = dest_location
+        trip.save()
+        serializer = TripUpdateSerializer(trip)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, pk, format=None):
         trip = self.get_object(pk)

@@ -15,6 +15,7 @@ import styles from './bookingcard.css';
 import { backend_url, get_img_url } from "../../configurations";
 import { selectBooking } from "../../store/actions/selectReservationsModal";
 import { openDeleteBookingConfirm, setBookingDeleteBookingConfirm } from "../../store/actions/deleteBookingConfirm";
+import { setBookingRequestId, openProposePriceOnBooking } from "../../store/actions/proposePriceOnBooking";
 import {FormattedMessage, FormattedDate} from 'react-intl'
 
 
@@ -33,11 +34,16 @@ class BookingCard extends React.Component {
   }
 
   deleteBooking = () => {
-    const {pk, user_id} = this.props;
-    // this.props.deleteBooking(pk);
+    const {pk} = this.props;
     this.props.setBookingDeleteBookingConfirm(pk);
     this.props.openDeleteBookingConfirm();
 
+  }
+
+  proposePriceOnBooking = () => {
+    const {pk} = this.props;
+    this.props.setBookingRequestId(pk);
+    this.props.openProposePriceOnBooking();
   }
 
   render() {
@@ -73,6 +79,9 @@ class BookingCard extends React.Component {
                 <p className={"home-text-img-card-description"}>Pickup: {pickup_location}</p>
               </Segment>
             </Grid.Column>
+            {!editable ? <Segment compact basic>
+              <Button color='blue' icon='money' className={"white-trash"} onClick={this.proposePriceOnBooking.bind(this)}/>
+            </Segment> : ''}
             {editable ? <Grid.Column mobile={2} tablet={2} computer={2}>
               <Segment compact basic>
                 <Button color='blue' icon='edit' className={"booking-card-delete-button"}/>
@@ -96,6 +105,8 @@ const mapDispatchToProps = dispatch => {
   return {
     selectBooking: (selected) => dispatch(selectBooking(selected)),
     openDeleteBookingConfirm: () => dispatch(openDeleteBookingConfirm()),
+    openProposePriceOnBooking: () => dispatch(openProposePriceOnBooking()),
+    setBookingRequestId: (bookingId) => dispatch(setBookingRequestId(bookingId)),
     setBookingDeleteBookingConfirm: (bookingId) => dispatch(setBookingDeleteBookingConfirm(bookingId)),
   };
 };

@@ -16,7 +16,8 @@ export const clearUserInfo = () => {
     phone_number: null,
     profile_pic: null,
     passport_number: null,
-    country: null
+    country: null,
+    profileType: "sender",
   };
 };
 
@@ -43,5 +44,13 @@ export const setUserInfo = (userId, username, userProfileId, first_name, last_na
       country: country,
       userProfileId: userProfileId,
     }
+  };
+};
+
+export const toggleProfileType = (profileType) => {
+  console.log("in toggleProfileType");
+  return {
+    type: actionTypes.TOGGLE_PROFILE_TYPE,
+    profileType: profileType,
   };
 };

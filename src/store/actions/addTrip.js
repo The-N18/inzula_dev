@@ -66,6 +66,36 @@ export const tripAddition = (created_by, departure_location, destination_locatio
 }
 
 
+export const updateTrip = (dta) => {
+  const userProfileId = localStorage.getItem("userProfileId");
+  const config = {
+            headers: { 'content-type': 'multipart/form-data' }
+          };
+  return dispatch => {
+    axios
+      .put(api_url() + "/trips/trip/"+dta["pk"]+"/", dta)
+      .then(res => {
+        console.log(res.data)
+        dispatch(checkAuthTimeout(3600));
+        dispatch(createNotification({
+          message: 'Your trip has been updated',
+          type: NOTIFICATION_TYPE_SUCCESS,
+          duration: 10000,
+          canDismiss: true,
+        }));
+        dispatch(getInitialTrips(userProfileId));
+      })
+      .catch(err => {
+        dispatch(createNotification({
+          message: 'Failed to update your trip',
+          type: NOTIFICATION_TYPE_ERROR,
+          duration: 10000,
+          canDismiss: true,
+        }));
+      });
+  };
+}
+
 export const deleteTrip = (tripId) => {
   const userProfileId = localStorage.getItem("userProfileId");
   const config = {

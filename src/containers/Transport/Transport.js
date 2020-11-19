@@ -4,7 +4,8 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './transport.css';
-import AddTripForm from "../../containers/AddTripForm/AddTripForm";
+// import AddTripForm from "../../containers/AddTripForm/AddTripForm";
+import AddTripForm from "../../containers/AddTripFormRedux/AddTripForm";
 import TransportHowToMakeMoney from "../../containers/TransportHowToMakeMoney/TransportHowToMakeMoney";
 // import SearchBookingRequestsForm from "../../containers/SearchBookingRequestsForm/SearchBookingRequestsForm";
 import SearchBookingRequestsForm from "../../containers/SearchBookingRequestsReduxForm/SearchBookingRequestsForm";

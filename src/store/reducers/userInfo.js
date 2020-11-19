@@ -13,6 +13,7 @@ const initialState = {
   profile_pic: null,
   passport_number: null,
   country: null,
+  profileType: "sender",
   profileData: {}
 };
 
@@ -41,6 +42,12 @@ const setUserInfo = (state, action) => {
   });
 };
 
+const toggleProfileType = (state, action) => {
+  return updateObject(state, {
+    profileType: action.profileType,
+  });
+};
+
 const clearUserInfo = (state, action) => {
   return updateObject(state, {
     userId: null,
@@ -54,6 +61,7 @@ const clearUserInfo = (state, action) => {
     profile_pic: null,
     passport_number: null,
     country: null,
+    profileType: "sender",
     profileData: {}
   });
 };
@@ -64,6 +72,8 @@ const reducer = (state = initialState, action) => {
       return setUserInfo(state, action);
     case actionTypes.CLEAR_USER_INFO:
       return clearUserInfo(state, action);
+    case actionTypes.TOGGLE_PROFILE_TYPE:
+      return toggleProfileType(state, action);
     default:
       return state;
   }

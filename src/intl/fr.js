@@ -7,6 +7,7 @@ export const msg = {
   'layout.signup': "Inscription",
   'layout.profile': "Profil",
   'layout.booking': "Réservation",
+  'layout.trips': "Voyages",
   'layout.messages': "Messagerie",
   'layout.alerts': "Notifications",
   'layout.finances': "Finances",

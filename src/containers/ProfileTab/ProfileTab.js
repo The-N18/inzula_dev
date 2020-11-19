@@ -215,6 +215,7 @@ const mapStateToProps = state => {
     date_joined: state.userInfo.date_joined,
     phone_number: state.userInfo.phone_number,
     profile_pic: state.userInfo.profile_pic,
+    profileType: state.userInfo.profileType,
     initialValues: {
       first_name: "ksdjfksjdfnksdjf"
     }
@@ -226,7 +227,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 ProfileTab.propTypes = {
-  profileType: PropTypes.string,
 };
 
 export default connect(

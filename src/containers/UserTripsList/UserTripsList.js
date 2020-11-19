@@ -90,7 +90,7 @@ class UserTripsList extends React.Component {
                 departure_location={item["departure_location"]["city"]}
                 destination_location={item["destination_location"]["city"]}
                 img={item["created_by"]["profile_pic"] === null ? '' : item["created_by"]["profile_pic"]}
-                username={item["created_by"]["username"]}
+                creator_user_name={item["creator_user_name"]}
                 no_book={true}
                 editable={true}/>
             </div>

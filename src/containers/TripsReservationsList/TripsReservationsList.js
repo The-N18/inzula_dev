@@ -40,6 +40,7 @@ const mapStateToProps = state => {
   return {
     loading: state.auth.loading,
     error: state.auth.error,
+    profileType: state.userInfo.profileType
   };
 };
 
@@ -48,7 +49,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 TripsReservationsList.propTypes = {
-  profileType: PropTypes.string,
 };
 
 export default connect(

@@ -20,6 +20,8 @@ import LoginParentModal from "../../containers/LoginParentModal/LoginParentModal
 import LoginModal from "../../containers/LoginReduxFormModal/LoginModal";
 import DeleteBookingConfirm from "../../containers/DeleteBookingConfirm/DeleteBookingConfirm";
 import DeleteTripConfirm from "../../containers/DeleteTripConfirm/DeleteTripConfirm";
+import UpdateTripForm from "../../containers/UpdateTripFormModal/UpdateTripForm";
+import ProposePriceOnBooking from "../../containers/ProposePriceOnBooking/ProposePriceOnBooking";
 
 import LanguageSwitcherSelector from "../../containers/LanguageSwitcherSelector/LanguageSwitcherSelector";
 import 'react-redux-notify/dist/ReactReduxNotify.css';
@@ -114,7 +116,7 @@ class CustomLayout extends React.Component {
 
 
   render() {
-    const { authenticated, profile_pic } = this.props;
+    const { authenticated, profile_pic, profileType } = this.props;
 
     let mobileMenu = this.state.isMobile ? (
       <span><li><a onClick={this.handleOnProfileClick.bind(this)}>
@@ -123,10 +125,13 @@ class CustomLayout extends React.Component {
         defaultMessage="Profile"
       /></a></li>
       <li><a onClick={this.handleOnReservationClick.bind(this)}>
-      <FormattedMessage
+      {profileType === "sender" ? <FormattedMessage
         id="layout.booking"
         defaultMessage="Reservation"
-      />
+      /> : <FormattedMessage
+        id="layout.trips"
+        defaultMessage="Trips"
+      />}
       </a></li>
       <li><a onClick={this.handleOnAlertClick.bind(this)}>
       <FormattedMessage
@@ -158,10 +163,13 @@ class CustomLayout extends React.Component {
             />
             </a></li>
             <li><a onClick={this.handleOnReservationClick.bind(this)}>
-            <FormattedMessage
+            {profileType === "sender" ? <FormattedMessage
               id="layout.booking"
               defaultMessage="Reservation"
-            />
+            /> : <FormattedMessage
+              id="layout.trips"
+              defaultMessage="Trips"
+            />}
             </a></li>
             <li><a onClick={this.handleOnAlertClick.bind(this)}>
             <FormattedMessage
@@ -192,6 +200,8 @@ class CustomLayout extends React.Component {
       <LoginModal />
       <DeleteBookingConfirm />
       <DeleteTripConfirm />
+      <UpdateTripForm />
+      <ProposePriceOnBooking />
       <Notify />
         <header className="menuheader">
           <div>
@@ -252,7 +262,8 @@ const mapStateToProps = state => {
   return {
     authenticated: state.auth.token !== null,
     profile_pic: state.userInfo.profile_pic,
-    lang: state.appConfig.lang
+    lang: state.appConfig.lang,
+    profileType: state.userInfo.profileType
   };
 };
 

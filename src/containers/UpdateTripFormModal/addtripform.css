@@ -1,0 +1,79 @@
+.transportpge {
+  width: auto !important;
+}
+
+#g-recaptcha {
+  text-align: center;
+  display: inline-block;
+}
+
+.transport-add-trip-button {
+  margin: 0px auto !important;
+  display: block !important;
+}
+
+.update-trip-fm {
+  width: auto !important;
+  padding: 20px !important;
+}
+
+.add-trip-grid {
+  min-height: 450px !important;
+}
+
+.add-trip-form-header {
+  color: rgb(144 20 20) !important;
+}
+
+.update-trip-form {
+  width: 100% !important;
+}
+
+.add-trip-grid-column {
+  padding: 0px 80px 0px 80px !important;
+}
+
+@media only screen and (max-width: 1024px) {
+  .add-trip-grid-column {
+    padding: 0px 25px 0px 25px !important;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 950px) {
+  .add-trip-grid-column {
+    padding: 0px 40px 0px 40px !important;
+  }
+}
+
+@media only screen and (min-width: 361px) and (max-width: 767px) {
+  .add-trip-grid-column {
+    padding: 0px 20px 0px 20px !important;
+  }
+}
+
+@media only screen and (min-width: 0px) and (max-width: 360px) {
+  .add-trip-grid-column {
+    padding: 0px 20px 0px 20px !important;
+  }
+}
+
+.react-datetime-picker__inputGroup__input {
+  border: none !important;
+}
+
+.react-datetime-picker__inputGroup {
+    min-width: calc(4px + (4px * 3) + 0.54em * 8 + 0.217em * 2);
+    flex-grow: 1 !important;
+    display: flex !important;
+    padding: 2px !important;
+    align-items: baseline !important;
+}
+
+.react-datetime-picker__inputGroup__amPm {
+  width: 41px !important;
+}
+
+.react-datetime-picker__inputGroup__input {
+  height: 17px !important;
+  padding: 1px !important;
+}
