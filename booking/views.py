@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets, permissions
-from .models import Trip
+from trip.models import Trip
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .serializers import TripSerializer
@@ -14,8 +14,8 @@ from rest_auth.registration.app_settings import RegisterSerializer, register_per
 from rest_framework.generics import CreateAPIView, ListAPIView, GenericAPIView
 from django.db import transaction
 from rest_framework import generics
-from .models import BookingRequest, Product, ProductImage
-from .serializers import ProductSerializer, BookingRequestSerializer, ProductImageSerializer
+from .models import BookingRequest, Product, ProductImage, Notif
+from .serializers import ProductSerializer, NotifSerializer, BookingRequestSerializer, ProductImageSerializer
 from userprofile.models import Location, UserProfile, Price, Weight, Space
 from django.db.models import Q
 from django.core.serializers import serialize
@@ -40,6 +40,64 @@ class UserBookingsRequestListView(generics.ListAPIView):
         if user_id is not None:
             queryset = queryset.filter(request_by=user_id)
         return queryset.order_by('-made_on')
+
+
+class UserNotifsListView(generics.ListAPIView):
+    """
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+
+    """
+    serializer_class = NotifSerializer
+    model = serializer_class.Meta.model
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        user_id = self.request.query_params.get('user_id', None)
+        queryset = self.model.objects.all()
+        bookings_by_user = BookingRequest.objects.filter(request_by=user_id)
+        trips_by_user = Trip.objects.filter(created_by=user_id)
+        # if user_id is not None:
+        #     queryset = queryset.exclude(created_by=user_id)
+        #     queryset = queryset.exclude(status="seen")
+        #     queryset = queryset.filter(trip__in=trips_by_user, booking_request__in=bookings_by_user)
+        return queryset.order_by('-created_on')
+
+
+class NotifCreateView(CreateAPIView):
+    serializer_class = NotifSerializer
+    permission_classes = register_permission_classes()
+
+    def dispatch(self, *args, **kwargs):
+        return super(NotifCreateView, self).dispatch(*args, **kwargs)
+
+    def get_response_data(self, user):
+        if getattr(settings, 'REST_USE_JWT', False):
+            data = {
+                'user': user,
+                'token': self.token
+            }
+            return JWTSerializer(data).data
+        else:
+            return TokenSerializer(user.auth_token).data
+
+    def create(self, request, *args, **kwargs):
+        trip = request.data["trip"]
+        booking_data = request.data["bookings"]
+        type = request.data["type"]
+        notif_status = request.data["status"]
+        created_by = UserProfile.objects.get(user=request.data["created_by"])
+        trip = Trip.objects.get(pk=trip)
+        if isinstance(booking_data, list):
+        # if type(booking_data) is list:
+            for booking_id in booking_data:
+                booking_request = BookingRequest.objects.get(pk=booking_id)
+                notification = Notif.objects.create(trip=trip,
+                booking_request=booking_request,
+                created_by=created_by,
+                type=type,
+                status=notif_status)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class BookingRequestViewSet(viewsets.ModelViewSet):
@@ -140,28 +198,6 @@ class BookingRequestView(CreateAPIView):
                         headers=headers)
 
 
-# class DelBookingRequestView(CreateAPIView):
-#     permission_classes = register_permission_classes()
-#
-#     def dispatch(self, *args, **kwargs):
-#         return super(DelBookingRequestView, self).dispatch(*args, **kwargs)
-#
-#     def get_response_data(self, user):
-#         if getattr(settings, 'REST_USE_JWT', False):
-#             data = {
-#                 'user': user,
-#                 'token': self.token
-#             }
-#             return JWTSerializer(data).data
-#         else:
-#             return TokenSerializer(user.auth_token).data
-#
-#     def create(self, request, *args, **kwargs):
-#         booking_id = request.data["booking_id"]
-#         BookingRequest.objects.get(pk=booking_id).delete()
-#         return Response(status=status.HTTP_200_OK)
-
-
 class BookingRequestDetail(APIView):
     """
     Retrieve, update or delete a booking_request instance.
@@ -188,6 +224,35 @@ class BookingRequestDetail(APIView):
     def delete(self, request, pk, format=None):
         booking_request = self.get_object(pk)
         booking_request.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class NotifDetail(APIView):
+    """
+    Retrieve, update or delete a booking_request instance.
+    """
+    def get_object(self, pk):
+        try:
+            return Notif.objects.get(pk=pk)
+        except Notif.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        notif = self.get_object(pk)
+        serializer = NotifSerializer(notif)
+        return Response(serializer.data)
+
+    def put(self, request, pk, format=None):
+        notif = self.get_object(pk)
+        serializer = NotifSerializer(notif, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        notif = self.get_object(pk)
+        notif.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 

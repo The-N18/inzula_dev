@@ -12,7 +12,7 @@ import styles from './myprofile.css';
 // import ProfileTab from "../../containers/ProfileTab/ProfileTab";
 import ProfileTab from "../../containers/ProfileTabReduxForm/ProfileTab";
 import TripsReservationsList from "../../containers/TripsReservationsList/TripsReservationsList";
-import UserAlertsList from "../../containers/UserAlertsList/UserAlertsList";
+import UserNotifsList from "../../containers/UserNotifsList/UserNotifsList";
 import UserFinance from "../../containers/UserFinance/UserFinance";
 import { setActiveIndex } from "../../store/actions/myProfile";
 import $ from "jquery";
@@ -73,7 +73,7 @@ class MyProfile extends React.Component {
       },
       {
         menuItem: { key: 'alerts', icon: 'bell', content: isMobile ? '' : 'Alerts' },
-        render: () => <Tab.Pane attached={false}><UserAlertsList/></Tab.Pane>,
+        render: () => <Tab.Pane attached={false}><UserNotifsList/></Tab.Pane>,
       },
       {
         menuItem: { key: 'finances', icon: 'money bill alternate outline', content: isMobile ? '' : 'Finances' },

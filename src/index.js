@@ -19,9 +19,9 @@ import userinfoReducer from "./store/reducers/userInfo";
 import addbookingReducer from "./store/reducers/addBooking";
 import addTripReducer from "./store/reducers/addTrip";
 import userTripsReducer from "./store/reducers/userTrips";
+import userNotifsReducer from "./store/reducers/userNotifs";
 import userReservationsReducer from "./store/reducers/userReservations";
 import selectReservationsModalReducer from "./store/reducers/selectReservationsModal";
-import userAlertsReducer from "./store/reducers/userAlerts";
 import signupParentModalReducer from "./store/reducers/signupParentModal";
 import loginParentModalReducer from "./store/reducers/loginParentModal";
 import signupModalReducer from "./store/reducers/signupModal";
@@ -48,7 +48,7 @@ const rootReducer = combineReducers({
   addTrip: addTripReducer,
   userTrips: userTripsReducer,
   userReservations: userReservationsReducer,
-  userAlerts: userAlertsReducer,
+  userNotifs: userNotifsReducer,
   notifications: notifyReducer,
   signupParentModal: signupParentModalReducer,
   loginParentModal: loginParentModalReducer,

@@ -55,7 +55,7 @@ class UserReservationsList extends React.Component {
 
 
   render() {
-    const { loading, reservations, next_url, count, selectable } = this.props;
+    const { loading, reservations, next_url, count, selectable, editable } = this.props;
     const dataLength = reservations ? reservations.length : 0;
     return (
       <Segment basic className={"profile-tab-section"}>
@@ -89,7 +89,7 @@ class UserReservationsList extends React.Component {
                 departure_location={item["product"]["departure_location"]["city"]}
                 pickup_location={item["product"]["destination_location"] !== null ? item["product"]["destination_location"]["city"] : ''}
                 img={item["product"]["images"].length === 0 ? '' : item["product"]["images"][0]['image']}
-                editable={true}/>
+                editable={editable}/>
             </div>
           ))}
         </InfiniteScroll>
@@ -121,6 +121,7 @@ const mapDispatchToProps = dispatch => {
 UserReservationsList.propTypes = {
   profileType: PropTypes.string,
   selectable: PropTypes.boolean,
+  editable: PropTypes.boolean,
 };
 
 export default connect(

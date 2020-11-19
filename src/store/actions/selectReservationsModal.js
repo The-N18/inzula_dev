@@ -33,12 +33,15 @@ export const closeModal = () => {
   };
 };
 
-export const bookTrip = (tripId, selectedBookings) => {
+export const bookTrip = (tripId, selectedBookings, userId) => {
   return dispatch => {
     axios
-      .post(api_url() + "/trips/add_bookings", {
-        tripId: tripId,
-        selectedBookings: selectedBookings
+      .post(api_url() + "/bookings/add_notif", {
+        trip: tripId,
+        bookings: selectedBookings,
+        type: "trip_booked",
+        status: "unseen",
+        created_by: userId
       })
       .then(res => {
         console.log(res.data);

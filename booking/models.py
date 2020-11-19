@@ -47,6 +47,26 @@ PRODUCT_VALUE_OPTIONS = [
     ('exc', 'Exclusive'),
 ]
 
+REQUEST_STATUS = [
+    ('cre', 'Created'),
+    ('rec', 'Offers recieved'),
+    ('con', 'Offer confirmed'),
+    ('awa', 'Awaiting collection'),
+    ('col', 'Collected'),
+    ('del', 'Delivered'),
+]
+
+ALERT_STATUS = [
+    ('unseen', 'Unseen'),
+    ('seen', 'Seen'),
+]
+
+ALERT_TYPE = [
+    ('offer_rec', 'Offer recieved'),
+    ('trip_booked', 'Trip Booked'),
+    ('offer_conf', 'Offer confirmed'),
+]
+
 class Product(models.Model):
     departure_date = models.DateField(null=True, blank=True)
     arrival_date = models.DateField()
@@ -87,3 +107,12 @@ class BookingRequest(models.Model):
     confirmed_by_sender = models.BooleanField(default=False)
     made_on = models.DateField(null=True, blank=True)
     collector_id = models.FileField(upload_to='uploads/', null=True, blank=True)
+    status = models.CharField(max_length=50, choices=REQUEST_STATUS)
+
+class Notif(models.Model):
+    trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
+    booking_request = models.ForeignKey(BookingRequest, on_delete=models.CASCADE, related_name='+')
+    created_on = models.DateField(null=True, blank=True)
+    created_by = models.ForeignKey(UserProfile, on_delete=models.PROTECT, related_name='+')
+    status = models.CharField(max_length=50, choices=ALERT_STATUS)
+    type = models.CharField(max_length=50, choices=ALERT_TYPE)

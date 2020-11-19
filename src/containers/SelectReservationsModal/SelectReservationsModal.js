@@ -45,8 +45,8 @@ class SelectReservationsModal extends React.Component {
 
   handleBookTripWithReservations = () => {
     console.log("book?");
-    const {tripId, selected} = this.props;
-    this.props.bookTrip(tripId, selected);
+    const {tripId, selected, user_id} = this.props;
+    this.props.bookTrip(tripId, selected, user_id);
   }
 
   render() {
@@ -71,7 +71,7 @@ class SelectReservationsModal extends React.Component {
       </Button>
       </Modal.Header>
       <Modal.Content scrolling>
-          <UserReservationsList selectable={true}/>
+          <UserReservationsList selectable={true} editable={false}/>
       </Modal.Content>
       <Modal.Actions>
         <Button color='green' onClick={this.handleBookTripWithReservations.bind(this)}>
@@ -90,7 +90,8 @@ const mapStateToProps = state => {
   return {
     open: state.selectReservationsModal.open,
     tripId: state.selectReservationsModal.tripId,
-    selected: state.selectReservationsModal.selected
+    selected: state.selectReservationsModal.selected,
+    user_id: state.userInfo.userId,
   };
 };
 
@@ -99,7 +100,7 @@ const mapDispatchToProps = dispatch => {
     openPackageModal: () => dispatch(openModal()),
     closePackageModal: () => dispatch(closeModal()),
     openPackageModalForTrip: (tripId) => dispatch(openModalForTrip(tripId)),
-    bookTrip: (tripId, selected) => dispatch(bookTrip(tripId, selected)),
+    bookTrip: (tripId, selected, user_id) => dispatch(bookTrip(tripId, selected, user_id)),
   };
 };
 
