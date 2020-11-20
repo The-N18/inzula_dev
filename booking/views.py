@@ -14,8 +14,8 @@ from rest_auth.registration.app_settings import RegisterSerializer, register_per
 from rest_framework.generics import CreateAPIView, ListAPIView, GenericAPIView
 from django.db import transaction
 from rest_framework import generics
-from .models import BookingRequest, Product, ProductImage, Notif
-from .serializers import ProductSerializer, NotifSerializer, BookingRequestSerializer, ProductImageSerializer
+from .models import BookingRequest, Product, ProductImage, Notif, PriceProposal
+from .serializers import ProductSerializer, NotifListSerializer, PriceProposalListSerializer, NotifSerializer, BookingRequestSerializer, ProductImageSerializer
 from userprofile.models import Location, UserProfile, Price, Weight, Space
 from django.db.models import Q
 from django.core.serializers import serialize
@@ -48,7 +48,7 @@ class UserNotifsListView(generics.ListAPIView):
     `update` and `destroy` actions.
 
     """
-    serializer_class = NotifSerializer
+    serializer_class = NotifListSerializer
     model = serializer_class.Meta.model
     permission_classes = [permissions.AllowAny]
 
@@ -95,8 +95,43 @@ class NotifCreateView(CreateAPIView):
                 notification = Notif.objects.create(trip=trip,
                 booking_request=booking_request,
                 created_by=created_by,
+                price_proposal=None,
                 type=type,
                 status=notif_status)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+class PriceProposalCreateView(CreateAPIView):
+    serializer_class = PriceProposalListSerializer
+    permission_classes = register_permission_classes()
+
+    def dispatch(self, *args, **kwargs):
+        return super(PriceProposalCreateView, self).dispatch(*args, **kwargs)
+
+    def get_response_data(self, user):
+        if getattr(settings, 'REST_USE_JWT', False):
+            data = {
+                'user': user,
+                'token': self.token
+            }
+            return JWTSerializer(data).data
+        else:
+            return TokenSerializer(user.auth_token).data
+
+    def create(self, request, *args, **kwargs):
+        booking_request = BookingRequest.objects.get(pk=request.data["booking_id"])
+        request_by = UserProfile.objects.get(user=request.data["user_id"])
+        price = request.data["price"]
+        price_proposal = PriceProposal.objects.create(booking_request=booking_request,
+        request_by=request_by,
+        price=price)
+        notification = Notif.objects.create(trip=None,
+        booking_request=booking_request,
+        price_proposal=price_proposal,
+        created_by=request_by,
+        type='offer_rec',
+        status='unseen')
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -184,9 +219,17 @@ class BookingRequestView(CreateAPIView):
         user_agreement=request.data["user_agreement"].capitalize(),
         created_by=userprofile)
         trip = None
+        booking_request = BookingRequest.objects.create(product=product, request_by=userprofile)
         if tripId != None and tripId != 'null':
             trip = Trip.objects.get(pk=tripId)
-        booking_request = BookingRequest.objects.create(product=product, request_by=userprofile, trip=trip)
+            booking_request.trip = trip
+            booking_request.save()
+            # Create notification
+            notification = Notif.objects.create(trip=trip,
+            booking_request=booking_request,
+            created_by=userprofile,
+            type="trip_booked",
+            status="unseen")
         if len(pictures) > 0:
             for item in pictures:
                 img = ProductImage(image=item, product=product)

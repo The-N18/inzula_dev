@@ -75,8 +75,10 @@ class TripView(CreateAPIView):
         start_date = datetime.datetime.strptime(depDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
         depDate2 = start_date.strftime('%Y-%m-%d')
         cbDate = request.data["comeback_date"]
-        end_date = datetime.datetime.strptime(cbDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
-        cbDate2 = end_date.strftime('%Y-%m-%d')
+        end_date, cbDate2 = None, None
+        if cbDate is not '':
+            end_date = datetime.datetime.strptime(cbDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
+            cbDate2 = end_date.strftime('%Y-%m-%d')
         trip = Trip.objects.create(departure_location=depart_location, destination_location=dest_location, created_by=userprofile, depart_date=depDate2, comeback_date=cbDate2, trip_type=request.data["trip_type"])
         serializer = self.get_serializer(trip)
         headers = self.get_success_headers(serializer.data)

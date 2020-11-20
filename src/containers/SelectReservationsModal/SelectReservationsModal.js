@@ -39,8 +39,8 @@ class SelectReservationsModal extends React.Component {
   }
 
   handleBook = () => {
-    const {trip_id} = this.props;
-    this.props.openPackageModalForTrip(trip_id);
+    const {tripId} = this.props;
+    this.props.openPackageModalForTrip(tripId);
   }
 
   handleBookTripWithReservations = () => {

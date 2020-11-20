@@ -75,12 +75,21 @@ class UserNotifsList extends React.Component {
         >
           {notifs.map((item, index) => (
             <div style={{
-              height: 240,
+              height: 90,
               margin: 6,
               padding: 8
             }} key={index}>
               <NotifCard
                 pk={item["pk"]}
+                type={item["type"]}
+                status={item["status"]}
+                booking_request_id={item["booking_request"]["pk"] || ''}
+                product_name={item["booking_request"]["product_name"] || ''}
+                trip_id={item["trip"]["pk"] || ''}
+                trip_dep_loc={item["trip"]["dep_loc"] || ''}
+                trip_des_loc={item["trip"]["des_loc"] || ''}
+                trip_dep_date={item["trip"]["dep_date"] || ''}
+                offer_price={item["proposal"]["price"] || ''}
                 />
             </div>
           ))}

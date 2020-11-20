@@ -109,9 +109,19 @@ class BookingRequest(models.Model):
     collector_id = models.FileField(upload_to='uploads/', null=True, blank=True)
     status = models.CharField(max_length=50, choices=REQUEST_STATUS)
 
+
+class PriceProposal(models.Model):
+    price = models.CharField(max_length=50, null=False, blank=False)
+    request_by = models.ForeignKey(UserProfile, on_delete=models.PROTECT, related_name='+')
+    booking_request = models.ForeignKey(BookingRequest, on_delete=models.CASCADE, related_name='+')
+    def __str__(self):
+        return self.price
+
+
 class Notif(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
-    booking_request = models.ForeignKey(BookingRequest, on_delete=models.CASCADE, related_name='+')
+    booking_request = models.ForeignKey(BookingRequest, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
+    price_proposal = models.ForeignKey(PriceProposal, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     created_on = models.DateField(null=True, blank=True)
     created_by = models.ForeignKey(UserProfile, on_delete=models.PROTECT, related_name='+')
     status = models.CharField(max_length=50, choices=ALERT_STATUS)

@@ -1,63 +1,10 @@
-.how-it-works-section {
-  background-color: #ffffff;
+.notif-card {
+  max-height: 80px !important;
 }
 
-.booking-card-title {
-  line-height: 10px !important;
+.notif_card_btns {
+  float:right;
 }
-
-.home-text-img-card-description {
-  line-height: 25px !important;
-}
-
-.white-trash {
-  color: white !important;
-}
-
-.max-h-190px {
-  overflow: hidden !important;
-  height: 100% !important;
-}
-
-p {
-    margin: 0;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}
-
-.booking-card-delete-button {
-  margin-bottom: 5px !important;
-}
-
-.how-it-works-tab .menu {
-  text-align: center !important;
-  width: 25% !important;
-  margin: 0 auto !important;
-}
-
-.booking-card-img {
-}
-
-.how-it-works-tab .menu .item {
-  text-align: center !important;
-  display:inline-block !important;
-  margin:0 auto !important;
-}
-
-.how-it-works-tab .menu .item:hover{
-  border-color: #F63854 !important;
-}
-
-.how-it-works-tab .menu .active{
-  border-color: #F63854 !important;
-  color: #F63854 !important;
-}
-
-/* .home-text-img-card-grid:hover {
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2) !important;
-  transition: 0.3s !important;
-} */
 
 
 @media only screen and (min-width: 768px) and (max-width: 950px) {
@@ -81,9 +28,5 @@ p {
     text-align: center !important;
     width: 75% !important;
     margin: 0 auto !important;
-  }
-  .booking-card-img {
-    max-width: 277px !important;
-    max-height: 156px !important;
   }
 }

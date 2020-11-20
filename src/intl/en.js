@@ -178,4 +178,12 @@ export const msg = {
   'trip_card.depart_date': "Depart date: ",
   'trip_card.departure_location': "Departure: ",
   'trip_card.destination_location': "Destination: ",
+
+  'notif_card.trip_booked': "Your trip has been booked.",
+  'notif_card.offer_rec': "You have recieved an offer for this request.",
+  'notif_card.date': "Date: ",
+  'notif_card.product': "Product: ",
+  'notif_card.offer_price': "Price: ",
+  'notif_card.trip': "Trip: ",
+  'notif_card.mark_seen': "Mark as seen",
 };

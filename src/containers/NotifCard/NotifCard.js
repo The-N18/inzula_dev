@@ -18,26 +18,57 @@ import {FormattedMessage, FormattedDate} from 'react-intl'
 
 class NotifCard extends React.Component {
 
+  markAsSeen = () => {
+    console.log("mark this notification as seen");
+    const {pk} = this.props;
+
+  }
+
   render() {
 
-    const {pk} = this.props;
-    const img = null;
+    const {pk, type, trip_dep_date, product_name, trip_dep_loc, trip_des_loc, offer_price} = this.props;
     return (
-      <Card raised fluid centered className={"home-text-img-card-grid max-h-190px"}>
-        <Grid>
-          <Grid.Row>
-          <Grid.Column mobile={16} tablet={16} computer={4}>
-            <Segment basic textAlign="right">
-              <Image centered src={img ? get_img_url(img) : backend_url() + '/static/images/default_booking_image.png'} rounded bordered verticalAlign="middle" size="massive" className={"booking-card-img"}/>
-            </Segment>
-          </Grid.Column>
-            <Grid.Column mobile={16} tablet={16} computer={10}>
-              <Segment basic textAlign="left">
-                <p className={"home-text-img-card-description"}>key: {pk}</p>
-              </Segment>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+      <Card raised fluid centered className={"notif-card"}>
+        <Card.Content>
+          <Card.Header>
+            {type === "trip_booked" ?
+            <FormattedMessage
+              id="notif_card.trip_booked"
+              defaultMessage="Your trip has been booked"
+            /> : ''}
+            {type === "offer_rec" ?
+            <FormattedMessage
+              id="notif_card.offer_rec"
+              defaultMessage="You have recieved an offer for this request"
+            /> : ''}
+            <div className={"notif_card_btns"}>
+              <Button color='blue' icon='eye' onClick={this.markAsSeen.bind(this)} title={"mark as seen"}/>
+            </div>
+          </Card.Header>
+          <Card.Description>
+            {trip_dep_date !== "" ? <span><FormattedMessage
+              id="notif_card.date"
+              defaultMessage="Date: "
+            />
+            <FormattedDate
+              value={trip_dep_date}
+              year="numeric"
+              month="long"
+              day="numeric"
+              weekday="long"
+            /> | </span> : ''}<FormattedMessage
+              id="notif_card.product"
+              defaultMessage="Product: "
+            /> {product_name} {trip_dep_loc !== "" && trip_des_loc !== "" ? <span> | <FormattedMessage
+              id="notif_card.trip"
+              defaultMessage="Trip: "
+            />{trip_dep_loc} - {trip_des_loc}</span> : ''}
+            {offer_price !== "" ? <span> | <FormattedMessage
+              id="notif_card.offer_price"
+              defaultMessage="Price: "
+            />{offer_price} euros</span> : ''}
+          </Card.Description>
+        </Card.Content>
       </Card>
     );
   }
@@ -55,6 +86,14 @@ const mapDispatchToProps = dispatch => {
 
 NotifCard.propTypes = {
   pk: PropTypes.number,
+  trip_id: PropTypes.number,
+  booking_request_id: PropTypes.number,
+  type: PropTypes.string,
+  status: PropTypes.string,
+  product_name: PropTypes.string,
+  trip_dep_loc: PropTypes.string,
+  trip_des_loc: PropTypes.string,
+  trip_dep_date: PropTypes.string,
 };
 
 export default connect(

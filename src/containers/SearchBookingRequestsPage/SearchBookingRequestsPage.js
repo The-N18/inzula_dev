@@ -262,7 +262,7 @@ class SearchBookingRequestsPage extends React.Component {
               }} key={index}>
                 <BookingCard
                   title={item["product"]["name"]}
-                  pk={item["product"]["pk"]}
+                  pk={item["pk"]}
                   arrival_date={item["product"]["arrival_date"]}
                   description={item["product"]["description"]}
                   departure_location={item["product"]["departure_location"]["city"]}
