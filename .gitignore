@@ -6,7 +6,7 @@
 **/*.pyc
 **/__pycache__
 db.sqlite3
-build
+# build
 package-lock.json
 npm-debug.log
 
