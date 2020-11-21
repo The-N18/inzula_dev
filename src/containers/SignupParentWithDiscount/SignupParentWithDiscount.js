@@ -17,6 +17,10 @@ class SignupParentWithDiscount extends React.Component {
     this.props.setDiscountText("Signup now to benefit from a 5% discount for each of your first three parcel epeditions.");
   }
 
+  handleOnModalOpen = () => {
+    this.props.openSignupModal();
+  }
+
   render() {
     return (
       <Segment basic style={{ padding: "12em 0em" }} textAlign="center">
@@ -31,8 +35,8 @@ class SignupParentWithDiscount extends React.Component {
           <Button fluid color='google plus' className={"signupparent-button"}>
             <Icon name='google plus' /> Sign up with Gmail
           </Button>
-          <Button fluid color='white' className={"signupparent-button"} onClick={() => this.props.openSignupModal()}>
-            <Icon name='mail' /> Use email address
+          <Button fluid color='white' className={"signupparent-button"} onClick={this.handleOnModalOpen.bind(this)}>
+            <Icon name='mail' /> Use username
           </Button>
         </Segment>
       </Segment>
