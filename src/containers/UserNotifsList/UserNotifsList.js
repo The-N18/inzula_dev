@@ -66,14 +66,14 @@ class UserNotifsList extends React.Component {
           overflow: 'auto',
         }}
       >
-        <InfiniteScroll
+        {notifs && notifs.length > 0 ? <InfiniteScroll
           dataLength={notifs ? notifs.length : 0}
           next={this.fetchMoreData}
           hasMore={count !== null && next_url !== null}
           loader={<h4>Loading...</h4>}
           scrollableTarget="scrollableDiv"
         >
-          {notifs.map((item, index) => (
+          {notifs ? notifs.map((item, index) => (
             <div style={{
               height: 90,
               margin: 6,
@@ -92,8 +92,8 @@ class UserNotifsList extends React.Component {
                 offer_price={item["proposal"]["price"] || ''}
                 />
             </div>
-          ))}
-        </InfiniteScroll>
+          )) : ''}
+        </InfiniteScroll> : ''}
       </div>}
 
       </Segment>
