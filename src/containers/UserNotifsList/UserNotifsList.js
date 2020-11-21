@@ -59,7 +59,7 @@ class UserNotifsList extends React.Component {
     const dataLength = notifs ? notifs.length : 0;
     return (
       <Segment basic className={"profile-tab-section"}>
-      {notifs.length === 0 ? <div>You have no notifications</div> : <div
+      {notifs && notifs.length === 0 ? <div>You have no notifications</div> : <div
         id="scrollableDiv"
         style={{
           height: 400,
@@ -67,7 +67,7 @@ class UserNotifsList extends React.Component {
         }}
       >
         <InfiniteScroll
-          dataLength={notifs.length}
+          dataLength={notifs ? notifs.length : 0}
           next={this.fetchMoreData}
           hasMore={count !== null && next_url !== null}
           loader={<h4>Loading...</h4>}
