@@ -1,3 +1,4 @@
+//export const BACKEND_HOST_ADDRESS = '127.0.0.1';
 export const BACKEND_HOST_ADDRESS = '15.188.83.142';
 export const BACKEND_HOST_PORT = '8000';
 export const BACKEND_FILE_PORT = '8000';
