@@ -22,7 +22,7 @@ class LoginParent extends React.Component {
             <Icon name='google plus' /> Sign in with Gmail
           </Button>
           <NavLink to="/loginemail"><Button fluid color='white' className={"signupparent-button"}>
-            <Icon name='mail' /> Use email address
+            <Icon name='mail' /> Use username
           </Button></NavLink>
         </Segment>
         <Segment raised className={"signupparentcard"} textAlign="center">

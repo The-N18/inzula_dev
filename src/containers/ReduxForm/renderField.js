@@ -12,11 +12,11 @@ moment.locale('en');
 momentLocalizer();
 
 
-export const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
+export const renderField = ({ input, label, type, disabled, meta: { touched, error, warning } }) => (
   <div>
     {/*<label>{label}</label>*/}
     <div>
-      <input {...input} placeholder={label} type={type} className={"custom-field"}/>
+      <input {...input} placeholder={label} type={type} className={"custom-field"} disabled={disabled}/>
       {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
     </div>
   </div>
@@ -54,6 +54,6 @@ export const renderSelectList = ({ input, data }) =>
       format="YYYY-MM-DD"
       time={showTime}
       min={min}
-      value={!value ? null : new Date(value)}
+      value={!value ? null : value}
     />);
   }

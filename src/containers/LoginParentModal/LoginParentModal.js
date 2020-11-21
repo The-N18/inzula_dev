@@ -43,7 +43,7 @@ class LoginParentModal extends React.Component {
             <Icon name='google plus' /> Sign in with Gmail
           </Button>
           <Button fluid className={"signupparent-button"} onClick={() => this.props.openLoginModal()}>
-            <Icon name='mail' /> Use email address
+            <Icon name='mail' /> Use username
           </Button>
         </Segment>
         <Segment raised className={"signupparentcard"} textAlign="center">

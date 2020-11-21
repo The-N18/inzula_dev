@@ -147,8 +147,8 @@ class AddTripForm extends React.Component {
                   name="departure_location"
                   component="input"
                   type="text"
-                  placeholder="Departure"
-                  label="Departure"
+                  placeholder="Departure location"
+                  label="Departure location"
                   className={"custom-field"}
                   component={renderField}
                 />
@@ -156,8 +156,8 @@ class AddTripForm extends React.Component {
                   name="destination_location"
                   component="input"
                   type="text"
-                  placeholder="Destination"
-                  label="Destination"
+                  placeholder="Destination location"
+                  label="Destination location"
                   className={"custom-field"}
                   component={renderField}
                 />
@@ -256,4 +256,4 @@ const afterSubmit = (result, dispatch) => dispatch(reset('add_trip'));
 export default withRouter(connect(
     mapStateToProps,
     mapDispatchToProps
-)(reduxForm({ form: "add_trip", onSubmitSuccess: afterSubmit, })(AddTripForm)));
+)(reduxForm({ form: "add_trip", onSubmitSuccess: afterSubmit, validate})(AddTripForm)));

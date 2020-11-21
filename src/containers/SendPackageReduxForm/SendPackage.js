@@ -23,8 +23,9 @@ import ImageUploader from 'react-images-upload';
 import { DateInput } from 'semantic-ui-calendar-react';
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import { bookingAddition } from "../../store/actions/addBooking";
-import { Field, reduxForm } from 'redux-form'
-import {renderField} from "../../containers/ReduxForm/renderField";
+import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
+import {renderField, renderDateTimePicker, renderDropdownList} from "../../containers/ReduxForm/renderField";
+import { validate } from "./validation";
 
 class SendPackage extends React.Component {
 
@@ -36,20 +37,6 @@ class SendPackage extends React.Component {
   state = {
     activeStep: 1,
     pictures: [],
-    product_location: "",
-    product_description: "",
-    product_name: "",
-    product_category: "",
-    product_weight: "",
-    product_size: "",
-    product_value: "",
-    proposed_price: "",
-    delivery_date: "",
-    pickup_address: "",
-    recipient_name: "",
-    recipient_phone_number: "",
-    terms_conditions: false,
-    user_agreement: false,
     isNextValid: true
   }
 
@@ -77,60 +64,15 @@ class SendPackage extends React.Component {
       });
   }
 
-  handleToggleCheckbox = () => {
-    const terms_conditions = !(this.state.terms_conditions);
-    this.setState({terms_conditions});
-  }
-
   handleSelectChange = (e, data) => {
     this.setState({ [data.name]: data.value });
   }
 
-
-  handleToggleUserAgreementCheckbox = () => {
-    const user_agreement = !(this.state.user_agreement);
-    this.setState({user_agreement});
-  }
-
-  handleDateTimeChange = (event, {name, value}) => {
-    if (this.state.hasOwnProperty(name)) {
-      this.setState({ [name]: value });
-    }
-  }
-
-  handleSubmit = e => {
-    const {userId, userProfileId, createNotification, tripId} = this.props;
-    e.preventDefault();
-    const { pictures, product_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, pickup_address, recipient_name,
-    recipient_phone_number, terms_conditions, user_agreement} = this.state;
-    const created_by = {"user": userId};
-    if(userProfileId === null && userId === null) {
-      createNotification({
-        message: 'Please login to add your request',
-        type: NOTIFICATION_TYPE_WARNING,
-        duration: 10000,
-        canDismiss: true,
-      });
-    } else {
-      this.props.addRequest(tripId, created_by, pictures, product_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, pickup_address, recipient_name,
-      recipient_phone_number, terms_conditions, user_agreement);
-    }
-    this.setState({ product_location: '', product_description: '',
-                    product_name: '', product_category: '',
-                    product_weight: '', product_size: '',
-                    product_value: '', proposed_price: '',
-                    delivery_date: '', pickup_address: '',
-                    recipient_name: '', recipient_phone_number: '',
-                    terms_conditions: false,
-                    user_agreement: false,
-                    pictures: [], activeStep: 1 });
-  };
-
   submitForm = (val) => {
     console.log("in submit form");
+    console.log(val);
+    const depdate = val['delivery_date'];
     const { userId, userProfileId, createNotification, tripId, user_id, next_url, count } = this.props;
-    // const { pictures, product_location, product_description, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, pickup_address, recipient_name,
-    // recipient_phone_number, terms_conditions, user_agreement} = this.state;
     const created_by = {"user": userId};
     if(userProfileId === null && userId === null) {
       createNotification({
@@ -140,15 +82,34 @@ class SendPackage extends React.Component {
         canDismiss: true,
       });
     } else {
-      this.props.addRequest(tripId, created_by, val['pictures'], val['product_location'], val['product_description'], val['product_name'], val['product_category'], val['product_weight'], val['product_size'], val['product_value'], val['proposed_price'], val['delivery_date'], val['pickup_address'], val['recipient_name'],
-      val['recipient_phone_number'], val['terms_conditions'], val['user_agreement']);
+      this.props.addRequest(tripId,
+        created_by,
+        val['pictures'],
+        val['product_location'],
+        val['product_description'],
+        val['product_name'],
+        val['product_category'] ? val['product_category']['value'] : '',
+        val['product_weight'] ? val['product_weight']['value'] : '',
+        val['product_size'] ? val['product_size']['value'] : '',
+        val['product_value'] ? val['product_value']['value'] : '',
+        val['proposed_price'],
+        depdate.toISOString(),
+        val['pickup_address'],
+        val['recipient_name'],
+        val['recipient_phone_number'],
+        val['terms_conditions'],
+        val['user_agreement']);
     }
   };
 
 
   render() {
-    const { token, tripId, handleSubmit } = this.props;
-    const { isNextValid, user_agreement, terms_conditions, activeStep, product_location, proposed_price, product_description, product_name, product_category, product_weight, product_size, product_value, delivery_date, pickup_address, recipient_name, recipient_phone_number  } = this.state;
+    const { token, tripId, handleSubmit, pristine,
+      reset, submitting, invalid, change, product_name,
+      product_location, pickup_address, proposed_price,
+      product_category, product_weight, product_size, product_value,
+      recipient_name, recipient_phone_number, product_description } = this.props;
+    const { isNextValid, activeStep } = this.state;
     // if(token === null) {
     //   console.log("TOKEN");
     //   console.log(token);
@@ -197,6 +158,27 @@ class SendPackage extends React.Component {
       { key: 'exc', value: 'exc', text: 'Exclusive' },
     ];
 
+    const handleMinPriceCatChange = (event, value) => {
+      console.log(value);
+      const newUnits = 0;
+      change('min_price', newUnits);
+    }
+    const handleMinPriceWeiChange = (event, value) => {
+      console.log(value);
+      const newUnits = 1;
+      change('min_price', newUnits);
+    }
+    const handleMinPriceSizChange = (event, value) => {
+      console.log(value);
+      const newUnits = 2;
+      change('min_price', newUnits);
+    }
+    const handleMinPriceValChange = (event, value) => {
+      console.log(value);
+      const newUnits = 3;
+      change('min_price', newUnits);
+    }
+
     return (
       <Segment style={{ padding: "0em 0em" }} vertical textAlign="center">
         <Step.Group ordered stackable>
@@ -241,27 +223,37 @@ class SendPackage extends React.Component {
                 >
                   <Grid.Row columns={2}>
                     <Grid.Column mobile={16} tablet={8} computer={8}>
-                      <span className={"form-details-display"}><b>Product name:</b> {this.state.product_name}</span>
-                      <span className={"form-details-display"}><b>Product location:</b> {this.state.product_location}</span>
-                      <span className={"form-details-display"}><b>Delivery date:</b> {this.state.delivery_date}</span>
-                      <span className={"form-details-display"}><b>Product category:</b> {this.state.product_category}</span>
-                      <span className={"form-details-display"}><b>Product size:</b> {this.state.product_size}</span>
-                      <span className={"form-details-display"}><b>Proposed price:</b> {this.state.proposed_price}</span>
-                      <span className={"form-details-display"}><b>Recipient name:</b> {this.state.recipient_name}</span>
-                      <span className={"form-details-display"}><b>Recipient phone number:</b> {this.state.recipient_phone_number}</span>
+                      <span className={"form-details-display"}><b>Product name:</b> {product_name}</span>
+                      <span className={"form-details-display"}><b>Product location:</b> {product_location}</span>
+                      <span className={"form-details-display"}><b>Product category:</b> {product_category ? product_category['text'] : ''}</span>
+                      <span className={"form-details-display"}><b>Product size:</b> {product_size ? product_size['text'] : ''}</span>
+                      <span className={"form-details-display"}><b>Proposed price:</b> {proposed_price}</span>
+                      <span className={"form-details-display"}><b>Recipient name:</b> {recipient_name}</span>
+                      <span className={"form-details-display"}><b>Recipient phone number:</b> {recipient_phone_number}</span>
                     </Grid.Column>
                     <Grid.Column mobile={16} tablet={8} computer={8}>
-                      <span className={"form-details-display"} title={this.state.product_description}><b>Product description:</b> {this.state.product_description}</span>
-                      <span className={"form-details-display"}><b>Pickup address:</b> {this.state.pickup_address}</span>
-                      <span className={"form-details-display"}><b>Weight:</b> {this.state.product_weight}</span>
-                      <span className={"form-details-display"}><b>Product value:</b> {this.state.product_value}</span>
-                      <span className={"form-details-display"}><b>Recipient name:</b> {this.state.recipient_name}</span>
-                      <span className={"form-details-display"}><b>Recipient phone number:</b> {this.state.recipient_phone_number}</span>
+                      <span className={"form-details-display"} title={product_description}><b>Product description:</b> {product_description}</span>
+                      <span className={"form-details-display"}><b>Pickup address:</b> {pickup_address}</span>
+                      <span className={"form-details-display"}><b>Weight:</b> {product_weight ? product_weight['text'] : ''}</span>
+                      <span className={"form-details-display"}><b>Product value:</b> {product_value ? product_value['text'] : ''}</span>
+                      <span className={"form-details-display"}><b>Recipient name:</b> {recipient_name}</span>
+                      <span className={"form-details-display"}><b>Recipient phone number:</b> {recipient_phone_number}</span>
                     </Grid.Column>
                   </Grid.Row>
                   </Grid> : ''}
                   <Grid>
                   <Grid.Row>
+                    {activeStep === 1 ? <Grid.Column mobile={16} tablet={16} computer={16}>
+                      <Field
+                        name="min_price"
+                        type="number"
+                        placeholder="Proposed price"
+                        label="Min price"
+                        className={"custom-field"}
+                        component={renderField}
+                        disabled={true}
+                      />
+                  </Grid.Column> : ''}
                   <Grid.Column mobile={16} tablet={16} computer={16}>
                 {activeStep === 1 ?
                   <Grid>
@@ -306,14 +298,10 @@ class SendPackage extends React.Component {
                      <Grid>
                        <Grid.Row className={"no-pad"}>
                          <Grid.Column mobile={16} tablet={8} computer={8}>
-                           <DateInput
+                           <Field
                              name="delivery_date"
-                             placeholder="Delivery Date"
-                             value={delivery_date}
-                             iconPosition="left"
-                             onChange={this.handleDateTimeChange}
-                             dateFormat="YYYY-MM-DD"
-                             className={"w-100"}
+                             showTime={false}
+                             component={renderDateTimePicker}
                            />
                          </Grid.Column>
                      <Grid.Column mobile={16} tablet={8} computer={8}>
@@ -332,20 +320,26 @@ class SendPackage extends React.Component {
                     <Grid>
                     <Grid.Row className={"no-pad"}>
                     <Grid.Column mobile={16} tablet={8} computer={8}>
-                    <Select
-                      onChange={this.handleSelectChange}
-                      name="product_category"
-                      fluid
-                      placeholder='Product category'
-                      options={categoryOptions} />
+                      <span>Product category</span>
+                      <Field
+                        name="product_category"
+                        placeholder='Product category'
+                        component={renderDropdownList}
+                        data={categoryOptions}
+                        valueField="value"
+                        textField="text"
+                        onChange={handleMinPriceCatChange}/>
                       </Grid.Column>
                     <Grid.Column mobile={16} tablet={8} computer={8}>
-                    <Select
-                      onChange={this.handleSelectChange}
-                      name="product_weight"
-                      fluid
-                      placeholder='Product weight'
-                      options={weightOptions} />
+                      <span>Product weight</span>
+                      <Field
+                        name="product_weight"
+                        placeholder='Product weight'
+                        component={renderDropdownList}
+                        data={weightOptions}
+                        valueField="value"
+                        textField="text"
+                        onChange={handleMinPriceWeiChange}/>
                       </Grid.Column>
                       </Grid.Row>
                       </Grid> : ''}
@@ -353,20 +347,26 @@ class SendPackage extends React.Component {
                       <Grid>
                       <Grid.Row className={"no-pad"}>
                       <Grid.Column mobile={16} tablet={8} computer={8}>
-                      <Select
-                        onChange={this.handleSelectChange}
-                        name="product_size"
-                        fluid
-                        placeholder='Product size'
-                        options={sizeOptions} />
+                        <span>Product size</span>
+                        <Field
+                          name="product_size"
+                          placeholder='Product size'
+                          component={renderDropdownList}
+                          data={sizeOptions}
+                          valueField="value"
+                          textField="text"
+                          onChange={handleMinPriceSizChange}/>
                         </Grid.Column>
                         <Grid.Column mobile={16} tablet={8} computer={8}>
-                        <Select
-                          onChange={this.handleSelectChange}
-                          name="product_value"
-                          fluid
-                          placeholder='Product value'
-                          options={valueOptions} />
+                        <span>Product value</span>
+                          <Field
+                            name="product_value"
+                            placeholder='Product value'
+                            component={renderDropdownList}
+                            data={valueOptions}
+                            valueField="value"
+                            textField="text"
+                            onChange={handleMinPriceValChange}/>
                           </Grid.Column>
                         </Grid.Row>
                         </Grid> : ''}
@@ -439,6 +439,7 @@ class SendPackage extends React.Component {
                           className={"buttoncolor step-button"}
                           size="large"
                           type="submit"
+                          disabled={invalid}
                         >
                           <Icon name='check' /> Confirm request
                         </Button> : ''}
@@ -463,8 +464,20 @@ class SendPackage extends React.Component {
     );
   }
 }
+const selector = formValueSelector('send_package');
 
 const mapStateToProps = state => {
+  const product_name = selector(state, 'product_name')
+  const product_location = selector(state, 'product_location')
+  const pickup_address = selector(state, 'pickup_address')
+  const proposed_price = selector(state, 'proposed_price')
+  const product_category = selector(state, 'product_category')
+  const product_weight = selector(state, 'product_weight')
+  const product_size = selector(state, 'product_size')
+  const product_value = selector(state, 'product_value')
+  const recipient_name = selector(state, 'recipient_name')
+  const recipient_phone_number = selector(state, 'recipient_phone_number')
+  const product_description = selector(state, 'product_description')
   return {
     loading: state.addBooking.loading,
     error: state.addBooking.error,
@@ -472,7 +485,21 @@ const mapStateToProps = state => {
     userId: state.userInfo.userId,
     userProfileId: state.userInfo.userProfileId,
     username: state.userInfo.username,
-    authenticated: state.auth.token !== null
+    authenticated: state.auth.token !== null,
+    product_name: product_name,
+    product_location: product_location,
+    pickup_address: pickup_address,
+    proposed_price: proposed_price,
+    product_category: product_category,
+    product_weight: product_weight,
+    product_size: product_size,
+    product_value: product_value,
+    recipient_name: recipient_name,
+    recipient_phone_number: recipient_phone_number,
+    product_description: product_description,
+    initialValues: {
+      "min_price": 0
+    }
   };
 };
 
@@ -490,13 +517,20 @@ SendPackage.propTypes = {
   tripId: PropTypes.tripId,
 };
 
-let SendPackageConnected = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SendPackage);
+// let SendPackageConnected = connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(SendPackage);
+//
+// SendPackageConnected = reduxForm ({
+//   form: 'send_package',
+//   enableReinitialize: true,
+//   validate
+// }) (SendPackageConnected);
+//
+// export default SendPackageConnected;
 
-SendPackageConnected = reduxForm ({
-  form: 'send_package',
-}) (SendPackageConnected);
-
-export default SendPackageConnected;
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(reduxForm({ form: "send_package", enableReinitialize: true, validate })(SendPackage));

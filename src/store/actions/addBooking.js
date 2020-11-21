@@ -3,8 +3,8 @@ import * as actionTypes from "./actionTypes";
 import { api_url } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
 import {getInitialReservations} from "./userReservations";
+import {closeModal} from "./sendPackageModal";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
-
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
 
@@ -72,6 +72,7 @@ recipient_phone_number, terms_conditions, user_agreement) => {
         console.log(res.data)
         dispatch(checkAuthTimeout(3600));
         dispatch(addBookingSuccess(res.data));
+        dispatch(closeModal());
         dispatch(createNotification({
           message: 'Your request has been added',
           type: NOTIFICATION_TYPE_SUCCESS,

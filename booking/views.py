@@ -21,6 +21,8 @@ from django.db.models import Q
 from django.core.serializers import serialize
 from utils.pagination import SearchResultsSetPagination
 from django.http import Http404
+import datetime
+
 # Create your views here.
 
 
@@ -203,7 +205,10 @@ class BookingRequestView(CreateAPIView):
         space = request.data["product_size"]
         weight = request.data["product_weight"]
         tripId = request.data["tripId"]
-        product = Product.objects.create(arrival_date=request.data["delivery_date"],
+        depDate = request.data["delivery_date"]
+        start_date = datetime.datetime.strptime(depDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
+        depDate2 = start_date.strftime('%Y-%m-%d')
+        product = Product.objects.create(arrival_date=depDate2,
         departure_location=depart_location,
         pickup_location=pickup_address,
         name=request.data["product_name"],
