@@ -29,7 +29,7 @@ class TripsReservationsList extends React.Component {
     const { profileType } = this.props;
     return (
       <Segment basic className={"profile-tab-section"}>
-        {profileType === "sender" ? <UserReservationsList selectable={false}/> : <UserTripsList/>}
+        {profileType === "sender" ? <UserReservationsList selectable={false} editable={true}/> : <UserTripsList/>}
 
       </Segment>
     );

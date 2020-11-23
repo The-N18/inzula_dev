@@ -16,7 +16,7 @@ from django.db import transaction
 from rest_framework import generics
 from .models import BookingRequest, Product, ProductImage, Notif, PriceProposal
 from .serializers import ProductSerializer, NotifListSerializer, PriceProposalListSerializer, NotifSerializer, BookingRequestSerializer, ProductImageSerializer
-from userprofile.models import Location, UserProfile, Price, Weight, Space
+from userprofile.models import Location, UserProfile, Price, Weight, Space, City
 from django.db.models import Q
 from django.core.serializers import serialize
 from utils.pagination import SearchResultsSetPagination
@@ -198,8 +198,8 @@ class BookingRequestView(CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         pictures = request.FILES.getlist('pictures')
-        depart_location = Location.objects.create(city=request.data["product_location"])
-        pickup_address = Location.objects.create(city=request.data["pickup_address"])
+        departure_location = City.objects.get(pk=request.data["departure_location"])
+        destination_location = City.objects.get(pk=request.data["destination_location"])
         userprofile = UserProfile.objects.get(user=request.data["created_by"])
         price = request.data["product_value"]
         space = request.data["product_size"]
@@ -209,8 +209,8 @@ class BookingRequestView(CreateAPIView):
         start_date = datetime.datetime.strptime(depDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
         depDate2 = start_date.strftime('%Y-%m-%d')
         product = Product.objects.create(arrival_date=depDate2,
-        departure_location=depart_location,
-        pickup_location=pickup_address,
+        departure_location=departure_location,
+        destination_location=destination_location,
         name=request.data["product_name"],
         description=request.data["product_description"],
         recipient_name=request.data["recipient_name"],
@@ -315,15 +315,15 @@ class BookingRequestSearchView(generics.ListAPIView):
         product_size = self.request.query_params.getlist('product_size[]', [])
         proposed_price = self.request.query_params.getlist('proposed_price[]', [])
         weight = self.request.query_params.getlist('weight[]', [])
-        departure_locations = Location.objects.filter(city__startswith=departure_location)
+        departure_locations = City.objects.filter(label__startswith=departure_location)
         destination_location = self.request.query_params.get('destination_location', '')
-        destination_locations = Location.objects.filter(city__startswith=destination_location)
+        destination_locations = City.objects.filter(label__startswith=destination_location)
         arrival_date = self.request.query_params.get('delivery_date', '')
         products = Product.objects.all()
         if departure_location:
-            products = products.filter(departure_location__city__contains=departure_location)
+            products = products.filter(departure_location__label__contains=departure_location)
         if destination_location:
-            products = products.filter(pickup_location__city__contains=destination_location)
+            products = products.filter(destination_location__label__contains=destination_location)
         if len(weight) > 0:
             q_objects = Q()
             for item in weight:

@@ -45,8 +45,8 @@ class TripCard extends React.Component {
       "trip_type": trip_type,
       "departure_location": departure_location,
       "destination_location": destination_location,
-      "depart_date": depart_date,
-      "comeback_date": comeback_date,
+      "depart_date": new Date(depart_date),
+      "comeback_date": new Date(comeback_date),
     };
     this.props.updateTripOpenModal(data, pk);
   }
@@ -82,8 +82,8 @@ class TripCard extends React.Component {
                                                                               day="numeric"
                                                                               weekday="long"
                                                                             /></p> : ''}
-              <p className={"home-text-img-card-description"}>Departure: {departure_location}</p>
-              <p className={"home-text-img-card-description"}>Destination: {destination_location}</p>
+              <p className={"home-text-img-card-description"}>Departure: {departure_location && departure_location['label'] ? departure_location['label'] : ''}</p>
+              <p className={"home-text-img-card-description"}>Destination: {destination_location && destination_location['label'] ? destination_location['label'] : ''}</p>
             </Segment>
           </Grid.Column>
           <Grid.Column mobile={16} tablet={16} computer={2}>

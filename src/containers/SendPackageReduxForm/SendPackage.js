@@ -24,7 +24,7 @@ import { DateInput } from 'semantic-ui-calendar-react';
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import { bookingAddition } from "../../store/actions/addBooking";
 import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
-import {renderField, renderDateTimePicker, renderDropdownList} from "../../containers/ReduxForm/renderField";
+import {renderField, renderDateTimePicker, renderDropdownList, renderCitiesList} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
 
 class SendPackage extends React.Component {
@@ -82,10 +82,12 @@ class SendPackage extends React.Component {
         canDismiss: true,
       });
     } else {
+      const departureLocation = val['departure_location'] ? val['departure_location']['pk'] : null;
+      const destinationLocation = val['destination_location'] ? val['destination_location']['pk'] : null;
       this.props.addRequest(tripId,
         created_by,
         val['pictures'],
-        val['product_location'],
+        departureLocation,
         val['product_description'],
         val['product_name'],
         val['product_category'] ? val['product_category']['value'] : '',
@@ -94,7 +96,7 @@ class SendPackage extends React.Component {
         val['product_value'] ? val['product_value']['value'] : '',
         val['proposed_price'],
         depdate.toISOString(),
-        val['pickup_address'],
+        destinationLocation,
         val['recipient_name'],
         val['recipient_phone_number'],
         val['terms_conditions'],
@@ -106,7 +108,7 @@ class SendPackage extends React.Component {
   render() {
     const { token, tripId, handleSubmit, pristine,
       reset, submitting, invalid, change, product_name,
-      product_location, pickup_address, proposed_price,
+      departure_location, destination_location, proposed_price,
       product_category, product_weight, product_size, product_value,
       recipient_name, recipient_phone_number, product_description } = this.props;
     const { isNextValid, activeStep } = this.state;
@@ -224,7 +226,7 @@ class SendPackage extends React.Component {
                   <Grid.Row columns={2}>
                     <Grid.Column mobile={16} tablet={8} computer={8}>
                       <span className={"form-details-display"}><b>Product name:</b> {product_name}</span>
-                      <span className={"form-details-display"}><b>Product location:</b> {product_location}</span>
+                      <span className={"form-details-display"}><b>Product location:</b> {departure_location ? departure_location['label'] : ''}</span>
                       <span className={"form-details-display"}><b>Product category:</b> {product_category ? product_category['text'] : ''}</span>
                       <span className={"form-details-display"}><b>Product size:</b> {product_size ? product_size['text'] : ''}</span>
                       <span className={"form-details-display"}><b>Proposed price:</b> {proposed_price}</span>
@@ -233,7 +235,7 @@ class SendPackage extends React.Component {
                     </Grid.Column>
                     <Grid.Column mobile={16} tablet={8} computer={8}>
                       <span className={"form-details-display"} title={product_description}><b>Product description:</b> {product_description}</span>
-                      <span className={"form-details-display"}><b>Pickup address:</b> {pickup_address}</span>
+                      <span className={"form-details-display"}><b>Pickup address:</b> {destination_location ? destination_location['label'] : ''}</span>
                       <span className={"form-details-display"}><b>Weight:</b> {product_weight ? product_weight['text'] : ''}</span>
                       <span className={"form-details-display"}><b>Product value:</b> {product_value ? product_value['text'] : ''}</span>
                       <span className={"form-details-display"}><b>Recipient name:</b> {recipient_name}</span>
@@ -271,24 +273,24 @@ class SendPackage extends React.Component {
                     </Grid.Column>
                     <Grid.Column mobile={16} tablet={8} computer={5}>
                     <Field
-                      name="product_location"
-                      component="input"
-                      type="text"
+                      name="departure_location"
                       placeholder="Product location"
                       label="Product location"
+                      component="input"
+                      type="text"
                       className={"custom-field"}
-                      component={renderField}
+                      component={renderCitiesList}
                     />
                     </Grid.Column>
                     <Grid.Column mobile={16} tablet={8} computer={5}>
                     <Field
-                      name="pickup_address"
+                      name="destination_location"
+                      placeholder="Pickup location"
+                      label="Pickup location"
                       component="input"
                       type="text"
-                      placeholder="Pickup address"
-                      label="Pickup address"
                       className={"custom-field"}
-                      component={renderField}
+                      component={renderCitiesList}
                     />
                     </Grid.Column>
                     </Grid.Row>
@@ -468,8 +470,8 @@ const selector = formValueSelector('send_package');
 
 const mapStateToProps = state => {
   const product_name = selector(state, 'product_name')
-  const product_location = selector(state, 'product_location')
-  const pickup_address = selector(state, 'pickup_address')
+  const departure_location = selector(state, 'departure_location')
+  const destination_location = selector(state, 'destination_location')
   const proposed_price = selector(state, 'proposed_price')
   const product_category = selector(state, 'product_category')
   const product_weight = selector(state, 'product_weight')
@@ -487,8 +489,8 @@ const mapStateToProps = state => {
     username: state.userInfo.username,
     authenticated: state.auth.token !== null,
     product_name: product_name,
-    product_location: product_location,
-    pickup_address: pickup_address,
+    departure_location: departure_location,
+    destination_location: destination_location,
     proposed_price: proposed_price,
     product_category: product_category,
     product_weight: product_weight,
@@ -505,8 +507,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addRequest: (tripId, created_by, pictures, product_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, pickup_address, recipient_name,
-    recipient_phone_number, terms_conditions, user_agreement) => dispatch(bookingAddition(tripId, created_by, pictures, product_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, pickup_address, recipient_name,
+    addRequest: (tripId, created_by, pictures, departure_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, destination_location, recipient_name,
+    recipient_phone_number, terms_conditions, user_agreement) => dispatch(bookingAddition(tripId, created_by, pictures, departure_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, destination_location, recipient_name,
     recipient_phone_number, terms_conditions, user_agreement)),
     createNotification: (config) => {dispatch(createNotification(config))},
   };

@@ -1,12 +1,12 @@
 from .models import Trip
 from userprofile.models import UserProfile
 from rest_framework import serializers
-from userprofile.serializers import UserProfileIdSerializer, LocationSerializer, UserProfileDetailsSerializer
+from userprofile.serializers import CitySerializer, UserProfileIdSerializer, LocationSerializer, UserProfileDetailsSerializer
 
 class TripSerializer(serializers.ModelSerializer):
     created_by = UserProfileIdSerializer()
-    departure_location = LocationSerializer()
-    destination_location = LocationSerializer()
+    departure_location = CitySerializer()
+    destination_location = CitySerializer()
     creator_user_name = serializers.SerializerMethodField()
 
     class Meta:
@@ -28,8 +28,8 @@ class TripUpdateSerializer(serializers.ModelSerializer):
 
 class TripSearchSerializer(serializers.ModelSerializer):
     created_by = UserProfileDetailsSerializer()
-    departure_location = LocationSerializer()
-    destination_location = LocationSerializer()
+    departure_location = CitySerializer()
+    destination_location = CitySerializer()
     creator_user_name = serializers.SerializerMethodField()
 
     class Meta:

@@ -241,25 +241,13 @@ class SearchBookingRequestsForm extends React.Component {
                     pk={item["product"]["pk"]}
                     arrival_date={item["product"]["arrival_date"]}
                     description={item["product"]["description"]}
-                    departure_location={item["product"]["departure_location"]["city"]}
-                    pickup_location={item["product"]["pickup_location"]["city"]}
+                    departure_location={item["product"]["departure_location"]}
+                    destination_location={item["product"]["destination_location"]}
                     img={item["product"]["images"].length === 0 ? '' : item["product"]["images"][0]['image']}/>
                 </div>
               ))}
             </InfiniteScroll>
           </div>
-          {/*bookings.length > 0 ? <Segment raised>
-            {bookings.map((item, i) => {
-               console.log(item["product"]["name"]);
-               // Return the element. Also pass key
-               return (<BookingCard
-                 title={item["product"]["name"]}
-                 arrival_date={item["product"]["arrival_date"]}
-                 description={item["product"]["description"]}
-                 departure_location={item["product"]["departure_location"]["city"]}
-                 pickup_location={item["product"]["pickup_location"]["city"]}/>);
-            })}
-          </Segment> : ''*/}
         </Segment>
     );
   }

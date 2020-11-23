@@ -8,6 +8,10 @@ USER_TYPE_OPTIONS = [
     ('Carrier', 'Carrier')
 ]
 
+class City(models.Model):
+    value = models.CharField(max_length=50)
+    label = models.CharField(max_length=150)
+
 class Price(models.Model):
     amount = models.CharField(max_length=50)
     currency = models.CharField(max_length=50)

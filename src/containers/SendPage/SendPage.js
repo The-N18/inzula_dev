@@ -4,7 +4,8 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './sendpage.css';
-import SearchTripsForm from "../../containers/SearchTripsForm/SearchTripsForm";
+// import SearchTripsForm from "../../containers/SearchTripsForm/SearchTripsForm";
+import SearchTripsForm from "../../containers/SearchTripsReduxForm/SearchTripsForm";
 import SendPackageModal from "../../containers/SendPackageModal/SendPackageModal";
 import SelectReservationsModal from "../../containers/SelectReservationsModal/SelectReservationsModal";
 

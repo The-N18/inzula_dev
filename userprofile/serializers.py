@@ -1,5 +1,11 @@
-from .models import UserProfile, Location
+from .models import UserProfile, Location, City
 from rest_framework import serializers
+
+class CitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = City
+        fields = ['value', 'label', 'pk']
+
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:

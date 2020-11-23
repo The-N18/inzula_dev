@@ -29,6 +29,7 @@ import loginModalReducer from "./store/reducers/loginModal";
 import deleteBookingConfirmReducer from "./store/reducers/deleteBookingConfirm";
 import deleteTripConfirmReducer from "./store/reducers/deleteTripConfirm";
 import updateTripModalReducer from "./store/reducers/updateTripModal";
+import updateBookingModalReducer from "./store/reducers/updateBookingModal";
 import { reducer as formReducer } from 'redux-form'
 import axios from 'axios';
 
@@ -57,6 +58,7 @@ const rootReducer = combineReducers({
   deleteBookingConfirm: deleteBookingConfirmReducer,
   deleteTripConfirm: deleteTripConfirmReducer,
   updateTripModal: updateTripModalReducer,
+  updateBookingModal: updateBookingModalReducer,
   searchbookingsPage: searchbookingsPageReducer,
   proposePriceOnBooking: proposePriceOnBookingReducer,
 });

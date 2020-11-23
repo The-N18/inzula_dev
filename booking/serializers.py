@@ -1,7 +1,7 @@
 from .models import Product, ProductImage, BookingRequest, Notif, PriceProposal
 from rest_framework import serializers
 from trip.serializers import TripSerializer
-from userprofile.serializers import LocationSerializer
+from userprofile.serializers import LocationSerializer, CitySerializer
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
@@ -11,13 +11,13 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    pickup_location = LocationSerializer()
-    departure_location = LocationSerializer()
+    destination_location = CitySerializer()
+    departure_location = CitySerializer()
     images = serializers.SerializerMethodField()
     class Meta:
         model = Product
         fields = ["departure_date", "arrival_date",
-        "departure_location", "pickup_location", "destination_location",
+        "departure_location", "destination_location",
         "space", "weight", "price", "created_by", "creation_date",
         "name", "description", "recipient_name", "recipient_phone_number",
         "product_category", "proposed_price", "images", "pk"]
@@ -65,8 +65,8 @@ class NotifListSerializer(serializers.ModelSerializer):
         "pk": None
         }
         if obj.trip:
-            dct['dep_loc'] = "{}".format(obj.trip.departure_location.city)
-            dct['des_loc'] = "{}".format(obj.trip.destination_location.city)
+            dct['dep_loc'] = "{}".format(obj.trip.departure_location.label)
+            dct['des_loc'] = "{}".format(obj.trip.destination_location.label)
             dct['dep_date'] = "{}".format(obj.trip.depart_date)
             dct['pk'] = obj.trip.pk
         return dct

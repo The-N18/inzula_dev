@@ -1,5 +1,5 @@
 from django.db import models
-from userprofile.models import Location, UserProfile, Space, Weight, Price
+from userprofile.models import Location, UserProfile, Space, Weight, Price, City
 from trip.models import Trip
 
 # Create your models here.
@@ -70,13 +70,8 @@ ALERT_TYPE = [
 class Product(models.Model):
     departure_date = models.DateField(null=True, blank=True)
     arrival_date = models.DateField()
-    departure_location = models.ForeignKey(Location, on_delete=models.PROTECT, related_name='+')
-    pickup_location = models.ForeignKey(Location, on_delete=models.PROTECT, related_name='+')
-    destination_location = models.ForeignKey(Location, on_delete=models.PROTECT, related_name='+', null=True, blank=True)
-    # space = models.ForeignKey(Space, on_delete=models.PROTECT, related_name='+')
-    # weight = models.ForeignKey(Weight, on_delete=models.PROTECT, related_name='+')
-    # price = models.ForeignKey(Price, on_delete=models.PROTECT, related_name='+')
-    # product_category = models.CharField(max_length=250)
+    departure_location = models.ForeignKey(City, on_delete=models.PROTECT, related_name='+')
+    destination_location = models.ForeignKey(City, on_delete=models.PROTECT, related_name='+', null=True, blank=True)
     weight = models.CharField(max_length=50, choices=PRODUCT_WEIGHT_OPTIONS)
     space = models.CharField(max_length=50, choices=PRODUCT_SIZE_OPTIONS)
     price = models.CharField(max_length=50, choices=PRODUCT_VALUE_OPTIONS)

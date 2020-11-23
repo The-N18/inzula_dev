@@ -17,6 +17,7 @@ import { selectBooking } from "../../store/actions/selectReservationsModal";
 import { openDeleteBookingConfirm, setBookingDeleteBookingConfirm } from "../../store/actions/deleteBookingConfirm";
 import { setBookingRequestId, openProposePriceOnBooking } from "../../store/actions/proposePriceOnBooking";
 import {FormattedMessage, FormattedDate} from 'react-intl'
+import { updateBookingOpenModal, updateBookingCloseModal } from "../../store/actions/updateBookingModal";
 
 
 class BookingCard extends React.Component {
@@ -40,6 +41,16 @@ class BookingCard extends React.Component {
 
   }
 
+  updateBooking = () => {
+    const {title, departure_location, destination_location, pk} = this.props;
+    const data = {
+      "product_name": title,
+      "departure_location": departure_location,
+      "destination_location": destination_location,
+    };
+    this.props.updateBookingOpenModal(data, pk);
+  }
+
   proposePriceOnBooking = () => {
     const {pk} = this.props;
     this.props.setBookingRequestId(pk);
@@ -48,7 +59,7 @@ class BookingCard extends React.Component {
 
   render() {
 
-    const {pk, title, description, img, arrival_date, departure_location, pickup_location, selectable, editable} = this.props;
+    const {pk, title, description, img, arrival_date, departure_location, selectable, editable, destination_location} = this.props;
 
     return (
       <Card raised fluid centered className={"home-text-img-card-grid max-h-190px"}>
@@ -75,8 +86,8 @@ class BookingCard extends React.Component {
                                                                                 day="numeric"
                                                                                 weekday="long"
                                                                               /></p>
-                <p className={"home-text-img-card-description"}>Departure: {departure_location}</p>
-                <p className={"home-text-img-card-description"}>Pickup: {pickup_location}</p>
+                                                                            <p className={"home-text-img-card-description"}>Departure: {departure_location && departure_location["label"] ? departure_location["label"] : ""}</p>
+                <p className={"home-text-img-card-description"}>Pickup: {destination_location && destination_location["label"] ? destination_location["label"] : ""}</p>
               </Segment>
             </Grid.Column>
             {!editable ? <Segment compact basic>
@@ -84,7 +95,7 @@ class BookingCard extends React.Component {
             </Segment> : ''}
             {editable ? <Grid.Column mobile={2} tablet={2} computer={2}>
               <Segment compact basic>
-                <Button color='blue' icon='edit' className={"booking-card-delete-button"}/>
+                <Button color='blue' icon='edit' className={"booking-card-delete-button"}  onClick={this.updateBooking.bind(this)}/>
                 <Button color='orange' icon='trash' className={"white-trash"} onClick={this.deleteBooking.bind(this)}/>
               </Segment>
             </Grid.Column> : ''}
@@ -107,16 +118,17 @@ const mapDispatchToProps = dispatch => {
     openDeleteBookingConfirm: () => dispatch(openDeleteBookingConfirm()),
     openProposePriceOnBooking: () => dispatch(openProposePriceOnBooking()),
     setBookingRequestId: (bookingId) => dispatch(setBookingRequestId(bookingId)),
+    updateBookingOpenModal: (bookingInfo, pk) => dispatch(updateBookingOpenModal(bookingInfo, pk)),
     setBookingDeleteBookingConfirm: (bookingId) => dispatch(setBookingDeleteBookingConfirm(bookingId)),
   };
 };
 
 BookingCard.propTypes = {
   title: PropTypes.string,
-  desctiption: PropTypes.string,
+  description: PropTypes.string,
   arrival_date: PropTypes.string,
   departure_location: PropTypes.string,
-  pickup_location: PropTypes.string,
+  destination_location: PropTypes.string,
   img: PropTypes.string,
   selectable: PropTypes.boolean,
   editable: PropTypes.boolean,

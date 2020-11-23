@@ -87,8 +87,8 @@ class UserTripsList extends React.Component {
                 pk={item["pk"]}
                 comeback_date={item["comeback_date"]}
                 depart_date={item["depart_date"]}
-                departure_location={item["departure_location"]["city"]}
-                destination_location={item["destination_location"]["city"]}
+                departure_location={item["departure_location"]}
+                destination_location={item["destination_location"]}
                 img={item["created_by"]["profile_pic"] === null ? '' : item["created_by"]["profile_pic"]}
                 creator_user_name={item["creator_user_name"]}
                 no_book={true}

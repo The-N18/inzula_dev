@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import PropTypes from "prop-types";
 import {Field, reduxForm} from 'redux-form';
 import DropdownList from 'react-widgets/lib/DropdownList'
@@ -8,6 +9,10 @@ import DateTimePicker from 'react-widgets/lib/DateTimePicker'
 import moment from 'moment';
 import momentLocalizer from "react-widgets-moment";
 import 'react-widgets/dist/css/react-widgets.css';
+// import 'react-select/dist/react-select.css';
+import Async from 'react-select/async';
+import { api_url } from "../../configurations";
+
 moment.locale('en');
 momentLocalizer();
 
@@ -46,6 +51,29 @@ export const renderSelectList = ({ input, data }) =>
   <SelectList {...input}
     onBlur={() => input.onBlur()}
     data={data} />
+
+
+  const getCities = (name) => {
+    return axios
+      .get(api_url() + "/user/city?label="+name)
+      .then(res => {
+        return res.data["results"];
+      })
+      .catch(err => {
+        return [];
+      });
+  };
+
+
+export const renderCitiesList = ({ input, data }) => {
+  console.log(input['value']);
+  return <Async
+          name={input['name']}
+          value={input['value']}
+          onBlur={() => input.onBlur()}
+          onChange={input.onChange}
+          loadOptions={getCities}/>
+}
 
 
   export const renderDateTimePicker = ({ input: { onChange, value }, showTime, min }) => {

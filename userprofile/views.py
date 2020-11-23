@@ -1,13 +1,24 @@
 from django.shortcuts import render
-from .serializers import UserProfileUpdateSerializer, UserProfileSerializer
+from .serializers import UserProfileUpdateSerializer, UserProfileSerializer, CitySerializer
 from rest_framework.response import Response
 from .models import UserProfile
 from django.contrib.auth.models import User
 from rest_framework.generics import CreateAPIView, ListAPIView, GenericAPIView
 from rest_auth.registration.app_settings import RegisterSerializer, register_permission_classes
 from rest_framework import viewsets, permissions, status
+from utils.pagination import CitySetPagination
 
 # Create your views here.
+
+class CityView(ListAPIView):
+    serializer_class = CitySerializer
+    model = serializer_class.Meta.model
+    pagination_class = CitySetPagination
+
+    def get_queryset(self):
+        name = self.request.query_params.get('label', '')
+        queryset = self.model.objects.filter(label__contains=name)
+        return queryset.order_by('-label')
 
 
 class UserProfileViewSet(viewsets.ModelViewSet):

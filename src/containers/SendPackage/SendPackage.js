@@ -34,7 +34,7 @@ class SendPackage extends React.Component {
   state = {
     activeStep: 1,
     pictures: [],
-    product_location: "",
+    departure_location: "",
     product_description: "",
     product_name: "",
     product_category: "",
@@ -43,7 +43,7 @@ class SendPackage extends React.Component {
     product_value: "",
     proposed_price: "",
     delivery_date: "",
-    pickup_address: "",
+    destination_location: "",
     recipient_name: "",
     recipient_phone_number: "",
     terms_conditions: false,
@@ -53,17 +53,17 @@ class SendPackage extends React.Component {
 
   handleChange = e => {
     console.log("handle change here");
-    const {activeStep, user_agreement, terms_conditions, product_name, recipient_name, recipient_phone_number, pickup_address, product_value, product_location} = this.state;
+    const {activeStep, user_agreement, terms_conditions, product_name, recipient_name, recipient_phone_number, destination_location, product_value, departure_location} = this.state;
     this.setState({ [e.target.name]: e.target.value });
     if(activeStep === 1) {
-      if(product_name !== "" && recipient_name !== "" && recipient_phone_number !== "" && pickup_address !== "" && product_value !== "" && product_location !== "") {
+      if(product_name !== "" && recipient_name !== "" && recipient_phone_number !== "" && destination_location !== "" && product_value !== "" && departure_location !== "") {
         this.setState({ isNextValid: true});
       } else {
         this.setState({ isNextValid: false});
       }
     }
     if(activeStep === 2) {
-      if(user_agreement !== false && terms_conditions !== false && product_name !== "" && recipient_name !== "" && recipient_phone_number !== "" && pickup_address !== "" && product_value !== "" && product_location !== "") {
+      if(user_agreement !== false && terms_conditions !== false && product_name !== "" && recipient_name !== "" && recipient_phone_number !== "" && destination_location !== "" && product_value !== "" && departure_location !== "") {
         this.setState({ isNextValid: true});
       } else {
         this.setState({ isNextValid: false});
@@ -119,7 +119,7 @@ class SendPackage extends React.Component {
   handleSubmit = e => {
     const {userId, userProfileId, createNotification, tripId} = this.props;
     e.preventDefault();
-    const { pictures, product_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, pickup_address, recipient_name,
+    const { pictures, departure_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, destination_location, recipient_name,
     recipient_phone_number, terms_conditions, user_agreement} = this.state;
     const created_by = {"user": userId};
     if(userProfileId === null && userId === null) {
@@ -130,14 +130,14 @@ class SendPackage extends React.Component {
         canDismiss: true,
       });
     } else {
-      this.props.addRequest(tripId, created_by, pictures, product_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, pickup_address, recipient_name,
+      this.props.addRequest(tripId, created_by, pictures, departure_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, destination_location, recipient_name,
       recipient_phone_number, terms_conditions, user_agreement);
     }
-    this.setState({ product_location: '', product_description: '',
+    this.setState({ departure_location: '', product_description: '',
                     product_name: '', product_category: '',
                     product_weight: '', product_size: '',
                     product_value: '', proposed_price: '',
-                    delivery_date: '', pickup_address: '',
+                    delivery_date: '', destination_location: '',
                     recipient_name: '', recipient_phone_number: '',
                     terms_conditions: false,
                     user_agreement: false,
@@ -147,7 +147,7 @@ class SendPackage extends React.Component {
 
   render() {
     const { token, tripId } = this.props;
-    const { isNextValid, user_agreement, terms_conditions, activeStep, product_location, proposed_price, product_description, product_name, product_category, product_weight, product_size, product_value, delivery_date, pickup_address, recipient_name, recipient_phone_number  } = this.state;
+    const { isNextValid, user_agreement, terms_conditions, activeStep, departure_location, proposed_price, product_description, product_name, product_category, product_weight, product_size, product_value, delivery_date, destination_location, recipient_name, recipient_phone_number  } = this.state;
     // if(token === null) {
     //   console.log("TOKEN");
     //   console.log(token);
@@ -241,7 +241,7 @@ class SendPackage extends React.Component {
                   <Grid.Row columns={2}>
                     <Grid.Column mobile={16} tablet={8} computer={8}>
                       <span className={"form-details-display"}><b>Product name:</b> {this.state.product_name}</span>
-                      <span className={"form-details-display"}><b>Product location:</b> {this.state.product_location}</span>
+                      <span className={"form-details-display"}><b>Product location:</b> {this.state.departure_location}</span>
                       <span className={"form-details-display"}><b>Delivery date:</b> {this.state.delivery_date}</span>
                       <span className={"form-details-display"}><b>Product category:</b> {this.state.product_category}</span>
                       <span className={"form-details-display"}><b>Product size:</b> {this.state.product_size}</span>
@@ -251,7 +251,7 @@ class SendPackage extends React.Component {
                     </Grid.Column>
                     <Grid.Column mobile={16} tablet={8} computer={8}>
                       <span className={"form-details-display"} title={this.state.product_description}><b>Product description:</b> {this.state.product_description}</span>
-                      <span className={"form-details-display"}><b>Pickup address:</b> {this.state.pickup_address}</span>
+                      <span className={"form-details-display"}><b>Pickup address:</b> {this.state.destination_location}</span>
                       <span className={"form-details-display"}><b>Weight:</b> {this.state.product_weight}</span>
                       <span className={"form-details-display"}><b>Product value:</b> {this.state.product_value}</span>
                       <span className={"form-details-display"}><b>Recipient name:</b> {this.state.recipient_name}</span>
@@ -272,8 +272,8 @@ class SendPackage extends React.Component {
                   />
                   <Form.Input
                       onChange={this.handleChange}
-                      value={product_location}
-                      name="product_location"
+                      value={departure_location}
+                      name="departure_location"
                       fluid
                       icon="location arrow"
                       iconPosition="left"
@@ -292,8 +292,8 @@ class SendPackage extends React.Component {
                     <Form.Group widths='equal'>
                     <Form.Input
                         onChange={this.handleChange}
-                        value={pickup_address}
-                        name="pickup_address"
+                        value={destination_location}
+                        name="destination_location"
                         fluid
                         icon="map pin"
                         iconPosition="left"
@@ -443,8 +443,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addRequest: (tripId, created_by, pictures, product_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, pickup_address, recipient_name,
-    recipient_phone_number, terms_conditions, user_agreement) => dispatch(bookingAddition(tripId, created_by, pictures, product_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, pickup_address, recipient_name,
+    addRequest: (tripId, created_by, pictures, departure_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, destination_location, recipient_name,
+    recipient_phone_number, terms_conditions, user_agreement) => dispatch(bookingAddition(tripId, created_by, pictures, departure_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, destination_location, recipient_name,
     recipient_phone_number, terms_conditions, user_agreement)),
     createNotification: (config) => {dispatch(createNotification(config))},
   };

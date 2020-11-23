@@ -28,9 +28,9 @@ export const addBookingFail = error => {
 };
 
 
-export const bookingAddition = (tripId, created_by, pictures, product_location, product_description,
+export const bookingAddition = (tripId, created_by, pictures, departure_location, product_description,
   product_name, product_category, product_weight, product_size, product_value, proposed_price,
-  delivery_date, pickup_address, recipient_name,
+  delivery_date, destination_location, recipient_name,
 recipient_phone_number, terms_conditions, user_agreement) => {
   console.log("in bookingAddition");
   console.log(pictures);
@@ -40,7 +40,7 @@ recipient_phone_number, terms_conditions, user_agreement) => {
   const data2 = {
     tripId: tripId,
     created_by: created_by ? created_by["user"] : null,
-    product_location: product_location,
+    departure_location: departure_location,
     product_description: product_description,
     product_name: product_name,
     product_category: product_category,
@@ -49,7 +49,7 @@ recipient_phone_number, terms_conditions, user_agreement) => {
     product_value: product_value,
     proposed_price: proposed_price,
     delivery_date: delivery_date,
-    pickup_address: pickup_address,
+    destination_location: destination_location,
     recipient_name: recipient_name,
     recipient_phone_number: recipient_phone_number,
     terms_conditions: terms_conditions,
@@ -92,9 +92,39 @@ recipient_phone_number, terms_conditions, user_agreement) => {
   };
 }
 
-export const bookingAdditionRedux = (tripId, created_by, pictures, product_location, product_description,
+export const updateBooking = (dta) => {
+  const userProfileId = localStorage.getItem("userProfileId");
+  const config = {
+            headers: { 'content-type': 'multipart/form-data' }
+          };
+  return dispatch => {
+    axios
+      .put(api_url() + "/bookings/booking/"+dta["pk"]+"/", dta)
+      .then(res => {
+        console.log(res.data)
+        dispatch(checkAuthTimeout(3600));
+        dispatch(createNotification({
+          message: 'Your booking has been updated',
+          type: NOTIFICATION_TYPE_SUCCESS,
+          duration: 10000,
+          canDismiss: true,
+        }));
+        dispatch(getInitialReservations(userProfileId));
+      })
+      .catch(err => {
+        dispatch(createNotification({
+          message: 'Failed to update your booking',
+          type: NOTIFICATION_TYPE_ERROR,
+          duration: 10000,
+          canDismiss: true,
+        }));
+      });
+  };
+}
+
+export const bookingAdditionRedux = (tripId, created_by, pictures, departure_location, product_description,
   product_name, product_category, product_weight, product_size, product_value, proposed_price,
-  delivery_date, pickup_address, recipient_name,
+  delivery_date, destination_location, recipient_name,
 recipient_phone_number, terms_conditions, user_agreement) => {
   console.log("in bookingAddition");
   console.log(pictures);
@@ -104,7 +134,7 @@ recipient_phone_number, terms_conditions, user_agreement) => {
   const data2 = {
     tripId: tripId,
     created_by: created_by ? created_by["user"] : null,
-    product_location: product_location,
+    departure_location: departure_location,
     product_description: product_description,
     product_name: product_name,
     product_category: product_category,
@@ -113,7 +143,7 @@ recipient_phone_number, terms_conditions, user_agreement) => {
     product_value: product_value,
     proposed_price: proposed_price,
     delivery_date: delivery_date,
-    pickup_address: pickup_address,
+    destination_location: destination_location,
     recipient_name: recipient_name,
     recipient_phone_number: recipient_phone_number,
     terms_conditions: terms_conditions,

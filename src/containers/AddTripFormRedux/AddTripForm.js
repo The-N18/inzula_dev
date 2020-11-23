@@ -16,7 +16,7 @@ import { DateInput } from 'semantic-ui-calendar-react';
 import CSRFToken from "../../containers/CSRFToken";
 import DjangoCSRFToken from 'django-react-csrftoken';
 import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
-import {renderField, renderDateTimePicker, renderSelectList} from "../../containers/ReduxForm/renderField";
+import {renderField, renderDateTimePicker, renderSelectList, renderCitiesList} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
 import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
 import { openLoginParentModal } from "../../store/actions/loginParentModal";
@@ -62,23 +62,10 @@ class AddTripForm extends React.Component {
   submitForm = (val) => {
     const {userId, authenticated} = this.props;
     const createdBy = {"user": userId};
+    console.log(val);
     if(authenticated) {
-      const departureLocation = {
-              "id": null,
-              "latitude": 0,
-              "longitude": 0,
-              "long_address": null,
-              "city": val['departure_location'],
-              "country": null
-          };
-      const destinationLocation = {
-              "id": null,
-              "latitude": 0,
-              "longitude": 0,
-              "long_address": null,
-              "city": val['destination_location'],
-              "country": null
-          };
+      const departureLocation = val['departure_location'] ? val['departure_location']['pk'] : null;
+      const destinationLocation = val['destination_location'] ? val['destination_location']['pk'] : null;
       const depdate = val['depart_date'];
       const cbdate = val['comeback_date'] ? val['comeback_date'] : '';
       this.props.addTrip(createdBy, departureLocation, destinationLocation, depdate, cbdate, val['trip_type']);
@@ -102,6 +89,7 @@ class AddTripForm extends React.Component {
   handleOnClick = (item) => {
     this.props.history.push(item);
   };
+
 
   render() {
     const { loading, userId, handleSubmit, pristine, reset, submitting, invalid } = this.props;
@@ -143,16 +131,25 @@ class AddTripForm extends React.Component {
                       component={renderSelectList}
                       data={[ 'round_trip', 'one_way_trip' ]}/>
                   </div>
-                <Field
-                  name="departure_location"
-                  component="input"
-                  type="text"
-                  placeholder="Departure location"
-                  label="Departure location"
-                  className={"custom-field"}
-                  component={renderField}
-                />
-                <Field
+                  {/*<Field
+                    name="departure_location"
+                    component="input"
+                    type="text"
+                    placeholder="Departure location"
+                    label="Departure location"
+                    className={"custom-field"}
+                    component={renderField}
+                  /> */}
+                  <Field
+                    name="departure_location"
+                    placeholder="Departure location"
+                    label="Departure location"
+                    component="input"
+                    type="text"
+                    className={"custom-field"}
+                    component={renderCitiesList}
+                  />
+                {/*<Field
                   name="destination_location"
                   component="input"
                   type="text"
@@ -160,6 +157,15 @@ class AddTripForm extends React.Component {
                   label="Destination location"
                   className={"custom-field"}
                   component={renderField}
+                />*/}
+                <Field
+                  name="destination_location"
+                  placeholder="Destination location"
+                  label="Destination location"
+                  component="input"
+                  type="text"
+                  className={"custom-field"}
+                  component={renderCitiesList}
                 />
                 <div>
                   <label>Departure Date</label>

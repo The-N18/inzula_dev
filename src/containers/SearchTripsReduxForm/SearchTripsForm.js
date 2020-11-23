@@ -4,7 +4,8 @@ import {
   Form,
   Header,
   Segment,
-  Divider
+  Divider,
+  Grid
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { searchTrips } from "../../store/actions/searchTrips";
@@ -16,46 +17,29 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { openModal, closeModal } from "../../store/actions/sendPackageModal";
 import MultiSelect from "@khanacademy/react-multi-select";
 import 'react-widgets/dist/css/react-widgets.css';
-import { Field, reduxForm } from 'redux-form'
-import {renderField} from "../../containers/ReduxForm/renderField";
+import { Field, reduxForm, formValueSelector } from 'redux-form'
+import {renderField, renderCitiesList, renderDateTimePicker} from "../../containers/ReduxForm/renderField";
 
 class SearchTripsForm extends React.Component {
 
-  state = {
-    departure_location: "",
-    destination_location: "",
-    travel_date: ""
-  };
-
-  handleChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
-  handleDateChange = (event, {name, value}) => {
-    if (this.state.hasOwnProperty(name)) {
-      this.setState({ [name]: value });
-    }
-  }
-
   submitForm = (val) => {
-    const { travel_date } = this.state;
+    console.log(val);
     const { user_id, next_url, count } = this.props;
-    this.setState({ departure_location: val['departure_location'] ? val['departure_location'] : "",
-                    destination_location: val['destination_location'] ? val['destination_location'] : ""});
-    this.props.findTrip(val['departure_location'], val['destination_location'], travel_date, user_id, next_url, count);
+    const departureLocation = val['departure_location'] ? val['departure_location'] : null;
+    const destinationLocation = val['destination_location'] ? val['destination_location'] : null;
+    this.props.findTrip(departureLocation, destinationLocation, val['travel_date'], user_id, next_url, count);
   };
 
   fetchMoreData = () => {
     console.log("fetch more data")
-    const { departure_location, destination_location, travel_date } = this.state;
-    const { user_id, next_url, count } = this.props;
+    // const { departure_location, destination_location, travel_date } = this.state;
+    const { user_id, next_url, count, departure_location, destination_location, travel_date } = this.props;
     this.props.findTrip(departure_location, destination_location, travel_date, user_id, next_url, count);
   }
 
 
   render() {
     const { loading, error, trips, next_url, count, handleSubmit } = this.props;
-    const { departure_location, destination_location, travel_date } = this.state;
     return (
       <Segment>
           <Header as="h4" textAlign="center">
@@ -106,13 +90,10 @@ class SearchTripsForm extends React.Component {
               <div>
                 <label htmlFor="travel_date">Travel date</label>
                 <div>
-              <DateInput
+              <Field
                 name="travel_date"
-                placeholder="Travel Date"
-                value={travel_date}
-                iconPosition="left"
-                onChange={this.handleDateChange}
-                dateFormat="YYYY-MM-DD"
+                showTime={false}
+                component={renderDateTimePicker}
               />
               </div>
             </div>
@@ -157,8 +138,8 @@ class SearchTripsForm extends React.Component {
                     trip_type={item["trip_type"]}
                     comeback_date={item["comeback_date"]}
                     depart_date={item["depart_date"]}
-                    departure_location={item["departure_location"]["city"]}
-                    destination_location={item["destination_location"]["city"]}
+                    departure_location={item["departure_location"]}
+                    destination_location={item["destination_location"]}
                     img={item["created_by"]["profile_pic"] === null ? '' : item["created_by"]["profile_pic"]}
                     creator_user_name={item["creator_user_name"]}
                     trip_id={item["pk"]}
@@ -167,24 +148,17 @@ class SearchTripsForm extends React.Component {
               )) : ''}
             </InfiniteScroll>
           </div>
-          {/*trips.length > 0 ? <Segment raised>
-            {trips.map((item, i) => {
-               console.log(item["product"]["name"]);
-               // Return the element. Also pass key
-               return (<BookingCard
-                 title={item["product"]["name"]}
-                 arrival_date={item["product"]["arrival_date"]}
-                 description={item["product"]["description"]}
-                 departure_location={item["product"]["departure_location"]["city"]}
-                 pickup_location={item["product"]["pickup_location"]["city"]}/>);
-            })}
-          </Segment> : ''*/}
         </Segment>
     );
   }
 }
 
+const selector = formValueSelector('search_trips');
+
 const mapStateToProps = state => {
+  const departure_location = selector(state, 'departure_location');
+  const destination_location = selector(state, 'destination_location');
+  const travel_date = selector(state, 'travel_date');
   return {
     loading: state.searchTrips.loading,
     error: state.searchTrips.error,
@@ -192,6 +166,9 @@ const mapStateToProps = state => {
     next_url: state.searchTrips.next_url,
     count: state.searchTrips.count,
     user_id: state.userInfo.user_id,
+    departure_location: departure_location,
+    destination_location: destination_location,
+    travel_date: travel_date,
   };
 };
 

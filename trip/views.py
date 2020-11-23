@@ -13,7 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_auth.registration.app_settings import RegisterSerializer, register_permission_classes
 from rest_framework.generics import CreateAPIView, ListAPIView, GenericAPIView
 from django.db import transaction
-from userprofile.models import Location, UserProfile
+from userprofile.models import Location, UserProfile, City
 from booking.models import BookingRequest
 from rest_framework import generics
 from utils.pagination import SearchResultsSetPagination
@@ -68,8 +68,8 @@ class TripView(CreateAPIView):
             return TokenSerializer(user.auth_token).data
 
     def create(self, request, *args, **kwargs):
-        depart_location = Location.objects.create(city=request.data["departure_location"]["city"])
-        dest_location = Location.objects.create(city=request.data["destination_location"]["city"])
+        depart_location = City.objects.get(pk=request.data["departure_location"])
+        dest_location = City.objects.get(pk=request.data["destination_location"])
         userprofile = UserProfile.objects.get(user=request.data["created_by"]["user"])
         depDate = request.data["depart_date"]
         start_date = datetime.datetime.strptime(depDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
@@ -128,11 +128,11 @@ class TripSearchView(generics.ListAPIView):
 
     def get_queryset(self):
         departure_location = self.request.query_params.get('departure_location', '')
-        departure_locations = Location.objects.filter(city__startswith=departure_location)
+        departure_locations = City.objects.filter(label__startswith=departure_location)
         destination_location = self.request.query_params.get('destination_location', '')
-        destination_locations = Location.objects.filter(city__startswith=destination_location)
+        destination_locations = City.objects.filter(label__startswith=destination_location)
         depart_date = self.request.query_params.get('depart_date', '')
-        queryset = self.model.objects.filter(departure_location__city__contains=departure_location, destination_location__city__contains=destination_location)
+        queryset = self.model.objects.filter(departure_location__label__contains=departure_location, destination_location__label__contains=destination_location)
         return queryset.order_by('-depart_date')
 
 def validate(date_text):
@@ -173,8 +173,8 @@ class TripDetail(APIView):
             cbDate2 = end_date.strftime('%Y-%m-%d')
         trip.depart_date = depDate2
         trip.comeback_date = cbDate2
-        depart_location = Location.objects.create(city=dta["departure_location"]["city"])
-        dest_location = Location.objects.create(city=dta["destination_location"]["city"])
+        depart_location = City.objects.get(pk=dta["departure_location"])
+        dest_location = City.objects.get(pk=dta["destination_location"])
         trip.departure_location = depart_location
         trip.destination_location = dest_location
         trip.save()

@@ -21,6 +21,7 @@ import LoginModal from "../../containers/LoginReduxFormModal/LoginModal";
 import DeleteBookingConfirm from "../../containers/DeleteBookingConfirm/DeleteBookingConfirm";
 import DeleteTripConfirm from "../../containers/DeleteTripConfirm/DeleteTripConfirm";
 import UpdateTripForm from "../../containers/UpdateTripFormModal/UpdateTripForm";
+import UpdateBooking from "../../containers/UpdateBookingModal/UpdateBooking";
 import ProposePriceOnBooking from "../../containers/ProposePriceOnBooking/ProposePriceOnBooking";
 
 import LanguageSwitcherSelector from "../../containers/LanguageSwitcherSelector/LanguageSwitcherSelector";
@@ -201,6 +202,7 @@ class CustomLayout extends React.Component {
       <DeleteBookingConfirm />
       <DeleteTripConfirm />
       <UpdateTripForm />
+      <UpdateBooking />
       <ProposePriceOnBooking />
       <Notify />
         <header className="menuheader">

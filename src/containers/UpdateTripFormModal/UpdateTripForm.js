@@ -16,7 +16,7 @@ import Recaptcha from 'react-recaptcha';
 import { DateInput } from 'semantic-ui-calendar-react';
 import CSRFToken from "../../containers/CSRFToken";
 import DjangoCSRFToken from 'django-react-csrftoken';
-import {renderField, renderDateTimePicker, renderSelectList, renderDropzoneInput} from "../../containers/ReduxForm/renderField";
+import {renderField, renderDateTimePicker, renderSelectList, renderDropzoneInput, renderCitiesList} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
 import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
 import { updateTripOpenModal, updateTripCloseModal } from "../../store/actions/updateTripModal";
@@ -63,22 +63,8 @@ class UpdateTripForm extends React.Component {
   submitForm = (val) => {
     const {userId, authenticated, pk} = this.props;
     const createdBy = {"user": userId};
-    const departureLocation = {
-            "id": null,
-            "latitude": 0,
-            "longitude": 0,
-            "long_address": null,
-            "city": val['departure_location'],
-            "country": null
-        };
-    const destinationLocation = {
-            "id": null,
-            "latitude": 0,
-            "longitude": 0,
-            "long_address": null,
-            "city": val['destination_location'],
-            "country": null
-        };
+    const departureLocation = val['departure_location'] ? val['departure_location']['pk'] : null;
+    const destinationLocation = val['destination_location'] ? val['destination_location']['pk'] : null;
     const depdate = val['depart_date'];
     const cbdate = val['comeback_date'] ? val['comeback_date'] : '';
     const dta = {
@@ -132,7 +118,7 @@ class UpdateTripForm extends React.Component {
                       component={renderSelectList}
                       data={[ 'round_trip', 'one_way_trip' ]}/>
                   </div>
-                <Field
+                {/*<Field
                   name="departure_location"
                   component="input"
                   type="text"
@@ -140,8 +126,17 @@ class UpdateTripForm extends React.Component {
                   label="Departure"
                   className={"custom-field"}
                   component={renderField}
-                />
+                />*/}
                 <Field
+                  name="departure_location"
+                  placeholder="Departure location"
+                  label="Departure location"
+                  component="input"
+                  type="text"
+                  className={"custom-field"}
+                  component={renderCitiesList}
+                />
+              {/*<Field
                   name="destination_location"
                   component="input"
                   type="text"
@@ -149,6 +144,15 @@ class UpdateTripForm extends React.Component {
                   label="Destination"
                   className={"custom-field"}
                   component={renderField}
+                />*/}
+                <Field
+                  name="destination_location"
+                  placeholder="Destination location"
+                  label="Destination location"
+                  component="input"
+                  type="text"
+                  className={"custom-field"}
+                  component={renderCitiesList}
                 />
                 <div>
                   <label>Departure Date</label>

@@ -128,8 +128,8 @@ class SearchTripsForm extends React.Component {
                     trip_type={item["trip_type"]}
                     comeback_date={item["comeback_date"]}
                     depart_date={item["depart_date"]}
-                    departure_location={item["departure_location"]["city"]}
-                    destination_location={item["destination_location"]["city"]}
+                    departure_location={item["departure_location"]}
+                    destination_location={item["destination_location"]}
                     img={item["created_by"]["profile_pic"] === null ? '' : item["created_by"]["profile_pic"]}
                     creator_user_name={item["creator_user_name"]}
                     trip_id={item["pk"]}
@@ -138,18 +138,6 @@ class SearchTripsForm extends React.Component {
               )) : ''}
             </InfiniteScroll>
           </div>
-          {/*trips.length > 0 ? <Segment raised>
-            {trips.map((item, i) => {
-               console.log(item["product"]["name"]);
-               // Return the element. Also pass key
-               return (<BookingCard
-                 title={item["product"]["name"]}
-                 arrival_date={item["product"]["arrival_date"]}
-                 description={item["product"]["description"]}
-                 departure_location={item["product"]["departure_location"]["city"]}
-                 pickup_location={item["product"]["pickup_location"]["city"]}/>);
-            })}
-          </Segment> : ''*/}
         </Segment>
     );
   }

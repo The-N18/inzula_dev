@@ -14,16 +14,16 @@ export const validate = values => {
   } else if (values.product_name.length > 20) {
     errors.product_name = 'Must be 20 characters or less';
   }
-  if (!values.product_location) {
-    errors.product_location = 'Required';
+  if (!values.departure_location) {
+    errors.departure_location = 'Required';
   }
   if (!values.proposed_price) {
     errors.proposed_price = 'Required';
   } else if(values.proposed_price < values.min_price) {
     errors.proposed_price = 'You must propose at least the minimum amount';
   }
-  if (!values.pickup_address) {
-    errors.pickup_address = 'Required';
+  if (!values.destination_location) {
+    errors.destination_location = 'Required';
   }
   if (!values.delivery_date) {
     errors.delivery_date = 'Required';
