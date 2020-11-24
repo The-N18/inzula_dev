@@ -263,10 +263,42 @@ class BookingRequestDetail(APIView):
 
     def put(self, request, pk, format=None):
         booking_request = self.get_object(pk)
-        serializer = BookingRequestSerializer(booking_request, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
+        product = booking_request.product
+        pictures = request.FILES.getlist('pictures')
+        departure_location = City.objects.get(pk=request.data["departure_location"])
+        destination_location = City.objects.get(pk=request.data["destination_location"])
+        userprofile = UserProfile.objects.get(pk=request.data["created_by"])
+        price = request.data["price"] if "price" in request.data else product.price
+        space = request.data["space"] if "space" in request.data else product.space
+        weight = request.data["weight"] if "weight" in request.data else product.weight
+        category = request.data["product_category"] if "product_category" in request.data else product.product_category
+        proposed_price = request.data["proposed_price"] if "proposed_price" in request.data else product.proposed_price
+        depDate = request.data["arrival_date"]
+        start_date = datetime.datetime.strptime(depDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
+        depDate2 = start_date.strftime('%Y-%m-%d')
+
+        product.arrival_date=depDate2
+        product.departure_location=departure_location
+        product.destination_location=destination_location
+        product.name=request.data["name"]
+        product.description=request.data["description"]
+        product.recipient_name=request.data["recipient_name"]
+        product.recipient_phone_number=request.data["recipient_phone_number"]
+        product.proposed_price=proposed_price
+        product.price=price
+        product.space=space
+        product.weight=weight
+        product.product_category=category
+        product.terms_conditions=request.data["terms_conditions"].capitalize()
+        product.user_agreement=request.data["user_agreement"].capitalize()
+        product.save()
+        if len(pictures) > 0:
+            for item in pictures:
+                img = ProductImage(image=item, product=product)
+                img.save()
+        serializer = BookingRequestSerializer(booking_request)
+        return Response(serializer.data,
+                        status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
@@ -318,8 +350,15 @@ class BookingRequestSearchView(generics.ListAPIView):
         departure_locations = City.objects.filter(label__startswith=departure_location)
         destination_location = self.request.query_params.get('destination_location', '')
         destination_locations = City.objects.filter(label__startswith=destination_location)
-        arrival_date = self.request.query_params.get('delivery_date', '')
+        arrDate = self.request.query_params.get('travel_date', '')
+        start_date = None
+        arrival_date = None
+        if arrDate != "":
+            start_date = datetime.datetime.strptime(arrDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
+            arrival_date = start_date.strftime('%Y-%m-%d')
         products = Product.objects.all()
+        if arrival_date:
+            products = products.filter(arrival_date=arrival_date)
         if departure_location:
             products = products.filter(departure_location__label__contains=departure_location)
         if destination_location:

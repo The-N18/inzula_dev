@@ -88,6 +88,7 @@ class UserReservationsList extends React.Component {
                 description={item["product"]["description"]}
                 departure_location={item["product"]["departure_location"]}
                 destination_location={item["product"]["destination_location"]}
+                product_details={item["product"]}
                 img={item["product"]["images"].length === 0 ? '' : item["product"]["images"][0]['image']}
                 editable={editable}/>
             </div>

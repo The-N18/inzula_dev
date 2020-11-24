@@ -173,6 +173,7 @@ class AddTripForm extends React.Component {
                     name="depart_date"
                     showTime={false}
                     component={renderDateTimePicker}
+                    min={new Date()}
                   />
                 </div>
                 {this.props.trip_type === "round_trip" ? <div>

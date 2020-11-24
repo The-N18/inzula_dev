@@ -3,6 +3,7 @@ import * as actionTypes from "./actionTypes";
 import { api_url } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
 import {getInitialReservations} from "./userReservations";
+import { updateBookingCloseModal } from "./updateBookingModal";
 import {closeModal} from "./sendPackageModal";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
@@ -97,9 +98,19 @@ export const updateBooking = (dta) => {
   const config = {
             headers: { 'content-type': 'multipart/form-data' }
           };
+  const data2 = {...dta};
+  let data = new FormData();
+  for( let key in data2 ) {
+    data.append(key, data2[key]);
+  }
+  if(dta['pictures']) {
+    Array.from(dta['pictures']).forEach(image => {
+      data.append('pictures', image, image['name']);
+    });
+  }
   return dispatch => {
     axios
-      .put(api_url() + "/bookings/booking/"+dta["pk"]+"/", dta)
+      .put(api_url() + "/bookings/booking_request/"+dta["pk"]+"/", data)
       .then(res => {
         console.log(res.data)
         dispatch(checkAuthTimeout(3600));
@@ -110,6 +121,7 @@ export const updateBooking = (dta) => {
           canDismiss: true,
         }));
         dispatch(getInitialReservations(userProfileId));
+        dispatch(updateBookingCloseModal());
       })
       .catch(err => {
         dispatch(createNotification({

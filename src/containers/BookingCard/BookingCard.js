@@ -42,11 +42,20 @@ class BookingCard extends React.Component {
   }
 
   updateBooking = () => {
-    const {title, departure_location, destination_location, pk} = this.props;
+    const {title, departure_location, destination_location, pk, product_details} = this.props;
     const data = {
       "product_name": title,
-      "departure_location": departure_location,
-      "destination_location": destination_location,
+      "departure_location": product_details['departure_location'],
+      "destination_location": product_details['destination_location'],
+      "delivery_date": new Date(product_details['arrival_date']),
+      "recipient_phone_number": product_details['recipient_phone_number'],
+      "recipient_name": product_details['recipient_name'],
+      "product_value": product_details['price'],
+      "product_category": product_details['product_category'],
+      "product_size": product_details['space'],
+      "product_weight": product_details['weight'],
+      "proposed_price": product_details['proposed_price'],
+      "product_description": product_details['description'],
     };
     this.props.updateBookingOpenModal(data, pk);
   }
@@ -59,7 +68,7 @@ class BookingCard extends React.Component {
 
   render() {
 
-    const {pk, title, description, img, arrival_date, departure_location, selectable, editable, destination_location} = this.props;
+    const {pk, title, description, img, product_details, arrival_date, departure_location, selectable, editable, destination_location} = this.props;
 
     return (
       <Card raised fluid centered className={"home-text-img-card-grid max-h-190px"}>
@@ -129,6 +138,7 @@ BookingCard.propTypes = {
   arrival_date: PropTypes.string,
   departure_location: PropTypes.string,
   destination_location: PropTypes.string,
+  product_details: PropTypes.object,
   img: PropTypes.string,
   selectable: PropTypes.boolean,
   editable: PropTypes.boolean,

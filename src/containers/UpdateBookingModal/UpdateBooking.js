@@ -29,6 +29,7 @@ import {renderField, renderDateTimePicker, renderDropdownList, renderCitiesList}
 import { validate } from "./validation";
 import { updateBooking } from "../../store/actions/addBooking";
 import { updateBookingOpenModal, updateBookingCloseModal } from "../../store/actions/updateBookingModal";
+import { sizeOptions, categoryOptions, weightOptions, valueOptions } from "../../utils/options";
 
 class UpdateBooking extends React.Component {
 
@@ -67,41 +68,62 @@ class UpdateBooking extends React.Component {
       });
   }
 
-  handleSelectChange = (e, data) => {
-    this.setState({ [data.name]: data.value });
+  getSubmitVal = (values, option) => {
+    let val = "";
+    if(typeof values[option] === "string") {
+      val = values[option];
+    } else {
+      val = values[option]['value'];
+    }
+    return val;
   }
 
   submitForm = (val) => {
-    console.log("in submit form");
-    console.log(val);
     const depdate = val['delivery_date'];
-    const { userId, userProfileId, createNotification, tripId, user_id, next_url, count, pk } = this.props;
+    const {pictures} = this.state;
+    const { userId, userProfileId, createNotification, user_id, next_url, count, pk } = this.props;
     const created_by = {"user": userId};
       const departureLocation = val['departure_location'] ? val['departure_location']['pk'] : null;
       const destinationLocation = val['destination_location'] ? val['destination_location']['pk'] : null;
-      this.props.updateBooking(tripId,
-        created_by,
-        val['pictures'],
-        departureLocation,
-        val['product_description'],
-        val['product_name'],
-        val['product_category'] ? val['product_category']['value'] : '',
-        val['product_weight'] ? val['product_weight']['value'] : '',
-        val['product_size'] ? val['product_size']['value'] : '',
-        val['product_value'] ? val['product_value']['value'] : '',
-        val['proposed_price'],
-        depdate.toISOString(),
-        destinationLocation,
-        val['recipient_name'],
-        val['recipient_phone_number'],
-        val['terms_conditions'],
-        val['user_agreement']);
-      this.props.updateBookingCloseModal();
+      const dta = {
+        "pk": pk,
+        "created_by": userProfileId,
+        "pictures": pictures,
+        "departure_location": departureLocation,
+        "description": val['product_description'],
+        "name": val['product_name'],
+        "product_category": this.getSubmitVal(val, 'product_category'),
+        "weight": this.getSubmitVal(val, 'product_weight'),
+        "space": this.getSubmitVal(val, 'product_size'),
+        "price": this.getSubmitVal(val, 'product_value'),
+        "proposed_price": val['proposed_price'],
+        "arrival_date": depdate.toISOString(),
+        "destination_location": destinationLocation,
+        "recipient_name": val['recipient_name'],
+        "recipient_phone_number": val['recipient_phone_number'],
+        "terms_conditions": val['terms_conditions'],
+        "user_agreement": val['user_agreement']};
+      this.props.updateBooking(dta);
+      this.setState({ activeStep: 1});
   };
+
+  getOptTxt = (val, arr) => {
+    let txt = "";
+    if(typeof val === "string") {
+      for(let i = 0; i < arr.length; i++) {
+        if(arr[i]['value'] === val) {
+          txt = arr[i]['text'];
+        }
+      }
+    } else {
+      txt = val ? val['text'] : "";
+    }
+    return txt;
+  }
 
 
   render() {
-    const { token, tripId, handleSubmit, pristine,
+    const { token, handleSubmit, pristine,
       reset, submitting, invalid, change, product_name,
       departure_location, destination_location, proposed_price,
       product_category, product_weight, product_size, product_value,
@@ -112,48 +134,6 @@ class UpdateBooking extends React.Component {
     //   console.log(token);
     //   return <Redirect to="/" />;
     // }
-    const sizeOptions = [
-      { key: 'xxs', value: 'xxs', text: 'Extra Extra Small' },
-      { key: 'xs', value: 'xs', text: 'Extra small' },
-      { key: 's', value: 's', text: 'Small' },
-      { key: 'm', value: 'm', text: 'Medium' },
-      { key: 'l', value: 'l', text: 'Large' },
-      { key: 'xl', value: 'xl', text: 'Extra Large' },
-      { key: 'xxl', value: 'xxl', text: 'Extra Extra Large' },
-      { key: 'xxxl', value: 'xxxl', text: 'Extra Extra Extra Large' },
-    ];
-
-    const categoryOptions = [
-      { key: 'food', value: 'food', text: 'Food' },
-      { key: 'elec', value: 'elec', text: 'Electronics' },
-      { key: 'dress', value: 'dress', text: 'Dresses' },
-      { key: 'shoe', value: 'shoe', text: 'Shoes' },
-      { key: 'doc', value: 'doc', text: 'Documents' },
-      { key: 'uts', value: 'uts', text: 'Kitchen utensils' },
-      { key: 'app', value: 'app', text: 'Electrical appliances' },
-      { key: 'skin', value: 'skin', text: 'Skin care' },
-      { key: 'jel', value: 'jel', text: 'Jewelry' },
-      { key: 'misc', value: 'misc', text: 'Miscellaneous' },
-    ];
-
-    const weightOptions = [
-      { key: '500g', value: '500g', text: '0.1 - 500g' },
-      { key: '1kg', value: '1kg', text: '500g - 1kg' },
-      { key: '5kg', value: '5kg', text: '1.1kg - 5kg' },
-      { key: '10kg', value: '10kg', text: '5.1kg - 10kg' },
-      { key: '20kg', value: '20kg', text: '10.1kg - 20kg' },
-      { key: '30kg', value: '30kg', text: '20.1kg - 30kg' },
-      { key: '40kg', value: '40kg', text: '30.1kg - 40kg' },
-      { key: 'huge', value: 'huge', text: '40.1kg +' },
-    ];
-
-    const valueOptions = [
-      { key: 'low', value: 'low', text: 'Low value' },
-      { key: 'mid', value: 'mid', text: 'Medium value' },
-      { key: 'high', value: 'high', text: 'High value' },
-      { key: 'lux', value: 'lux', text: 'Luxury item' },
-      { key: 'exc', value: 'exc', text: 'Exclusive' },
-    ];
 
     const handleMinPriceCatChange = (event, value) => {
       console.log(value);
@@ -233,8 +213,8 @@ class UpdateBooking extends React.Component {
                     <Grid.Column mobile={16} tablet={8} computer={8}>
                       <span className={"form-details-display"}><b>Product name:</b> {product_name}</span>
                       <span className={"form-details-display"}><b>Product location:</b> {departure_location ? departure_location['label'] : ''}</span>
-                      <span className={"form-details-display"}><b>Product category:</b> {product_category ? product_category['text'] : ''}</span>
-                      <span className={"form-details-display"}><b>Product size:</b> {product_size ? product_size['text'] : ''}</span>
+                      <span className={"form-details-display"}><b>Product category:</b> {this.getOptTxt(product_category, categoryOptions)}</span>
+                      <span className={"form-details-display"}><b>Product size:</b> {this.getOptTxt(product_size, sizeOptions)}</span>
                       <span className={"form-details-display"}><b>Proposed price:</b> {proposed_price}</span>
                       <span className={"form-details-display"}><b>Recipient name:</b> {recipient_name}</span>
                       <span className={"form-details-display"}><b>Recipient phone number:</b> {recipient_phone_number}</span>
@@ -242,8 +222,8 @@ class UpdateBooking extends React.Component {
                     <Grid.Column mobile={16} tablet={8} computer={8}>
                       <span className={"form-details-display"} title={product_description}><b>Product description:</b> {product_description}</span>
                       <span className={"form-details-display"}><b>Pickup address:</b> {destination_location ? destination_location['label'] : ''}</span>
-                      <span className={"form-details-display"}><b>Weight:</b> {product_weight ? product_weight['text'] : ''}</span>
-                      <span className={"form-details-display"}><b>Product value:</b> {product_value ? product_value['text'] : ''}</span>
+                      <span className={"form-details-display"}><b>Weight:</b> {this.getOptTxt(product_weight, weightOptions)}</span>
+                      <span className={"form-details-display"}><b>Product value:</b> {this.getOptTxt(product_value, valueOptions)}</span>
                       <span className={"form-details-display"}><b>Recipient name:</b> {recipient_name}</span>
                       <span className={"form-details-display"}><b>Recipient phone number:</b> {recipient_phone_number}</span>
                     </Grid.Column>
@@ -310,6 +290,7 @@ class UpdateBooking extends React.Component {
                              name="delivery_date"
                              showTime={false}
                              component={renderDateTimePicker}
+                             min={new Date()}
                            />
                          </Grid.Column>
                      <Grid.Column mobile={16} tablet={8} computer={8}>
@@ -522,9 +503,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addRequest: (tripId, created_by, pictures, departure_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, destination_location, recipient_name,
-    recipient_phone_number, terms_conditions, user_agreement) => dispatch(bookingAddition(tripId, created_by, pictures, departure_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, destination_location, recipient_name,
-    recipient_phone_number, terms_conditions, user_agreement)),
     updateBookingCloseModal: () => dispatch(updateBookingCloseModal()),
     updateBookingOpenModal: () => dispatch(updateBookingOpenModal()),
     updateBooking: (values) => dispatch(updateBooking(values)),
