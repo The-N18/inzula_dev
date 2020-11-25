@@ -20,6 +20,7 @@ from utils.pagination import SearchResultsSetPagination
 from django.http import Http404
 import datetime
 from django.db.models import Q
+from django.contrib.auth.models import User
 
 class TripsListView(generics.ListAPIView):
     """
@@ -134,7 +135,11 @@ class TripSearchView(generics.ListAPIView):
         # destination_locations = City.objects.filter(label__startswith=destination_location)
         # depart_date = self.request.query_params.get('depart_date', '')
         arrDate = self.request.query_params.get('travel_date', '')
+        user_id = self.request.query_params.get('user_id', '')
         trips = Trip.objects.all()
+        if user_id != '':
+            user_profile = User.objects.get(pk=int(user_id)).profile
+            trips = trips.exclude(created_by=user_profile)
         if departure_location:
             # departure_location_obj = City.objects.filter(pk=departure_location)
             trips = trips.filter(departure_location__pk=departure_location)

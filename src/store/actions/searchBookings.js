@@ -40,7 +40,9 @@ export const searchFail = error => {
 };
 
 export const searchBookings = (departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight, user_id, next_url, page_count) => {
+  console.log("in searchBookings");
   if(next_url !== "" && next_url !== null) {
+    console.log("in if");
     return dispatch => {
       dispatch(searchStart());
       axios
@@ -55,6 +57,8 @@ export const searchBookings = (departure_location, destination_location, travel_
         });
     };
   } else {
+    console.log("in else");
+    console.log(user_id);
     return dispatch => {
       dispatch(searchStart());
       axios
@@ -67,6 +71,7 @@ export const searchBookings = (departure_location, destination_location, travel_
               product_size: product_size,
               proposed_price: proposed_price,
               weight: weight,
+              user_id: user_id,
             }})
         .then(res => {
           console.log(res.data)
@@ -81,6 +86,7 @@ export const searchBookings = (departure_location, destination_location, travel_
 }
 
 export const filterBookings = (departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight, user_id, next_url, page_count) => {
+  console.log("in filterBookings");
   return dispatch => {
     dispatch(searchStart());
     axios
@@ -95,6 +101,7 @@ export const filterBookings = (departure_location, destination_location, travel_
             proposed_price_max: proposed_price[1],
             weight_min: weight[0],
             weight_max: weight[1],
+            user_id: user_id,
           }})
       .then(res => {
         console.log(res.data)

@@ -201,7 +201,7 @@ const mapStateToProps = state => {
     trips: state.searchTrips.trips,
     next_url: state.searchTrips.next_url,
     count: state.searchTrips.count,
-    user_id: state.userInfo.user_id,
+    user_id: state.userInfo.userId,
     departure_location: departure_location,
     destination_location: destination_location,
     travel_date: travel_date,

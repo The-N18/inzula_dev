@@ -22,6 +22,7 @@ from django.core.serializers import serialize
 from utils.pagination import SearchResultsSetPagination
 from django.http import Http404
 import datetime
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -397,15 +398,19 @@ class BookingRequestSearchView(generics.ListAPIView):
         product_size = self.request.query_params.getlist('product_size[]', [])
         proposed_price = self.request.query_params.getlist('proposed_price[]', [])
         weight = self.request.query_params.getlist('weight[]', [])
+        user_id = self.request.query_params.get('user_id', '')
         departure_location = self.request.query_params.get('departure_location', '')
         destination_location = self.request.query_params.get('destination_location', '')
         arrDate = self.request.query_params.get('travel_date', '')
+        products = Product.objects.all()
+        if user_id != '':
+            user_profile = User.objects.get(pk=int(user_id)).profile
+            products = products.exclude(created_by=user_profile)
         start_date = None
         arrival_date = None
         if arrDate != "":
             start_date = datetime.datetime.strptime(arrDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
             arrival_date = start_date.strftime('%Y-%m-%d')
-        products = Product.objects.all()
         if arrival_date:
             products = products.filter(arrival_date=arrival_date)
         if departure_location:

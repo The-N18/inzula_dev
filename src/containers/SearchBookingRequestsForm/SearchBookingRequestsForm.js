@@ -261,7 +261,7 @@ const mapStateToProps = state => {
     api_been_called: state.searchBookings.api_been_called,
     next_url: state.searchBookings.next_url,
     count: state.searchBookings.count,
-    user_id: state.userInfo.user_id,
+    user_id: state.userInfo.userId,
   };
 };
 

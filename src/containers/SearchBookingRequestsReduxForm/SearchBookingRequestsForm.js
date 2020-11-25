@@ -129,7 +129,7 @@ class SearchBookingRequestsForm extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    user_id: state.userInfo.user_id,
+    user_id: state.userInfo.userId,
   };
 };
 

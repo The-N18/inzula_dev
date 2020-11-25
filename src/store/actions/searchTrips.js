@@ -64,6 +64,7 @@ export const searchTrips = (departure_location, destination_location, travel_dat
               departure_location: departure_location,
               destination_location: destination_location,
               travel_date: travel_date,
+              user_id: user_id,
             }})
         .then(res => {
           console.log(res.data)
