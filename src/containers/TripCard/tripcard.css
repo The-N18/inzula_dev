@@ -6,7 +6,7 @@
   line-height: 10px !important;
 }
 
-.home-text-img-card-description {
+.trip-card-item-style {
   line-height: 13px !important;
   font-weight: normal !important;
 }
@@ -15,11 +15,6 @@
   text-align: center !important;
   width: 25% !important;
   margin: 0 auto !important;
-}
-
-.max-h-190px {
-  overflow: hidden !important;
-  height: 100% !important;
 }
 
 p {
@@ -60,43 +55,39 @@ p {
   transition: 0.3s !important;
 } */
 
+.trip-card-img {
+  max-width: 100% !important;
+  max-height: 180px !important;
+  object-fit: contain;
+}
+
+@media only screen and (min-width: 951px) {
+  .trip-card-max-h {
+    overflow: hidden !important;
+    height: 180px !important;
+  }
+}
+
 
 @media only screen and (min-width: 768px) and (max-width: 950px) {
-  .how-it-works-tab .menu {
-    text-align: center !important;
-    width: 40% !important;
-    margin: 0 auto !important;
-  }
   .trip-card-button {
     margin: auto !important;
     display: block !important;
     margin-bottom: 20px !important;
     margin-top: 20px !important;
-
+  }
+  .trip-card-max-h {
+    overflow: hidden !important;
+    height: 280px !important;
+  }
+  .trip-card-img {
+    max-width: 100% !important;
+    max-height: 180px !important;
+    object-fit: contain;
   }
 }
 
 @media only screen and (min-width: 361px) and (max-width: 767px) {
-  .how-it-works-tab .menu {
-    text-align: center !important;
-    width: 50% !important;
-    margin: 0 auto !important;
-  }
-  .trip-card-button {
-    margin-bottom: 20px !important;
-    margin-top: 20px !important;
-    margin: auto !important;
-    display: block !important;
-  }
-}
-
-@media only screen and (min-width: 0px) and (max-width: 360px) {
-  .how-it-works-tab .menu {
-    text-align: center !important;
-    width: 75% !important;
-    margin: 0 auto !important;
-  }
-
   .trip-card-button {
     margin-bottom: 20px !important;
     margin-top: 20px !important;
@@ -104,7 +95,26 @@ p {
     display: block !important;
   }
   .trip-card-img {
-    max-width: 277px !important;
-    max-height: 156px !important;
+    max-width: 100% !important;
+    max-height: 180px !important;
+    object-fit: contain;
+  }
+}
+
+@media only screen and (min-width: 0px) and (max-width: 360px) {
+  .trip-card-button {
+    margin-bottom: 20px !important;
+    margin-top: 20px !important;
+    margin: auto !important;
+    display: block !important;
+  }
+  .trip-card-max-h {
+    overflow: hidden !important;
+    height: 430px !important;
+  }
+  .trip-card-img {
+    max-width: 100% !important;
+    max-height: 180px !important;
+    object-fit: contain;
   }
 }

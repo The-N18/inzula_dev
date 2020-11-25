@@ -47,7 +47,7 @@ class SearchBookingRequestsPage extends React.Component {
     if($(window).width() < 768) {
       this.setState({ isMobile: true });
     }
-    if($(window).width() >= 768) {
+    if($(window).width() >= 768 && $(window).width() <= 950) {
       this.setState({ isTablet: true });
     }
   }
@@ -82,6 +82,18 @@ class SearchBookingRequestsPage extends React.Component {
     const { departure_location, destination_location, travel_date } = this.props;
     const { user_id, next_url, count } = this.props;
     this.props.searchBookings(departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight, user_id, next_url, count);
+  }
+
+  getDivHeight = () => {
+    const { isMobile, isTablet } = this.state;
+    let val = 240;
+    if(isTablet) {
+      val = 300;
+    }
+    if(isMobile) {
+      val = 445;
+    }
+    return val;
   }
 
   render() {
@@ -140,59 +152,59 @@ class SearchBookingRequestsPage extends React.Component {
             </Grid.Column>
             </Grid.Row>
             </Grid>
+            {api_been_called === true ? <Divider/> : ''}
+            {api_been_called === true ? <Grid>
+              <Grid.Row columns={2}>
+                <Grid.Column mobile={16} tablet={8} computer={4}>
+                <div className={"range-div"}>
+                  <p>Price</p>
+                    <MultiSelect
+                      options={valueMultiOptions}
+                      selected={proposed_price}
+                      onSelectedChanged={proposed_price => this.setState({proposed_price})}
+                    />
+                </div>
+                </Grid.Column>
+                <Grid.Column mobile={16} tablet={8} computer={4}>
+                <div className={"range-div"}>
+                  <p>Weight</p>
+                    <MultiSelect
+                      options={weightMultiOptions}
+                      selected={weight}
+                      onSelectedChanged={weight => this.setState({weight})}
+                    />
+                </div>
+                </Grid.Column>
+                <Grid.Column mobile={16} tablet={8} computer={4}>
+                <div className={"range-div"}>
+                <p>Size</p>
+                  <MultiSelect
+                    options={sizeMultiOptions}
+                    selected={product_size}
+                    onSelectedChanged={product_size => this.setState({product_size})}
+                  />
+                  </div>
+                </Grid.Column>
+                <Grid.Column mobile={16} tablet={8} computer={4}>
+                <div className={"range-div"}>
+                <p>Category</p>
+                  <MultiSelect
+                    options={categoryMultiOptions}
+                    selected={product_category}
+                    onSelectedChanged={product_category => this.setState({product_category})}
+                  />
+                  </div>
+                </Grid.Column>
+                </Grid.Row>
+              </Grid> : ''}
           <Button
             size="big"
             loading={loading}
             disabled={loading}
-            className={"buttoncolor search-booking-requests-button"}
+            className={"buttoncolor search-button"}
           >
             Search
           </Button>
-        {api_been_called === true ? <Divider/> : ''}
-        {api_been_called === true ? <Grid>
-          <Grid.Row columns={2}>
-            <Grid.Column mobile={16} tablet={8} computer={4}>
-            <div className={"range-div"}>
-              <p>Price</p>
-                <MultiSelect
-                  options={valueMultiOptions}
-                  selected={proposed_price}
-                  onSelectedChanged={proposed_price => this.setState({proposed_price})}
-                />
-            </div>
-            </Grid.Column>
-            <Grid.Column mobile={16} tablet={8} computer={4}>
-            <div className={"range-div"}>
-              <p>Weight</p>
-                <MultiSelect
-                  options={weightMultiOptions}
-                  selected={weight}
-                  onSelectedChanged={weight => this.setState({weight})}
-                />
-            </div>
-            </Grid.Column>
-            <Grid.Column mobile={16} tablet={8} computer={4}>
-            <div className={"range-div"}>
-            <p>Size</p>
-              <MultiSelect
-                options={sizeMultiOptions}
-                selected={product_size}
-                onSelectedChanged={product_size => this.setState({product_size})}
-              />
-              </div>
-            </Grid.Column>
-            <Grid.Column mobile={16} tablet={8} computer={4}>
-            <div className={"range-div"}>
-            <p>Category</p>
-              <MultiSelect
-                options={categoryMultiOptions}
-                selected={product_category}
-                onSelectedChanged={product_category => this.setState({product_category})}
-              />
-              </div>
-            </Grid.Column>
-            </Grid.Row>
-          </Grid> : ''}
           </form>
         <Divider/>
         {bookings.length === 0 ? <div> No search results. Please try a more general search.</div> : ''}
@@ -215,7 +227,7 @@ class SearchBookingRequestsPage extends React.Component {
           >
             {bookings.map((item, index) => (
               <div style={{
-                height: this.state.isMobile ? 330 : 200,
+                height: this.getDivHeight.bind(this),
                 margin: 6,
                 padding: 8
               }} key={index}>

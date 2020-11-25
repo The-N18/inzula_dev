@@ -83,3 +83,8 @@ export const valueMultiOptions=[
   { key: 'lux', value: 'lux', label: 'Luxury item' },
   { key: 'exc', value: 'exc', label: 'Exclusive' },
 ];
+
+export const tripTypeOptions = [
+    {value: 'round_trip', label: 'Round trip'},
+    {value: 'one_way_trip', label: 'One way trip'}
+];

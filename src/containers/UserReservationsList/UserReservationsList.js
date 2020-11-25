@@ -33,10 +33,11 @@ class UserReservationsList extends React.Component {
     if($(window).width() < 768) {
       this.setState({ isMobile: true });
     }
-    if($(window).width() >= 768) {
+    if($(window).width() >= 768 && $(window).width() <= 950) {
       this.setState({ isTablet: true });
     }
   }
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleScreenSize);
   }
@@ -53,6 +54,17 @@ class UserReservationsList extends React.Component {
     this.props.getUserReservations(user_id, next_url, count);
   }
 
+  getDivHeight = () => {
+    const { isMobile, isTablet } = this.state;
+    let val = 240;
+    if(isTablet) {
+      val = 300;
+    }
+    if(isMobile) {
+      val = 445;
+    }
+    return val;
+  }
 
   render() {
     const { loading, reservations, next_url, count, selectable, editable } = this.props;
@@ -76,7 +88,7 @@ class UserReservationsList extends React.Component {
         >
           {reservations.map((item, index) => (
             <div style={{
-              height: this.state.isMobile ? 330 : 200,
+              height: this.getDivHeight.bind(this),
               margin: 6,
               padding: 8
             }} key={index}>

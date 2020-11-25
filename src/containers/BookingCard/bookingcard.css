@@ -7,7 +7,7 @@
 }
 
 .booking-card-items-style {
-  line-height: 14px !important;
+  line-height: 15px !important;
   font-weight: normal !important;
 }
 
@@ -15,13 +15,8 @@
   color: white !important;
 }
 
-.max-h-190px {
-  overflow: hidden !important;
-  height: 100% !important;
-}
-
 p {
-    margin: 0;
+    margin: 0 !important;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -37,8 +32,6 @@ p {
   margin: 0 auto !important;
 }
 
-.booking-card-img {
-}
 
 .how-it-works-tab .menu .item {
   text-align: center !important;
@@ -55,10 +48,19 @@ p {
   color: #F63854 !important;
 }
 
-/* .home-text-img-card-grid:hover {
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2) !important;
-  transition: 0.3s !important;
-} */
+.sub-btn-style {
+  margin: 0px 15px 0px 15px !important;
+}
+
+@media only screen and (min-width: 951px) {
+  .booking-card-max-h {
+    overflow: hidden !important;
+    height: 180px !important;
+  }
+  p {
+    margin: 0 0 .7em !important;
+  }
+}
 
 
 @media only screen and (min-width: 768px) and (max-width: 950px) {
@@ -66,6 +68,18 @@ p {
     text-align: center !important;
     width: 40% !important;
     margin: 0 auto !important;
+  }
+  .booking-card-max-h {
+    overflow: hidden !important;
+    height: 430px !important;
+  }
+  .booking-card-img {
+    max-width: 100% !important;
+    max-height: 180px !important;
+    object-fit: contain;
+  }
+  p {
+    margin: 0 0 .1em !important;
   }
 }
 
@@ -75,6 +89,14 @@ p {
     width: 50% !important;
     margin: 0 auto !important;
   }
+  .booking-card-img {
+    max-width: 100% !important;
+    max-height: 180px !important;
+    object-fit: contain;
+  }
+  p {
+    margin: 0 0 .2em !important;
+  }
 }
 
 @media only screen and (min-width: 0px) and (max-width: 360px) {
@@ -83,8 +105,16 @@ p {
     width: 75% !important;
     margin: 0 auto !important;
   }
+  .booking-card-max-h {
+    overflow: hidden !important;
+    height: 430px !important;
+  }
   .booking-card-img {
-    max-width: 277px !important;
-    max-height: 156px !important;
+    max-width: 100% !important;
+    max-height: 180px !important;
+    object-fit: contain;
+  }
+  p {
+    margin: 0 0 .2em !important;
   }
 }

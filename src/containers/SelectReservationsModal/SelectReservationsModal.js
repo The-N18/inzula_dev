@@ -50,7 +50,7 @@ class SelectReservationsModal extends React.Component {
   }
 
   render() {
-    const { open, tripId } = this.props;
+    const { open, tripId, selected } = this.props;
 
     return (
       <Modal
@@ -74,7 +74,7 @@ class SelectReservationsModal extends React.Component {
           <UserReservationsList selectable={true} editable={false}/>
       </Modal.Content>
       <Modal.Actions>
-        <Button color='green' onClick={this.handleBookTripWithReservations.bind(this)}>
+        <Button color='green' disabled={selected.length === 0} onClick={this.handleBookTripWithReservations.bind(this)}>
           Book with these reservations <Icon name='check' />
         </Button>
         <Button negative onClick={() => this.props.closePackageModal()} primary>

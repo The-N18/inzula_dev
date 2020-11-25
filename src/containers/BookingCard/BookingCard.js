@@ -85,7 +85,7 @@ class BookingCard extends React.Component {
       proposed_price} = this.props;
 
     return (
-      <Card raised fluid centered className={"home-text-img-card-grid max-h-190px"}>
+      <Card raised fluid centered className={"home-text-img-card-grid booking-card-max-h"}>
         <Grid>
           <Grid.Row>
           {selectable ? <Grid.Column mobile={1} tablet={1} computer={1}>
@@ -95,10 +95,10 @@ class BookingCard extends React.Component {
           </Grid.Column> : ''}
           <Grid.Column mobile={16} tablet={16} computer={4}>
             <Segment basic textAlign="right">
-              <Image centered src={img ? get_img_url(img) : backend_url() + '/static/images/default_booking_image.png'} rounded bordered verticalAlign="middle" size="massive" className={"booking-card-img"}/>
+              <Image centered src={img ? get_img_url(img) : backend_url() + '/static/images/default_booking_image.png'} verticalAlign="middle" size="massive" className={"booking-card-img"}/>
             </Segment>
           </Grid.Column>
-          <Grid.Column mobile={16} tablet={16} computer={selectable && editable ? 5 : 6}>
+          <Grid.Column mobile={16} tablet={8} computer={selectable && editable ? 5 : 6}>
             <Segment basic textAlign="left">
               <Header as='h4' className={"booking-card-title"}>{title}</Header>
               <p className={"booking-card-items-style"}>Description: {description}</p>
@@ -113,7 +113,7 @@ class BookingCard extends React.Component {
               <p className={"booking-card-items-style"}>Pickup: {destination_location && destination_location["label"] ? destination_location["label"] : ""}</p>
             </Segment>
           </Grid.Column>
-          <Grid.Column mobile={16} tablet={16} computer={4}>
+          <Grid.Column mobile={16} tablet={8} computer={4}>
             <Segment basic textAlign="left">
               <p className={"booking-card-items-style"}>Poid: {this.optionToText(weight, weightOptions)}</p>
               <p className={"booking-card-items-style"}>Taille: {this.optionToText(space, sizeOptions)}</p>
@@ -122,11 +122,11 @@ class BookingCard extends React.Component {
               <p className={"booking-card-items-style"}>Prix: {proposed_price} euros</p>
             </Segment>
           </Grid.Column>
-            {!editable ? <Segment compact basic>
+            {!editable && !selectable ? <Segment compact basic className={"sub-btn-style"}>
               <Button color='blue' icon='money' className={"white-trash"} onClick={this.proposePriceOnBooking.bind(this)}/>
             </Segment> : ''}
             {editable ? <Grid.Column mobile={2} tablet={2} computer={2}>
-              <Segment compact basic>
+              <Segment compact basic className={"sub-btn-style"}>
                 <Button color='blue' icon='edit' className={"booking-card-delete-button"}  onClick={this.updateBooking.bind(this)}/>
                 <Button color='orange' icon='trash' className={"white-trash"} onClick={this.deleteBooking.bind(this)}/>
               </Segment>

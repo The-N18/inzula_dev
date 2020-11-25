@@ -168,6 +168,13 @@ class PriceProposalCreateView(CreateAPIView):
     def create(self, request, *args, **kwargs):
         booking_request = BookingRequest.objects.get(pk=request.data["booking_id"])
         request_by = UserProfile.objects.get(user=request.data["user_id"])
+        trips = Trip.objects.filter(departure_location=booking_request.product.departure_location,
+                                    destination_location=booking_request.product.destination_location,
+                                    depart_date=booking_request.product.arrival_date)
+        if request_by.pk == booking_request.product.created_by.pk:
+            return Response({"info": "CANNOT_MAKE_OFFER_ON_YOUR_OWN_REQUEST"}, status=status.HTTP_200_OK)
+        if not trips:
+            return Response({"info": "NO_CORRESPONDING_TRIP"}, status=status.HTTP_200_OK)
         price = request.data["price"]
         price_proposal = PriceProposal.objects.create(booking_request=booking_request,
         request_by=request_by,

@@ -17,6 +17,7 @@ import { openModalSelectReservations } from "../../store/actions/selectReservati
 import {FormattedMessage, FormattedDate} from 'react-intl'
 import { openDeleteTripConfirm, setTripDeleteTripConfirm } from "../../store/actions/deleteTripConfirm";
 import { updateTripOpenModal, updateTripCloseModal } from "../../store/actions/updateTripModal";
+import { tripTypeOptions } from "../../utils/options";
 
 
 class TripCard extends React.Component {
@@ -51,42 +52,51 @@ class TripCard extends React.Component {
     this.props.updateTripOpenModal(data, pk);
   }
 
+  tripTypeToName = (type, options) => {
+    let txt = "";
+    for(let i = 0; i < options.length; i++) {
+      if(options[i]['value'] === type) {
+        txt = options[i]['label'];
+      }
+    }
+    return txt;
+  }
+
   render() {
 
     const {title, trip_type, depart_date, img, comeback_date, departure_location, destination_location, creator_user_name, no_book} = this.props;
 
     return (
-      <Card raised fluid centered className={"home-text-img-card-grid  max-h-190px"}>
+      <Card raised fluid centered className={"home-text-img-card-grid  trip-card-max-h"}>
       <Grid>
         <Grid.Row>
-          <Grid.Column mobile={16} tablet={8} computer={4}>
-            <Segment basic textAlign="right">
-              <Image centered src={!no_book || img ? get_img_url(img) : backend_url() + '/static/images/default_trips_image.jpg'} rounded bordered verticalAlign="middle" size="massive" className={"trip-card-img"}/>
-            </Segment>
+          <Grid.Column mobile={16} tablet={6} computer={3}>
+            <Image centered src={!no_book || img ? get_img_url(img) : backend_url() + '/static/images/default_trips_image.jpg'} verticalAlign="middle" size="massive" className={"trip-card-img"}/>
           </Grid.Column>
-          <Grid.Column mobile={16} tablet={8} computer={9}>
+          <Grid.Column mobile={16} tablet={10} computer={11}>
             <Segment basic textAlign="left">
-              <Header as='h4' className={"booking-card-title"}>{trip_type}</Header>
-              <p className={"home-text-img-card-description"}>User name: {creator_user_name}</p>
-              {comeback_date ? <p className={"home-text-img-card-description"}>Comeback date: <FormattedDate
+              <Header as='h4' className={"booking-card-title"}>{this.tripTypeToName(trip_type, tripTypeOptions)}</Header>
+              <p className={"trip-card-item-style"}>User name: {creator_user_name}</p>
+              {comeback_date ? <p className={"trip-card-item-style"}>Comeback date: <FormattedDate
                                                                               value={comeback_date}
                                                                               year="numeric"
-                                                                              month="long"
+                                                                              month="short"
                                                                               day="numeric"
-                                                                              weekday="long"
+                                                                              weekday="short"
                                                                             /></p> : ''}
-              {depart_date ? <p className={"home-text-img-card-description"}>Depart date: <FormattedDate
+              {depart_date ? <p className={"trip-card-item-style"}>Depart date: <FormattedDate
                                                                               value={depart_date}
                                                                               year="numeric"
-                                                                              month="long"
+                                                                              month="short"
                                                                               day="numeric"
-                                                                              weekday="long"
+                                                                              weekday="short"
                                                                             /></p> : ''}
-              <p className={"home-text-img-card-description"}>Departure: {departure_location && departure_location['label'] ? departure_location['label'] : ''}</p>
-              <p className={"home-text-img-card-description"}>Destination: {destination_location && destination_location['label'] ? destination_location['label'] : ''}</p>
+              <p className={"trip-card-item-style"}>Departure: {departure_location && departure_location['label'] ? departure_location['label'] : ''}</p>
+              <p className={"trip-card-item-style"}>Destination: {destination_location && destination_location['label'] ? destination_location['label'] : ''}</p>
             </Segment>
           </Grid.Column>
           <Grid.Column mobile={16} tablet={16} computer={2}>
+            <Segment textAlign={"center"} basic>
             <Button icon labelPosition='right'
               size="large"
               className={"buttoncolor trip-card-button"}
@@ -105,6 +115,7 @@ class TripCard extends React.Component {
               <Button color='blue' icon='edit' className={"trip-card-delete-button"} onClick={this.updateTrip.bind(this)}/>
               <Button color='orange' icon='trash' className={"white-trash"} onClick={this.deleteTrip.bind(this)}/>
             </Segment>}
+            </Segment>
           </Grid.Column>
         </Grid.Row>
       </Grid>

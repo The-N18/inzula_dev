@@ -19,8 +19,14 @@ import MultiSelect from "@khanacademy/react-multi-select";
 import 'react-widgets/dist/css/react-widgets.css';
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import {renderField, renderDateTimePicker, renderCitiesList} from "../../containers/ReduxForm/renderField";
+import $ from "jquery";
 
 class SearchTripsForm extends React.Component {
+
+  state = {
+    isMobile: false,
+    isTablet: false
+  }
 
   submitForm = (val) => {
     const { user_id, next_url, count } = this.props;
@@ -36,9 +42,42 @@ class SearchTripsForm extends React.Component {
     this.props.findTrip(departure_location, destination_location, travel_date, user_id, next_url, count);
   }
 
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll, false);
+    window.addEventListener('resize', this.handleScreenSize, false);
+    this.handleScreenSize();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('resize', this.handleScreenSize);
+  }
+
+  handleScreenSize = () => {
+    if($(window).width() < 768) {
+      this.setState({ isMobile: true });
+    }
+    if($(window).width() >= 768 && $(window).width() <= 950) {
+      this.setState({ isTablet: true });
+    }
+  }
+
+  getDivHeight = () => {
+    const { isMobile, isTablet } = this.state;
+    let val = 240;
+    if(isTablet) {
+      val = 300;
+    }
+    if(isMobile) {
+      val = 445;
+    }
+    return val;
+  }
+
 
   render() {
     const { loading, error, trips, next_url, count, handleSubmit } = this.props;
+    const { isMobile, isTablet } = this.state;
     return (
       <Segment>
           <Header as="h4" textAlign="center">
@@ -127,7 +166,7 @@ class SearchTripsForm extends React.Component {
             >
               {trips && trips.length > 0 ? trips.map((item, index) => (
                 <div style={{
-                  height: 240,
+                  height: this.getDivHeight.bind(this),
                   margin: 6,
                   padding: 8
                 }} key={index}>

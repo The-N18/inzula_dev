@@ -3,5 +3,7 @@
 }
 
 .search-button {
-  margin: auto;
+  margin: 0px auto !important;
+  display: block !important;
+  margin-top: 10px !important;
 }
