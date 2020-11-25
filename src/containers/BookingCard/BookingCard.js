@@ -159,8 +159,8 @@ BookingCard.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   arrival_date: PropTypes.string,
-  departure_location: PropTypes.string,
-  destination_location: PropTypes.string,
+  departure_location: PropTypes.object,
+  destination_location: PropTypes.object,
 
   weight: PropTypes.string,
   space: PropTypes.string,

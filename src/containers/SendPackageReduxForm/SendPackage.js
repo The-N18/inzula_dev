@@ -144,7 +144,7 @@ class SendPackage extends React.Component {
 
     return (
       <Segment style={{ padding: "0em 0em" }} vertical textAlign="center">
-        <Step.Group ordered stackable>
+        <Step.Group ordered stackable={"tablet"}>
           <Step active={activeStep === 1}>
             <Step.Content>
               <Step.Title>Product details</Step.Title>

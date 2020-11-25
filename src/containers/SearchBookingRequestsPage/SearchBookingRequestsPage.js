@@ -244,7 +244,8 @@ class SearchBookingRequestsPage extends React.Component {
                   product_category={item["product"]["product_category"]}
                   proposed_price={item["product"]["proposed_price"]}
                   img={item["product"]["images"].length === 0 ? '' : item["product"]["images"][0]['image']}
-                  editable={false} />
+                  editable={false}
+                  selectable={false} />
               </div>
             ))}
           </InfiniteScroll>

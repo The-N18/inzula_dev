@@ -179,7 +179,7 @@ class SearchTripsForm extends React.Component {
                     img={item["created_by"]["profile_pic"] === null ? '' : item["created_by"]["profile_pic"]}
                     creator_user_name={item["creator_user_name"]}
                     trip_id={item["pk"]}
-                    no_book={false}/>
+                    no_book={false} />
                 </div>
               )) : ''}
             </InfiniteScroll>

@@ -49,7 +49,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 HomeTextImgCard.propTypes = {
-  title: PropTypes.string,
+  title: PropTypes.object,
   desctiption: PropTypes.string,
   img: PropTypes.string,
 };

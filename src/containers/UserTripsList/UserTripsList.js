@@ -55,6 +55,18 @@ class UserTripsList extends React.Component {
     this.props.getUserTrips(user_id, next_url, count);
   }
 
+  getDivHeight = () => {
+    const { isMobile, isTablet } = this.state;
+    let val = 240;
+    if(isTablet) {
+      val = 300;
+    }
+    if(isMobile) {
+      val = 445;
+    }
+    return val;
+  }
+
 
   render() {
     const { loading, trips, next_url, count } = this.props;
@@ -78,7 +90,7 @@ class UserTripsList extends React.Component {
         >
           {trips.map((item, index) => (
             <div style={{
-              height: 240,
+              height: this.getDivHeight.bind(this),
               margin: 6,
               padding: 8
             }} key={index}>

@@ -60,10 +60,10 @@ class UserNotifsListView(generics.ListAPIView):
         queryset = self.model.objects.all()
         bookings_by_user = BookingRequest.objects.filter(request_by=user_id)
         trips_by_user = Trip.objects.filter(created_by=user_id)
-        # if user_id is not None:
-        #     queryset = queryset.exclude(created_by=user_id)
-        #     queryset = queryset.exclude(status="seen")
-        #     queryset = queryset.filter(trip__in=trips_by_user, booking_request__in=bookings_by_user)
+        if user_id is not None:
+            queryset = queryset.exclude(created_by=user_id)
+            queryset = queryset.exclude(status="seen")
+            queryset = queryset.filter(trip__in=trips_by_user, booking_request__in=bookings_by_user)
         return queryset.order_by('-created_on')
 
 
@@ -82,10 +82,10 @@ class SenderNotifsListView(generics.ListAPIView):
         queryset = self.model.objects.filter(type='offer_rec')
         bookings_by_user = BookingRequest.objects.filter(request_by=user_id)
         trips_by_user = Trip.objects.filter(created_by=user_id)
-        # if user_id is not None:
-        #     queryset = queryset.exclude(created_by=user_id)
-        #     queryset = queryset.exclude(status="seen")
-        #     queryset = queryset.filter(trip__in=trips_by_user, booking_request__in=bookings_by_user)
+        if user_id is not None:
+            queryset = queryset.exclude(created_by=user_id)
+            queryset = queryset.exclude(status="seen")
+            queryset = queryset.filter(booking_request__in=bookings_by_user)
         return queryset.order_by('-created_on')
 
 
@@ -104,10 +104,10 @@ class CarrierNotifsListView(generics.ListAPIView):
         queryset = self.model.objects.filter(Q(type='trip_booked') | Q(type='offer_conf'))
         bookings_by_user = BookingRequest.objects.filter(request_by=user_id)
         trips_by_user = Trip.objects.filter(created_by=user_id)
-        # if user_id is not None:
-        #     queryset = queryset.exclude(created_by=user_id)
-        #     queryset = queryset.exclude(status="seen")
-        #     queryset = queryset.filter(trip__in=trips_by_user, booking_request__in=bookings_by_user)
+        if user_id is not None:
+            queryset = queryset.exclude(created_by=user_id)
+            queryset = queryset.exclude(status="seen")
+            queryset = queryset.filter(trip__in=trips_by_user)
         return queryset.order_by('-created_on')
 
 
