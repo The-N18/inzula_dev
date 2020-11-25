@@ -19,6 +19,7 @@ from rest_framework import generics
 from utils.pagination import SearchResultsSetPagination
 from django.http import Http404
 import datetime
+from django.db.models import Q
 
 class TripsListView(generics.ListAPIView):
     """
@@ -128,12 +129,23 @@ class TripSearchView(generics.ListAPIView):
 
     def get_queryset(self):
         departure_location = self.request.query_params.get('departure_location', '')
-        departure_locations = City.objects.filter(label__startswith=departure_location)
+        # departure_locations = City.objects.filter(label__startswith=departure_location)
         destination_location = self.request.query_params.get('destination_location', '')
-        destination_locations = City.objects.filter(label__startswith=destination_location)
-        depart_date = self.request.query_params.get('depart_date', '')
-        queryset = self.model.objects.filter(departure_location__label__contains=departure_location, destination_location__label__contains=destination_location)
-        return queryset.order_by('-depart_date')
+        # destination_locations = City.objects.filter(label__startswith=destination_location)
+        # depart_date = self.request.query_params.get('depart_date', '')
+        arrDate = self.request.query_params.get('travel_date', '')
+        trips = Trip.objects.all()
+        if departure_location:
+            # departure_location_obj = City.objects.filter(pk=departure_location)
+            trips = trips.filter(departure_location__pk=departure_location)
+        if destination_location:
+            # destination_location_obj = City.objects.get(pk=destination_location)
+            trips = trips.filter(destination_location__pk=destination_location)
+        if arrDate != "":
+            start_date = datetime.datetime.strptime(arrDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
+            arrival_date = start_date.strftime('%Y-%m-%d')
+            trips = trips.filter(Q(depart_date=arrival_date) | Q(comeback_date=arrival_date))
+        return trips.order_by('-depart_date')
 
 def validate(date_text):
     try:
@@ -177,6 +189,7 @@ class TripDetail(APIView):
         dest_location = City.objects.get(pk=dta["destination_location"])
         trip.departure_location = depart_location
         trip.destination_location = dest_location
+        trip.trip_type = dta["trip_type"]
         trip.save()
         serializer = TripUpdateSerializer(trip)
         return Response(serializer.data, status=status.HTTP_200_OK)

@@ -23,16 +23,6 @@ class LoginForm extends Component {
     this.props.login(val['username'], val['password']);
   }
 
-  renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
-    <div>
-      {/*<label>{label}</label>*/}
-      <div>
-        <input {...input} placeholder={label} type={type} className={"custom-field"}/>
-        {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
-      </div>
-    </div>
-  );
-
   render () {
     const {handleSubmit, token, loading, pristine, reset, submitting, invalid} = this.props;
     if (token) {
@@ -58,7 +48,6 @@ class LoginForm extends Component {
           type="text"
           placeholder="Username"
           label="Username"
-          className={"custom-field"}
           component={renderField}
         />
         <Field
@@ -67,7 +56,6 @@ class LoginForm extends Component {
           type="password"
           placeholder="Password"
           label="Password"
-          className={"custom-field"}
           component={renderField}
         />
         <Button

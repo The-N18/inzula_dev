@@ -40,3 +40,46 @@ export const valueOptions=[
   { key: 'lux', value: 'lux', text: 'Luxury item' },
   { key: 'exc', value: 'exc', text: 'Exclusive' },
 ];
+
+export const sizeMultiOptions=[
+  { key: 'xxs', value: 'xxs', label: 'Extra Extra Small' },
+  { key: 'xs', value: 'xs', label: 'Extra small' },
+  { key: 's', value: 's', label: 'Small' },
+  { key: 'm', value: 'm', label: 'Medium' },
+  { key: 'l', value: 'l', label: 'Large' },
+  { key: 'xl', value: 'xl', label: 'Extra Large' },
+  { key: 'xxl', value: 'xxl', label: 'Extra Extra Large' },
+  { key: 'xxxl', value: 'xxxl', label: 'Extra Extra Extra Large' },
+];
+
+export const categoryMultiOptions=[
+  { key: 'food', value: 'food', label: 'Food' },
+  { key: 'elec', value: 'elec', label: 'Electronics' },
+  { key: 'dress', value: 'dress', label: 'Dresses' },
+  { key: 'shoe', value: 'shoe', label: 'Shoes' },
+  { key: 'doc', value: 'doc', label: 'Documents' },
+  { key: 'uts', value: 'uts', label: 'Kitchen utensils' },
+  { key: 'app', value: 'app', label: 'Electrical appliances' },
+  { key: 'skin', value: 'skin', label: 'Skin care' },
+  { key: 'jel', value: 'jel', label: 'Jewelry' },
+  { key: 'misc', value: 'misc', label: 'Miscellaneous' },
+];
+
+export const weightMultiOptions=[
+  { key: '500g', value: '500g', label: '0.1 - 500g' },
+  { key: '1kg', value: '1kg', label: '500g - 1kg' },
+  { key: '5kg', value: '5kg', label: '1.1kg - 5kg' },
+  { key: '10kg', value: '10kg', label: '5.1kg - 10kg' },
+  { key: '20kg', value: '20kg', label: '10.1kg - 20kg' },
+  { key: '30kg', value: '30kg', label: '20.1kg - 30kg' },
+  { key: '40kg', value: '40kg', label: '30.1kg - 40kg' },
+  { key: 'huge', value: 'huge', label: '40.1kg +' },
+];
+
+export const valueMultiOptions=[
+  { key: 'low', value: 'low', label: 'Low value' },
+  { key: 'mid', value: 'mid', label: 'Medium value' },
+  { key: 'high', value: 'high', label: 'High value' },
+  { key: 'lux', value: 'lux', label: 'Luxury item' },
+  { key: 'exc', value: 'exc', label: 'Exclusive' },
+];

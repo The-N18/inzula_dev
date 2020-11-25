@@ -12,8 +12,9 @@ import styles from './myprofile.css';
 // import ProfileTab from "../../containers/ProfileTab/ProfileTab";
 import ProfileTab from "../../containers/ProfileTabReduxForm/ProfileTab";
 import TripsReservationsList from "../../containers/TripsReservationsList/TripsReservationsList";
-import UserNotifsList from "../../containers/UserNotifsList/UserNotifsList";
+import SenderCarrierNotifsList from "../../containers/SenderCarrierNotifsList/SenderCarrierNotifsList";
 import UserFinance from "../../containers/UserFinance/UserFinance";
+import UserBookingsList from "../../containers/UserBookingsList/UserBookingsList";
 import { setActiveIndex } from "../../store/actions/myProfile";
 import $ from "jquery";
 import { toggleProfileType } from "../../store/actions/userInfo";
@@ -45,14 +46,15 @@ class MyProfile extends React.Component {
     window.removeEventListener('resize', this.handleScreenSize);
   }
 
-  // handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
-
   handleTabChange = (e, { activeIndex }) => {
     this.props.setActiveIndex(activeIndex);
   }
 
   handleRadioChange = (e, data) => {
-    const {profileType} = this.props;
+    const {profileType, activeIndex} = this.props;
+    if(profileType === "carrier" && activeIndex === 4) {
+      this.props.setActiveIndex(0);
+    }
     this.props.toggleProfileType(profileType === "sender" ? "carrier" : "sender");
   };
 
@@ -68,18 +70,23 @@ class MyProfile extends React.Component {
         render: () => <Tab.Pane attached={false}><ProfileTab/></Tab.Pane>,
       },
       {
-        menuItem: { key: 'reservation', icon: 'calendar', content: profileType === "sender" ? 'Reservations' : 'Trips' },
+        menuItem: { key: 'reservation', icon: 'calendar', content: profileType === "sender" ? 'My Reservations' : 'My Trips' },
         render: () => <Tab.Pane attached={false}><TripsReservationsList/></Tab.Pane>,
       },
       {
         menuItem: { key: 'alerts', icon: 'bell', content: isMobile ? '' : 'Alerts' },
-        render: () => <Tab.Pane attached={false}><UserNotifsList/></Tab.Pane>,
+        render: () => <Tab.Pane attached={false}><SenderCarrierNotifsList/></Tab.Pane>,
       },
       {
         menuItem: { key: 'finances', icon: 'money bill alternate outline', content: isMobile ? '' : 'Finances' },
         render: () => <Tab.Pane attached={false}><UserFinance/></Tab.Pane>,
       },
     ];
+
+    const tabs = profileType === "sender" ? panes : [...panes, {
+      menuItem: { key: 'booking', icon: 'calendar', content: 'Booked Trips'},
+      render: () => <Tab.Pane attached={false}><UserBookingsList/></Tab.Pane>,
+    },]
 
     return (
       <Segment style={{ padding: "7em 0em" }} vertical>
@@ -106,7 +113,7 @@ class MyProfile extends React.Component {
         <Tab
           activeIndex={activeIndex}
           menu={{ borderless: true, attached: false, tabular: false }}
-          panes={panes}
+          panes={tabs}
           onTabChange={this.handleTabChange}
         />
       </Segment>

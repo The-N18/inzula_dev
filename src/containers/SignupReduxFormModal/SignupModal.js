@@ -72,7 +72,6 @@ class RegistrationForm extends Component {
             type="text"
             placeholder="First name"
             label="First name"
-            className={"custom-field"}
             component={renderField}
           />
           </Grid.Column>
@@ -83,7 +82,6 @@ class RegistrationForm extends Component {
             type="text"
             placeholder="Last name"
             label="Last name"
-            className={"custom-field"}
             component={renderField}
           />
         </Grid.Column>
@@ -95,7 +93,6 @@ class RegistrationForm extends Component {
         type="text"
         placeholder="Username"
         label="Username"
-        className={"custom-field"}
         component={renderField}
       />
         <Field
@@ -104,7 +101,6 @@ class RegistrationForm extends Component {
           type="email"
           placeholder="Email address"
           label="Email address"
-          className={"custom-field"}
           component={renderField}
         />
         <Field
@@ -113,7 +109,6 @@ class RegistrationForm extends Component {
           type="password"
           placeholder="Password"
           label="Password"
-          className={"custom-field"}
           component={renderField}
         />
         <Field
@@ -122,7 +117,6 @@ class RegistrationForm extends Component {
           type="password"
           placeholder="Confirm Password"
           label="Confirm Password"
-          className={"custom-field"}
           component={renderField}
         />
         <div className={"push-left"}>

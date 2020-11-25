@@ -66,6 +66,50 @@ class UserNotifsListView(generics.ListAPIView):
         return queryset.order_by('-created_on')
 
 
+class SenderNotifsListView(generics.ListAPIView):
+    """
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+
+    """
+    serializer_class = NotifListSerializer
+    model = serializer_class.Meta.model
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        user_id = self.request.query_params.get('user_id', None)
+        queryset = self.model.objects.filter(type='offer_rec')
+        bookings_by_user = BookingRequest.objects.filter(request_by=user_id)
+        trips_by_user = Trip.objects.filter(created_by=user_id)
+        # if user_id is not None:
+        #     queryset = queryset.exclude(created_by=user_id)
+        #     queryset = queryset.exclude(status="seen")
+        #     queryset = queryset.filter(trip__in=trips_by_user, booking_request__in=bookings_by_user)
+        return queryset.order_by('-created_on')
+
+
+class CarrierNotifsListView(generics.ListAPIView):
+    """
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+
+    """
+    serializer_class = NotifListSerializer
+    model = serializer_class.Meta.model
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        user_id = self.request.query_params.get('user_id', None)
+        queryset = self.model.objects.filter(Q(type='trip_booked') | Q(type='offer_conf'))
+        bookings_by_user = BookingRequest.objects.filter(request_by=user_id)
+        trips_by_user = Trip.objects.filter(created_by=user_id)
+        # if user_id is not None:
+        #     queryset = queryset.exclude(created_by=user_id)
+        #     queryset = queryset.exclude(status="seen")
+        #     queryset = queryset.filter(trip__in=trips_by_user, booking_request__in=bookings_by_user)
+        return queryset.order_by('-created_on')
+
+
 class NotifCreateView(CreateAPIView):
     serializer_class = NotifSerializer
     permission_classes = register_permission_classes()
@@ -342,14 +386,12 @@ class BookingRequestSearchView(generics.ListAPIView):
     pagination_class = SearchResultsSetPagination
 
     def get_queryset(self):
-        departure_location = self.request.query_params.get('departure_location', '')
         product_category = self.request.query_params.getlist('product_category[]', [])
         product_size = self.request.query_params.getlist('product_size[]', [])
         proposed_price = self.request.query_params.getlist('proposed_price[]', [])
         weight = self.request.query_params.getlist('weight[]', [])
-        departure_locations = City.objects.filter(label__startswith=departure_location)
+        departure_location = self.request.query_params.get('departure_location', '')
         destination_location = self.request.query_params.get('destination_location', '')
-        destination_locations = City.objects.filter(label__startswith=destination_location)
         arrDate = self.request.query_params.get('travel_date', '')
         start_date = None
         arrival_date = None
@@ -360,9 +402,11 @@ class BookingRequestSearchView(generics.ListAPIView):
         if arrival_date:
             products = products.filter(arrival_date=arrival_date)
         if departure_location:
-            products = products.filter(departure_location__label__contains=departure_location)
+            # departure_location_obj = City.objects.filter(pk=departure_location)
+            products = products.filter(departure_location__pk=departure_location)
         if destination_location:
-            products = products.filter(destination_location__label__contains=destination_location)
+            # destination_location_obj = City.objects.get(pk=destination_location)
+            products = products.filter(destination_location__pk=destination_location)
         if len(weight) > 0:
             q_objects = Q()
             for item in weight:

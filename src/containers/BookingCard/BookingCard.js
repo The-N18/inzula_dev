@@ -18,6 +18,7 @@ import { openDeleteBookingConfirm, setBookingDeleteBookingConfirm } from "../../
 import { setBookingRequestId, openProposePriceOnBooking } from "../../store/actions/proposePriceOnBooking";
 import {FormattedMessage, FormattedDate} from 'react-intl'
 import { updateBookingOpenModal, updateBookingCloseModal } from "../../store/actions/updateBookingModal";
+import { sizeOptions, categoryOptions, weightOptions, valueOptions } from "../../utils/options";
 
 
 class BookingCard extends React.Component {
@@ -66,9 +67,22 @@ class BookingCard extends React.Component {
     this.props.openProposePriceOnBooking();
   }
 
+  optionToText = (option_value, arr) => {
+    let txt = "";
+    for(let i = 0; i < arr.length; i++) {
+      if(arr[i]['value'] === option_value) {
+        txt = arr[i]['text'];
+      }
+    }
+    return txt;
+  }
+
   render() {
 
-    const {pk, title, description, img, product_details, arrival_date, departure_location, selectable, editable, destination_location} = this.props;
+    const {pk, title, description, img, product_details,
+      arrival_date, departure_location, selectable, editable,
+      destination_location, weight, space, price, product_category,
+      proposed_price} = this.props;
 
     return (
       <Card raised fluid centered className={"home-text-img-card-grid max-h-190px"}>
@@ -84,21 +98,30 @@ class BookingCard extends React.Component {
               <Image centered src={img ? get_img_url(img) : backend_url() + '/static/images/default_booking_image.png'} rounded bordered verticalAlign="middle" size="massive" className={"booking-card-img"}/>
             </Segment>
           </Grid.Column>
-            <Grid.Column mobile={16} tablet={16} computer={selectable && editable ? 9 : 10}>
-              <Segment basic textAlign="left">
-                <Header as='h4' className={"booking-card-title"}>{title}</Header>
-                <p className={"home-text-img-card-description"}>Description: {description}</p>
-                <p className={"home-text-img-card-description"}>Arrival date: <FormattedDate
-                                                                                value={arrival_date}
-                                                                                year="numeric"
-                                                                                month="long"
-                                                                                day="numeric"
-                                                                                weekday="long"
-                                                                              /></p>
-                                                                            <p className={"home-text-img-card-description"}>Departure: {departure_location && departure_location["label"] ? departure_location["label"] : ""}</p>
-                <p className={"home-text-img-card-description"}>Pickup: {destination_location && destination_location["label"] ? destination_location["label"] : ""}</p>
-              </Segment>
-            </Grid.Column>
+          <Grid.Column mobile={16} tablet={16} computer={selectable && editable ? 5 : 6}>
+            <Segment basic textAlign="left">
+              <Header as='h4' className={"booking-card-title"}>{title}</Header>
+              <p className={"booking-card-items-style"}>Description: {description}</p>
+              <p className={"booking-card-items-style"}>Arrival date: <FormattedDate
+                                                                              value={arrival_date}
+                                                                              year="numeric"
+                                                                              month="short"
+                                                                              day="numeric"
+                                                                              weekday="short"
+                                                                            /></p>
+                                                                          <p className={"booking-card-items-style"}>Departure: {departure_location && departure_location["label"] ? departure_location["label"] : ""}</p>
+              <p className={"booking-card-items-style"}>Pickup: {destination_location && destination_location["label"] ? destination_location["label"] : ""}</p>
+            </Segment>
+          </Grid.Column>
+          <Grid.Column mobile={16} tablet={16} computer={4}>
+            <Segment basic textAlign="left">
+              <p className={"booking-card-items-style"}>Poid: {this.optionToText(weight, weightOptions)}</p>
+              <p className={"booking-card-items-style"}>Taille: {this.optionToText(space, sizeOptions)}</p>
+              <p className={"booking-card-items-style"}>Categorie: {this.optionToText(product_category, categoryOptions)}</p>
+              <p className={"booking-card-items-style"}>Valeur: {this.optionToText(price, valueOptions)}</p>
+              <p className={"booking-card-items-style"}>Prix: {proposed_price} euros</p>
+            </Segment>
+          </Grid.Column>
             {!editable ? <Segment compact basic>
               <Button color='blue' icon='money' className={"white-trash"} onClick={this.proposePriceOnBooking.bind(this)}/>
             </Segment> : ''}
@@ -138,6 +161,13 @@ BookingCard.propTypes = {
   arrival_date: PropTypes.string,
   departure_location: PropTypes.string,
   destination_location: PropTypes.string,
+
+  weight: PropTypes.string,
+  space: PropTypes.string,
+  price: PropTypes.string,
+  product_category: PropTypes.string,
+  proposed_price: PropTypes.string,
+
   product_details: PropTypes.object,
   img: PropTypes.string,
   selectable: PropTypes.boolean,

@@ -71,7 +71,6 @@ class LoginForm extends Component {
           type="text"
           placeholder="Username"
           label="Username"
-          className={"custom-field"}
           component={renderField}
         />
         <Field
@@ -80,7 +79,6 @@ class LoginForm extends Component {
           type="password"
           placeholder="Password"
           label="Password"
-          className={"custom-field"}
           component={renderField}
         />
         <Button

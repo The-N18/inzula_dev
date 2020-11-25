@@ -48,7 +48,7 @@ export const validate = values => {
   } else if (isNaN(Number(values.recipient_phone_number))) {
     errors.recipient_phone_number = 'Must be a number';
   }
-  return errors
+  return errors;
 }
 
 export const warn = values => {

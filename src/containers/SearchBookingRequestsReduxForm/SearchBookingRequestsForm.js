@@ -23,7 +23,7 @@ import 'react-widgets/dist/css/react-widgets.css';
 import { Field, reduxForm } from 'redux-form'
 import { withRouter } from "react-router-dom";
 import $ from "jquery";
-import {renderField, renderDateTimePicker, renderDropdownList} from "../../containers/ReduxForm/renderField";
+import {renderField, renderDateTimePicker, renderCitiesList, renderDropdownList} from "../../containers/ReduxForm/renderField";
 import { setInitialValues } from "../../store/actions/searchBookingsPage";
 
 
@@ -76,32 +76,28 @@ class SearchBookingRequestsForm extends React.Component {
             <Grid.Row columns={3}>
               <Grid.Column mobile={16} tablet={16} computer={6}>
           <div>
-            <label htmlFor="departure_location">Departure location</label>
             <div>
               <Field
                 name="departure_location"
-                component="input"
-                type="text"
                 placeholder="Departure location"
                 label="Departure location"
-                className={"custom-field"}
-                component={renderField}
+                component="input"
+                type="text"
+                component={renderCitiesList}
               />
               </div>
             </div>
             </Grid.Column>
             <Grid.Column mobile={16} tablet={16} computer={6}>
             <div>
-              <label htmlFor="destination_location">Destination location</label>
               <div>
                 <Field
                   name="destination_location"
-                  component="input"
-                  type="text"
                   placeholder="Destination location"
                   label="Destination location"
-                  className={"custom-field"}
-                  component={renderField}
+                  component="input"
+                  type="text"
+                  component={renderCitiesList}
                 />
                 </div>
               </div>

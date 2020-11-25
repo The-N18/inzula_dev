@@ -22,16 +22,6 @@ class RegistrationForm extends Component {
     this.props.signup(val['first_name'], val['last_name'], val['username'], val['email'], val['password1'], val['password2'], val['terms_conditions']);
   }
 
-  renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
-    <div>
-      {/*<label>{label}</label>*/}
-      <div>
-        <input {...input} placeholder={label} type={type} className={"custom-field"}/>
-        {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
-      </div>
-    </div>
-  );
-
   render () {
     const {handleSubmit, token, loading, pristine, reset, submitting, invalid, discountText} = this.props;
     if (token) {
@@ -59,7 +49,6 @@ class RegistrationForm extends Component {
         type="text"
         placeholder="First name"
         label="First name"
-        className={"custom-field"}
         component={renderField}
       />
       <Field
@@ -68,7 +57,6 @@ class RegistrationForm extends Component {
         type="text"
         placeholder="Last name"
         label="Last name"
-        className={"custom-field"}
         component={renderField}
       />
       <Field
@@ -77,7 +65,6 @@ class RegistrationForm extends Component {
         type="text"
         placeholder="Username"
         label="Username"
-        className={"custom-field"}
         component={renderField}
       />
         <Field
@@ -86,7 +73,6 @@ class RegistrationForm extends Component {
           type="email"
           placeholder="Email address"
           label="Email address"
-          className={"custom-field"}
           component={renderField}
         />
         <Field
@@ -95,7 +81,6 @@ class RegistrationForm extends Component {
           type="password"
           placeholder="Password"
           label="Password"
-          className={"custom-field"}
           component={renderField}
         />
         <Field
@@ -104,7 +89,6 @@ class RegistrationForm extends Component {
           type="password"
           placeholder="Confirm Password"
           label="Confirm Password"
-          className={"custom-field"}
           component={renderField}
         />
         <div>

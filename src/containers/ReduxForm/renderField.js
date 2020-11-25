@@ -9,6 +9,7 @@ import DateTimePicker from 'react-widgets/lib/DateTimePicker'
 import moment from 'moment';
 import momentLocalizer from "react-widgets-moment";
 import 'react-widgets/dist/css/react-widgets.css';
+import './fields.css';
 // import 'react-select/dist/react-select.css';
 import Async from 'react-select/async';
 import { api_url } from "../../configurations";
@@ -22,7 +23,17 @@ export const renderField = ({ input, label, type, disabled, meta: { touched, err
     {/*<label>{label}</label>*/}
     <div>
       <input {...input} placeholder={label} type={type} className={"custom-field"} disabled={disabled}/>
-      {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
+      {touched && ((error && <span className={"error-on-input"}>{error}</span>) || (warning && <span>{warning}</span>))}
+    </div>
+  </div>
+);
+
+export const renderFieldWithLabel = ({ input, label, type, disabled, meta: { touched, error, warning } }) => (
+  <div>
+    <label>{label}</label>
+    <div>
+      <input {...input} placeholder={label} type={type} className={"custom-field"} disabled={disabled}/>
+      {touched && ((error && <span className={"error-on-input"}>{error}</span>) || (warning && <span>{warning}</span>))}
     </div>
   </div>
 );
@@ -31,21 +42,27 @@ export const colors = [ { color: 'Red', value: 'ff0000' },
   { color: 'Green', value: '00ff00' },
   { color: 'Blue', value: '0000ff' } ]
 
-export const renderDropdownList = ({ input, data, valueField, textField }) =>
+export const renderDropdownList = ({ input, data, valueField, textField, meta: { touched, error, warning } }) =>
+  <div>
   <DropdownList {...input}
     data={data}
     valueField={valueField}
     textField={textField}
     onChange={input.onChange} />
+  {touched && ((error && <span className={"error-on-input"}>{error}</span>) || (warning && <span>{warning}</span>))}
+  </div>
 
-export const renderMultiselect = ({ input, data, valueField, textField }) =>
-  <Multiselect {...input}
+export const renderMultiselect = ({ input, data, valueField, textField, meta: { touched, error, warning } }) =>
+  <div>
+    <Multiselect {...input}
     onBlur={() => input.onBlur()}
     value={input.value || []} // requires value to be an array
     data={data}
     valueField={valueField}
     textField={textField}
   />
+  {touched && ((error && <span className={"error-on-input"}>{error}</span>) || (warning && <span>{warning}</span>))}
+  </div>
 
 export const renderSelectList = ({ input, data }) =>
   <SelectList {...input}
@@ -65,23 +82,35 @@ export const renderSelectList = ({ input, data }) =>
   };
 
 
-export const renderCitiesList = ({ input, data }) => {
+export const renderCitiesList = ({ input, data, label, meta: { touched, error, warning } }) => {
   console.log(input['value']);
-  return <Async
-          name={input['name']}
-          value={input['value']}
-          onBlur={() => input.onBlur()}
-          onChange={input.onChange}
-          loadOptions={getCities}/>
+  return <div>
+          <label>{label}</label>
+          <div>
+            <Async
+            clearValue
+            name={input['name']}
+            value={input['value']}
+            onBlur={() => input.onBlur()}
+            onChange={input.onChange}
+            loadOptions={getCities}/>
+            {touched && ((error && <span className={"error-on-input"}>{error}</span>) || (warning && <span>{warning}</span>))}
+          </div>
+        </div>
 }
 
 
-  export const renderDateTimePicker = ({ input: { onChange, value }, showTime, min }) => {
-    return (<DateTimePicker
+  export const renderDateTimePicker = ({ input: { onChange, value }, label, showTime, min, meta: { touched, error, warning } }) => {
+    return (<div>
+      <div>
+        <label>{label}</label>
+        <DateTimePicker
       onChange={onChange}
       format="YYYY-MM-DD"
       time={showTime}
       min={min}
       value={!value ? null : value}
-    />);
+    />
+  {touched && ((error && <span className={"error-on-input"}>{error}</span>) || (warning && <span>{warning}</span>))}
+</div></div>);
   }

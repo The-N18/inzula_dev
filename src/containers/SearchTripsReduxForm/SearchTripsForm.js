@@ -18,22 +18,21 @@ import { openModal, closeModal } from "../../store/actions/sendPackageModal";
 import MultiSelect from "@khanacademy/react-multi-select";
 import 'react-widgets/dist/css/react-widgets.css';
 import { Field, reduxForm, formValueSelector } from 'redux-form'
-import {renderField, renderCitiesList, renderDateTimePicker} from "../../containers/ReduxForm/renderField";
+import {renderField, renderDateTimePicker, renderCitiesList} from "../../containers/ReduxForm/renderField";
 
 class SearchTripsForm extends React.Component {
 
   submitForm = (val) => {
-    console.log(val);
     const { user_id, next_url, count } = this.props;
-    const departureLocation = val['departure_location'] ? val['departure_location'] : null;
-    const destinationLocation = val['destination_location'] ? val['destination_location'] : null;
+    const departureLocation = val['departure_location'] ? val['departure_location']['pk'] : null;
+    const destinationLocation = val['destination_location'] ? val['destination_location']['pk'] : null;
     this.props.findTrip(departureLocation, destinationLocation, val['travel_date'], user_id, next_url, count);
   };
 
   fetchMoreData = () => {
-    console.log("fetch more data")
-    // const { departure_location, destination_location, travel_date } = this.state;
     const { user_id, next_url, count, departure_location, destination_location, travel_date } = this.props;
+    const departureLocation = departure_location ? departure_location['pk'] : null;
+    const destinationLocation = destination_location ? destination_location['pk'] : null;
     this.props.findTrip(departure_location, destination_location, travel_date, user_id, next_url, count);
   }
 
@@ -56,7 +55,6 @@ class SearchTripsForm extends React.Component {
             <Grid.Row columns={3}>
               <Grid.Column mobile={16} tablet={16} computer={6}>
           <div>
-            <label htmlFor="departure_location">Departure location</label>
             <div>
               <Field
                 name="departure_location"
@@ -65,14 +63,13 @@ class SearchTripsForm extends React.Component {
                 placeholder="Departure location"
                 label="Departure location"
                 className={"custom-field"}
-                component={renderField}
+                component={renderCitiesList}
               />
               </div>
             </div>
             </Grid.Column>
             <Grid.Column mobile={16} tablet={16} computer={6}>
             <div>
-              <label htmlFor="destination_location">Destination location</label>
               <div>
                 <Field
                   name="destination_location"
@@ -81,19 +78,19 @@ class SearchTripsForm extends React.Component {
                   placeholder="Destination location"
                   label="Destination location"
                   className={"custom-field"}
-                  component={renderField}
+                  component={renderCitiesList}
                 />
                 </div>
               </div>
               </Grid.Column>
               <Grid.Column mobile={16} tablet={16} computer={4}>
               <div>
-                <label htmlFor="travel_date">Travel date</label>
                 <div>
               <Field
                 name="travel_date"
                 showTime={false}
                 component={renderDateTimePicker}
+                label="Travel date"
               />
               </div>
             </div>

@@ -24,7 +24,7 @@ import { DateInput } from 'semantic-ui-calendar-react';
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import { bookingAddition } from "../../store/actions/addBooking";
 import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
-import {renderField, renderDateTimePicker, renderDropdownList, renderCitiesList} from "../../containers/ReduxForm/renderField";
+import {renderField, renderDateTimePicker, renderFieldWithLabel, renderDropdownList, renderCitiesList} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
 import { sizeOptions, categoryOptions, weightOptions, valueOptions } from "../../utils/options";
 
@@ -206,77 +206,79 @@ class SendPackage extends React.Component {
                   </Grid> : ''}
                   <Grid>
                   <Grid.Row>
-                    {activeStep === 1 ? <Grid.Column mobile={16} tablet={16} computer={16}>
-                      <Field
-                        name="min_price"
-                        type="number"
-                        placeholder="Proposed price"
-                        label="Min price"
-                        className={"custom-field"}
-                        component={renderField}
-                        disabled={true}
-                      />
-                  </Grid.Column> : ''}
                   <Grid.Column mobile={16} tablet={16} computer={16}>
                 {activeStep === 1 ?
                   <Grid>
                   <Grid.Row className={"no-pad"}>
-                  <Grid.Column mobile={16} tablet={8} computer={6}>
+                  <Grid.Column mobile={16} tablet={16} computer={8}>
                     <Field
                       name="product_name"
                       component="input"
                       type="text"
                       placeholder="Product name"
                       label="Product name"
-                      className={"custom-field"}
                       component={renderField}
                     />
                     </Grid.Column>
-                    <Grid.Column mobile={16} tablet={8} computer={5}>
-                    <Field
-                      name="departure_location"
-                      placeholder="Product location"
-                      label="Product location"
-                      component="input"
-                      type="text"
-                      className={"custom-field"}
-                      component={renderCitiesList}
-                    />
-                    </Grid.Column>
-                    <Grid.Column mobile={16} tablet={8} computer={5}>
-                    <Field
-                      name="destination_location"
-                      placeholder="Pickup location"
-                      label="Pickup location"
-                      component="input"
-                      type="text"
-                      className={"custom-field"}
-                      component={renderCitiesList}
-                    />
+                    <Grid.Column mobile={16} tablet={16} computer={8}>
+                      <Field
+                        name="proposed_price"
+                        type="text"
+                        placeholder="Proposed price"
+                        label="Proposed price"
+                        component={renderField}
+                      />
+
                     </Grid.Column>
                     </Grid.Row>
                     </Grid>
                    : ''}
                    {activeStep === 1 ?
                      <Grid>
+                     <Grid.Row className={"no-pad"}>
+                      <Grid.Column mobile={16} tablet={16} computer={8}>
+                       <Field
+                         name="min_price"
+                         type="number"
+                         placeholder="Proposed price"
+                         label="Min price"
+                         component={renderFieldWithLabel}
+                         disabled={true}
+                       />
+                     </Grid.Column>
+                     <Grid.Column mobile={16} tablet={16} computer={8}>
+                       <Field
+                         name="delivery_date"
+                         showTime={false}
+                         component={renderDateTimePicker}
+                         min={new Date()}
+                         label="Delivery date"
+                       />
+                     </Grid.Column>
+                   </Grid.Row>
+                   </Grid> : ''}
+                   {activeStep === 1 ?
+                     <Grid>
                        <Grid.Row className={"no-pad"}>
-                         <Grid.Column mobile={16} tablet={8} computer={8}>
-                           <Field
-                             name="delivery_date"
-                             showTime={false}
-                             component={renderDateTimePicker}
-                             min={new Date()}
-                           />
-                         </Grid.Column>
                      <Grid.Column mobile={16} tablet={8} computer={8}>
                        <Field
-                         name="proposed_price"
+                         name="departure_location"
+                         placeholder="Product location"
+                         label="Product location"
+                         component="input"
                          type="text"
-                         placeholder="Proposed price"
-                         label="Proposed price"
-                         className={"custom-field"}
-                         component={renderField}
+                         component={renderCitiesList}
                        />
+                     </Grid.Column>
+                     <Grid.Column mobile={16} tablet={8} computer={8}>
+                     <Field
+                       name="destination_location"
+                       placeholder="Pickup location"
+                       label="Pickup location"
+                       component="input"
+                       type="text"
+                       component={renderCitiesList}
+                     />
                      </Grid.Column>
                    </Grid.Row>
                  </Grid> : ''}
@@ -344,7 +346,6 @@ class SendPackage extends React.Component {
                           type="text"
                           placeholder="Reciever's name"
                           label="Reciever's name"
-                          className={"custom-field"}
                           component={renderField}
                         />
                         </Grid.Column>
@@ -354,7 +355,6 @@ class SendPackage extends React.Component {
                           type="number"
                           placeholder="Reciever's phone number"
                           label="Reciever's phone number"
-                          className={"custom-field"}
                           component={renderField}
                         />
                         </Grid.Column>
@@ -366,7 +366,7 @@ class SendPackage extends React.Component {
                             component="textarea"
                             placeholder="Short description of the product"
                             label="Short description of the product"
-                            className={"custom-field"}
+                            className={"custom-field-style"}
                           /> : '' }
                         {activeStep === 2 ?
                             <div>
@@ -403,7 +403,7 @@ class SendPackage extends React.Component {
                           className={"buttoncolor step-button"}
                           size="large"
                           type="submit"
-                          disabled={invalid}
+                          disabled={invalid && submitting}
                         >
                           <Icon name='check' /> Confirm request
                         </Button> : ''}

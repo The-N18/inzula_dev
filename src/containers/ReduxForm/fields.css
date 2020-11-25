@@ -1,0 +1,33 @@
+.error-on-input {
+  color: red;
+  font-size: 11px;
+  text-align: left;
+  display: block;
+  margin-bottom: 15px;
+}
+
+.custom-field {
+  font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+    margin: 0;
+    outline: 0;
+    -webkit-appearance: none;
+    tap-highlight-color: rgba(255,255,255,0);
+    line-height: 1.21428571em;
+    padding: .67857143em 1em;
+    font-size: 1em;
+    background: #fff;
+    border: 1px solid rgba(34,36,38,.15);
+    color: rgba(0,0,0,.87);
+    border-radius: .28571429rem;
+    -webkit-box-shadow: 0 0 0 0 transparent inset;
+    box-shadow: 0 0 0 0 transparent inset;
+    -webkit-transition: color .1s ease,border-color .1s ease;
+    -o-transition: color .1s ease,border-color .1s ease;
+    transition: color .1s ease,border-color .1s ease;
+    display: block;
+    cursor: text;
+    background-color: #ffffff !important;
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }

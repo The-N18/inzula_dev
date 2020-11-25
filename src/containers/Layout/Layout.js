@@ -207,7 +207,7 @@ class CustomLayout extends React.Component {
       <Notify />
         <header className="menuheader">
           <div>
-            <a href="" className="logo" onClick={this.handleOnClick.bind(this, '/')}>
+            <a className="logo" onClick={this.handleOnClick.bind(this, '/')}>
               <Image size='small' src={backend_url() + '/static/images/logo.png'} />
             </a>
             <input className="menu-btn" type="checkbox" id="menu-btn" />

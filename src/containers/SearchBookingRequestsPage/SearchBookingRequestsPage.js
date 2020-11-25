@@ -21,11 +21,12 @@ import 'react-widgets/dist/css/react-widgets.css';
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { withRouter } from "react-router-dom";
 import $ from "jquery";
-import {renderField, renderDateTimePicker, renderDropdownList} from "../../containers/ReduxForm/renderField";
+import {renderField, renderDateTimePicker, renderDropdownList, renderCitiesList} from "../../containers/ReduxForm/renderField";
 import { searchBookings, filterBookings } from "../../store/actions/searchBookings";
 import { DateInput } from 'semantic-ui-calendar-react';
 import BookingCard from "../../containers/BookingCard/BookingCard";
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { sizeMultiOptions, categoryMultiOptions, weightMultiOptions, valueMultiOptions } from "../../utils/options";
 
 
 class SearchBookingRequestsPage extends React.Component {
@@ -69,9 +70,11 @@ class SearchBookingRequestsPage extends React.Component {
   submitForm = (val) => {
     const { user_id, next_url, count, inNewPage } = this.props;
     const { product_category, product_size, proposed_price, weight } = this.state;
+    const departureLocation = val['departure_location'] ? val['departure_location']['pk'] : null;
+    const destinationLocation = val['destination_location'] ? val['destination_location']['pk'] : null;
     this.setState({ departure_location: val['departure_location'] ? val['departure_location'] : "",
                     destination_location: val['destination_location'] ? val['destination_location'] : ""});
-    this.props.searchBookings(val['departure_location'], val['destination_location'], val['travel_date'], product_category, product_size, proposed_price, weight, user_id, next_url, count);
+    this.props.searchBookings(departureLocation, destinationLocation, val['travel_date'], product_category, product_size, proposed_price, weight, user_id, next_url, count);
   };
 
   fetchMoreData = () => {
@@ -84,48 +87,6 @@ class SearchBookingRequestsPage extends React.Component {
   render() {
     const { loading, error, bookings, next_url, count, api_been_called, handleSubmit, inNewPage } = this.props;
     const { travel_date, product_category, product_size, weight, proposed_price } = this.state;
-    const sizeOptions = [
-      { key: 'xxs', value: 'xxs', label: 'Extra Extra Small' },
-      { key: 'xs', value: 'xs', label: 'Extra small' },
-      { key: 's', value: 's', label: 'Small' },
-      { key: 'm', value: 'm', label: 'Medium' },
-      { key: 'l', value: 'l', label: 'Large' },
-      { key: 'xl', value: 'xl', label: 'Extra Large' },
-      { key: 'xxl', value: 'xxl', label: 'Extra Extra Large' },
-      { key: 'xxxl', value: 'xxxl', label: 'Extra Extra Extra Large' },
-    ];
-
-    const categoryOptions = [
-      { key: 'food', value: 'food', label: 'Food' },
-      { key: 'elec', value: 'elec', label: 'Electronics' },
-      { key: 'dress', value: 'dress', label: 'Dresses' },
-      { key: 'shoe', value: 'shoe', label: 'Shoes' },
-      { key: 'doc', value: 'doc', label: 'Documents' },
-      { key: 'uts', value: 'uts', label: 'Kitchen utensils' },
-      { key: 'app', value: 'app', label: 'Electrical appliances' },
-      { key: 'skin', value: 'skin', label: 'Skin care' },
-      { key: 'jel', value: 'jel', label: 'Jewelry' },
-      { key: 'misc', value: 'misc', label: 'Miscellaneous' },
-    ];
-
-    const weightOptions = [
-      { key: '500g', value: '500g', label: '0.1 - 500g' },
-      { key: '1kg', value: '1kg', label: '500g - 1kg' },
-      { key: '5kg', value: '5kg', label: '1.1kg - 5kg' },
-      { key: '10kg', value: '10kg', label: '5.1kg - 10kg' },
-      { key: '20kg', value: '20kg', label: '10.1kg - 20kg' },
-      { key: '30kg', value: '30kg', label: '20.1kg - 30kg' },
-      { key: '40kg', value: '40kg', label: '30.1kg - 40kg' },
-      { key: 'huge', value: 'huge', label: '40.1kg +' },
-    ];
-
-    const valueOptions = [
-      { key: 'low', value: 'low', label: 'Low value' },
-      { key: 'mid', value: 'mid', label: 'Medium value' },
-      { key: 'high', value: 'high', label: 'High value' },
-      { key: 'lux', value: 'lux', label: 'Luxury item' },
-      { key: 'exc', value: 'exc', label: 'Exclusive' },
-    ];
     return (
       <Segment basic style={{ padding: "8em 0em" }} textAlign="center">
         <Header as="h4" textAlign="center">
@@ -139,7 +100,6 @@ class SearchBookingRequestsPage extends React.Component {
           <Grid.Row columns={3}>
             <Grid.Column mobile={16} tablet={16} computer={5}>
         <div>
-          <label htmlFor="departure_location">Departure location</label>
           <div>
             <Field
               name="departure_location"
@@ -148,14 +108,13 @@ class SearchBookingRequestsPage extends React.Component {
               placeholder="Departure location"
               label="Departure location"
               className={"custom-field"}
-              component={renderField}
+              component={renderCitiesList}
             />
             </div>
           </div>
           </Grid.Column>
           <Grid.Column mobile={16} tablet={16} computer={5}>
           <div>
-            <label htmlFor="destination_location">Destination location</label>
             <div>
               <Field
                 name="destination_location"
@@ -164,7 +123,7 @@ class SearchBookingRequestsPage extends React.Component {
                 placeholder="Destination location"
                 label="Destination location"
                 className={"custom-field"}
-                component={renderField}
+                component={renderCitiesList}
               />
               </div>
             </div>
@@ -196,7 +155,7 @@ class SearchBookingRequestsPage extends React.Component {
             <div className={"range-div"}>
               <p>Price</p>
                 <MultiSelect
-                  options={valueOptions}
+                  options={valueMultiOptions}
                   selected={proposed_price}
                   onSelectedChanged={proposed_price => this.setState({proposed_price})}
                 />
@@ -206,7 +165,7 @@ class SearchBookingRequestsPage extends React.Component {
             <div className={"range-div"}>
               <p>Weight</p>
                 <MultiSelect
-                  options={weightOptions}
+                  options={weightMultiOptions}
                   selected={weight}
                   onSelectedChanged={weight => this.setState({weight})}
                 />
@@ -216,7 +175,7 @@ class SearchBookingRequestsPage extends React.Component {
             <div className={"range-div"}>
             <p>Size</p>
               <MultiSelect
-                options={sizeOptions}
+                options={sizeMultiOptions}
                 selected={product_size}
                 onSelectedChanged={product_size => this.setState({product_size})}
               />
@@ -226,7 +185,7 @@ class SearchBookingRequestsPage extends React.Component {
             <div className={"range-div"}>
             <p>Category</p>
               <MultiSelect
-                options={categoryOptions}
+                options={categoryMultiOptions}
                 selected={product_category}
                 onSelectedChanged={product_category => this.setState({product_category})}
               />
@@ -267,6 +226,11 @@ class SearchBookingRequestsPage extends React.Component {
                   description={item["product"]["description"]}
                   departure_location={item["product"]["departure_location"]}
                   destination_location={item["product"]["destination_location"]}
+                  weight={item["product"]["weight"]}
+                  space={item["product"]["space"]}
+                  price={item["product"]["price"]}
+                  product_category={item["product"]["product_category"]}
+                  proposed_price={item["product"]["proposed_price"]}
                   img={item["product"]["images"].length === 0 ? '' : item["product"]["images"][0]['image']}
                   editable={false} />
               </div>
