@@ -85,7 +85,7 @@ export const getCardTokenizedData = (values, card_id, user_id) => {
           };
   return dispatch => {
     axios
-      .post("https://homologation-webpayment.payline.com/webpayment/getToken/", values, config)
+      .post("https://homologation-webpayment.payline.com/webpayment/getToken", values, config)
       .then(result => {
         dispatch(checkAuthTimeout(3600));
         console.log(result);
