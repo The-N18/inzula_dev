@@ -60,6 +60,11 @@ p {
   p {
     margin: 0 0 .7em !important;
   }
+  .booking-card-img {
+    max-width: 100% !important;
+    max-height: 180px !important;
+    object-fit: contain;
+  }
 }
 
 
