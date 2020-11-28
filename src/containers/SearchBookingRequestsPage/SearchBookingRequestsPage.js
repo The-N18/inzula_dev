@@ -22,7 +22,7 @@ import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { withRouter } from "react-router-dom";
 import $ from "jquery";
 import {renderField, renderDateTimePicker, renderDropdownList, renderCitiesList} from "../../containers/ReduxForm/renderField";
-import { searchBookings, filterBookings } from "../../store/actions/searchBookings";
+import { searchBookings, filterBookings, searchSuccessOverride } from "../../store/actions/searchBookings";
 import { DateInput } from 'semantic-ui-calendar-react';
 import BookingCard from "../../containers/BookingCard/BookingCard";
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -59,6 +59,7 @@ class SearchBookingRequestsPage extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleScreenSize);
+    this.props.searchSuccessOverride([], null, null);
   }
 
   handleDateChange = (event, {name, value}) => {
@@ -280,6 +281,7 @@ const mapDispatchToProps = dispatch => {
   return {
     searchBookings: (departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight, user_id, next_url, count) => dispatch(searchBookings(departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight, user_id, next_url, count)),
     filterBookings: (departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight, user_id, next_url, count) => dispatch(filterBookings(departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight, user_id, next_url, count)),
+    searchSuccessOverride: (bookings, next, count) => dispatch(searchSuccessOverride(bookings, next, count)),
   };
 };
 

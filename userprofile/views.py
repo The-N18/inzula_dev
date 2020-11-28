@@ -75,6 +75,7 @@ class UpdateProfileView(CreateAPIView):
             userprofile.user.first_name=first_name
             userprofile.user.last_name=last_name
             userprofile.user.email=email
+            userprofile.user.save()
             userprofile.save()
         serializer = self.get_serializer(userprofile)
         headers = self.get_success_headers(serializer.data)

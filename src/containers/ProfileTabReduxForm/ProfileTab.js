@@ -19,7 +19,7 @@ import { validate } from "./validation";
 import {countries} from "../../utils/countries";
 import CSRFToken from "../../containers/CSRFToken";
 import DjangoCSRFToken from 'django-react-csrftoken';
-import {renderField} from "../../containers/ReduxForm/renderField";
+import {renderField, renderDropdownList} from "../../containers/ReduxForm/renderField";
 import {FormattedMessage, FormattedDate} from 'react-intl'
 
 class ProfileTab extends React.Component {
@@ -40,7 +40,8 @@ class ProfileTab extends React.Component {
   }
 
   submitForm = (val) => {
-    this.props.updateProfile(val['first_name'], val['last_name'], val['phone_number'], val['email'], val['country'], val['passport_number'], this.state.picture);
+    const country = val['country'] && val['country']['value'] ? val['country']['value'] : val['country'];
+    this.props.updateProfile(val['first_name'], val['last_name'], val['phone_number'], val['email'], country, val['passport_number'], this.state.picture);
   }
 
   render () {
@@ -150,6 +151,18 @@ class ProfileTab extends React.Component {
                     <div>
                       <label htmlFor="country">Country</label>
                       <div>
+                        <Field
+                          name="country"
+                          placeholder='Country'
+                          component={renderDropdownList}
+                          data={countries}
+                          valueField="value"
+                          textField="text" />
+                        </div>
+                      </div>
+                    {/*<div>
+                      <label htmlFor="country">Country</label>
+                      <div>
                       <Field
                         name="country"
                         component="input"
@@ -167,7 +180,7 @@ class ProfileTab extends React.Component {
                       })}
                       </Field>
                       </div>
-                    </div>
+                    </div>*/}
 
 
                     <div>

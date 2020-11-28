@@ -23,6 +23,8 @@ from utils.pagination import SearchResultsSetPagination
 from django.http import Http404
 import datetime
 from django.contrib.auth.models import User
+from django.db.models import Sum
+
 
 # Create your views here.
 
@@ -441,3 +443,16 @@ class BookingRequestSearchView(generics.ListAPIView):
             products = products.filter(q_objects)
         queryset = self.model.objects.filter(product__in=products)
         return queryset.order_by('-product')
+
+
+class BookingRequestsTotalPrice(APIView):
+    """
+    Retrieve, update or delete a booking_request instance.
+    """
+
+    def post(self, request, format=None):
+
+        booking_requests = BookingRequest.objects.filter(pk__in=request.data['booking_ids'])
+        booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
+        result = {"total_price": booking_requests_price}
+        return Response(result, status=status.HTTP_200_OK)

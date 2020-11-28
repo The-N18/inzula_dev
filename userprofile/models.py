@@ -53,11 +53,12 @@ class UserProfile(models.Model):
     phone_number = models.IntegerField(default=0, null=True, blank=True)
     pay_mode = models.CharField(max_length=50, null=True, blank=True)
     passport_number = models.CharField(max_length=50, null=True, blank=True)
-    country = models.CharField(max_length=50, null=True, blank=True)
+    country = models.CharField(max_length=50, null=True, blank=True, default="FR")
     user_type = models.CharField(max_length=50, choices=USER_TYPE_OPTIONS, null=True, blank=True)
     id_document = models.FileField(upload_to='uploads/id_documents/', null=True, blank=True)
     profile_pic = models.ImageField(upload_to='uploads/profile_images/', blank=True, null=True, default='default.jpg')
     terms_conditions = models.BooleanField(default=False)
+    nat_user_id = models.CharField(max_length=50, null=True, blank=True, default=None)
 
     def __str__(self):
         return "{0}: {1} - {2}".format(self.user.username, self.user.first_name, self.user.last_name)

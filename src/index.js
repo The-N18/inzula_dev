@@ -12,6 +12,8 @@ import appConfigReducer from "./store/reducers/appConfig";
 import myProfileReducer from "./store/reducers/myProfile";
 import searchbookingsReducer from "./store/reducers/searchBookings";
 import proposePriceOnBookingReducer from "./store/reducers/proposePriceOnBooking";
+import paymentFormModalReducer from "./store/reducers/paymentFormModal";
+import confirmBookingPriceReducer from "./store/reducers/confirmBookingPrice";
 import searchbookingsPageReducer from "./store/reducers/searchBookingsPage";
 import searchtripsReducer from "./store/reducers/searchTrips";
 import sendPackageModalReducer from "./store/reducers/sendPackageModal";
@@ -59,12 +61,14 @@ const rootReducer = combineReducers({
   loginParentModal: loginParentModalReducer,
   signupModal: signupModalReducer,
   loginModal: loginModalReducer,
+  paymentFormModal: paymentFormModalReducer,
   deleteBookingConfirm: deleteBookingConfirmReducer,
   deleteTripConfirm: deleteTripConfirmReducer,
   updateTripModal: updateTripModalReducer,
   updateBookingModal: updateBookingModalReducer,
   searchbookingsPage: searchbookingsPageReducer,
   proposePriceOnBooking: proposePriceOnBookingReducer,
+  confirmBookingPrice: confirmBookingPriceReducer,
 });
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";

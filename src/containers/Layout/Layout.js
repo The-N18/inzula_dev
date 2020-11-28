@@ -23,6 +23,8 @@ import DeleteTripConfirm from "../../containers/DeleteTripConfirm/DeleteTripConf
 import UpdateTripForm from "../../containers/UpdateTripFormModal/UpdateTripForm";
 import UpdateBooking from "../../containers/UpdateBookingModal/UpdateBooking";
 import ProposePriceOnBooking from "../../containers/ProposePriceOnBooking/ProposePriceOnBooking";
+import PaymentFormModal from "../../containers/PaymentFormModal/PaymentFormModal";
+import ConfirmBookingPrice from "../../containers/ConfirmBookingPrice/ConfirmBookingPrice";
 
 import LanguageSwitcherSelector from "../../containers/LanguageSwitcherSelector/LanguageSwitcherSelector";
 import 'react-redux-notify/dist/ReactReduxNotify.css';
@@ -31,7 +33,6 @@ import {FormattedMessage} from 'react-intl'
 import { setActiveIndex } from "../../store/actions/myProfile";
 import { openSignupParentModal } from "../../store/actions/signupParentModal";
 import { openLoginParentModal } from "../../store/actions/loginParentModal";
-
 
 class CustomLayout extends React.Component {
 
@@ -204,6 +205,8 @@ class CustomLayout extends React.Component {
       <UpdateTripForm />
       <UpdateBooking />
       <ProposePriceOnBooking />
+      <ConfirmBookingPrice />
+      <PaymentFormModal />
       <Notify />
         <header className="menuheader">
           <div>

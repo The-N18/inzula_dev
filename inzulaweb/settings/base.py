@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'trip',
     'booking',
     'userprofile',
+    'pay_process'
 ]
 
 MIDDLEWARE = [

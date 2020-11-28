@@ -2,7 +2,7 @@
 
 from .base import *
 
-ALLOWED_HOSTS += ['127.0.0.1', 'localhost', '15.188.83.142', '172.26.15.28']
+ALLOWED_HOSTS += ['127.0.0.1', 'localhost', '15.188.83.142', '172.26.15.28', 'https://homologation-webpayment.payline.com']
 DEBUG = True
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 

@@ -27,6 +27,7 @@ import { openModal, closeModal, bookTrip } from "../../store/actions/selectReser
 import TripsReservationsList from "../../containers/TripsReservationsList/TripsReservationsList";
 import UserReservationsList from "../../containers/UserReservationsList/UserReservationsList";
 import { openModalForTrip } from "../../store/actions/sendPackageModal";
+import { openConfirmBookingPrice, setBookingRequestInfo } from "../../store/actions/confirmBookingPrice";
 
 
 class SelectReservationsModal extends React.Component {
@@ -43,10 +44,8 @@ class SelectReservationsModal extends React.Component {
     this.props.openPackageModalForTrip(tripId);
   }
 
-  handleBookTripWithReservations = () => {
-    console.log("book?");
-    const {tripId, selected, user_id} = this.props;
-    this.props.bookTrip(tripId, selected, user_id);
+  handleConfirmBookingPrice = () => {
+    this.props.openConfirmBookingPrice();
   }
 
   render() {
@@ -74,7 +73,7 @@ class SelectReservationsModal extends React.Component {
           <UserReservationsList selectable={true} editable={false}/>
       </Modal.Content>
       <Modal.Actions>
-        <Button color='green' disabled={selected.length === 0} onClick={this.handleBookTripWithReservations.bind(this)}>
+        <Button color='green' disabled={selected.length === 0} onClick={this.handleConfirmBookingPrice.bind(this)}>
           Book with these reservations <Icon name='check' />
         </Button>
         <Button negative onClick={() => this.props.closePackageModal()} primary>
@@ -100,7 +99,8 @@ const mapDispatchToProps = dispatch => {
     openPackageModal: () => dispatch(openModal()),
     closePackageModal: () => dispatch(closeModal()),
     openPackageModalForTrip: (tripId) => dispatch(openModalForTrip(tripId)),
-    bookTrip: (tripId, selected, user_id) => dispatch(bookTrip(tripId, selected, user_id)),
+    openConfirmBookingPrice: () => dispatch(openConfirmBookingPrice()),
+    setBookingRequestInfo: (bookingId, tripId, userId, price, paymentAmountConfirmed) => dispatch(setBookingRequestInfo(bookingId, tripId, userId, price, paymentAmountConfirmed)),
   };
 };
 
