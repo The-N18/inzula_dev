@@ -10,12 +10,13 @@ import {
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { tripAddition } from "../../store/actions/addTrip";
-import styles from './addtripform.css';
+// import styles from './addtripform.css';
 import Recaptcha from 'react-recaptcha';
 import { DateInput } from 'semantic-ui-calendar-react';
 import CSRFToken from "../../containers/CSRFToken";
 import DjangoCSRFToken from 'django-react-csrftoken';
 import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
+import styles from './AddTripForm.module.css';
 
 class AddTripForm extends React.Component {
 

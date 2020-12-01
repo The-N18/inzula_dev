@@ -24,7 +24,10 @@ INSTALLED_APPS = [
     'trip',
     'booking',
     'userprofile',
-    'pay_process'
+    'pay_process',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.twitter',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [

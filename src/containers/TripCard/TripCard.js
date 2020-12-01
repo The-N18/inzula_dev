@@ -18,6 +18,7 @@ import {FormattedMessage, FormattedDate} from 'react-intl'
 import { openDeleteTripConfirm, setTripDeleteTripConfirm } from "../../store/actions/deleteTripConfirm";
 import { updateTripOpenModal, updateTripCloseModal } from "../../store/actions/updateTripModal";
 import { tripTypeOptions } from "../../utils/options";
+import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
 
 
 class TripCard extends React.Component {
@@ -27,10 +28,17 @@ class TripCard extends React.Component {
   }
 
   handleBook = () => {
-    console.log("book");
-    const {trip_id} = this.props;
-    // this.props.openPackageModalForTrip(trip_id);
-    this.props.openReservationsList(trip_id);
+    const {trip_id, authenticated} = this.props;
+    if(authenticated) {
+      this.props.openReservationsList(trip_id);
+    } else {
+      createNotification({
+        message: 'Please login to book this trip.',
+        type: NOTIFICATION_TYPE_SUCCESS,
+        duration: 30000,
+        canDismiss: true,
+      });
+    }
   }
 
   deleteTrip = () => {
@@ -97,13 +105,6 @@ class TripCard extends React.Component {
           </Grid.Column>
           <Grid.Column mobile={16} tablet={16} computer={2}>
             <Segment textAlign={"center"} basic>
-            <Button icon labelPosition='right'
-              size="large"
-              className={"buttoncolor trip-card-button"}
-              onClick={this.handleViewDetails.bind(this)}
-            >
-              <Icon name='eye' /> View
-            </Button>
             {no_book ? '' : <Button icon labelPosition='right'
               size="large"
               className={"buttoncolor trip-card-button"}
@@ -125,7 +126,9 @@ class TripCard extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    authenticated: state.auth.token !== null,
+  };
 };
 
 const mapDispatchToProps = dispatch => {

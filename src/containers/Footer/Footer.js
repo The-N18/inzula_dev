@@ -11,7 +11,7 @@ import {
 import { connect } from "react-redux";
 import styles from './footer.css';
 import { backend_url } from "../../configurations";
-
+import {FormattedMessage, FormattedDate} from 'react-intl'
 
 
 class Footer extends React.Component {
@@ -28,18 +28,50 @@ class Footer extends React.Component {
           <Grid>
             <Grid.Column mobile={16} tablet={8} computer={4}>
               <List link>
-                <List.Item as="a" href="#" className={"linkstyle"}>Who we are</List.Item>
-                <List.Item as="a" href="#" className={"linkstyle"}>How it works</List.Item>
-                <List.Item as="a" href="#" className={"linkstyle"}>Blog</List.Item>
-                <List.Item as="a" href="#" className={"linkstyle"}>Frequently asked questions</List.Item>
+                <List.Item as="a" href="#" className={"linkstyle"}>
+                  <FormattedMessage
+                    id="footer.who_we_are"
+                    defaultMessage="Who we are"
+                  /></List.Item>
+                <List.Item as="a" href="#" className={"linkstyle"}>
+                  <FormattedMessage
+                    id="footer.how_it_works"
+                    defaultMessage="How it works"
+                  /></List.Item>
+                <List.Item as="a" href="#" className={"linkstyle"}>
+                  <FormattedMessage
+                    id="footer.blog"
+                    defaultMessage="Blog"
+                  /></List.Item>
+                <List.Item as="a" href="#" className={"linkstyle"}>
+                  <FormattedMessage
+                    id="footer.faqs"
+                    defaultMessage="Frequently asked questions"
+                  /></List.Item>
               </List>
             </Grid.Column>
             <Grid.Column mobile={16} tablet={8} computer={4}>
               <List link>
-                <List.Item as="a" href="#" className={"linkstyle"}>Contact us</List.Item>
-                <List.Item as="a" href="#" className={"linkstyle"}>Insurance</List.Item>
-                <List.Item as="a" href="#" className={"linkstyle"}>Legal information</List.Item>
-                <List.Item as="a" href="#" className={"linkstyle"}>Transparency</List.Item>
+                <List.Item as="a" href="#" className={"linkstyle"}>
+                  <FormattedMessage
+                    id="footer.contact"
+                    defaultMessage="Contact us"
+                  /></List.Item>
+                <List.Item as="a" href="#" className={"linkstyle"}>
+                  <FormattedMessage
+                    id="footer.insurance"
+                    defaultMessage="Insurance"
+                  /></List.Item>
+                <List.Item as="a" href="#" className={"linkstyle"}>
+                  <FormattedMessage
+                    id="footer.legal"
+                    defaultMessage="Legal information"
+                  /></List.Item>
+                <List.Item as="a" href="#" className={"linkstyle"}>
+                  <FormattedMessage
+                    id="footer.trans"
+                    defaultMessage="Transparency"
+                  /></List.Item>
               </List>
             </Grid.Column>
             <Grid.Column mobile={16} tablet={16} computer={8} textAlign="center">
@@ -76,13 +108,22 @@ class Footer extends React.Component {
             <Grid.Column mobile={16} tablet={8} computer={6} floated="right">
               <List horizontal divided link size="small">
                 <List.Item className={"reserved"}>
-                  All rights reserved
+                  <FormattedMessage
+                    id="footer.rights"
+                    defaultMessage="All rights reserved"
+                  />
                 </List.Item>
                 <List.Item as="a" href="#">
-                  Terms and Conditions
+                  <FormattedMessage
+                    id="footer.terms"
+                    defaultMessage="Terms and Conditions"
+                  />
                 </List.Item>
                 <List.Item as="a" href="#">
-                  Privacy Policy
+                  <FormattedMessage
+                    id="footer.privacy_policy"
+                    defaultMessage="Privacy Policy"
+                  />
                 </List.Item>
               </List>
             </Grid.Column>

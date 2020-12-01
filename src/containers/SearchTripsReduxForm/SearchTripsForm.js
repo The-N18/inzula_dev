@@ -20,6 +20,7 @@ import 'react-widgets/dist/css/react-widgets.css';
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import {renderField, renderDateTimePicker, renderCitiesList} from "../../containers/ReduxForm/renderField";
 import $ from "jquery";
+import {FormattedMessage, FormattedDate} from 'react-intl'
 
 class SearchTripsForm extends React.Component {
 
@@ -81,13 +82,29 @@ class SearchTripsForm extends React.Component {
     return (
       <Segment>
           <Header as="h4" textAlign="center">
-            Prefer to know what shipping offers are available before committing?
+            <FormattedMessage
+              id="search_trips.title"
+              defaultMessage="Prefer to know what shipping offers are available before committing?"
+            />
           </Header>
           <Header as="h4" textAlign="center">
-            No worries, you can add the country of departure and destination of your trip and thus access the requests for available expeditions.
+            <FormattedMessage
+              id="search_trips.h2"
+              defaultMessage="No worries, you can add the country of departure and destination of your trip and thus access the requests for available expeditions."
+            />
           </Header>
           <Header as="h4" textAlign="center">
-            Can't find a trip? <Button inverted color='green' onClick={() => this.props.openPackageModal()}>click here to save a booking request</Button> so you can be later contacted by travellers.
+            <FormattedMessage
+              id="search_trips.cant_find_trip"
+              defaultMessage="Can't find a trip?"
+            /><Button inverted color='green' onClick={() => this.props.openPackageModal()}>
+            <FormattedMessage
+              id="search_trips.click_book_request"
+              defaultMessage="click here to save a booking request"
+            /></Button> <FormattedMessage
+              id="search_trips.get_contacted"
+              defaultMessage="so you can be later contacted by travellers."
+            />
           </Header>
           <form onSubmit={handleSubmit(this.submitForm)}>
           <Grid>
@@ -142,11 +159,17 @@ class SearchTripsForm extends React.Component {
               disabled={loading}
               className={"buttoncolor search-trips-button"}
             >
-              Search
+            <FormattedMessage
+              id="search_trips.search_btn"
+              defaultMessage="Search"
+            />
             </Button>
           </form>
           <Divider/>
-          {trips.length === 0 ? <div> No search results. Please try a more general search.</div> : ''}
+          {trips.length === 0 ? <div> <FormattedMessage
+            id="search_trips.no_results"
+            defaultMessage="No search results. Please try a more general search."
+          /></div> : ''}
           <div
             id="scrollableDiv"
             style={{

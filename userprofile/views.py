@@ -7,7 +7,11 @@ from rest_framework.generics import CreateAPIView, ListAPIView, GenericAPIView
 from rest_auth.registration.app_settings import RegisterSerializer, register_permission_classes
 from rest_framework import viewsets, permissions, status
 from utils.pagination import CitySetPagination
-
+from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
+from rest_auth.registration.views import SocialLoginView
+from allauth.socialaccount.providers.twitter.views import TwitterOAuthAdapter
+from rest_auth.social_serializers import TwitterLoginSerializer
+from rest_auth.registration.views import SocialAccountListView, SocialAccountDisconnectView
 # Create your views here.
 
 class CityView(ListAPIView):
@@ -82,3 +86,11 @@ class UpdateProfileView(CreateAPIView):
         return Response(serializer.data,
                         status=status.HTTP_200_OK,
                         headers=headers)
+
+
+class TwitterLogin(SocialLoginView):
+    serializer_class = TwitterLoginSerializer
+    adapter_class = TwitterOAuthAdapter
+
+class FacebookLogin(SocialLoginView):
+    adapter_class = FacebookOAuth2Adapter

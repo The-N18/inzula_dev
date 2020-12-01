@@ -15,8 +15,6 @@ export const api_url = () => {
 }
 
 export const get_img_url = (img) => {
-  console.log("img");
-  console.log(img);
   if(img && img !== '' && img.includes("http")) {
     return img;
   }

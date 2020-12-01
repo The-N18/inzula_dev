@@ -27,6 +27,7 @@ import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
 import {renderField, renderDateTimePicker, renderFieldWithLabel, renderDropdownList, renderCitiesList} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
 import { sizeOptions, categoryOptions, weightOptions, valueOptions } from "../../utils/options";
+import {FormattedMessage, FormattedDate} from 'react-intl'
 
 
 class SendPackage extends React.Component {
@@ -147,15 +148,31 @@ class SendPackage extends React.Component {
         <Step.Group ordered stackable={"tablet"}>
           <Step active={activeStep === 1}>
             <Step.Content>
-              <Step.Title>Product details</Step.Title>
-              <Step.Description>Enter product and recipient's details</Step.Description>
+              <Step.Title>
+                <FormattedMessage
+                  id="add_booking.p_details"
+                  defaultMessage="Product details"
+                />
+              </Step.Title>
+              <Step.Description>
+                <FormattedMessage
+                  id="add_booking.p_r_details"
+                  defaultMessage="Enter product and recipient's details"
+                />
+              </Step.Description>
             </Step.Content>
           </Step>
 
           <Step active={activeStep === 2}>
             <Step.Content>
-              <Step.Title>Confirm</Step.Title>
-              <Step.Description>Confirm your request</Step.Description>
+              <Step.Title><FormattedMessage
+                id="add_booking.confirm"
+                defaultMessage="Confirm"
+              /></Step.Title>
+              <Step.Description><FormattedMessage
+                id="add_booking.confirm_request"
+                defaultMessage="Confirm your request"
+              /></Step.Description>
             </Step.Content>
           </Step>
         </Step.Group>
@@ -171,7 +188,10 @@ class SendPackage extends React.Component {
                     <Image centered bordered circular src= {backend_url() + '/static/images/box.jpg'} />
                     <ImageUploader
                         withIcon={true}
-                        buttonText='Choose product images'
+                        buttonText={<FormattedMessage
+                          id="add_booking.choose_p_images"
+                          defaultMessage="Choose product images"
+                        />}
                         onChange={this.onDrop}
                         imgExtension={['.jpg', '.gif', '.png', '.gif']}
                         maxFileSize={5242880}
@@ -186,21 +206,60 @@ class SendPackage extends React.Component {
                 >
                   <Grid.Row columns={2}>
                     <Grid.Column mobile={16} tablet={8} computer={8}>
-                      <span className={"form-details-display"}><b>Product name:</b> {product_name}</span>
-                      <span className={"form-details-display"}><b>Product location:</b> {departure_location ? departure_location['label'] : ''}</span>
-                      <span className={"form-details-display"}><b>Product category:</b> {product_category ? product_category['text'] : ''}</span>
-                      <span className={"form-details-display"}><b>Product size:</b> {product_size ? product_size['text'] : ''}</span>
-                      <span className={"form-details-display"}><b>Proposed price:</b> {proposed_price}</span>
-                      <span className={"form-details-display"}><b>Recipient name:</b> {recipient_name}</span>
-                      <span className={"form-details-display"}><b>Recipient phone number:</b> {recipient_phone_number}</span>
+                      <span className={"form-details-display"}><b><FormattedMessage
+                        id="add_booking.p_name"
+                        defaultMessage="Product name:"
+                      /></b> {product_name}</span>
+                      <span className={"form-details-display"}><b><FormattedMessage
+                        id="add_booking.p_location"
+                        defaultMessage="Product location:"
+                      /></b> {departure_location ? departure_location['label'] : ''}</span>
+                      <span className={"form-details-display"}><b><FormattedMessage
+                        id="add_booking.p_category"
+                        defaultMessage="Product category:"
+                      /></b> {product_category ? product_category['text'] : ''}</span>
+                      <span className={"form-details-display"}><b><FormattedMessage
+                        id="add_booking.p_size"
+                        defaultMessage="Product size:"
+                      /></b> {product_size ? product_size['text'] : ''}</span>
+                      <span className={"form-details-display"}><b><FormattedMessage
+                        id="add_booking.proposed_price"
+                        defaultMessage="Proposed price:"
+                      /></b> {proposed_price}</span>
+                      <span className={"form-details-display"}><b><FormattedMessage
+                        id="add_booking._rec_name"
+                        defaultMessage="Recipient name:"
+                      /></b> {recipient_name}</span>
+                      <span className={"form-details-display"}><b><FormattedMessage
+                        id="add_booking.rec_phone_number"
+                        defaultMessage="Recipient phone number:"
+                      /></b> {recipient_phone_number}</span>
                     </Grid.Column>
                     <Grid.Column mobile={16} tablet={8} computer={8}>
-                      <span className={"form-details-display"} title={product_description}><b>Product description:</b> {product_description}</span>
-                      <span className={"form-details-display"}><b>Pickup address:</b> {destination_location ? destination_location['label'] : ''}</span>
-                      <span className={"form-details-display"}><b>Weight:</b> {product_weight ? product_weight['text'] : ''}</span>
-                      <span className={"form-details-display"}><b>Product value:</b> {product_value ? product_value['text'] : ''}</span>
-                      <span className={"form-details-display"}><b>Recipient name:</b> {recipient_name}</span>
-                      <span className={"form-details-display"}><b>Recipient phone number:</b> {recipient_phone_number}</span>
+                      <span className={"form-details-display"} title={product_description}><b><FormattedMessage
+                        id="add_booking.p_desc"
+                        defaultMessage="Product description:"
+                      /></b> {product_description}</span>
+                      <span className={"form-details-display"}><b><FormattedMessage
+                        id="add_booking.pickup_address"
+                        defaultMessage="Pickup address:"
+                      /></b> {destination_location ? destination_location['label'] : ''}</span>
+                      <span className={"form-details-display"}><b><FormattedMessage
+                        id="add_booking.weight"
+                        defaultMessage="Weight:"
+                      /></b> {product_weight ? product_weight['text'] : ''}</span>
+                      <span className={"form-details-display"}><b><FormattedMessage
+                        id="add_booking.p_value"
+                        defaultMessage="Product value:"
+                      /></b> {product_value ? product_value['text'] : ''}</span>
+                      <span className={"form-details-display"}><b><FormattedMessage
+                        id="add_booking._rec_name"
+                        defaultMessage="Recipient name:"
+                      /></b> {recipient_name}</span>
+                      <span className={"form-details-display"}><b><FormattedMessage
+                        id="add_booking.rec_phone_number"
+                        defaultMessage="Recipient phone number:"
+                      /></b> {recipient_phone_number}</span>
                     </Grid.Column>
                   </Grid.Row>
                   </Grid> : ''}
@@ -211,23 +270,31 @@ class SendPackage extends React.Component {
                   <Grid>
                   <Grid.Row className={"no-pad"}>
                   <Grid.Column mobile={16} tablet={16} computer={8}>
+                    <div>
+                      <label htmlFor="product_name"><FormattedMessage
+                        id="add_booking.p_name_field"
+                        defaultMessage="Product name"
+                      /></label>
                     <Field
                       name="product_name"
                       component="input"
                       type="text"
-                      placeholder="Product name"
-                      label="Product name"
                       component={renderField}
                     />
+                </div>
                     </Grid.Column>
                     <Grid.Column mobile={16} tablet={16} computer={8}>
+                      <div>
+                        <label htmlFor="proposed_price"><FormattedMessage
+                          id="add_booking.proposed_price_field"
+                          defaultMessage="Proposed price"
+                        /></label>
                       <Field
                         name="proposed_price"
                         type="text"
-                        placeholder="Proposed price"
-                        label="Proposed price"
                         component={renderField}
                       />
+                  </div>
 
                     </Grid.Column>
                     </Grid.Row>
@@ -237,23 +304,32 @@ class SendPackage extends React.Component {
                      <Grid>
                      <Grid.Row className={"no-pad"}>
                       <Grid.Column mobile={16} tablet={16} computer={8}>
+                        <div>
+                          <label htmlFor="min_price"><FormattedMessage
+                            id="add_booking.min_price_field"
+                            defaultMessage="Minimum price"
+                          /></label>
                        <Field
                          name="min_price"
                          type="number"
-                         placeholder="Proposed price"
-                         label="Min price"
-                         component={renderFieldWithLabel}
+                         component={renderField}
                          disabled={true}
                        />
+                   </div>
                      </Grid.Column>
                      <Grid.Column mobile={16} tablet={16} computer={8}>
+                       <div>
+                         <label htmlFor="delivery_date"><FormattedMessage
+                           id="add_booking.delivery_date_field"
+                           defaultMessage="Delivery date"
+                         /></label>
                        <Field
                          name="delivery_date"
                          showTime={false}
                          component={renderDateTimePicker}
                          min={new Date()}
-                         label="Delivery date"
                        />
+                   </div>
                      </Grid.Column>
                    </Grid.Row>
                    </Grid> : ''}
@@ -261,24 +337,32 @@ class SendPackage extends React.Component {
                      <Grid>
                        <Grid.Row className={"no-pad"}>
                      <Grid.Column mobile={16} tablet={8} computer={8}>
+                       <div>
+                         <label htmlFor="departure_location"><FormattedMessage
+                           id="add_booking.p_location_field"
+                           defaultMessage="Product location"
+                         /></label>
                        <Field
                          name="departure_location"
-                         placeholder="Product location"
-                         label="Product location"
                          component="input"
                          type="text"
                          component={renderCitiesList}
                        />
+                   </div>
                      </Grid.Column>
                      <Grid.Column mobile={16} tablet={8} computer={8}>
+                       <div>
+                         <label htmlFor="destination_location"><FormattedMessage
+                           id="add_booking.pickup_loc_field"
+                           defaultMessage="Pickup location"
+                         /></label>
                      <Field
                        name="destination_location"
-                       placeholder="Pickup location"
-                       label="Pickup location"
                        component="input"
                        type="text"
                        component={renderCitiesList}
                      />
+                 </div>
                      </Grid.Column>
                    </Grid.Row>
                  </Grid> : ''}
@@ -286,7 +370,10 @@ class SendPackage extends React.Component {
                     <Grid>
                     <Grid.Row className={"no-pad"}>
                     <Grid.Column mobile={16} tablet={8} computer={8}>
-                      <span>Product category</span>
+                      <span><FormattedMessage
+                        id="add_booking.p_category_field"
+                        defaultMessage="Product category"
+                      /></span>
                       <Field
                         name="product_category"
                         placeholder='Product category'
@@ -297,7 +384,10 @@ class SendPackage extends React.Component {
                         onChange={handleMinPriceCatChange}/>
                       </Grid.Column>
                     <Grid.Column mobile={16} tablet={8} computer={8}>
-                      <span>Product weight</span>
+                      <span><FormattedMessage
+                        id="add_booking.p_weight_field"
+                        defaultMessage="Product weight"
+                      /></span>
                       <Field
                         name="product_weight"
                         placeholder='Product weight'
@@ -313,7 +403,10 @@ class SendPackage extends React.Component {
                       <Grid>
                       <Grid.Row className={"no-pad"}>
                       <Grid.Column mobile={16} tablet={8} computer={8}>
-                        <span>Product size</span>
+                        <span><FormattedMessage
+                          id="add_booking.p_size_field"
+                          defaultMessage="Product size"
+                        /></span>
                         <Field
                           name="product_size"
                           placeholder='Product size'
@@ -324,7 +417,10 @@ class SendPackage extends React.Component {
                           onChange={handleMinPriceSizChange}/>
                         </Grid.Column>
                         <Grid.Column mobile={16} tablet={8} computer={8}>
-                        <span>Product value</span>
+                        <span><FormattedMessage
+                          id="add_booking.p_value_field"
+                          defaultMessage="Product value"
+                        /></span>
                           <Field
                             name="product_value"
                             placeholder='Product value'
@@ -340,47 +436,60 @@ class SendPackage extends React.Component {
                         <Grid>
                         <Grid.Row className={"no-pad"}>
                         <Grid.Column mobile={16} tablet={8} computer={8}>
+                          <div>
+                            <label htmlFor="recipient_name"><FormattedMessage
+                              id="add_booking.rec_name_field"
+                              defaultMessage="Reciever's name"
+                            /></label>
                         <Field
                           name="recipient_name"
                           component="input"
                           type="text"
-                          placeholder="Reciever's name"
-                          label="Reciever's name"
                           component={renderField}
                         />
+                    </div>
                         </Grid.Column>
                         <Grid.Column mobile={16} tablet={8} computer={8}>
+                        <div>
+                          <label htmlFor="recipient_phone_number"><FormattedMessage
+                            id="add_booking.rec_phone_number_field"
+                            defaultMessage="Reciever's phone number"
+                          /></label>
                         <Field
                           name="recipient_phone_number"
                           type="number"
-                          placeholder="Reciever's phone number"
-                          label="Reciever's phone number"
                           component={renderField}
                         />
+                    </div>
                         </Grid.Column>
                         </Grid.Row>
                         </Grid> : ''}
                         {activeStep === 1 ?
+                          <div>
+                          <label htmlFor="product_description"><FormattedMessage
+                            id="add_booking.p_description_field"
+                            defaultMessage="Short description of the product"
+                          /></label>
                           <Field
                             name="product_description"
                             component="textarea"
-                            placeholder="Short description of the product"
-                            label="Short description of the product"
                             className={"custom-field-style"}
-                          /> : '' }
-                        {activeStep === 2 ?
-                            <div>
-                              <label htmlFor="terms_conditions">I have read and accept the terms and conditions</label>
-                              <div>
-                                <Field name="terms_conditions" id="terms_conditions" component="input" type="checkbox"/>
-                              </div>
+                          /></div> : '' }
+                        {activeStep === 1 ?
+                            <div className={"txt-align-l"}>
+                              <Field name="terms_conditions" id="terms_conditions" component="input" type="checkbox"/>
+                              <label htmlFor="terms_conditions"><FormattedMessage
+                                id="add_booking.terms_check"
+                                defaultMessage="I have read and accept the terms and conditions"
+                              /></label>
                             </div> : ''}
-                        {activeStep === 2 ?
-                            <div>
-                              <label htmlFor="user_agreement">I agree to the user agreement</label>
-                              <div>
-                                <Field name="user_agreement" id="user_agreement" component="input" type="checkbox"/>
-                              </div>
+                        {activeStep === 1 ?
+                            <div className={"txt-align-l"}>
+                              <Field name="user_agreement" id="user_agreement" component="input" type="checkbox"/>
+                              <label htmlFor="user_agreement"><FormattedMessage
+                                id="add_booking.user_agreement_check"
+                                defaultMessage="I agree to the user agreement"
+                              /></label>
                             </div> :
                           ''}
                         {activeStep === 2 ? <Button icon labelPosition='left'
@@ -389,33 +498,33 @@ class SendPackage extends React.Component {
                           disabled={false}
                           onClick={this.handleBackButtonClick.bind(this)}
                         >
-                          <Icon name='left arrow' /> Back
+                          <Icon name='left arrow' /> <FormattedMessage
+                            id="add_booking.back"
+                            defaultMessage="Back"
+                          />
                         </Button> : ''}
                         {activeStep === 1 ? <Button icon labelPosition='right'
                           className={"buttoncolor step-button"}
                           size="large"
-                          disabled={!isNextValid}
+                          disabled={invalid}
                           onClick={this.handleButtonClick.bind(this)}
                         >
-                          <Icon name='right arrow' /> Next
+                          <Icon name='right arrow' /> <FormattedMessage
+                            id="add_booking.next"
+                            defaultMessage="Next"
+                          />
                         </Button> : ''}
                         {activeStep === 2 ? <Button icon labelPosition='right'
                           className={"buttoncolor step-button"}
                           size="large"
                           type="submit"
-                          disabled={invalid && submitting}
+                          disabled={invalid}
                         >
-                          <Icon name='check' /> Confirm request
+                          <Icon name='check' /> <FormattedMessage
+                            id="add_booking.confirm_request"
+                            defaultMessage="Confirm request"
+                          />
                         </Button> : ''}
-                        {/*<Button icon labelPosition='right'
-                          className={"buttoncolor step-button"}
-                          size="large"
-                          disabled={isNextValid}
-                          onClick={activeStep === 1 ? this.handleButtonClick.bind(this) : this.handleSubmit.bind(this)}
-                        >
-                          {activeStep === 1 ? <span className={"form-details-display"}>Next
-                          <Icon name='right arrow' /></span> : <span className={"form-details-display"}>Confirm request <Icon name='check' /></span>}
-                        </Button> */}
                 </Grid.Column>
               </Grid.Row>
             </Grid>

@@ -18,7 +18,8 @@ import { openDeleteBookingConfirm, setBookingDeleteBookingConfirm } from "../../
 import { setBookingRequestId, openProposePriceOnBooking } from "../../store/actions/proposePriceOnBooking";
 import {FormattedMessage, FormattedDate} from 'react-intl'
 import { updateBookingOpenModal, updateBookingCloseModal } from "../../store/actions/updateBookingModal";
-import { sizeOptions, categoryOptions, weightOptions, valueOptions } from "../../utils/options";
+import { optionToText, sizeOptions, sizeOptionsFr, categoryOptions, categoryOptionsFr, weightOptions, weightOptionsFr, valueOptions, valueOptionsFr } from "../../utils/options";
+import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
 
 
 class BookingCard extends React.Component {
@@ -42,6 +43,14 @@ class BookingCard extends React.Component {
 
   }
 
+  validateBooking = () => {
+    console.log("validate booking");
+  }
+
+  declineBooking = () => {
+    console.log("decline booking");
+  }
+
   updateBooking = () => {
     const {title, departure_location, destination_location, pk, product_details} = this.props;
     const data = {
@@ -62,19 +71,19 @@ class BookingCard extends React.Component {
   }
 
   proposePriceOnBooking = () => {
-    const {pk} = this.props;
-    this.props.setBookingRequestId(pk);
-    this.props.openProposePriceOnBooking();
-  }
-
-  optionToText = (option_value, arr) => {
-    let txt = "";
-    for(let i = 0; i < arr.length; i++) {
-      if(arr[i]['value'] === option_value) {
-        txt = arr[i]['text'];
-      }
+    const {pk, authenticated} = this.props;
+    if(authenticated) {
+      this.props.setBookingRequestId(pk);
+      this.props.openProposePriceOnBooking();
+    } else {
+      createNotification({
+        message: 'Please login to propose a price on this request.',
+        type: NOTIFICATION_TYPE_SUCCESS,
+        duration: 30000,
+        canDismiss: true,
+      });
     }
-    return txt;
+
   }
 
   render() {
@@ -82,7 +91,7 @@ class BookingCard extends React.Component {
     const {pk, title, description, img, product_details,
       arrival_date, departure_location, selectable, editable,
       destination_location, weight, space, price, product_category,
-      proposed_price} = this.props;
+      proposed_price, validate_decline, can_propose, lang} = this.props;
 
     return (
       <Card raised fluid centered className={"home-text-img-card-grid booking-card-max-h"}>
@@ -101,8 +110,14 @@ class BookingCard extends React.Component {
           <Grid.Column mobile={16} tablet={8} computer={selectable && editable ? 5 : 6}>
             <Segment basic textAlign="left">
               <Header as='h4' className={"booking-card-title"}>{title}</Header>
-              <p className={"booking-card-items-style"}>Description: {description}</p>
-              <p className={"booking-card-items-style"}>Arrival date: <FormattedDate
+              <p className={"booking-card-items-style"}><FormattedMessage
+                id="booking_card.description"
+                defaultMessage="Description:"
+              /> {description}</p>
+              <p className={"booking-card-items-style"}><FormattedMessage
+                id="booking_card.arrival_date"
+                defaultMessage="Arrival date:"
+              /> <FormattedDate
                                                                               value={arrival_date}
                                                                               year="numeric"
                                                                               month="short"
@@ -110,25 +125,66 @@ class BookingCard extends React.Component {
                                                                               weekday="short"
                                                                             /></p>
                                                                           <p className={"booking-card-items-style"}>Departure: {departure_location && departure_location["label"] ? departure_location["label"] : ""}</p>
-              <p className={"booking-card-items-style"}>Pickup: {destination_location && destination_location["label"] ? destination_location["label"] : ""}</p>
+              <p className={"booking-card-items-style"}><FormattedMessage
+                id="booking_card.pickup_loc"
+                defaultMessage="Pickup location:"
+              /> {destination_location && destination_location["label"] ? destination_location["label"] : ""}</p>
             </Segment>
           </Grid.Column>
           <Grid.Column mobile={16} tablet={8} computer={4}>
             <Segment basic textAlign="left">
-              <p className={"booking-card-items-style"}>Poid: {this.optionToText(weight, weightOptions)}</p>
-              <p className={"booking-card-items-style"}>Taille: {this.optionToText(space, sizeOptions)}</p>
-              <p className={"booking-card-items-style"}>Categorie: {this.optionToText(product_category, categoryOptions)}</p>
-              <p className={"booking-card-items-style"}>Valeur: {this.optionToText(price, valueOptions)}</p>
-              <p className={"booking-card-items-style"}>Prix: {proposed_price} euros</p>
+              <p className={"booking-card-items-style"}><FormattedMessage
+                id="booking_card.weight"
+                defaultMessage="Weight:"
+              /> {optionToText(weight, lang === "fr" ? weightOptionsFr : weightOptions)}</p>
+              <p className={"booking-card-items-style"}><FormattedMessage
+                id="booking_card.size"
+                defaultMessage="Size:"
+              /> {optionToText(space, lang === "fr" ? sizeOptionsFr : sizeOptions)}</p>
+              <p className={"booking-card-items-style"}><FormattedMessage
+                id="booking_card.category"
+                defaultMessage="Category:"
+              /> {optionToText(product_category, lang === "fr" ? categoryOptionsFr : categoryOptions)}</p>
+              <p className={"booking-card-items-style"}><FormattedMessage
+                id="booking_card.value"
+                defaultMessage="Value:"
+              /> {optionToText(price, lang === "fr" ? valueOptionsFr : valueOptions)}</p>
+              <p className={"booking-card-items-style"}><FormattedMessage
+                id="booking_card.price"
+                defaultMessage="Price:"
+              /> {proposed_price} euros</p>
             </Segment>
           </Grid.Column>
-            {!editable && !selectable ? <Segment compact basic className={"sub-btn-style"}>
+            {can_propose ? <Segment compact basic className={"sub-btn-style"}>
               <Button color='blue' icon='money' className={"white-trash"} onClick={this.proposePriceOnBooking.bind(this)}/>
             </Segment> : ''}
             {editable ? <Grid.Column mobile={2} tablet={2} computer={2}>
               <Segment compact basic className={"sub-btn-style"}>
                 <Button color='blue' icon='edit' className={"booking-card-delete-button"}  onClick={this.updateBooking.bind(this)}/>
                 <Button color='orange' icon='trash' className={"white-trash"} onClick={this.deleteBooking.bind(this)}/>
+              </Segment>
+            </Grid.Column> : ''}
+            {validate_decline ? <Grid.Column mobile={2} tablet={2} computer={2}>
+              <Segment compact basic className={"sub-btn-style"}>
+                <Button size="mini"
+                  color='blue'
+                  className={"booking-card-delete-button"}
+                  onClick={this.validateBooking.bind(this)}
+                ><FormattedMessage
+                  id="booking_card.validate"
+                  defaultMessage="Validate"
+                />
+                </Button>
+
+                <Button size="mini"
+                  color='orange'
+                  className={"white-trash"}
+                  onClick={this.declineBooking.bind(this)}
+                ><FormattedMessage
+                  id="booking_card.decline"
+                  defaultMessage="Decline"
+                />
+                </Button>
               </Segment>
             </Grid.Column> : ''}
           </Grid.Row>
@@ -141,6 +197,8 @@ class BookingCard extends React.Component {
 const mapStateToProps = state => {
   return {
     selected: state.selectReservationsModal.selected,
+    authenticated: state.auth.token !== null,
+    lang: state.appConfig.lang
   };
 };
 
@@ -172,6 +230,8 @@ BookingCard.propTypes = {
   img: PropTypes.string,
   selectable: PropTypes.boolean,
   editable: PropTypes.boolean,
+  validate_decline: PropTypes.boolean,
+  can_propose: PropTypes.boolean,
   pk: PropTypes.number,
 };
 

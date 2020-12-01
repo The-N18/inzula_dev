@@ -129,6 +129,7 @@ class AddTripForm extends React.Component {
                     <Field
                       name="trip_type"
                       component={renderSelectList}
+                      default='one_way_trip'
                       data={[ 'round_trip', 'one_way_trip' ]}/>
                   </div>
                   {/*<Field

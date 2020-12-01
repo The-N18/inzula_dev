@@ -18,6 +18,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { getReservations, getInitialReservations } from "../../store/actions/userReservations";
 import BookingCard from "../../containers/BookingCard/BookingCard";
 import $ from "jquery";
+import {FormattedMessage, FormattedDate} from 'react-intl'
 
 class UserReservationsList extends React.Component {
   constructor(props) {
@@ -71,7 +72,10 @@ class UserReservationsList extends React.Component {
     const dataLength = reservations ? reservations.length : 0;
     return (
       <Segment basic className={"profile-tab-section"}>
-      {reservations.length === 0 ? <div>You have no reservations</div> : <div
+      {reservations.length === 0 ? <div><FormattedMessage
+        id="user_reservations.no_reservations"
+        defaultMessage="You have not created any reservations."
+      /></div> : <div
         id="scrollableDiv"
         style={{
           height: 400,
@@ -83,7 +87,10 @@ class UserReservationsList extends React.Component {
           dataLength={reservations.length}
           next={this.fetchMoreData}
           hasMore={count !== null && next_url !== null}
-          loader={<h4>Loading...</h4>}
+          loader={<h4><FormattedMessage
+            id="user_reservations.loading"
+            defaultMessage="Loading..."
+          /></h4>}
           scrollableTarget="scrollableDiv"
         >
           {reservations.map((item, index) => (

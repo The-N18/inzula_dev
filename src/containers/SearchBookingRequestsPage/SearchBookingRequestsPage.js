@@ -98,7 +98,7 @@ class SearchBookingRequestsPage extends React.Component {
   }
 
   render() {
-    const { loading, error, bookings, next_url, count, api_been_called, handleSubmit, inNewPage } = this.props;
+    const { loading, error, bookings, next_url, count, api_been_called, handleSubmit, inNewPage, authenticated } = this.props;
     const { travel_date, product_category, product_size, weight, proposed_price } = this.state;
     return (
       <Segment basic style={{ padding: "8em 0em" }} textAlign="center">
@@ -246,7 +246,8 @@ class SearchBookingRequestsPage extends React.Component {
                   proposed_price={item["product"]["proposed_price"]}
                   img={item["product"]["images"].length === 0 ? '' : item["product"]["images"][0]['image']}
                   editable={false}
-                  selectable={false} />
+                  selectable={false}
+                  can_propose />
               </div>
             ))}
           </InfiniteScroll>
@@ -271,6 +272,7 @@ const mapStateToProps = state => {
     count: state.searchBookings.count,
     user_id: state.userInfo.userId,
     initialValues: state.searchbookingsPage.initialValues,
+    authenticated: state.auth.token !== null,
     departure_location: departure_location,
     destination_location: destination_location,
     travel_date: travel_date

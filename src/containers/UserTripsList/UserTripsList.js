@@ -18,6 +18,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { getTrips, getInitialTrips } from "../../store/actions/userTrips";
 import TripCard from "../../containers/TripCard/TripCard";
 import $ from "jquery";
+import {FormattedMessage, FormattedDate} from 'react-intl'
 
 class UserTripsList extends React.Component {
   constructor(props) {
@@ -73,7 +74,10 @@ class UserTripsList extends React.Component {
     const dataLength = trips ? trips.length : 0;
     return (
       <Segment basic className={"profile-tab-section"}>
-      {trips.length === 0 ? <div>You have no trips</div> : <div
+      {trips.length === 0 ? <div><FormattedMessage
+        id="user_trips.no_trips"
+        defaultMessage="You have not created any trips."
+      /></div> : <div
         id="scrollableDiv"
         style={{
           height: 400,
@@ -85,7 +89,10 @@ class UserTripsList extends React.Component {
           dataLength={trips.length}
           next={this.fetchMoreData}
           hasMore={count !== null && next_url !== null}
-          loader={<h4>Loading...</h4>}
+          loader={<h4><FormattedMessage
+            id="user_trips.loading"
+            defaultMessage="Loading..."
+          /></h4>}
           scrollableTarget="scrollableDiv"
         >
           {trips.map((item, index) => (

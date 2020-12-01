@@ -44,7 +44,7 @@ export const getInitialReservations = (user_id) => {
   return dispatch => {
     dispatch(getReservationsStart());
     axios
-      .get(api_url() + "/bookings/bookings_list", {
+      .get(api_url() + "/bookings/booked_list", {
             params: {user_id: user_id}
           })
       .then(res => {

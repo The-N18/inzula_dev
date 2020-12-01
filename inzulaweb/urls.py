@@ -24,13 +24,18 @@ from pay_process.urls import urlpatterns as payment_urls
 from userprofile.urls import urlpatterns as userprofile_urls
 from django.views.static import serve
 from django.conf.urls.static import static
+from userprofile.views import FacebookLogin, TwitterLogin, SocialAccountListView, SocialAccountDisconnectView
 
 
 urlpatterns = [
     # path('api-auth/', include('rest_framework.urls')),
     # path(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('rest-auth/', include('rest_auth.urls')),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
+    path('rest-auth/facebook/', FacebookLogin.as_view(), name='fb_login'),
+    path('rest-auth/twitter/', TwitterLogin.as_view(), name='twitter_login'),
+    path('socialaccounts/', SocialAccountListView.as_view(),name='social_account_list'),
+    path('socialaccounts/(?P<pk>\d+)/disconnect/', SocialAccountDisconnectView.as_view(), name='social_account_disconnect'),
+    path('rest-auth/', include('rest_auth.urls')),
     path('trips/', include(trip_urls)),
     path('bookings/', include(booking_urls)),
     path('pay/', include(payment_urls)),

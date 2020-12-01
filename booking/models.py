@@ -50,6 +50,7 @@ PRODUCT_VALUE_OPTIONS = [
 REQUEST_STATUS = [
     ('cre', 'Created'),
     ('rec', 'Offers recieved'),
+    ('boo', 'Booked'),
     ('con', 'Offer confirmed'),
     ('awa', 'Awaiting collection'),
     ('col', 'Collected'),

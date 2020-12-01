@@ -64,14 +64,15 @@ export const getInitialCardData = (values) => {
       .post(api_url() + "/pay/initCardInfo", values)
       .then(result => {
         dispatch(checkAuthTimeout(3600));
+        // console.log(result);
+        // dispatch(getCardTokenizedData({
+        //   'accessKeyRef': result['data']['accessKeyRef'],
+        //   'data': result['data']['data'],
+        //   'cardNumber': values['cardNumber'],
+        //   'cardExpirationDate': values['cardExpirationDate'],
+        //   'cardCvx': values['cardCvx']}, result['data']['card_id'], values['userId']));
+        // dispatch(setCardRegistrationData(result['data']['data']))
         console.log(result);
-        dispatch(getCardTokenizedData({
-          'accessKeyRef': result['data']['accessKeyRef'],
-          'data': result['data']['data'],
-          'cardNumber': values['cardNumber'],
-          'cardExpirationDate': values['cardExpirationDate'],
-          'cardCvx': values['cardCvx']}, result['data']['card_id'], values['userId']));
-        dispatch(setCardRegistrationData(result['data']['data']))
       })
       .catch(err => {
       });
@@ -80,8 +81,9 @@ export const getInitialCardData = (values) => {
 
 export const getCardTokenizedData = (values, card_id, user_id) => {
   const config = {
-            headers: { 'content-type': 'x-www-form-urlencoded',
-                       "Access-Control-Allow-Origin": "*" }
+            headers: { 'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+                        'crossDomain': true,
+                        'Access-Control-Allow-Origin': '*' }
           };
   return dispatch => {
     axios

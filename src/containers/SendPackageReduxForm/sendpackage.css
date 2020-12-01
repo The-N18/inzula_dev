@@ -12,6 +12,14 @@
   padding-bottom: 6px !important;
 }
 
+.txt-align-l {
+  text-align: left;
+}
+
+.txt-align-l input {
+  margin-right: 5px;
+}
+
 .w-100 > div {
   width: 100% !important;
 }

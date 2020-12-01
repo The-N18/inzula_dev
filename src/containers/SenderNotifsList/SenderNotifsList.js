@@ -18,6 +18,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { getNotifs, getInitialNotifs } from "../../store/actions/senderNotifs";
 import NotifCard from "../../containers/NotifCard/NotifCard";
 import $ from "jquery";
+import {FormattedMessage, FormattedDate} from 'react-intl'
 
 class SenderNotifsList extends React.Component {
   constructor(props) {
@@ -59,7 +60,11 @@ class SenderNotifsList extends React.Component {
     const dataLength = notifs ? notifs.length : 0;
     return (
       <Segment basic className={"profile-tab-section"}>
-      {notifs && notifs !== undefined && notifs.length === 0 ? <div>You have no notifications</div> : <div
+      {notifs && notifs !== undefined && notifs.length === 0 ? <div>
+        <FormattedMessage
+          id="sender_notifs.no_notifs"
+          defaultMessage="You have no notifications"
+        /></div> : <div
         id="scrollableDiv"
         style={{
           height: 400,
@@ -70,7 +75,10 @@ class SenderNotifsList extends React.Component {
           dataLength={notifs ? notifs.length : 0}
           next={this.fetchMoreData}
           hasMore={count !== null && next_url !== null}
-          loader={<h4>Loading...</h4>}
+          loader={<h4><FormattedMessage
+            id="sender_notifs.loading"
+            defaultMessage="Loading"
+          /></h4>}
           scrollableTarget="scrollableDiv"
         >
           {notifs && notifs.map((item, index) => (

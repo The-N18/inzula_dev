@@ -55,16 +55,28 @@ class ProfileTab extends React.Component {
               <Image centered bordered circular src= {profile_pic !== null && profile_pic !== "null" ? get_img_url(profile_pic) : backend_url() + '/static/images/user_avatar.png'} />
               <Segment basic textAlign="center">
               <Header as='h4' className={"profile-tab-card-title"}>{this.props.first_name} {this.props.last_name}</Header>
-              {date_joined ? <p>Member since: <FormattedDate
+              {date_joined ? <p><FormattedMessage
+                id="profile_tab.member_since"
+                defaultMessage="Member since"
+              /><FormattedDate
                                   value={date_joined}
                                   year="numeric"
                                   month="long"
                                   day="numeric"
                                   weekday="long"
                                 /></p> : ''}
-              {phone_number ? <p>Phone number: {phone_number}</p> : ''}
-              {email ? <p>Email: {email}</p> : ''}
-              {passport_number ? <p>Passport number: {passport_number}</p> : ''}
+              {phone_number ? <p><FormattedMessage
+                id="profile_tab.phone_number_disp"
+                defaultMessage="Phone number:"
+              />{phone_number}</p> : ''}
+              {email ? <p><FormattedMessage
+                id="profile_tab.email_disp"
+                defaultMessage="Email:"
+              /> {email}</p> : ''}
+              {passport_number ? <p><FormattedMessage
+                id="profile_tab.passport_number_disp"
+                defaultMessage="Passport number: "
+              />{passport_number}</p> : ''}
               </Segment>
             </Segment>
           </Grid.Column>
@@ -76,7 +88,10 @@ class ProfileTab extends React.Component {
                   <Image centered bordered circular src= {profile_pic !== null && profile_pic !== "null" ? get_img_url(profile_pic) : backend_url() + '/static/images/user_avatar.png'} />
                   <ImageUploader
                       withIcon={true}
-                      buttonText='Choose profile image'
+                      buttonText={<FormattedMessage
+                        id="profile_tab.choose_profile_image"
+                        defaultMessage="Choose profile image"
+                      />}
                       onChange={this.onDrop}
                       imgExtension={['.jpg', '.gif', '.png', '.gif']}
                       maxFileSize={5242880}
@@ -87,13 +102,22 @@ class ProfileTab extends React.Component {
               </Grid.Column>
               <Grid.Column mobile={16} tablet={16} computer={11}>
                 <Segment basic textAlign="center">
-                <Header as='h4' className={"profile-tab-card-title"}>Personal information</Header>
+                <Header as='h4' className={"profile-tab-card-title"}>
+                  <FormattedMessage
+                    id="profile_tab.personal_information"
+                    defaultMessage="Personal information"
+                  />
+                </Header>
                 <form onSubmit={handleSubmit(this.submitForm)}>
                   <CSRFToken/>
                   <DjangoCSRFToken/>
                   <Segment basic>
                   <div>
-                    <label htmlFor="first_name">First name</label>
+                    <label htmlFor="first_name">
+                      <FormattedMessage
+                        id="profile_tab.first_name"
+                        defaultMessage="First name"
+                      /></label>
                     <div>
                       <Field
                         name="first_name"
@@ -107,7 +131,12 @@ class ProfileTab extends React.Component {
                       </div>
                     </div>
                     <div>
-                      <label htmlFor="last_name">Last name</label>
+                      <label htmlFor="last_name">
+                        <FormattedMessage
+                          id="profile_tab.last_name"
+                          defaultMessage="Last name"
+                        />
+                      </label>
                       <div>
                       <Field
                         name="last_name"
@@ -121,7 +150,12 @@ class ProfileTab extends React.Component {
                       </div>
                     </div>
                     <div>
-                      <label htmlFor="phone_number">Phone number</label>
+                      <label htmlFor="phone_number">
+                        <FormattedMessage
+                          id="profile_tab.phone_number"
+                          defaultMessage="Phone number"
+                        />
+                      </label>
                       <div>
                     <Field
                       name="phone_number"
@@ -135,7 +169,12 @@ class ProfileTab extends React.Component {
                     </div>
                   </div>
                   <div>
-                    <label htmlFor="email">Email</label>
+                    <label htmlFor="email">
+                      <FormattedMessage
+                        id="profile_tab.email"
+                        defaultMessage="Email"
+                      />
+                    </label>
                     <div>
                       <Field
                         name="email"
@@ -145,11 +184,17 @@ class ProfileTab extends React.Component {
                         label="Email address"
                         className={"custom-field"}
                         component={renderField}
+                        disabled
                       />
                       </div>
                     </div>
                     <div>
-                      <label htmlFor="country">Country</label>
+                      <label htmlFor="country">
+                        <FormattedMessage
+                          id="profile_tab.country"
+                          defaultMessage="Country"
+                        />
+                      </label>
                       <div>
                         <Field
                           name="country"
@@ -160,31 +205,13 @@ class ProfileTab extends React.Component {
                           textField="text" />
                         </div>
                       </div>
-                    {/*<div>
-                      <label htmlFor="country">Country</label>
-                      <div>
-                      <Field
-                        name="country"
-                        component="input"
-                        type="text"
-                        placeholder="Country"
-                        label="Country"
-                        className={"custom-field"}
-                        component="select"
-                      >
-                      <option></option>
-                      {countries.map((item, index) => {
-                        return (
-                          <option name={item["code"]}>{item["name"]}</option>
-                        );
-                      })}
-                      </Field>
-                      </div>
-                    </div>*/}
-
-
                     <div>
-                      <label htmlFor="country">Passport number</label>
+                      <label htmlFor="country">
+                        <FormattedMessage
+                          id="profile_tab.passport_number"
+                          defaultMessage="Passport number"
+                        />
+                      </label>
                       <div>
                       <Field
                         name="passport_number"
@@ -203,7 +230,10 @@ class ProfileTab extends React.Component {
                       loading={loading}
                       disabled={invalid}
                     >
-                      Save
+                    <FormattedMessage
+                      id="profile_tab.save"
+                      defaultMessage="Save"
+                    />
                     </Button>
                   </Segment>
                 </form>
@@ -244,21 +274,7 @@ ProfileTab.propTypes = {
   profileType: PropTypes.string,
 };
 
-// let ProfileTabConnected = connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(ProfileTab);
-//
-// ProfileTabConnected = reduxForm ({
-//   form: 'profile',
-//   enableReinitialize : true,
-//   validate
-// }) (ProfileTabConnected);
-//
-// export default ProfileTabConnected;
-
-
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(reduxForm({ form: "profile", enableReinitialize: true })(ProfileTab));
+)(reduxForm({ form: "profile", enableReinitialize: true, validate })(ProfileTab));

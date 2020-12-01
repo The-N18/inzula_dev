@@ -9,6 +9,17 @@ export const sizeOptions=[
   { key: 'xxxl', value: 'xxxl', text: 'Extra Extra Extra Large' },
 ];
 
+export const sizeOptionsFr=[
+  { key: 'xxs', value: 'xxs', text: 'Tres tres petit' },
+  { key: 'xs', value: 'xs', text: 'Tres petit' },
+  { key: 's', value: 's', text: 'Petit' },
+  { key: 'm', value: 'm', text: 'Moyenne' },
+  { key: 'l', value: 'l', text: 'Large' },
+  { key: 'xl', value: 'xl', text: 'Extra Large' },
+  { key: 'xxl', value: 'xxl', text: 'Extra Extra Large' },
+  { key: 'xxxl', value: 'xxxl', text: 'Extra Extra Extra Large' },
+];
+
 export const categoryOptions=[
   { key: 'food', value: 'food', text: 'Food' },
   { key: 'elec', value: 'elec', text: 'Electronics' },
@@ -22,6 +33,19 @@ export const categoryOptions=[
   { key: 'misc', value: 'misc', text: 'Miscellaneous' },
 ];
 
+export const categoryOptionsFr=[
+  { key: 'food', value: 'food', text: 'Denrees alimentaires' },
+  { key: 'elec', value: 'elec', text: 'Electronique' },
+  { key: 'dress', value: 'dress', text: 'Vetements' },
+  { key: 'shoe', value: 'shoe', text: 'Chaussures' },
+  { key: 'doc', value: 'doc', text: 'Documents' },
+  { key: 'uts', value: 'uts', text: 'Utensils de cuisine' },
+  { key: 'app', value: 'app', text: 'Equipements electriques' },
+  { key: 'skin', value: 'skin', text: 'Soins de la peau' },
+  { key: 'jel', value: 'jel', text: 'Bijoux' },
+  { key: 'misc', value: 'misc', text: 'Autres' },
+];
+
 export const weightOptions=[
   { key: '500g', value: '500g', text: '0.1 - 500g' },
   { key: '1kg', value: '1kg', text: '500g - 1kg' },
@@ -33,6 +57,8 @@ export const weightOptions=[
   { key: 'huge', value: 'huge', text: '40.1kg +' },
 ];
 
+export const weightOptionsFr=weightOptions;
+
 export const valueOptions=[
   { key: 'low', value: 'low', text: 'Low value' },
   { key: 'mid', value: 'mid', text: 'Medium value' },
@@ -40,6 +66,25 @@ export const valueOptions=[
   { key: 'lux', value: 'lux', text: 'Luxury item' },
   { key: 'exc', value: 'exc', text: 'Exclusive' },
 ];
+
+export const valueOptionsFr=[
+  { key: 'low', value: 'low', text: 'Valeur basse' },
+  { key: 'mid', value: 'mid', text: 'Valeur moyenne' },
+  { key: 'high', value: 'high', text: 'Grande valeur' },
+  { key: 'lux', value: 'lux', text: 'Luxueux' },
+  { key: 'exc', value: 'exc', text: 'Exclusif' },
+];
+
+export const optionToText = (option_value, arr) => {
+  // For value, weight, size and category of product only
+  let txt = "";
+  for(let i = 0; i < arr.length; i++) {
+    if(arr[i]['value'] === option_value) {
+      txt = arr[i]['text'];
+    }
+  }
+  return txt;
+}
 
 export const sizeMultiOptions=[
   { key: 'xxs', value: 'xxs', label: 'Extra Extra Small' },
@@ -83,6 +128,7 @@ export const valueMultiOptions=[
   { key: 'lux', value: 'lux', label: 'Luxury item' },
   { key: 'exc', value: 'exc', label: 'Exclusive' },
 ];
+
 
 export const tripTypeOptions = [
     {value: 'round_trip', label: 'Round trip'},

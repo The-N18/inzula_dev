@@ -26,6 +26,7 @@ import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify'
 import { openModal, closeModal } from "../../store/actions/sendPackageModal";
 // import SendPackage from "../../containers/SendPackage/SendPackage";
 import SendPackage from "../../containers/SendPackageReduxForm/SendPackage";
+import {FormattedMessage, FormattedDate} from 'react-intl'
 
 class SendPackageModal extends React.Component {
 
@@ -47,13 +48,19 @@ class SendPackageModal extends React.Component {
       onOpen={() => this.props.openPackageModal()}
       size='large'
     >
-      <Modal.Header>Add a booking request</Modal.Header>
+      <Modal.Header><FormattedMessage
+        id="add_booking.add_request"
+        defaultMessage="Add a booking request"
+      /></Modal.Header>
       <Modal.Content scrolling>
           <SendPackage tripId={tripId}/>
       </Modal.Content>
       <Modal.Actions>
         <Button negative onClick={() => this.props.closePackageModal()} primary>
-          Cancel <Icon name='cancel' />
+          <FormattedMessage
+            id="add_booking.cancel"
+            defaultMessage="Cancel"
+          /><Icon name='cancel' />
         </Button>
       </Modal.Actions>
     </Modal>

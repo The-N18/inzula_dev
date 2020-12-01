@@ -84,7 +84,7 @@ class MyProfile extends React.Component {
     ];
 
     const tabs = profileType === "sender" ? panes : [...panes, {
-      menuItem: { key: 'booking', icon: 'calendar', content: 'Booked Trips'},
+      menuItem: { key: 'booking', icon: 'calendar', content: 'My bookings'},
       render: () => <Tab.Pane attached={false}><UserBookingsList/></Tab.Pane>,
     },]
 

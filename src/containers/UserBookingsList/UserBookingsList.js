@@ -18,6 +18,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { getReservations, getInitialReservations } from "../../store/actions/userBookings";
 import BookingCard from "../../containers/BookingCard/BookingCard";
 import $ from "jquery";
+import {FormattedMessage, FormattedDate} from 'react-intl'
 
 class UserBookingsList extends React.Component {
   constructor(props) {
@@ -33,7 +34,7 @@ class UserBookingsList extends React.Component {
     if($(window).width() < 768) {
       this.setState({ isMobile: true });
     }
-    if($(window).width() >= 768) {
+    if($(window).width() >= 768 && $(window).width() <= 950) {
       this.setState({ isTablet: true });
     }
   }
@@ -53,13 +54,29 @@ class UserBookingsList extends React.Component {
     this.props.getUserReservations(user_id, next_url, count);
   }
 
+  getDivHeight = () => {
+    const { isMobile, isTablet } = this.state;
+    let val = 240;
+    if(isTablet) {
+      val = 300;
+    }
+    if(isMobile) {
+      val = 445;
+    }
+    return val;
+  }
+
 
   render() {
     const { loading, reservations, next_url, count, selectable, editable } = this.props;
     const dataLength = reservations ? reservations.length : 0;
     return (
       <Segment basic className={"profile-tab-section"}>
-      {reservations.length === 0 ? <div>You have not recieved any bookings on your trips.</div> : <div
+      {reservations.length === 0 ? <div><FormattedMessage
+        id="user_bookings.no_bookings"
+        defaultMessage="You have not recieved any bookings on your trips."
+      />
+    </div> : <div
         id="scrollableDiv"
         style={{
           height: 400,
@@ -71,26 +88,35 @@ class UserBookingsList extends React.Component {
           dataLength={reservations.length}
           next={this.fetchMoreData}
           hasMore={count !== null && next_url !== null}
-          loader={<h4>Loading...</h4>}
+          loader={<h4><FormattedMessage
+            id="user_bookings.loading"
+            defaultMessage="Loading..."
+          /></h4>}
           scrollableTarget="scrollableDiv"
         >
           {reservations.map((item, index) => (
             <div style={{
-              height: this.state.isMobile ? 330 : 200,
+              height: this.getDivHeight.bind(this),
               margin: 6,
               padding: 8
             }} key={index}>
               <BookingCard
-                selectable={selectable}
                 title={item["product"]["name"]}
                 pk={item["pk"]}
                 arrival_date={item["product"]["arrival_date"]}
                 description={item["product"]["description"]}
                 departure_location={item["product"]["departure_location"]}
                 destination_location={item["product"]["destination_location"]}
+                weight={item["product"]["weight"]}
+                space={item["product"]["space"]}
+                price={item["product"]["price"]}
+                product_category={item["product"]["product_category"]}
+                proposed_price={item["product"]["proposed_price"]}
                 product_details={item["product"]}
                 img={item["product"]["images"].length === 0 ? '' : item["product"]["images"][0]['image']}
-                editable={editable}/>
+                editable={false}
+                selectable={false}
+                validate_decline/>
             </div>
           ))}
         </InfiniteScroll>
