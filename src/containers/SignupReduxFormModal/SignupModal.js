@@ -19,6 +19,7 @@ import { connect } from "react-redux";
 import { validate } from "./validation";
 import Recaptcha from 'react-recaptcha';
 import {renderField} from "../../containers/ReduxForm/renderField";
+import {FormattedMessage, FormattedDate} from 'react-intl'
 
 
 class RegistrationForm extends Component {
@@ -47,7 +48,10 @@ class RegistrationForm extends Component {
         size='large'
       >
         <Modal.Header>
-        Signup
+          <FormattedMessage
+            id="signup.title"
+            defaultMessage="Signup"
+          />
         </Modal.Header>
         <Modal.Content scrolling>
       <Segment vertical>
@@ -121,7 +125,11 @@ class RegistrationForm extends Component {
         />
         <div className={"push-left"}>
             <Field name="terms_conditions" id="terms_conditions" component="input" type="checkbox"/>
-            <label htmlFor="terms_conditions">I agree to the Terms and Conditions</label>
+            <label htmlFor="terms_conditions"><FormattedMessage
+              id="signup.agree_terms"
+              defaultMessage="I agree to the Terms and Conditions"
+            />
+          </label>
         </div>
         <Button
           type="submit"
@@ -130,12 +138,22 @@ class RegistrationForm extends Component {
           loading={loading}
           disabled={invalid}
         >
-          Signup
+        <FormattedMessage
+          id="signup.signup"
+          defaultMessage="Signup"
+        />
         </Button>
         </Segment>
       </form>
       <Segment raised className={"signupcard"}>
-        Already have an account? <span className={"mimic-anchor"} onClick={this.handleSignin.bind(this)}>Login</span>
+        <FormattedMessage
+          id="signup.have_account"
+          defaultMessage="Already have an account?"
+        /> <span className={"mimic-anchor"} onClick={this.handleSignin.bind(this)}>
+        <FormattedMessage
+          id="signup.login"
+          defaultMessage="Login"
+        /></span>
       </Segment>
     </React.Fragment>
   </Grid.Column>
@@ -144,7 +162,10 @@ class RegistrationForm extends Component {
 </Modal.Content>
 <Modal.Actions>
   <Button negative onClick={() => this.props.closeSignupModal()} primary>
-    Cancel <Icon name='cancel' />
+    <FormattedMessage
+      id="signup.cancel"
+      defaultMessage="Cancel"
+    /> <Icon name='cancel' />
   </Button>
 </Modal.Actions>
 </Modal>

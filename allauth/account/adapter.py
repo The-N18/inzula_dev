@@ -446,7 +446,9 @@ class DefaultAccountAdapter(object):
         """
         url = reverse("account_confirm_email", args=[emailconfirmation.key])
         ret = build_absolute_uri(request, url)
-        return ret
+        BACKEND_HOST_ADDRESS = 'http://localhost:3000/verify/'+emailconfirmation.key;
+        # BACKEND_HOST_ADDRESS = 'http://15.188.83.142:5000/verify/'+emailconfirmation.key;
+        return BACKEND_HOST_ADDRESS
 
     def send_confirmation_mail(self, request, emailconfirmation, signup):
         current_site = get_current_site(request)
@@ -471,7 +473,7 @@ class DefaultAccountAdapter(object):
 
     def _get_login_attempts_cache_key(self, request, **credentials):
         site = get_current_site(request)
-        login = credentials.get("email", credentials.get("username", ""))
+        login = credentials.get("email", credentials.get("username", "")).lower()
         login_key = hashlib.sha256(login.encode("utf8")).hexdigest()
         return "allauth/login_attempts@{site_id}:{login}".format(
             site_id=site.pk, login=login_key

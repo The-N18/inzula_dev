@@ -1,5 +1,7 @@
-//export const BACKEND_HOST_ADDRESS = '127.0.0.1';
-export const BACKEND_HOST_ADDRESS = '15.188.83.142';
+export const BACKEND_HOST_ADDRESS = '127.0.0.1';
+//export const BACKEND_HOST_ADDRESS = '15.188.83.142';
+// BACKEND_HOST_ADDRESS = 'http://localhost:3000/verify/'+emailconfirmation.key;
+// BACKEND_HOST_ADDRESS = 'http://15.188.83.142:5000/verify/'+emailconfirmation.key;
 export const BACKEND_HOST_PORT = '8000';
 export const BACKEND_FILE_PORT = '8000';
 export const BACKEND_HTTP_PROTOCOL = 'http';

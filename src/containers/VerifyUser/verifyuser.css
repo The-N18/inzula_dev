@@ -1,0 +1,7 @@
+.verification-success {
+  color: #00E676 !important;
+}
+
+.verification-failed {
+  color: #FF1744 !important;
+}

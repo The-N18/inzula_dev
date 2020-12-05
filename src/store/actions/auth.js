@@ -17,6 +17,13 @@ export const authStart = () => {
   };
 };
 
+export const deleteStart = () => {
+  return {
+    type: actionTypes.DELETE_ACCOUNT_START
+  };
+};
+
+
 export const authSetDiscountText = (text) => {
   return {
     type: actionTypes.AUTH_SET_DISCOUNT_TEXT,
@@ -31,9 +38,22 @@ export const authSuccess = (token) => {
   };
 };
 
+export const deleteSuccess = () => {
+  return {
+    type: actionTypes.DELETE_ACCOUNT_SUCCESS,
+  };
+};
+
 export const authFail = error => {
   return {
     type: actionTypes.AUTH_FAIL,
+    error: error
+  };
+};
+
+export const deleteFail = error => {
+  return {
+    type: actionTypes.DELETE_ACCOUNT_FAIL,
     error: error
   };
 };
@@ -60,9 +80,9 @@ export const logout = expirationTime => {
   localStorage.removeItem("email");
   localStorage.removeItem("phone_number");
   localStorage.removeItem("profile_pic");
-
   return dispatch => {
-      type: actionTypes.AUTH_LOGOUT
+      type: actionTypes.AUTH_LOGOUT,
+      setUserInfo(null, null, null, null, null, null, null, null, null, null, null)
     };
 };
 
@@ -78,6 +98,7 @@ export const checkAuthTimeout = expirationTime => {
      }, expirationTime * 100000);
    };
  };
+
 
  export const authLogin = (username, password) => {
    return dispatch => {
@@ -157,36 +178,36 @@ export const checkAuthTimeout = expirationTime => {
          terms_conditions: terms_conditions
        })
        .then(res => {
-         const token = res.data.key;
-         const userId = res.data.user_id;
-         const username = res.data.username;
-         const userProfileId = res.data.user_profile_id;
-         const first_name = res.data.first_name;
-         const last_name = res.data.last_name;
-         const email = res.data.email;
-         const date_joined = res.data.date_joined;
-         const phone_number = res.data.phone_number;
-         const profile_pic = res.data.profile_pic;
-         const passport_number = res.data.passport_number;
-         const country = res.data.country;
-         const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
-         localStorage.setItem("token", token);
-         localStorage.setItem("expirationDate", expirationDate);
-         localStorage.setItem("userId", userId);
-         localStorage.setItem("username", username);
-         localStorage.setItem("userProfileId", userProfileId);
-         localStorage.setItem("first_name", first_name);
-         localStorage.setItem("last_name", last_name);
-         localStorage.setItem("email", email);
-         localStorage.setItem("phone_number", phone_number);
-         localStorage.setItem("profile_pic", profile_pic);
-         localStorage.setItem("passport_number", passport_number);
-         localStorage.setItem("country", country);
-         dispatch(authSuccess(token));
-         dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country));
+         // const token = res.data.key;
+         // const userId = res.data.user_id;
+         // const username = res.data.username;
+         // const userProfileId = res.data.user_profile_id;
+         // const first_name = res.data.first_name;
+         // const last_name = res.data.last_name;
+         // const email = res.data.email;
+         // const date_joined = res.data.date_joined;
+         // const phone_number = res.data.phone_number;
+         // const profile_pic = res.data.profile_pic;
+         // const passport_number = res.data.passport_number;
+         // const country = res.data.country;
+         // const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
+         // localStorage.setItem("token", token);
+         // localStorage.setItem("expirationDate", expirationDate);
+         // localStorage.setItem("userId", userId);
+         // localStorage.setItem("username", username);
+         // localStorage.setItem("userProfileId", userProfileId);
+         // localStorage.setItem("first_name", first_name);
+         // localStorage.setItem("last_name", last_name);
+         // localStorage.setItem("email", email);
+         // localStorage.setItem("phone_number", phone_number);
+         // localStorage.setItem("profile_pic", profile_pic);
+         // localStorage.setItem("passport_number", passport_number);
+         // localStorage.setItem("country", country);
+         // dispatch(authSuccess(token));
+         // dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country));
          dispatch(checkAuthTimeout(3600));
          dispatch(createNotification({
-           message: "Signup and Login successful.",
+           message: "Signup successful.",
            type: NOTIFICATION_TYPE_SUCCESS,
            duration: 10000,
            canDismiss: true,
@@ -274,6 +295,36 @@ export const checkAuthTimeout = expirationTime => {
          dispatch(authFail(err));
          dispatch(createNotification({
            message: "Failed to update profile. Check your entry",
+           type: NOTIFICATION_TYPE_ERROR,
+           duration: 10000,
+           canDismiss: true,
+         }));
+       });
+   };
+ };
+
+
+ export const deleteAccount = (userProfileId) => {
+   console.log("in deleteAccount");
+   return dispatch => {
+     dispatch(deleteStart());
+     axios
+       .delete(api_url() + "/user/user_account/"+userProfileId+"/", {})
+       .then(res => {
+         dispatch(checkAuthTimeout(3600));
+         dispatch(deleteSuccess());
+         dispatch(createNotification({
+           message: "You have deleted your account successfully.",
+           type: NOTIFICATION_TYPE_SUCCESS,
+           duration: 10000,
+           canDismiss: true,
+         }));
+         dispatch(logout());
+       })
+       .catch(err => {
+         dispatch(deleteFail(err));
+         dispatch(createNotification({
+           message: "Failed to delete your account.",
            type: NOTIFICATION_TYPE_ERROR,
            duration: 10000,
            canDismiss: true,

@@ -4,7 +4,9 @@ import { updateObject } from "../utility";
 const initialState = {
   token: null,
   error: null,
+  deleteError: null,
   loading: false,
+  deleteLoading: false,
   discountText: null
 };
 
@@ -12,6 +14,13 @@ const authStart = (state, action) => {
   return updateObject(state, {
     error: null,
     loading: true
+  });
+};
+
+const deleteStart = (state, action) => {
+  return updateObject(state, {
+    deleteError: null,
+    deleteLoading: true
   });
 };
 
@@ -30,6 +39,13 @@ const authSuccess = (state, action) => {
   });
 };
 
+const deleteSuccess = (state, action) => {
+  return updateObject(state, {
+    deleteError: null,
+    deleteLoading: false
+  });
+};
+
 const authTokenSuccess = (state, action) => {
   return updateObject(state, {
     token: action.token,
@@ -42,6 +58,13 @@ const authFail = (state, action) => {
   return updateObject(state, {
     error: action.error,
     loading: false
+  });
+};
+
+const deleteFail = (state, action) => {
+  return updateObject(state, {
+    deleteError: action.error,
+    deleteLoading: false
   });
 };
 
@@ -59,6 +82,12 @@ const reducer = (state = initialState, action) => {
       return authSuccess(state, action);
     case actionTypes.AUTH_FAIL:
       return authFail(state, action);
+    case actionTypes.DELETE_ACCOUNT_START:
+      return deleteStart(state, action);
+    case actionTypes.DELETE_ACCOUNT_SUCCESS:
+      return deleteSuccess(state, action);
+    case actionTypes.DELETE_ACCOUNT_FAIL:
+      return deleteFail(state, action);
     case actionTypes.AUTH_LOGOUT:
       return authLogout(state, action);
     case actionTypes.AUTH_TOKEN_SUCCESS:

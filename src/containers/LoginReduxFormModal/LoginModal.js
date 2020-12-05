@@ -18,7 +18,7 @@ import { openLoginModal, closeLoginModal } from "../../store/actions/loginModal"
 import { closeLoginParentModal } from "../../store/actions/loginParentModal";
 import { openSignupParentModal } from "../../store/actions/signupParentModal";
 import {renderField} from "../../containers/ReduxForm/renderField";
-
+import {FormattedMessage, FormattedDate} from 'react-intl'
 
 
 class LoginForm extends Component {
@@ -49,7 +49,10 @@ class LoginForm extends Component {
         size='large'
       >
         <Modal.Header>
-        Login with account
+          <FormattedMessage
+            id="login.title"
+            defaultMessage="Login with account"
+          />
         </Modal.Header>
         <Modal.Content scrolling>
       <Segment style={{ padding: "1em 0em" }} vertical>
@@ -60,27 +63,42 @@ class LoginForm extends Component {
       >
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as="h4" className={"headercolor"} textAlign="center">
-            Log-in to your account
+            <FormattedMessage
+              id="login.title"
+              defaultMessage="Log-in to your account"
+            />
           </Header>
           <React.Fragment>
       <form onSubmit={handleSubmit(this.submitForm)}>
       <Segment raised className={"logincard"}>
-        <Field
-          name="username"
-          component="input"
-          type="text"
-          placeholder="Username"
-          label="Username"
-          component={renderField}
-        />
-        <Field
-          name="password"
-          component="input"
-          type="password"
-          placeholder="Password"
-          label="Password"
-          component={renderField}
-        />
+        <div>
+          <label for="username">
+            <FormattedMessage
+              id="login.username"
+              defaultMessage="Username"
+            />
+          </label>
+          <Field
+            name="username"
+            component="input"
+            type="text"
+            component={renderField}
+          />
+        </div>
+        <div>
+          <label for="username">
+            <FormattedMessage
+              id="login.password"
+              defaultMessage="Password"
+            />
+          </label>
+          <Field
+            name="password"
+            component="input"
+            type="password"
+            component={renderField}
+          />
+        </div>
         <Button
           type="submit"
           size="large"
@@ -88,12 +106,22 @@ class LoginForm extends Component {
           disabled={invalid}
           loading={loading}
         >
-          Login
+        <FormattedMessage
+          id="login.login_btn"
+          defaultMessage="Login"
+        />
         </Button>
         </Segment>
       </form>
       <Segment raised className={"logincard"}>
-        New to Inzula? <span className={"mimic-anchor"} onClick={this.handleSignup.bind(this)}>Sign up</span>
+        <FormattedMessage
+          id="login.new"
+          defaultMessage="New to Inzula?"
+        /><span className={"mimic-anchor"} onClick={this.handleSignup.bind(this)}>
+        <FormattedMessage
+          id="login.signup_btn"
+          defaultMessage="Sign up"
+        /></span>
       </Segment>
     </React.Fragment>
   </Grid.Column>
@@ -102,7 +130,10 @@ class LoginForm extends Component {
 </Modal.Content>
 <Modal.Actions>
   <Button negative onClick={() => this.props.closeLoginModal()} primary>
-    Cancel <Icon name='cancel' />
+    <FormattedMessage
+      id="login.cancel"
+      defaultMessage="Cancel"
+    /><Icon name='cancel' />
   </Button>
 </Modal.Actions>
 </Modal>

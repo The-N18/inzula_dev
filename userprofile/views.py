@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .serializers import UserProfileUpdateSerializer, UserProfileSerializer, CitySerializer
 from rest_framework.response import Response
 from .models import UserProfile
+from rest_framework.views import APIView
 from django.contrib.auth.models import User
 from rest_framework.generics import CreateAPIView, ListAPIView, GenericAPIView
 from rest_auth.registration.app_settings import RegisterSerializer, register_permission_classes
@@ -86,6 +87,27 @@ class UpdateProfileView(CreateAPIView):
         return Response(serializer.data,
                         status=status.HTTP_200_OK,
                         headers=headers)
+
+
+class DeleteProfileView(APIView):
+    """
+    Retrieve or delete a user
+    """
+    def get_object(self, pk):
+        try:
+            return UserProfile.objects.get(pk=pk)
+        except UserProfile.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        userprofile = self.get_object(pk)
+        serializer = UserProfileSerializer(userprofile)
+        return Response(serializer.data)
+
+    def delete(self, request, pk, format=None):
+        userprofile = self.get_object(pk)
+        # userprofile.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class TwitterLogin(SocialLoginView):

@@ -20,6 +20,8 @@ import {FormattedMessage, FormattedDate} from 'react-intl'
 import { updateBookingOpenModal, updateBookingCloseModal } from "../../store/actions/updateBookingModal";
 import { optionToText, sizeOptions, sizeOptionsFr, categoryOptions, categoryOptionsFr, weightOptions, weightOptionsFr, valueOptions, valueOptionsFr } from "../../utils/options";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
+import { openDeclineBooking, setBookingDeclineBooking } from "../../store/actions/declineBooking";
+import { openValidateBooking, setBookingValidateBooking } from "../../store/actions/validateBooking";
 
 
 class BookingCard extends React.Component {
@@ -44,11 +46,15 @@ class BookingCard extends React.Component {
   }
 
   validateBooking = () => {
-    console.log("validate booking");
+    const {pk} = this.props;
+    this.props.setBookingValidateBooking(pk);
+    this.props.openValidateBooking();
   }
 
   declineBooking = () => {
-    console.log("decline booking");
+    const {pk} = this.props;
+    this.props.setBookingDeclineBooking(pk);
+    this.props.openDeclineBooking();
   }
 
   updateBooking = () => {

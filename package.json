@@ -11,6 +11,7 @@
     "js-cookie": "^2.2.1",
     "luxon": "^1.25.0",
     "mangopay-client-react": "^2.0.2",
+    "mangopay2-nodejs-sdk": "^1.14.3",
     "moment": "^2.29.1",
     "prop-types": "^15.7.2",
     "rc-slider": "^9.6.1",

@@ -70,7 +70,7 @@ class RegisterView(CreateAPIView):
         if user.profile.profile_pic:
             profile_pic_url = user.profile.profile_pic.url
         return Response({
-            'key': self.get_response_data(user)['key'],
+            #'key': self.get_response_data(user)['key'],
             'user_id': user.pk,
             'username': user.username,
             'email': user.email,

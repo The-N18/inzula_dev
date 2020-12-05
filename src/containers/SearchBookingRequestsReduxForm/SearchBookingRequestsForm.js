@@ -25,6 +25,7 @@ import { withRouter } from "react-router-dom";
 import $ from "jquery";
 import {renderField, renderDateTimePicker, renderCitiesList, renderDropdownList} from "../../containers/ReduxForm/renderField";
 import { setInitialValues } from "../../store/actions/searchBookingsPage";
+import {FormattedMessage, FormattedDate} from 'react-intl'
 
 
 class SearchBookingRequestsForm extends React.Component {
@@ -56,8 +57,12 @@ class SearchBookingRequestsForm extends React.Component {
   }
 
   submitForm = (val) => {
+    const { user_id, next_url, count } = this.props;
     this.props.setInitialValues(val['departure_location'], val['destination_location'], val['travel_date']);
+    const departureLocation = val['departure_location'] ? val['departure_location']['pk'] : null;
+    const destinationLocation = val['destination_location'] ? val['destination_location']['pk'] : null;
     this.props.history.push("/search_bookings");
+    this.props.searchBookings(departureLocation, destinationLocation, val['travel_date'], null, null, null, null, user_id, next_url, count);
   };
 
 
@@ -66,45 +71,60 @@ class SearchBookingRequestsForm extends React.Component {
     return (
       <Segment>
           <Header as="h4" textAlign="center">
-            Prefer to know what shipping offers are available before committing?
+            <FormattedMessage
+              id="search_requests.title"
+              defaultMessage="Prefer to know what shipping offers are available before committing?"
+            />
           </Header>
           <Header as="h4" textAlign="center">
-            No worries, you can add the country of departure and destination of your trip and thus access the requests for available expeditions.
+            <FormattedMessage
+              id="search_requests.head"
+              defaultMessage="No worries, you can add the country of departure and destination of your trip and thus access the requests for available expeditions."
+            />
           </Header>
           <form onSubmit={handleSubmit(this.submitForm)}>
           <Grid>
             <Grid.Row columns={3}>
               <Grid.Column mobile={16} tablet={16} computer={6}>
           <div>
-            <div>
+            <label>
+              <FormattedMessage
+                id="search_requests.departure"
+                defaultMessage="Departure location"
+              />
+            </label>
               <Field
                 name="departure_location"
-                placeholder="Departure location"
-                label="Departure location"
                 component="input"
                 type="text"
                 component={renderCitiesList}
               />
-              </div>
             </div>
             </Grid.Column>
             <Grid.Column mobile={16} tablet={16} computer={6}>
             <div>
-              <div>
+              <label>
+                <FormattedMessage
+                  id="search_requests.destination"
+                  defaultMessage="Destination location"
+                />
+              </label>
                 <Field
                   name="destination_location"
-                  placeholder="Destination location"
-                  label="Destination location"
                   component="input"
                   type="text"
                   component={renderCitiesList}
                 />
-                </div>
               </div>
               </Grid.Column>
               <Grid.Column mobile={16} tablet={16} computer={4}>
             <div>
-              <label>Travel Date</label>
+              <label>
+                <FormattedMessage
+                  id="search_requests.travel_date"
+                  defaultMessage="Travel Date"
+                />
+              </label>
               <Field
                 name="travel_date"
                 showTime={false}
@@ -119,7 +139,10 @@ class SearchBookingRequestsForm extends React.Component {
               type="submit"
               className={"buttoncolor search-booking-requests-button"}
             >
-              Search
+            <FormattedMessage
+              id="search_requests.search"
+              defaultMessage="Search"
+            />
             </Button>
             </form>
         </Segment>
@@ -130,11 +153,14 @@ class SearchBookingRequestsForm extends React.Component {
 const mapStateToProps = state => {
   return {
     user_id: state.userInfo.userId,
+    next_url: state.searchBookings.next_url,
+    count: state.searchBookings.count,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    searchBookings: (departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight, user_id, next_url, count) => dispatch(searchBookings(departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight, user_id, next_url, count)),
     setInitialValues: (departure_location, destination_location, travel_date) => dispatch(setInitialValues(departure_location, destination_location, travel_date)),
   };
 };

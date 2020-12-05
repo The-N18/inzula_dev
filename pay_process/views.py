@@ -13,12 +13,13 @@ from mangopay.utils import Address
 
 class CreateNaturalUser(APIView):
     def post(self, request, format=None):
-        # get user from user id
+        # Get or create mangopay user
         userId = request.data['userId']
         user = User.objects.get(pk=userId)
         user_profile = user.profile
         nat_user_id = user_profile.nat_user_id
         natural_user = None
+        wallet = None
         if nat_user_id is not None:
             natural_user = NaturalUser.get(nat_user_id)
         else:
@@ -33,10 +34,19 @@ class CreateNaturalUser(APIView):
                                        birthday=1300186358,
                                        email=user.email)
             natural_user.save()
-            user_profile.nat_user_id = natural_user.id
-            user_profile.save()
+        # Create user wallet
+        if user_profile.wallet_id is None:
+            wallet = Wallet(owners=[natural_user],
+                    description='Wallet',
+                    currency='EUR',
+                    tag="Wallet for User-{}".format(natural_user.id))
+            wallet.save()
+            user_profile.wallet_id = wallet.get_pk()
+        user_profile.nat_user_id = natural_user.id
+        user_profile.save()
         result = {
-        'naturalUserId': natural_user.id
+        'naturalUserId': natural_user.id,
+        'walletId': wallet.id if wallet is not None else user_profile.wallet_id
         }
         return Response(result, status=status.HTTP_200_OK)
 
@@ -55,7 +65,9 @@ class InitCardInfo(APIView):
         'accessKeyRef': card_registration.access_key,
         'data': card_registration.preregistration_data,
         'card_id': card_registration.id,
-        'user_id': userId
+        'reg_url': card_registration.card_registration_url,
+        'user_id': userId,
+        'nat_user_id': nat_user_id
         }
         return Response(result, status=status.HTTP_200_OK)
 
@@ -91,4 +103,4 @@ class PayIn(APIView):
         # send credited money into user wallet
         # transfer money from user wallet to inzula wallet
         # end.
-        return Response("result", status=status.HTTP_200_OK)
+        return Response({"result"}, status=status.HTTP_200_OK)

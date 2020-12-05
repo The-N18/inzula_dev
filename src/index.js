@@ -8,6 +8,7 @@ import thunk from "redux-thunk";
 import notifyReducer from 'react-redux-notify';
 
 import authReducer from "./store/reducers/auth";
+import verifyUserReducer from "./store/reducers/verifyUser";
 import appConfigReducer from "./store/reducers/appConfig";
 import myProfileReducer from "./store/reducers/myProfile";
 import searchbookingsReducer from "./store/reducers/searchBookings";
@@ -34,6 +35,9 @@ import deleteBookingConfirmReducer from "./store/reducers/deleteBookingConfirm";
 import deleteTripConfirmReducer from "./store/reducers/deleteTripConfirm";
 import updateTripModalReducer from "./store/reducers/updateTripModal";
 import updateBookingModalReducer from "./store/reducers/updateBookingModal";
+import declineBookingReducer from "./store/reducers/declineBooking";
+import validateBookingReducer from "./store/reducers/validateBooking";
+import deleteAccountReducer from "./store/reducers/deleteAccount";
 import { reducer as formReducer } from 'redux-form'
 import axios from 'axios';
 
@@ -42,6 +46,7 @@ const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const rootReducer = combineReducers({
   form: formReducer,
   auth: authReducer,
+  verifyUser: verifyUserReducer,
   appConfig: appConfigReducer,
   myProfile: myProfileReducer,
   searchBookings: searchbookingsReducer,
@@ -69,6 +74,9 @@ const rootReducer = combineReducers({
   searchbookingsPage: searchbookingsPageReducer,
   proposePriceOnBooking: proposePriceOnBookingReducer,
   confirmBookingPrice: confirmBookingPriceReducer,
+  declineBooking: declineBookingReducer,
+  validateBooking: validateBookingReducer,
+  deleteAccount: deleteAccountReducer,
 });
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";

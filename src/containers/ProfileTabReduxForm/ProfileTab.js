@@ -21,6 +21,7 @@ import CSRFToken from "../../containers/CSRFToken";
 import DjangoCSRFToken from 'django-react-csrftoken';
 import {renderField, renderDropdownList} from "../../containers/ReduxForm/renderField";
 import {FormattedMessage, FormattedDate} from 'react-intl'
+import { openDeleteAccount } from "../../store/actions/deleteAccount";
 
 class ProfileTab extends React.Component {
   constructor(props) {
@@ -44,8 +45,13 @@ class ProfileTab extends React.Component {
     this.props.updateProfile(val['first_name'], val['last_name'], val['phone_number'], val['email'], country, val['passport_number'], this.state.picture);
   }
 
+  deleteYourAccount = () => {
+    console.log("deleteYourAccount");
+    this.props.openDeleteAccount();
+  }
+
   render () {
-    const {handleSubmit, token, loading, pristine, reset, submitting, invalid, date_joined, profile_pic, passport_number, phone_number, email} = this.props;
+    const {handleSubmit, token, loading, deleteLoading, pristine, reset, submitting, invalid, date_joined, profile_pic, passport_number, phone_number, email} = this.props;
     return (
       <Segment basic className={"profile-tab-section"}>
       <Grid className={"profile-tab-section-grid"}>
@@ -78,6 +84,19 @@ class ProfileTab extends React.Component {
                 defaultMessage="Passport number: "
               />{passport_number}</p> : ''}
               </Segment>
+            </Segment>
+            <Segment className={"profile-tab-card"}>
+              <Button
+                className={"buttoncolor"}
+                size="large"
+                loading={deleteLoading}
+                onClick={this.deleteYourAccount.bind(this)}
+              >
+              <FormattedMessage
+                id="profile_tab.delete_account"
+                defaultMessage="Delete account"
+              />
+              </Button>
             </Segment>
           </Grid.Column>
           <Grid.Column mobile={16} tablet={16} computer={11} className={"profile-tab-card bordered-column"}>
@@ -229,6 +248,7 @@ class ProfileTab extends React.Component {
                       size="large"
                       loading={loading}
                       disabled={invalid}
+                      type="submit"
                     >
                     <FormattedMessage
                       id="profile_tab.save"
@@ -252,6 +272,7 @@ class ProfileTab extends React.Component {
 const mapStateToProps = state => {
   return {
     loading: state.auth.loading,
+    deleteLoading: state.auth.deleteLoading,
     first_name: state.userInfo.first_name,
     last_name: state.userInfo.last_name,
     passport_number: state.userInfo.passport_number,
@@ -267,6 +288,7 @@ const mapDispatchToProps = dispatch => {
   return {
     updateProfile: (first_name, last_name, phone_number, email, country, passport_number, profile_pic) =>
       dispatch(updateUserProfile(first_name, last_name, phone_number, email, country, passport_number, profile_pic)),
+    openDeleteAccount: () => dispatch(openDeleteAccount())
   };
 };
 

@@ -59,6 +59,7 @@ class UserProfile(models.Model):
     profile_pic = models.ImageField(upload_to='uploads/profile_images/', blank=True, null=True, default='default.jpg')
     terms_conditions = models.BooleanField(default=False)
     nat_user_id = models.CharField(max_length=50, null=True, blank=True, default=None)
+    wallet_id = models.CharField(max_length=50, null=True, blank=True, default=None)
 
     def __str__(self):
         return "{0}: {1} - {2}".format(self.user.username, self.user.first_name, self.user.last_name)

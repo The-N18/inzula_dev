@@ -25,6 +25,7 @@ from userprofile.urls import urlpatterns as userprofile_urls
 from django.views.static import serve
 from django.conf.urls.static import static
 from userprofile.views import FacebookLogin, TwitterLogin, SocialAccountListView, SocialAccountDisconnectView
+from rest_auth.registration.views import VerifyEmailView
 
 
 urlpatterns = [
@@ -36,6 +37,8 @@ urlpatterns = [
     path('socialaccounts/', SocialAccountListView.as_view(),name='social_account_list'),
     path('socialaccounts/(?P<pk>\d+)/disconnect/', SocialAccountDisconnectView.as_view(), name='social_account_disconnect'),
     path('rest-auth/', include('rest_auth.urls')),
+    path('account-confirm-email/', VerifyEmailView.as_view(), name='account_email_verification_sent'),
+    path('account-confirm-email/(?P<key>[-:\w]+)/', VerifyEmailView.as_view(), name='account_confirm_email'),
     path('trips/', include(trip_urls)),
     path('bookings/', include(booking_urls)),
     path('pay/', include(payment_urls)),

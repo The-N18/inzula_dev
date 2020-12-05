@@ -10,6 +10,7 @@ import LoginParent from "./containers/LoginParent/LoginParent";
 import SignupParent from "./containers/SignupParent/SignupParent";
 import MyProfile from "./containers/MyProfile/MyProfile";
 import Transport from "./containers/Transport/Transport";
+import VerifyUser from "./containers/VerifyUser/VerifyUser";
 import HomepageLayout from "./containers/Home";
 import SendPage from "./containers/SendPage/SendPage";
 import SearchBookingRequestsPage from "./containers/SearchBookingRequestsPage/SearchBookingRequestsPage";
@@ -17,15 +18,12 @@ import SignupParentWithDiscount from "./containers/SignupParentWithDiscount/Sign
 
 const BaseRouter = () => (
   <Hoc>
-    {/*<Route path="/login" component={LoginParent} />
-    <Route path="/signup" component={SignupParent} />*/}
     <Route path="/signupdiscount" component={SignupParentWithDiscount} />
-    {/*<Route path="/loginemail" component={LoginRedux} />
-  <Route path="/signupemail" component={SignupRedux} />*/}
     <Route path="/profile" component={MyProfile} />
     <Route path="/transport" component={Transport} />
     <Route path="/dispatch" component={SendPage} />
     <Route path="/search_bookings" component={SearchBookingRequestsPage} />
+    <Route path="/verify/:verificationKey" component={VerifyUser} />
     <Route exact path="/" component={HomepageLayout} />
   </Hoc>
 );

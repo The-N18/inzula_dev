@@ -3,7 +3,7 @@ import * as actionTypes from "./actionTypes";
 import { api_url } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
-
+import mangopay from 'mangopay2-nodejs-sdk';
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
 
@@ -64,14 +64,13 @@ export const getInitialCardData = (values) => {
       .post(api_url() + "/pay/initCardInfo", values)
       .then(result => {
         dispatch(checkAuthTimeout(3600));
-        // console.log(result);
-        // dispatch(getCardTokenizedData({
-        //   'accessKeyRef': result['data']['accessKeyRef'],
-        //   'data': result['data']['data'],
-        //   'cardNumber': values['cardNumber'],
-        //   'cardExpirationDate': values['cardExpirationDate'],
-        //   'cardCvx': values['cardCvx']}, result['data']['card_id'], values['userId']));
-        // dispatch(setCardRegistrationData(result['data']['data']))
+        dispatch(createGist({
+          'accessKeyRef': result['data']['accessKeyRef'],
+          'data': result['data']['data'],
+          'cardNumber': values['cardNumber'],
+          'cardExpirationDate': values['cardExpirationDate'],
+          'cardCvx': values['cardCvx']}, result['data']['card_id'], values['userId'], result['data']['nat_user_id'], result['data']['reg_url']));
+        dispatch(setCardRegistrationData(result['data']['data']))
         console.log(result);
       })
       .catch(err => {
@@ -79,11 +78,30 @@ export const getInitialCardData = (values) => {
   };
 }
 
+function createGist(values, card_id, user_id, nat_user_id, reg_url) {
+  console.log(values);
+  fetch(reg_url, {
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'crossDomain': true,
+      'credentials': 'include',
+      'X-Referer': '',
+    },
+    method: 'post',
+    body: JSON.stringify({...values, userId: nat_user_id, accessKey: values['accessKeyRef'], clientId: 'tentee_inzula', clientPassword: 'VpKQqHUqxj39F2UzJvpktMC3qFiP0YEZx8xMR8Hrrq0EYdBaVW'})
+  }).then(function(res){ console.log(res) })
+    .catch(function(res){ console.log(res) })
+}
+
 export const getCardTokenizedData = (values, card_id, user_id) => {
   const config = {
             headers: { 'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
                         'crossDomain': true,
-                        'Access-Control-Allow-Origin': '*' }
+                        'Access-Control-Allow-Origin': '*',
+                        'X-Referer': '',
+                        'Referer': 'http://localhost',
+                        'credentials': 'include' }
           };
   return dispatch => {
     axios

@@ -14,9 +14,10 @@ class HomeHowInzulaWorksSection extends React.Component {
 
 
   render() {
+    const {lang} = this.props;
     const panes = [
     {
-      menuItem: 'For shippers',
+      menuItem: lang === 'fr' ? 'Pour expediteurs' : 'For shippers',
       render: () => <Tab.Pane attached={false} className={"how-it-works-tabpane"}>
       <Header as='h4' textAlign="center">
         <FormattedMessage
@@ -80,7 +81,7 @@ class HomeHowInzulaWorksSection extends React.Component {
       </Tab.Pane>,
     },
     {
-      menuItem: 'For carriers',
+      menuItem: lang === 'fr' ? 'Pour transporteurs' : 'For carriers',
       render: () => <Tab.Pane attached={false} className={"how-it-works-tabpane"}>
       <Header as='h4' textAlign="center">
         <FormattedMessage
@@ -160,7 +161,9 @@ class HomeHowInzulaWorksSection extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    lang: state.appConfig.lang
+  };
 };
 
 const mapDispatchToProps = dispatch => {

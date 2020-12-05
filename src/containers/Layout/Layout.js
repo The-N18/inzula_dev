@@ -25,6 +25,9 @@ import UpdateBooking from "../../containers/UpdateBookingModal/UpdateBooking";
 import ProposePriceOnBooking from "../../containers/ProposePriceOnBooking/ProposePriceOnBooking";
 import PaymentFormModal from "../../containers/PaymentFormModal/PaymentFormModal";
 import ConfirmBookingPrice from "../../containers/ConfirmBookingPrice/ConfirmBookingPrice";
+import DeclineBooking from "../../containers/DeclineBooking/DeclineBooking";
+import ValidateBooking from "../../containers/ValidateBooking/ValidateBooking";
+import DeleteAccount from "../../containers/DeleteAccount/DeleteAccount";
 
 import LanguageSwitcherSelector from "../../containers/LanguageSwitcherSelector/LanguageSwitcherSelector";
 import 'react-redux-notify/dist/ReactReduxNotify.css';
@@ -207,6 +210,9 @@ class CustomLayout extends React.Component {
       <ProposePriceOnBooking />
       <ConfirmBookingPrice />
       <PaymentFormModal />
+      <DeclineBooking />
+      <ValidateBooking />
+      <DeleteAccount />
       <Notify />
         <header className="menuheader">
           <div>

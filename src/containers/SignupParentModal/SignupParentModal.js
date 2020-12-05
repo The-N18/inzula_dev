@@ -11,6 +11,7 @@ import { NavLink, Redirect } from "react-router-dom";
 import { openSignupParentModal, closeSignupParentModal } from "../../store/actions/signupParentModal";
 import { openSignupModal } from "../../store/actions/signupModal";
 import { openLoginParentModal } from "../../store/actions/loginParentModal";
+import {FormattedMessage, FormattedDate} from 'react-intl'
 
 
 class SignupParentModal extends React.Component {
@@ -32,31 +33,56 @@ class SignupParentModal extends React.Component {
         size='large'
       >
         <Modal.Header>
-        Signup
+          <FormattedMessage
+            id="signup.title"
+            defaultMessage="Sign up"
+          />
         </Modal.Header>
         <Modal.Content scrolling>
       <Segment basic style={{ padding: "6em 0em" }} textAlign="center">
         <Segment basic textAlign="center" className={"signupparent-segment"}>
         <Segment raised className={"signupparentcard"} textAlign="center">
           <Button fluid color='facebook' className={"signupparent-button"}>
-            <Icon name='facebook' /> Sign up with Facebook
+            <Icon name='facebook' />
+              <FormattedMessage
+                id="signup.use_fb"
+                defaultMessage="Sign up with Facebook"
+              />
           </Button>
           <Button fluid color='google plus' className={"signupparent-button"}>
-            <Icon name='google plus' /> Sign up with Gmail
+            <Icon name='google plus' />
+              <FormattedMessage
+                id="signup.use_gmail"
+                defaultMessage="Sign up with Gmail"
+              />
           </Button>
           <Button fluid className={"signupparent-button"} onClick={() => this.props.openSignupModal()}>
-            <Icon name='mail' /> Use email address
+            <Icon name='mail' />
+              <FormattedMessage
+                id="signup.use_email"
+                defaultMessage="Use username"
+              />
           </Button>
         </Segment>
         <Segment raised className={"signupparentcard"} textAlign="center">
-          Already a member? <span className={"mimic-anchor"} onClick={this.handleSignin.bind(this)}>Sign in</span>
+          <FormattedMessage
+            id="signup.have_account"
+            defaultMessage="Already a member?"
+          /> <span className={"mimic-anchor"} onClick={this.handleSignin.bind(this)}>
+          <FormattedMessage
+            id="signup.login"
+            defaultMessage="Sign in"
+          /></span>
         </Segment>
       </Segment>
       </Segment>
       </Modal.Content>
       <Modal.Actions>
         <Button negative onClick={() => this.props.closeSignupParentModal()} primary>
-          Cancel <Icon name='cancel' />
+          <FormattedMessage
+            id="signup.cancel"
+            defaultMessage="Cancel"
+          /> <Icon name='cancel' />
         </Button>
       </Modal.Actions>
     </Modal>
