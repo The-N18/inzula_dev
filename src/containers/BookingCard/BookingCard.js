@@ -23,6 +23,9 @@ import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify'
 import { openDeclineBooking, setBookingDeclineBooking } from "../../store/actions/declineBooking";
 import { openValidateBooking, setBookingValidateBooking } from "../../store/actions/validateBooking";
 import SimpleImageSlider from "react-simple-image-slider";
+import { Carousel } from "react-responsive-carousel";
+import 'react-responsive-carousel/lib/styles/carousel.css';
+
 import $ from "jquery";
 
 class BookingCard extends React.Component {
@@ -155,8 +158,8 @@ class BookingCard extends React.Component {
           </Grid.Column> : ''}
           <Grid.Column mobile={16} tablet={16} computer={4}>
             <Segment basic textAlign="right">
-              {images.length === 0 && <Image centered src={backend_url() + '/static/images/default_booking_image.png'} verticalAlign="middle" size="massive" className={"booking-card-img"}/>}
-              {images.length > 0 && <div className={"booking-card-img"}>
+              {images && images.length === 0 && <Image centered src={backend_url() + '/static/images/default_booking_image.png'} verticalAlign="middle" size="massive" className={"booking-card-img"}/>}
+              {/*images && images.length > 0 ? <div className={"booking-card-img"}>
                 <SimpleImageSlider
                     width={this.computeSliderWidth()}
                     height={150}
@@ -164,7 +167,14 @@ class BookingCard extends React.Component {
                     showBullets={true}
                     showNavs={true}
                 />
-            </div>}
+            </div> : ''*/}
+            {images && images.length > 0 ? <Carousel autoPlay>
+              {images.map((item, index) => {
+                return (
+                  <Image centered alt="" src={item.url} verticalAlign="middle" size="massive" className={"booking-card-img"}/>
+                );
+              })}
+            </Carousel> : ''}
             </Segment>
           </Grid.Column>
           <Grid.Column mobile={16} tablet={8} computer={selectable && editable ? 5 : 6}>

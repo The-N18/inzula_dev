@@ -27,7 +27,7 @@ export const buildImagesLinkList = (images) => {
   if(images.length > 0) {
     let imgLinks = [];
     for(let i = 0; i < images.length; i++) {
-      imgLinks.push({'url': get_img_url(images[i]['image'])});
+      imgLinks.push({url: get_img_url(images[i]['image'])});
     }
     return imgLinks;
   }

@@ -25,6 +25,7 @@
     "react-recaptcha": "^2.3.10",
     "react-redux": "^7.1.0",
     "react-redux-notify": "^4.2.1",
+    "react-responsive-carousel": "^3.2.11",
     "react-router-dom": "^5.0.1",
     "react-select": "^3.1.0",
     "react-select-virtualized": "^2.5.11",
