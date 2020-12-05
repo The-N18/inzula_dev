@@ -27,6 +27,7 @@ import { DateInput } from 'semantic-ui-calendar-react';
 import BookingCard from "../../containers/BookingCard/BookingCard";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { sizeMultiOptions, categoryMultiOptions, weightMultiOptions, valueMultiOptions } from "../../utils/options";
+import { backend_url, get_img_url, buildImagesLinkList } from "../../configurations";
 
 
 class SearchBookingRequestsPage extends React.Component {
@@ -245,6 +246,7 @@ class SearchBookingRequestsPage extends React.Component {
                   product_category={item["product"]["product_category"]}
                   proposed_price={item["product"]["proposed_price"]}
                   img={item["product"]["images"].length === 0 ? '' : item["product"]["images"][0]['image']}
+                  images={buildImagesLinkList(item["product"]["images"])}
                   editable={false}
                   selectable={false}
                   can_propose />

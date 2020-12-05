@@ -375,8 +375,10 @@ class BookingRequestDetail(APIView):
 
     def delete(self, request, pk, format=None):
         booking_request = self.get_object(pk)
+        if booking_request.trip is not None or booking_request.confirmed_by_sender or booking_request.status in ['boo', 'con', 'awa', 'col', 'del']:
+            return Response({'detail': 'You cannot delete a booking at this stage.'}, status=status.HTTP_204_NO_CONTENT)
         booking_request.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({'detail': 'ok'}, status=status.HTTP_204_NO_CONTENT)
 
 
 class NotifDetail(APIView):

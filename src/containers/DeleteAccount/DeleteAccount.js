@@ -10,6 +10,7 @@ import styles from './deleteaccount.css';
 import { NavLink, Redirect } from "react-router-dom";
 import { openDeleteAccount, closeDeleteAccount } from "../../store/actions/deleteAccount";
 import { deleteAccount } from "../../store/actions/auth";
+import {FormattedMessage, FormattedDate} from 'react-intl'
 
 class DeleteAccount extends React.Component {
 
@@ -28,16 +29,28 @@ class DeleteAccount extends React.Component {
         onOpen={() => this.props.openDeleteAccount()}
         size='tiny'
       >
-      <Modal.Header>Decline your account</Modal.Header>
+      <Modal.Header><FormattedMessage
+        id="delete_account.title"
+        defaultMessage="Delete your account"
+      /></Modal.Header>
       <Modal.Content>
-        <p>Are you sure you want to delete your account?</p>
+        <p><FormattedMessage
+          id="delete_account.question"
+          defaultMessage="Are you sure you want to delete your account?"
+        /></p>
       </Modal.Content>
       <Modal.Actions>
         <Button negative onClick={() => this.props.closeDeleteAccount()}>
-          No
+          <FormattedMessage
+            id="delete_account.no"
+            defaultMessage="No"
+          />
         </Button>
         <Button positive onClick={this.handleDelete.bind(this)}>
-          Yes
+          <FormattedMessage
+            id="delete_account.yes"
+            defaultMessage="Yes"
+          />
         </Button>
       </Modal.Actions>
     </Modal>

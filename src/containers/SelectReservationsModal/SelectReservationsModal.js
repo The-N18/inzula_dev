@@ -19,7 +19,7 @@ import { NavLink, Redirect } from "react-router-dom";
 import { authLogin } from "../../store/actions/auth";
 import styles from './selectreservations.css';
 import PropTypes from "prop-types";
-import { backend_url } from "../../configurations";
+import { backend_url, buildImagesLinkList } from "../../configurations";
 import ImageUploader from 'react-images-upload';
 import { DateInput } from 'semantic-ui-calendar-react';
 import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';

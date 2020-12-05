@@ -26,6 +26,11 @@ export const msg = {
   'add_trip_form.one_way': "Aller",
   'add_trip_form.round_trip': "Aller-Retour",
   'add_trip_form.add_your_trip': "Ajoutez votre trajet",
+
+  'add_trip_form.dest_location': "Destination",
+  'add_trip_form.depart_location': "Lieu de depart",
+  'add_trip_form.trip': "Voyage",
+
   'booking_card.description': "Description:",
   'booking_card.arrival_date': "Date d'arrivée:",
   'booking_card.departure_loc': "Lieu de départ:",
@@ -224,4 +229,9 @@ export const msg = {
   'verify_email.title': "Verification de votre email...",
   'verify_email.success': "Email verifie avec succes",
   'verify_email.failed': "Echec de la verification de l'email",
+
+  'delete_account.title': "Supprimez votre compte",
+  'delete_account.question': "Etes vous sur de vouloir supprimer votre compte?",
+  'delete_account.no': "Non",
+  'delete_account.yes': "Oui, supprimez mon compte.",
 };

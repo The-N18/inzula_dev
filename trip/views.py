@@ -201,5 +201,9 @@ class TripDetail(APIView):
 
     def delete(self, request, pk, format=None):
         trip = self.get_object(pk)
+        booking_requests = BookingRequest.objects.filter(trip=trip)
+        booking_requests = booking_requests.filter(Q(status__in=['boo', 'con', 'awa', 'col', 'del']) | Q(confirmed_by_sender=True))
+        if booking_requests:
+            return Response({'detail': 'You cannot delete a trip at this stage.'}, status=status.HTTP_204_NO_CONTENT)
         trip.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({'detail': 'ok'}, status=status.HTTP_204_NO_CONTENT)

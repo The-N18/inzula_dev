@@ -22,9 +22,39 @@ import { optionToText, sizeOptions, sizeOptionsFr, categoryOptions, categoryOpti
 import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
 import { openDeclineBooking, setBookingDeclineBooking } from "../../store/actions/declineBooking";
 import { openValidateBooking, setBookingValidateBooking } from "../../store/actions/validateBooking";
-
+import SimpleImageSlider from "react-simple-image-slider";
+import $ from "jquery";
 
 class BookingCard extends React.Component {
+
+  constructor(props) {
+    super(props)
+  }
+
+  state = {
+    isMobile: false,
+    isTablet: false,
+    width: 0
+  };
+
+  handleScreenSize = () => {
+    this.setState({width: $(window).width()});
+    if($(window).width() < 768) {
+      this.setState({ isMobile: true, isTablet: false });
+    }
+    if($(window).width() >= 768) {
+      this.setState({ isTablet: true, isMobile: false });
+    }
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleScreenSize);
+  }
+
+  componentDidMount = () => {
+    const { user_id, next_url, count } = this.props;
+    window.addEventListener('resize', this.handleScreenSize, false);
+    this.handleScreenSize();
+    }
 
   handleToggleCheckbox = (pk) => {
     const {selected} = this.props;
@@ -92,12 +122,27 @@ class BookingCard extends React.Component {
 
   }
 
+  computeSliderWidth = () => {
+    const {width} = this.state;
+    if(width <= 767) {
+      return width - 66;
+    }
+    if(width === 1024) {
+      return 194;
+    }
+    if(width > 767) {
+      return 260;
+    }
+    return 260;
+  }
+
   render() {
 
-    const {pk, title, description, img, product_details,
+    const {pk, title, description, img, images, product_details,
       arrival_date, departure_location, selectable, editable,
       destination_location, weight, space, price, product_category,
       proposed_price, validate_decline, can_propose, lang} = this.props;
+    const {isMobile, isTablet} = this.state;
 
     return (
       <Card raised fluid centered className={"home-text-img-card-grid booking-card-max-h"}>
@@ -110,7 +155,16 @@ class BookingCard extends React.Component {
           </Grid.Column> : ''}
           <Grid.Column mobile={16} tablet={16} computer={4}>
             <Segment basic textAlign="right">
-              <Image centered src={img ? get_img_url(img) : backend_url() + '/static/images/default_booking_image.png'} verticalAlign="middle" size="massive" className={"booking-card-img"}/>
+              {images.length === 0 && <Image centered src={backend_url() + '/static/images/default_booking_image.png'} verticalAlign="middle" size="massive" className={"booking-card-img"}/>}
+              {images.length > 0 && <div className={"booking-card-img"}>
+                <SimpleImageSlider
+                    width={this.computeSliderWidth()}
+                    height={150}
+                    images={images}
+                    showBullets={true}
+                    showNavs={true}
+                />
+            </div>}
             </Segment>
           </Grid.Column>
           <Grid.Column mobile={16} tablet={8} computer={selectable && editable ? 5 : 6}>
@@ -239,6 +293,7 @@ BookingCard.propTypes = {
   validate_decline: PropTypes.boolean,
   can_propose: PropTypes.boolean,
   pk: PropTypes.number,
+  images: PropTypes.array,
 };
 
 export default connect(

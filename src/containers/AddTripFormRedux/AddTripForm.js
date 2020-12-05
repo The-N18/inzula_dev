@@ -21,6 +21,7 @@ import { validate } from "./validation";
 import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
 import { openLoginParentModal } from "../../store/actions/loginParentModal";
 import 'react-widgets/dist/css/react-widgets.css';
+import {FormattedMessage, FormattedDate} from 'react-intl'
 
 class AddTripForm extends React.Component {
 
@@ -102,74 +103,82 @@ class AddTripForm extends React.Component {
             <Grid.Column  mobile={16} tablet={16} computer={8} textAlign="center" verticalAlign="middle" className={"add-trip-grid-column"}>
               <Segment basic>
               <Header as="h2" textAlign="center">
-                Earn money every time you travel.
+                <FormattedMessage
+                  id="add_trip_form.earn_money"
+                  defaultMessage="Earn money every time you travel."
+                />
               </Header>
               <Header as="h4" textAlign="center">
-                Deliver parcels to individuals wishing to ship at low prices and amortize your travel costs.
+                <FormattedMessage
+                  id="add_trip_form.deliver_parcels"
+                  defaultMessage="Deliver parcels to individuals wishing to ship at low prices and amortize your travel costs."
+                />
               </Header>
               <Button
                 size="small"
                 className={"buttoncolor search-button"}
                 onClick={this.handleOnClick.bind(this, '/')}
               >
-                How does it work?
+              <FormattedMessage
+                id="add_trip_form.how_it_works"
+                defaultMessage="How does it work?"
+              />
               </Button>
               </Segment>
             </Grid.Column>
             <Grid.Column  mobile={16} tablet={16} computer={8} className={"add-trip-grid-column"}>
             <Segment>
             <Header as="h4" textAlign="center" className={"add-trip-form-header"}>
-              Add information about your trip to earn money.
+              <FormattedMessage
+                id="add_trip_form.add_trip"
+                defaultMessage="Add information about your trip to earn money."
+              />
             </Header>
             <form onSubmit={handleSubmit(this.submitForm)}>
               <CSRFToken/>
               <Segment basic textAlign="center">
                   <div>
-                    <label>Trip</label>
+                    <label><FormattedMessage
+                      id="add_trip_form.trip"
+                      defaultMessage="Trip"
+                    /></label>
                     <Field
                       name="trip_type"
                       component={renderSelectList}
                       default='one_way_trip'
                       data={[ 'round_trip', 'one_way_trip' ]}/>
                   </div>
-                  {/*<Field
-                    name="departure_location"
-                    component="input"
-                    type="text"
-                    placeholder="Departure location"
-                    label="Departure location"
-                    className={"custom-field"}
-                    component={renderField}
-                  /> */}
+                  <div>
+                    <label><FormattedMessage
+                      id="add_trip_form.depart_location"
+                      defaultMessage="Departure location"
+                    /></label>
                   <Field
                     name="departure_location"
-                    placeholder="Departure location"
-                    label="Departure location"
                     component="input"
                     type="text"
                     className={"custom-field"}
                     component={renderCitiesList}
                   />
-                {/*<Field
-                  name="destination_location"
-                  component="input"
-                  type="text"
-                  placeholder="Destination location"
-                  label="Destination location"
-                  className={"custom-field"}
-                  component={renderField}
-                />*/}
+                </div>
+                <div>
+                  <label><FormattedMessage
+                    id="add_trip_form.dest_location"
+                    defaultMessage="Destination location"
+                  /></label>
                 <Field
                   name="destination_location"
-                  placeholder="Destination location"
-                  label="Destination location"
                   component="input"
                   type="text"
                   className={"custom-field"}
                   component={renderCitiesList}
                 />
+              </div>
                 <div>
-                  <label>Departure Date</label>
+                  <label><FormattedMessage
+                    id="add_trip_form.dep_date"
+                    defaultMessage="Departure Date"
+                  /></label>
                   <Field
                     name="depart_date"
                     showTime={false}
@@ -178,7 +187,10 @@ class AddTripForm extends React.Component {
                   />
                 </div>
                 {this.props.trip_type === "round_trip" ? <div>
-                  <label>Return Date</label>
+                  <label><FormattedMessage
+                    id="add_trip_form.cb_date"
+                    defaultMessage="Return Date"
+                  /></label>
                   <Field
                     name="comeback_date"
                     showTime={false}
@@ -200,7 +212,10 @@ class AddTripForm extends React.Component {
                 className={"buttoncolor transport-add-trip-button"}
                 title={"Please login to add a new trip"}
               >
-                Add your trip
+              <FormattedMessage
+                id="add_trip_form.add_your_trip"
+                defaultMessage="Add your trip"
+              />
               </Button>
               </Segment>
             </form>

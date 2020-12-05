@@ -12,7 +12,7 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './userreservations.css';
-import { backend_url } from "../../configurations";
+import { backend_url, buildImagesLinkList } from "../../configurations";
 import ImageUploader from 'react-images-upload';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { getReservations, getInitialReservations } from "../../store/actions/userBookings";
@@ -114,6 +114,7 @@ class UserBookingsList extends React.Component {
                 proposed_price={item["product"]["proposed_price"]}
                 product_details={item["product"]}
                 img={item["product"]["images"].length === 0 ? '' : item["product"]["images"][0]['image']}
+                images={buildImagesLinkList(item["product"]["images"])}
                 editable={false}
                 selectable={false}
                 validate_decline/>
