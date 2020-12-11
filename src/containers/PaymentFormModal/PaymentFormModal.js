@@ -22,12 +22,13 @@ import CSRFToken from "../../containers/CSRFToken";
 class PaymentFormModal extends React.Component {
 
   submitForm = (val) => {
-    const {userId, selectedBookingIds} = this.props;
+    const {userId, tripId, selectedBookingIds} = this.props;
     const values = {
       'cardNumber': val['card_number'],
       'cardExpirationDate': val['exp_date_mm'] + val['exp_date_yy'],
       'cardCvx': val['cvc'],
       'userId': userId,
+      'tripId': tripId,
       'selectedBookingIds': selectedBookingIds
     }
     this.props.payForBooking(values);
@@ -111,6 +112,7 @@ const mapStateToProps = state => {
   return {
     open: state.paymentFormModal.open,
     bookingId: state.confirmBookingPrice.bookingId,
+    tripId: state.selectReservationsModal.tripId,
     selectedBookingIds: state.selectReservationsModal.selected,
     userId: state.userInfo.userId,
     price: state.confirmBookingPrice.price,
