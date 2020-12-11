@@ -15,11 +15,15 @@ import json
 from django.db import transaction
 from booking.models import BookingRequest
 from trip.models import Trip
+from rest_framework.generics import CreateAPIView, ListAPIView, GenericAPIView
+from rest_auth.registration.app_settings import register_permission_classes
 
 # Create your views here.
 
-class PayForBooking(APIView):
-    def post(self, request, format=None):
+class PayForBooking(CreateAPIView):
+    permission_classes = register_permission_classes()
+
+    def create(self, request, *args, **kwargs):
         # get user from user id
         with transaction.atomic():
             userId = request.data['userId']
