@@ -20,12 +20,13 @@ import { validate } from "./validation";
 class PaymentFormModal extends React.Component {
 
   submitForm = (val) => {
-    const {userId} = this.props;
+    const {userId, selectedBookingIds} = this.props;
     const values = {
       'cardNumber': val['card_number'],
       'cardExpirationDate': val['exp_date_mm'] + val['exp_date_yy'],
       'cardCvx': val['cvc'],
-      'userId': userId
+      'userId': userId,
+      'selectedBookingIds': selectedBookingIds
     }
     this.props.getInitialCardData(values);
   }
@@ -106,7 +107,8 @@ class PaymentFormModal extends React.Component {
 const mapStateToProps = state => {
   return {
     open: state.paymentFormModal.open,
-    bookingId: state.paymentFormModal.bookingId,
+    bookingId: state.confirmBookingPrice.bookingId,
+    selectedBookingIds: state.selectReservationsModal.selected,
     userId: state.userInfo.userId,
     price: state.confirmBookingPrice.price,
     naturalUserId: state.paymentFormModal.naturalUserId

@@ -3,30 +3,24 @@ import { Field, reduxForm } from 'redux-form'
 
 export const validate = values => {
   const errors = {}
-  if (!values.username) {
-    errors.username = 'Required'
-  } else if (values.username.length > 15) {
-    errors.username = 'Must be 15 characters or less'
+  if (!values.departure_location) {
+    errors.departure_location = 'Required*'
   }
-  if (!values.email) {
-    errors.email = 'Required'
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = 'Invalid email address'
+  if (!values.destination_location) {
+    errors.destination_location = 'Required*'
   }
-  if (!values.age) {
-    errors.age = 'Required'
-  } else if (isNaN(Number(values.age))) {
-    errors.age = 'Must be a number'
-  } else if (Number(values.age) < 18) {
-    errors.age = 'Sorry, you must be at least 18 years old'
+  if (!values.depart_date) {
+    errors.depart_date = 'Required*'
+  }
+  if (values.trip_type === "round_trip") {
+    if (!values.comeback_date) {
+      errors.comeback_date = 'Required*'
+    }
   }
   return errors
 }
 
 export const warn = values => {
   const warnings = {}
-  if (values.age < 19) {
-    warnings.age = 'Hmm, you seem a bit young...'
-  }
   return warnings
 }

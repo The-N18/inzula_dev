@@ -9,7 +9,7 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { tripAddition } from "../../store/actions/addTrip";
+import { tripAddition, toggleCheck } from "../../store/actions/addTrip";
 import styles from './addtripform.css';
 import Recaptcha from 'react-recaptcha';
 import { DateInput } from 'semantic-ui-calendar-react';
@@ -22,6 +22,7 @@ import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
 import { openLoginParentModal } from "../../store/actions/loginParentModal";
 import 'react-widgets/dist/css/react-widgets.css';
 import {FormattedMessage, FormattedDate} from 'react-intl'
+// const  { DOM: { input, select, textarea } } = React
 
 class AddTripForm extends React.Component {
 
@@ -61,7 +62,7 @@ class AddTripForm extends React.Component {
 
 
   submitForm = (val) => {
-    const {userId, authenticated} = this.props;
+    const {userId, authenticated, trip_type_check} = this.props;
     const createdBy = {"user": userId};
     console.log(val);
     if(authenticated) {
@@ -69,7 +70,7 @@ class AddTripForm extends React.Component {
       const destinationLocation = val['destination_location'] ? val['destination_location']['pk'] : null;
       const depdate = val['depart_date'];
       const cbdate = val['comeback_date'] ? val['comeback_date'] : '';
-      this.props.addTrip(createdBy, departureLocation, destinationLocation, depdate, cbdate, val['trip_type']);
+      this.props.addTrip(createdBy, departureLocation, destinationLocation, depdate, cbdate, trip_type_check);
     } else {
       createNotification({
         message: 'Please login to add a new trip',
@@ -91,9 +92,17 @@ class AddTripForm extends React.Component {
     this.props.history.push(item);
   };
 
+  toggleCheck = (k) => {
+    this.props.toggleCheck(this.props.trip_type_check);
+  }
+
+  componentDidMount() {
+    this.props.toggleCheck("round_trip");
+  }
+
 
   render() {
-    const { loading, userId, handleSubmit, pristine, reset, submitting, invalid } = this.props;
+    const { loading, userId, handleSubmit, pristine, reset, submitting, invalid, trip_type_check } = this.props;
     const { departure_location, destination_location, depart_date, comeback_date, trip_type } = this.state;
     return (
       <Segment style={{ padding: "2em 0em" }} vertical className={"segment-bg-img"}>
@@ -137,7 +146,7 @@ class AddTripForm extends React.Component {
             <form onSubmit={handleSubmit(this.submitForm)}>
               <CSRFToken/>
               <Segment basic textAlign="center">
-                  <div>
+                  {/*<div>
                     <label><FormattedMessage
                       id="add_trip_form.trip"
                       defaultMessage="Trip"
@@ -147,6 +156,22 @@ class AddTripForm extends React.Component {
                       component={renderSelectList}
                       default='one_way_trip'
                       data={[ 'round_trip', 'one_way_trip' ]}/>
+                  </div>*/}
+                  <div>
+                    <span className={"radion-btns-span"}><label><FormattedMessage
+                      id="add_trip_form.trip"
+                      defaultMessage="Trip"
+                    /></label></span>
+                    <div>
+                      <span className={"radion-btns-span"}><label><Field name="trip_type" component={'input'} type="radio" value="one_way_trip" checked={trip_type_check === "one_way_trip"} onClick={this.toggleCheck.bind(this, 'one_way_trip')}/> <FormattedMessage
+                        id="add_trip_form.one_way"
+                        defaultMessage="One way Trip"
+                      /></label></span>
+                      <span className={"radion-btns-span"}><label><Field name="trip_type" component={'input'} type="radio" value="round_trip" checked={trip_type_check === "round_trip"} onClick={this.toggleCheck.bind(this, 'round_trip')}/> <FormattedMessage
+                        id="add_trip_form.round_trip"
+                        defaultMessage="Round Trip"
+                      /></label></span>
+                    </div>
                   </div>
                   <div>
                     <label><FormattedMessage
@@ -237,6 +262,7 @@ const mapStateToProps = state => {
   return {
     loading: state.addTrip.loading,
     error: state.addTrip.error,
+    trip_type_check: state.addTrip.trip_type_check,
     token: state.auth.token,
     userId: state.userInfo.userId,
     userProfileId: state.userInfo.userProfileId,
@@ -252,6 +278,7 @@ const mapDispatchToProps = dispatch => {
     addTrip: (created_by, departure_location, destination_location, depart_date, comeback_date, trip_type) => dispatch(tripAddition(created_by, departure_location, destination_location, depart_date, comeback_date, trip_type)),
     createNotification: (config) => {dispatch(createNotification(config))},
     openLoginModal: () => dispatch(openLoginParentModal()),
+    toggleCheck: (trip_type) => dispatch(toggleCheck(trip_type)),
   };
 };
 

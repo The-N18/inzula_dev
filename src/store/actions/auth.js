@@ -320,6 +320,7 @@ export const checkAuthTimeout = expirationTime => {
            canDismiss: true,
          }));
          dispatch(logout());
+         window.location.href = '/'
        })
        .catch(err => {
          dispatch(deleteFail(err));

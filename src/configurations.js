@@ -1,5 +1,5 @@
-//export const BACKEND_HOST_ADDRESS = '127.0.0.1';
-export const BACKEND_HOST_ADDRESS = '15.188.83.142';
+export const BACKEND_HOST_ADDRESS = '127.0.0.1';
+//export const BACKEND_HOST_ADDRESS = '15.188.83.142';
 // BACKEND_HOST_ADDRESS = 'http://localhost:3000/verify/'+emailconfirmation.key;
 // BACKEND_HOST_ADDRESS = 'http://15.188.83.142:5000/verify/'+emailconfirmation.key;
 export const BACKEND_HOST_PORT = '8000';
@@ -25,8 +25,9 @@ export const get_img_url = (img) => {
 
 export const buildImagesLinkList = (images) => {
   if(images.length > 0) {
+    let max_img = images.length > 3 ? 3 : images.length;
     let imgLinks = [];
-    for(let i = 0; i < images.length; i++) {
+    for(let i = 0; i < max_img; i++) {
       imgLinks.push({url: get_img_url(images[i]['image'])});
     }
     return imgLinks;

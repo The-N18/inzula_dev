@@ -232,4 +232,4 @@ const afterSubmit = (result, dispatch) => dispatch(reset('update_trip'));
 export default withRouter(connect(
     mapStateToProps,
     mapDispatchToProps
-)(reduxForm({ form: "update_trip", onSubmitSuccess: afterSubmit, enableReinitialize: true })(UpdateTripForm)));
+)(reduxForm({ form: "update_trip", onSubmitSuccess: afterSubmit, enableReinitialize: true, validate })(UpdateTripForm)));

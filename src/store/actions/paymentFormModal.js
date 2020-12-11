@@ -64,13 +64,11 @@ export const getInitialCardData = (values) => {
       .post(api_url() + "/pay/initCardInfo", values)
       .then(result => {
         dispatch(checkAuthTimeout(3600));
-        dispatch(createGist({
-          'accessKeyRef': result['data']['accessKeyRef'],
-          'data': result['data']['data'],
-          'cardNumber': values['cardNumber'],
-          'cardExpirationDate': values['cardExpirationDate'],
-          'cardCvx': values['cardCvx']}, result['data']['card_id'], values['userId'], result['data']['nat_user_id'], result['data']['reg_url']));
-        dispatch(setCardRegistrationData(result['data']['data']))
+        dispatch(setCardRegistrationData(result['data']['data']));
+        const card_dta = result['data']['tokenized_data'];
+        const card_id = result['data']['card_id'];
+        const user_id = values['userId'];
+        dispatch(updateCardData({data: card_dta, card_id: card_id, user_id: user_id, selectedBookingIds: values['selectedBookingIds']}));
         console.log(result);
       })
       .catch(err => {
@@ -78,49 +76,26 @@ export const getInitialCardData = (values) => {
   };
 }
 
-function createGist(values, card_id, user_id, nat_user_id, reg_url) {
-  console.log(values);
-  fetch(reg_url, {
-    mode: 'no-cors',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'crossDomain': true,
-      'credentials': 'include',
-      'X-Referer': '',
-    },
-    method: 'post',
-    body: JSON.stringify({...values, userId: nat_user_id, accessKey: values['accessKeyRef'], clientId: 'tentee_inzula', clientPassword: 'VpKQqHUqxj39F2UzJvpktMC3qFiP0YEZx8xMR8Hrrq0EYdBaVW'})
-  }).then(function(res){ console.log(res) })
-    .catch(function(res){ console.log(res) })
-}
-
-export const getCardTokenizedData = (values, card_id, user_id) => {
-  const config = {
-            headers: { 'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
-                        'crossDomain': true,
-                        'Access-Control-Allow-Origin': '*',
-                        'X-Referer': '',
-                        'Referer': 'http://localhost',
-                        'credentials': 'include' }
-          };
-  return dispatch => {
-    axios
-      .post("https://homologation-webpayment.payline.com/webpayment/getToken", values, config)
-      .then(result => {
-        dispatch(checkAuthTimeout(3600));
-        console.log(result);
-        dispatch(updateCardData({...result, card_id, user_id}));
-        dispatch(setCardRegistrationData(result['data']['data']))
-      })
-      .catch(err => {
-      });
-  };
-}
 
 export const updateCardData = (values) => {
   return dispatch => {
     axios
       .post(api_url() + "/pay/updateCardInfo", values)
+      .then(result => {
+        dispatch(checkAuthTimeout(3600));
+        console.log(result);
+        dispatch(setCardRegistrationData(result['data']))
+        dispatch(payToWallet({card_id: result['data']['card_id'], user_id: values['user_id'], selectedBookingIds: values['selectedBookingIds']}));
+      })
+      .catch(err => {
+      });
+  };
+}
+
+export const payToWallet = (values) => {
+  return dispatch => {
+    axios
+      .post(api_url() + "/pay/payToWallet", values)
       .then(result => {
         dispatch(checkAuthTimeout(3600));
         console.log(result);

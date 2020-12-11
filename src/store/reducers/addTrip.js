@@ -4,6 +4,7 @@ import { updateObject } from "../utility";
 const initialState = {
   error: null,
   loading: false,
+  trip_type_check: "one_way_trip",
 };
 
 const addTripStart = (state, action) => {
@@ -28,6 +29,12 @@ const addTripFail = (state, action) => {
   });
 };
 
+const toggleCheck = (state, action) => {
+  return updateObject(state, {
+    trip_type_check: action.trip_type_check
+  });
+};
+
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -37,6 +44,8 @@ const reducer = (state = initialState, action) => {
       return addTripStart(state, action);
     case actionTypes.ADD_TRIP_FAIL:
       return addTripFail(state, action);
+    case actionTypes.ADD_TRIP_TOGGLE_CHECK:
+      return toggleCheck(state, action);
     default:
       return state;
   }

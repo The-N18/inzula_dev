@@ -28,6 +28,13 @@ export const addTripFail = error => {
   };
 };
 
+export const toggleCheck = (trip_type_check) => {
+  return {
+    type: actionTypes.ADD_TRIP_TOGGLE_CHECK,
+    trip_type_check: trip_type_check === "one_way_trip" ? "round_trip" : "one_way_trip",
+  };
+}
+
 
 export const tripAddition = (created_by, departure_location, destination_location, depart_date, comeback_date, trip_type) => {
   console.log("in tripAddition");

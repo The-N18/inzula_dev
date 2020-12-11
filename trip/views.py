@@ -154,11 +154,10 @@ class TripSearchView(generics.ListAPIView):
 
 def validate(date_text):
     try:
-        if date_text != datetime.datetime.strptime(date_text, "%Y-%m-%d").strftime('%Y-%m-%d'):
-            raise ValueError
-        return True
+        datetime.datetime.strptime(date_text, "%Y-%m-%dT%H:%M:%S.%fZ")
     except ValueError:
         return False
+    return True
 
 class TripDetail(APIView):
     """
@@ -182,14 +181,14 @@ class TripDetail(APIView):
         cbDate = dta["comeback_date"]
         depDate2 = dta["depart_date"]
         cbDate2 = dta["comeback_date"]
-        if not validate(depDate):
+        if validate(depDate):
             start_date = datetime.datetime.strptime(depDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
             depDate2 = start_date.strftime('%Y-%m-%d')
-        if not validate(cbDate):
+        if validate(cbDate):
             end_date = datetime.datetime.strptime(cbDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
             cbDate2 = end_date.strftime('%Y-%m-%d')
         trip.depart_date = depDate2
-        trip.comeback_date = cbDate2
+        trip.comeback_date = cbDate2 if dta["comeback_date"] != '' else None
         depart_location = City.objects.get(pk=dta["departure_location"])
         dest_location = City.objects.get(pk=dta["destination_location"])
         trip.departure_location = depart_location

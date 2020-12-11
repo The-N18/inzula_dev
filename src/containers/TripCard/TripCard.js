@@ -55,7 +55,7 @@ class TripCard extends React.Component {
       "departure_location": departure_location,
       "destination_location": destination_location,
       "depart_date": new Date(depart_date),
-      "comeback_date": new Date(comeback_date),
+      "comeback_date": comeback_date !== null ? new Date(comeback_date) : '',
     };
     this.props.updateTripOpenModal(data, pk);
   }

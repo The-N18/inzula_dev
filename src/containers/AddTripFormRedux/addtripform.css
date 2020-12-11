@@ -2,6 +2,12 @@
   width: auto !important;
 }
 
+.radion-btns-span {
+  width: 100%;
+    display: block;
+    text-align: left;
+}
+
 #g-recaptcha {
   text-align: center;
   display: inline-block;

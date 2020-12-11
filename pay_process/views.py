@@ -6,9 +6,12 @@ from .payment_utils import create_or_get_user
 from django.contrib.auth.models import User
 import mangopay
 from mangopay.api import APIRequest
-from mangopay.resources import NaturalUser, Wallet, CardRegistration
+from mangopay.resources import NaturalUser, Wallet, CardRegistration, DirectPayIn, Money, Transaction
 from mangopay.utils import Address
-
+import requests
+from .serializers import TransactionSerializer
+from rest_framework.renderers import JSONRenderer
+import json
 # Create your views here.
 
 class CreateNaturalUser(APIView):
@@ -69,7 +72,10 @@ class InitCardInfo(APIView):
         'user_id': userId,
         'nat_user_id': nat_user_id
         }
-        return Response(result, status=status.HTTP_200_OK)
+        post_data = {**result, **request.data}
+        response = requests.post(result['reg_url'], data=post_data)
+        content = response.content
+        return Response({**result, 'tokenized_data': content}, status=status.HTTP_200_OK)
 
 
 class UpdateCardInfo(APIView):
@@ -79,14 +85,16 @@ class UpdateCardInfo(APIView):
         userId = request.data['user_id']
         cardId = request.data['card_id']
         data = request.data['data']
+
         nat_user_id = User.objects.get(pk=userId).profile.nat_user_id
         natural_user = NaturalUser.get(nat_user_id)
-        # Register card for user
-        card_registration = natural_user.cards.get(cardId)
+
+        card_registration = CardRegistration(id=cardId)
         card_registration.registration_data = data
         card_registration.save()
+
         result = {
-        'card_id': card_registration.id
+        'card_id': card_registration.card_id
         }
         return Response(result, status=status.HTTP_200_OK)
 
@@ -95,12 +103,51 @@ class PayIn(APIView):
 
     def post(self, request, format=None):
         # check if user exists or get user
-        nat_user = create_or_get_user(request.data['card_f_name'], request.data['card_l_name'], request.data['email'])
+        #nat_user = create_or_get_user(request.data['card_f_name'], request.data['card_l_name'], request.data['email'])
         # create user wallet if he does not have one
-        wallet = get_or_create_user_wallet(nat_user)
+        #wallet = get_or_create_user_wallet(nat_user)
         # register card
-        card = register_card(nat_user)
+        #card = register_card(nat_user)
         # send credited money into user wallet
         # transfer money from user wallet to inzula wallet
         # end.
+
+        userId = request.data['user_id']
+        cardId = request.data['card_id']
+        selectedBookingIds = request.data['selectedBookingIds']
+
+        userprofile = User.objects.get(pk=userId).profile
+        nat_user_id = userprofile.nat_user_id
+        natural_user = NaturalUser.get(nat_user_id)
+        user_wallet = Wallet(id=userprofile.wallet_id)
+        card = CardRegistration(id=cardId)
+
+        direct_payin = DirectPayIn(author=natural_user,
+                           debited_funds=Money(amount=4000, currency='EUR'),
+                           fees=Money(amount=100, currency='EUR'),
+                           credited_wallet_id=user_wallet,
+                           card_id=card,
+                           secure_mode="DEFAULT",
+                           secure_mode_return_url="http://www.localhost:3000")
+        direct_payin.save()
+
         return Response({"result"}, status=status.HTTP_200_OK)
+
+
+class UserTransactions(APIView):
+
+    def post(self, request, format=None):
+        # get user from user id
+        userId = request.data['user_id']
+
+        nat_user_id = User.objects.get(pk=userId).profile.nat_user_id
+        natural_user = NaturalUser.get(nat_user_id)
+
+        transactions = Transaction.all(user_id=natural_user.get_pk(), status='SUCCEEDED')
+
+        serializer = TransactionSerializer(transactions, many=True)
+        jsonResults = JSONRenderer().render(serializer.data)
+        result = {
+        'transactions': json.loads(jsonResults)
+        }
+        return Response(result, status=status.HTTP_200_OK)

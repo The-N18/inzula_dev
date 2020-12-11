@@ -13,7 +13,9 @@ from rest_auth.registration.views import SocialLoginView
 from allauth.socialaccount.providers.twitter.views import TwitterOAuthAdapter
 from rest_auth.social_serializers import TwitterLoginSerializer
 from rest_auth.registration.views import SocialAccountListView, SocialAccountDisconnectView
-# Create your views here.
+from allauth.account.models import EmailAddress
+from booking.models import BookingRequest
+from trip.models import Trip
 
 class CityView(ListAPIView):
     serializer_class = CitySerializer
@@ -106,8 +108,15 @@ class DeleteProfileView(APIView):
 
     def delete(self, request, pk, format=None):
         userprofile = self.get_object(pk)
-        # userprofile.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        # delete Bookings
+        BookingRequest.objects.filter(request_by=userprofile, trip=None, confirmed_by_sender=False, status="cre").delete()
+        # delete trips
+        Trip.objects.filter(created_by=userprofile).delete()
+        # disable email
+        email = EmailAddress.objects.get(user=userprofile.user.id)
+        email.verified = False
+        email.save()
+        return Response({"detail": "OK"}, status=status.HTTP_204_NO_CONTENT)
 
 
 class TwitterLogin(SocialLoginView):
