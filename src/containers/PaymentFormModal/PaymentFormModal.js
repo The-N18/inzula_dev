@@ -17,6 +17,7 @@ import { deleteTrip } from "../../store/actions/addTrip";
 import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
 import {renderField} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
+import CSRFToken from "../../containers/CSRFToken";
 
 class PaymentFormModal extends React.Component {
 
@@ -48,7 +49,7 @@ class PaymentFormModal extends React.Component {
         <p>You are about to pay {price} euros.</p>
 
         <form onSubmit={handleSubmit(this.submitForm)}>
-
+          <CSRFToken/>
           <Field
             name="card_f_name"
             component="input"
