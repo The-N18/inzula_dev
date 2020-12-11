@@ -244,4 +244,7 @@ export const msg = {
   'delete_account.question': "Are you sure you want to delete your account?",
   'delete_account.no': "No",
   'delete_account.yes': "Yes, delete my account.",
+
+  'send_package.login_msg': "Please login to create a booking request.",
+  'add_trip.login_msg': "Please login to add a new trip.",
 };

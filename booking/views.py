@@ -60,8 +60,10 @@ class UserBookedListRequestListView(generics.ListAPIView):
     def get_queryset(self):
         user_id = self.request.query_params.get('user_id', None)
         queryset = self.model.objects.all()
+        trips = Trip.objects.filter(created_by=user_id)
         if user_id is not None:
-            queryset = queryset.filter(request_by=user_id, status="boo")
+            queryset = queryset.filter(trip__in=trips)
+            queryset = queryset.filter(Q(status="boo") | Q(status="awa"))
         return queryset.order_by('-made_on')
 
 
@@ -475,4 +477,33 @@ class BookingRequestsTotalPrice(APIView):
         booking_requests = BookingRequest.objects.filter(pk__in=request.data['booking_ids'])
         booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
         result = {"total_price": booking_requests_price}
+        return Response(result, status=status.HTTP_200_OK)
+
+
+class ValidateBooking(APIView):
+    """
+    Validate a booking
+    """
+
+    def post(self, request, format=None):
+
+        booking_request = BookingRequest.objects.get(pk=request.data['bookingId'])
+        booking_request.confirmed_by_sender = True
+        booking_request.status = 'awa'
+        booking_request.save()
+        result = {"detail": 'ok'}
+        return Response(result, status=status.HTTP_200_OK)
+
+class DeclineBooking(APIView):
+    """
+    Decline a booking
+    """
+
+    def post(self, request, format=None):
+
+        booking_request = BookingRequest.objects.get(pk=request.data['bookingId'])
+        booking_request.confirmed_by_sender = False
+        booking_request.status = 'boo'
+        booking_request.save()
+        result = {"detail": 'ok'}
         return Response(result, status=status.HTTP_200_OK)

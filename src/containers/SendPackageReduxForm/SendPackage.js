@@ -13,6 +13,7 @@ import {
   TextArea,
   Select
 } from "semantic-ui-react";
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { NavLink, Redirect } from "react-router-dom";
 import { authLogin } from "../../store/actions/auth";
@@ -107,6 +108,18 @@ class SendPackage extends React.Component {
         val['user_agreement']);
     }
   };
+
+  handleOnTermsClick = () => {
+    // this.props.history.push("/terms");
+    const win = window.open("/terms", "_blank");
+    win.focus();
+  }
+
+  handleOnUserAgreementClick = () => {
+    // this.props.history.push("/useragreement");
+    const win = window.open("/useragreement", "_blank");
+    win.focus();
+  }
 
 
   render() {
@@ -478,7 +491,7 @@ class SendPackage extends React.Component {
                         {activeStep === 1 ?
                             <div className={"txt-align-l"}>
                               <Field name="terms_conditions" id="terms_conditions" component="input" type="checkbox"/>
-                              <label htmlFor="terms_conditions"><FormattedMessage
+                              <label className={"anchor-style"}onClick={this.handleOnTermsClick.bind(this)}><FormattedMessage
                                 id="add_booking.terms_check"
                                 defaultMessage="I have read and accept the terms and conditions"
                               /></label>
@@ -486,7 +499,7 @@ class SendPackage extends React.Component {
                         {activeStep === 1 ?
                             <div className={"txt-align-l"}>
                               <Field name="user_agreement" id="user_agreement" component="input" type="checkbox"/>
-                              <label htmlFor="user_agreement"><FormattedMessage
+                              <label className={"anchor-style"} onClick={this.handleOnUserAgreementClick.bind(this)}><FormattedMessage
                                 id="add_booking.user_agreement_check"
                                 defaultMessage="I agree to the user agreement"
                               /></label>
@@ -603,7 +616,7 @@ SendPackage.propTypes = {
 //
 // export default SendPackageConnected;
 
-export default connect(
+export default withRouter(connect(
     mapStateToProps,
     mapDispatchToProps
-)(reduxForm({ form: "send_package", enableReinitialize: true, validate })(SendPackage));
+)(reduxForm({ form: "send_package", enableReinitialize: true, validate })(SendPackage)));

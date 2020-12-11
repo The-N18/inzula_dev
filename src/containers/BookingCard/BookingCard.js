@@ -144,11 +144,12 @@ class BookingCard extends React.Component {
     const {pk, title, description, img, images, product_details,
       arrival_date, departure_location, selectable, editable,
       destination_location, weight, space, price, product_category,
-      proposed_price, validate_decline, can_propose, lang} = this.props;
+      proposed_price, validate_decline, can_propose, lang, status, confirmed_by_sender} = this.props;
     const {isMobile, isTablet} = this.state;
+    const colored = validate_decline ? confirmed_by_sender ? 'green' : 'orange' : '';
 
     return (
-      <Card raised fluid centered className={"home-text-img-card-grid booking-card-max-h"}>
+      <Card raised fluid centered className={"home-text-img-card-grid booking-card-max-h"} color={colored}>
         <Grid>
           <Grid.Row>
           {selectable ? <Grid.Column mobile={1} tablet={1} computer={1}>
@@ -159,15 +160,6 @@ class BookingCard extends React.Component {
           <Grid.Column mobile={16} tablet={16} computer={4}>
             <Segment basic textAlign="right">
               {images && images.length === 0 && <Image centered src={backend_url() + '/static/images/default_booking_image.png'} verticalAlign="middle" size="massive" className={"booking-card-img"}/>}
-              {/*images && images.length > 0 ? <div className={"booking-card-img"}>
-                <SimpleImageSlider
-                    width={this.computeSliderWidth()}
-                    height={150}
-                    images={images}
-                    showBullets={true}
-                    showNavs={true}
-                />
-            </div> : ''*/}
             {images && images.length > 0 ? <Carousel autoPlay>
               {images.map((item, index) => {
                 return (
@@ -240,6 +232,7 @@ class BookingCard extends React.Component {
                   color='blue'
                   className={"booking-card-delete-button"}
                   onClick={this.validateBooking.bind(this)}
+                  disabled={confirmed_by_sender}
                 ><FormattedMessage
                   id="booking_card.validate"
                   defaultMessage="Validate"
@@ -250,6 +243,7 @@ class BookingCard extends React.Component {
                   color='orange'
                   className={"white-trash"}
                   onClick={this.declineBooking.bind(this)}
+                  disabled={!confirmed_by_sender}
                 ><FormattedMessage
                   id="booking_card.decline"
                   defaultMessage="Decline"
@@ -277,6 +271,10 @@ const mapDispatchToProps = dispatch => {
     selectBooking: (selected) => dispatch(selectBooking(selected)),
     openDeleteBookingConfirm: () => dispatch(openDeleteBookingConfirm()),
     openProposePriceOnBooking: () => dispatch(openProposePriceOnBooking()),
+    setBookingValidateBooking: (pk) => dispatch(setBookingValidateBooking(pk)),
+    setBookingDeclineBooking: (pk) => dispatch(setBookingDeclineBooking(pk)),
+    openValidateBooking: () => dispatch(openValidateBooking()),
+    openDeclineBooking: () => dispatch(openDeclineBooking()),
     setBookingRequestId: (bookingId) => dispatch(setBookingRequestId(bookingId)),
     updateBookingOpenModal: (bookingInfo, pk) => dispatch(updateBookingOpenModal(bookingInfo, pk)),
     setBookingDeleteBookingConfirm: (bookingId) => dispatch(setBookingDeleteBookingConfirm(bookingId)),
@@ -304,6 +302,9 @@ BookingCard.propTypes = {
   can_propose: PropTypes.boolean,
   pk: PropTypes.number,
   images: PropTypes.array,
+
+  confirmed_by_sender: PropTypes.boolean,
+  status: PropTypes.string,
 };
 
 export default connect(

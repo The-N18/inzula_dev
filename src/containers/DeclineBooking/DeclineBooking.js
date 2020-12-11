@@ -13,8 +13,9 @@ import { openDeclineBooking, closeDeclineBooking, declineBooking } from "../../s
 class DeclineBooking extends React.Component {
 
   handleDelete = () => {
+    const {bookingId, userId} = this.props;
     this.props.closeDeclineBooking();
-    this.props.declineBooking(this.props.bookingId);
+    this.props.declineBooking(bookingId, userId);
   }
 
   render() {
@@ -48,6 +49,7 @@ const mapStateToProps = state => {
   return {
     open: state.declineBooking.open,
     bookingId: state.declineBooking.bookingId,
+    userId: state.userInfo.userId,
   };
 };
 
@@ -55,7 +57,7 @@ const mapDispatchToProps = dispatch => {
   return {
     openDeclineBooking: () => dispatch(openDeclineBooking()),
     closeDeclineBooking: () => dispatch(closeDeclineBooking()),
-    declineBooking: (bookingId) => dispatch(declineBooking(bookingId)),
+    declineBooking: (bookingId, userId) => dispatch(declineBooking(bookingId, userId)),
   };
 };
 

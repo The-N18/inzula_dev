@@ -3,6 +3,7 @@ import * as actionTypes from "./actionTypes";
 import { api_url } from "../../configurations";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
 import {checkAuthTimeout} from "./auth";
+import {getInitialReservations} from "./userBookings";
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -26,14 +27,14 @@ export const closeValidateBooking = () => {
   };
 };
 
-export const validateBooking = (booking_id) => {
+export const validateBooking = (booking_id, user_id) => {
   const userProfileId = localStorage.getItem("userProfileId");
   const config = {
             headers: { 'content-type': 'multipart/form-data' }
           };
   return dispatch => {
     axios
-      .post(api_url() + "/bookings/validate_booking", {booking_id: booking_id}, config)
+      .post(api_url() + "/bookings/validate_booking", {bookingId: booking_id})
       .then(res => {
         console.log(res.data)
         dispatch(checkAuthTimeout(3600));
@@ -43,6 +44,7 @@ export const validateBooking = (booking_id) => {
           duration: 10000,
           canDismiss: true,
         }));
+        dispatch(getInitialReservations(user_id));
       })
       .catch(err => {
         dispatch(createNotification({

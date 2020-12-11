@@ -11,7 +11,8 @@ import { NavLink, Redirect } from "react-router-dom";
 import { openPaymentFormModal,
          closePaymentFormModal,
          payInInzulaWallet,
-         getInitialCardData } from "../../store/actions/paymentFormModal";
+         getInitialCardData,
+         payForBooking} from "../../store/actions/paymentFormModal";
 import { deleteTrip } from "../../store/actions/addTrip";
 import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
 import {renderField} from "../../containers/ReduxForm/renderField";
@@ -28,7 +29,8 @@ class PaymentFormModal extends React.Component {
       'userId': userId,
       'selectedBookingIds': selectedBookingIds
     }
-    this.props.getInitialCardData(values);
+    this.props.payForBooking(values);
+    // this.props.getInitialCardData(values);
   }
 
   render() {
@@ -121,6 +123,7 @@ const mapDispatchToProps = dispatch => {
     closePaymentFormModal: () => dispatch(closePaymentFormModal()),
     payInInzulaWallet: (values) => dispatch(payInInzulaWallet(values)),
     getInitialCardData: (values) => dispatch(getInitialCardData(values)),
+    payForBooking: (values) => dispatch(payForBooking(values)),
   };
 };
 
@@ -130,9 +133,11 @@ let PaymentFormModalConnected = connect(
   mapDispatchToProps
 )(PaymentFormModal);
 
+const afterSubmit = (result, dispatch) => dispatch(reset('payment_form_modal'));
+
 PaymentFormModalConnected = reduxForm ({
   form: 'payment_form_modal',
-  validate
+  onSubmitSuccess: afterSubmit, validate
 }) (PaymentFormModalConnected);
 
 export default PaymentFormModalConnected;

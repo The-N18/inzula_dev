@@ -11,10 +11,35 @@ import {
 import { connect } from "react-redux";
 import styles from './footer.css';
 import { backend_url } from "../../configurations";
+import { withRouter } from "react-router-dom";
 import {FormattedMessage, FormattedDate} from 'react-intl'
 
 
 class Footer extends React.Component {
+
+  handleOnTermsClick = () => {
+    this.props.history.push("/terms");
+  }
+
+  handleOnUserAgreementClick = () => {
+    this.props.history.push("/useragreement");
+  }
+
+  handleOnFaqsClick = () => {
+    this.props.history.push("/faqs");
+  }
+
+  handleOnInsuranceClick = () => {
+    this.props.history.push("/insurance");
+  }
+
+  handleOnLegalInformationClick = () => {
+    this.props.history.push("/legal");
+  }
+
+  handleOnTransparencyClick = () => {
+    this.props.history.push("/transparency");
+  }
 
   render() {
     return (
@@ -43,7 +68,7 @@ class Footer extends React.Component {
                     id="footer.blog"
                     defaultMessage="Blog"
                   /></List.Item>
-                <List.Item as="a" href="#" className={"linkstyle"}>
+                <List.Item as="a" onClick={this.handleOnFaqsClick.bind(this)} className={"linkstyle"}>
                   <FormattedMessage
                     id="footer.faqs"
                     defaultMessage="Frequently asked questions"
@@ -57,17 +82,17 @@ class Footer extends React.Component {
                     id="footer.contact"
                     defaultMessage="Contact us"
                   /></List.Item>
-                <List.Item as="a" href="#" className={"linkstyle"}>
+                <List.Item as="a" onClick={this.handleOnInsuranceClick.bind(this)} className={"linkstyle"}>
                   <FormattedMessage
                     id="footer.insurance"
                     defaultMessage="Insurance"
                   /></List.Item>
-                <List.Item as="a" href="#" className={"linkstyle"}>
+                <List.Item as="a" onClick={this.handleOnLegalInformationClick.bind(this)} className={"linkstyle"}>
                   <FormattedMessage
                     id="footer.legal"
                     defaultMessage="Legal information"
                   /></List.Item>
-                <List.Item as="a" href="#" className={"linkstyle"}>
+                <List.Item as="a" onClick={this.handleOnTransparencyClick.bind(this)} className={"linkstyle"}>
                   <FormattedMessage
                     id="footer.trans"
                     defaultMessage="Transparency"
@@ -113,13 +138,13 @@ class Footer extends React.Component {
                     defaultMessage="All rights reserved"
                   />
                 </List.Item>
-                <List.Item as="a" href="#">
+                <List.Item as="a" onClick={this.handleOnTermsClick.bind(this)}>
                   <FormattedMessage
                     id="footer.terms"
                     defaultMessage="Terms and Conditions"
                   />
                 </List.Item>
-                <List.Item as="a" href="#">
+                <List.Item as="a" onClick={this.handleOnUserAgreementClick.bind(this)}>
                   <FormattedMessage
                     id="footer.privacy_policy"
                     defaultMessage="Privacy Policy"
@@ -143,7 +168,7 @@ const mapDispatchToProps = dispatch => {
   return {};
 };
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(Footer);
+)(Footer));

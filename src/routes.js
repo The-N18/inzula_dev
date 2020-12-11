@@ -13,8 +13,15 @@ import Transport from "./containers/Transport/Transport";
 import VerifyUser from "./containers/VerifyUser/VerifyUser";
 import HomepageLayout from "./containers/Home";
 import SendPage from "./containers/SendPage/SendPage";
+import Faqs from "./containers/staticpages/Faqs/Faqs";
+import Terms from "./containers/staticpages/Terms/Terms";
+import Transparency from "./containers/staticpages/Transparency/Transparency";
+import Legal from "./containers/staticpages/Legal/Legal";
+import Insurance from "./containers/staticpages/Insurance/Insurance";
+import UserAgreement from "./containers/staticpages/UserAgreement/UserAgreement";
 import SearchBookingRequestsPage from "./containers/SearchBookingRequestsPage/SearchBookingRequestsPage";
 import SignupParentWithDiscount from "./containers/SignupParentWithDiscount/SignupParentWithDiscount";
+
 
 const BaseRouter = () => (
   <Hoc>
@@ -22,10 +29,17 @@ const BaseRouter = () => (
     <Route path="/profile" component={MyProfile} />
     <Route path="/transport" component={Transport} />
     <Route path="/dispatch" component={SendPage} />
+    <Route path="/faqs" component={Faqs} />
+    <Route path="/terms" component={Terms} />
+    <Route path="/useragreement" component={UserAgreement} />
+    <Route path="/transparency" component={Transparency} />
+    <Route path="/legal" component={Legal} />
+    <Route path="/insurance" component={Insurance} />
     <Route path="/search_bookings" component={SearchBookingRequestsPage} />
     <Route path="/verify/:verificationKey" component={VerifyUser} />
     <Route exact path="/" component={HomepageLayout} />
   </Hoc>
 );
+
 
 export default BaseRouter;

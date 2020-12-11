@@ -113,6 +113,8 @@ class UserBookingsList extends React.Component {
                 product_category={item["product"]["product_category"]}
                 proposed_price={item["product"]["proposed_price"]}
                 product_details={item["product"]}
+                confirmed_by_sender={item["confirmed_by_sender"]}
+                status={item["status"]}
                 img={item["product"]["images"].length === 0 ? '' : item["product"]["images"][0]['image']}
                 images={buildImagesLinkList(item["product"]["images"])}
                 editable={false}

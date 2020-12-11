@@ -4,6 +4,8 @@ import { api_url } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import mangopay from 'mangopay2-nodejs-sdk';
+import { closeModal } from "./selectReservationsModal";
+
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
 
@@ -70,6 +72,22 @@ export const getInitialCardData = (values) => {
         const user_id = values['userId'];
         dispatch(updateCardData({data: card_dta, card_id: card_id, user_id: user_id, selectedBookingIds: values['selectedBookingIds']}));
         console.log(result);
+      })
+      .catch(err => {
+      });
+  };
+}
+
+export const payForBooking = (values) => {
+  return dispatch => {
+    axios
+      .post(api_url() + "/pay/PayForBooking", values)
+      .then(result => {
+        dispatch(checkAuthTimeout(3600));
+        console.log(result);
+        // close modals
+        dispatch(closePaymentFormModal());
+        dispatch(closeModal());
       })
       .catch(err => {
       });

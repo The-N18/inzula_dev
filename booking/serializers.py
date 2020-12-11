@@ -34,7 +34,7 @@ class BookingRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookingRequest
         fields = ["request_by", "trip", "product",
-        "confirmed_by_sender", "made_on", "collector_id", "pk"]
+        "confirmed_by_sender", "made_on", "collector_id", "pk", "status"]
 
 
 class NotifSerializer(serializers.ModelSerializer):

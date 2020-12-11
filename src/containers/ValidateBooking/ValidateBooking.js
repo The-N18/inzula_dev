@@ -13,8 +13,9 @@ import { openValidateBooking, closeValidateBooking, validateBooking } from "../.
 class ValidateBooking extends React.Component {
 
   handleDelete = () => {
+    const {userId, bookingId} = this.props;
     this.props.closeValidateBooking();
-    this.props.validateBooking(this.props.bookingId);
+    this.props.validateBooking(bookingId, userId);
   }
 
   render() {
@@ -27,7 +28,7 @@ class ValidateBooking extends React.Component {
         onOpen={() => this.props.openValidateBooking()}
         size='tiny'
       >
-      <Modal.Header>Delete Trip</Modal.Header>
+      <Modal.Header>Validate booking</Modal.Header>
       <Modal.Content>
         <p>Are you sure you want to validate this booking?</p>
       </Modal.Content>
@@ -48,6 +49,7 @@ const mapStateToProps = state => {
   return {
     open: state.validateBooking.open,
     bookingId: state.validateBooking.bookingId,
+    userId: state.userInfo.userId,
   };
 };
 
@@ -55,7 +57,7 @@ const mapDispatchToProps = dispatch => {
   return {
     openValidateBooking: () => dispatch(openValidateBooking()),
     closeValidateBooking: () => dispatch(closeValidateBooking()),
-    validateBooking: (bookingId) => dispatch(validateBooking(bookingId)),
+    validateBooking: (bookingId, userId) => dispatch(validateBooking(bookingId, userId)),
   };
 };
 

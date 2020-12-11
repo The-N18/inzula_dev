@@ -234,4 +234,8 @@ export const msg = {
   'delete_account.question': "Etes vous sur de vouloir supprimer votre compte?",
   'delete_account.no': "Non",
   'delete_account.yes': "Oui, supprimez mon compte.",
+
+  'send_package.login_msg': "Connectez-vous pour creer une requette.",
+  'add_trip.login_msg': "Connectez-vous pour ajouter un voyage.",
+
 };

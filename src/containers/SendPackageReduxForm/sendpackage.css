@@ -7,6 +7,12 @@
   display: inline-block;
 }
 
+.anchor-style {
+  color: #29B6F6;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .no-pad {
   padding-top: 0px !important;
   padding-bottom: 6px !important;

@@ -15,7 +15,8 @@ import Recaptcha from 'react-recaptcha';
 import { DateInput } from 'semantic-ui-calendar-react';
 import CSRFToken from "../../containers/CSRFToken";
 import DjangoCSRFToken from 'django-react-csrftoken';
-import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
+import {NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
+import { createNotif } from "../../store/actions/appConfig";
 import {renderField, renderDateTimePicker, renderSelectList, renderCitiesList} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
 import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
@@ -72,12 +73,7 @@ class AddTripForm extends React.Component {
       const cbdate = val['comeback_date'] ? val['comeback_date'] : '';
       this.props.addTrip(createdBy, departureLocation, destinationLocation, depdate, cbdate, trip_type_check);
     } else {
-      createNotification({
-        message: 'Please login to add a new trip',
-        type: NOTIFICATION_TYPE_SUCCESS,
-        duration: 0,
-        canDismiss: true,
-      });
+      this.props.createNotif("add_trip.login_msg", "Please login to add a new trip", NOTIFICATION_TYPE_WARNING);
       this.props.openLoginModal();
     }
   }
@@ -276,8 +272,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     addTrip: (created_by, departure_location, destination_location, depart_date, comeback_date, trip_type) => dispatch(tripAddition(created_by, departure_location, destination_location, depart_date, comeback_date, trip_type)),
-    createNotification: (config) => {dispatch(createNotification(config))},
     openLoginModal: () => dispatch(openLoginParentModal()),
+    createNotif: (key, default_text, type) => dispatch(createNotif(key, default_text, type)),
     toggleCheck: (trip_type) => dispatch(toggleCheck(trip_type)),
   };
 };

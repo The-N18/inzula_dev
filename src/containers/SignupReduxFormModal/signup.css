@@ -1,3 +1,9 @@
   .push-left {
     text-align: left !important;
   }
+
+  .anchor-style {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+  }

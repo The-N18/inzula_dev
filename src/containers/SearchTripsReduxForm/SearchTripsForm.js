@@ -15,12 +15,16 @@ import TripCard from "../../containers/TripCard/TripCard";
 import BookingRequestCard from "../../containers/BookingRequestCard/BookingRequestCard";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { openModal, closeModal } from "../../store/actions/sendPackageModal";
+import { createNotif } from "../../store/actions/appConfig";
 import MultiSelect from "@khanacademy/react-multi-select";
 import 'react-widgets/dist/css/react-widgets.css';
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import {renderField, renderDateTimePicker, renderCitiesList} from "../../containers/ReduxForm/renderField";
 import $ from "jquery";
 import {FormattedMessage, FormattedDate} from 'react-intl'
+import {NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
+import { openLoginParentModal } from "../../store/actions/loginParentModal";
+
 
 class SearchTripsForm extends React.Component {
 
@@ -75,6 +79,15 @@ class SearchTripsForm extends React.Component {
     return val;
   }
 
+  handleOpenSendPackageModal = () => {
+    if(this.props.authenticated) {
+      this.props.openPackageModal();
+    } else {
+      this.props.createNotif("send_package.login_msg", "Please login to create a booking request.", NOTIFICATION_TYPE_WARNING);
+      this.props.openLoginModal();
+    }
+  }
+
 
   render() {
     const { loading, error, trips, next_url, count, handleSubmit } = this.props;
@@ -97,7 +110,7 @@ class SearchTripsForm extends React.Component {
             <FormattedMessage
               id="search_trips.cant_find_trip"
               defaultMessage="Can't find a trip?"
-            /><Button inverted color='green' onClick={() => this.props.openPackageModal()}>
+            /><Button inverted color='green' onClick={this.handleOpenSendPackageModal.bind(this)}>
             <FormattedMessage
               id="search_trips.click_book_request"
               defaultMessage="click here to save a booking request"
@@ -225,6 +238,7 @@ const mapStateToProps = state => {
     next_url: state.searchTrips.next_url,
     count: state.searchTrips.count,
     user_id: state.userInfo.userId,
+    authenticated: state.auth.token !== null,
     departure_location: departure_location,
     destination_location: destination_location,
     travel_date: travel_date,
@@ -235,6 +249,8 @@ const mapDispatchToProps = dispatch => {
   return {
     openPackageModal: () => dispatch(openModal()),
     closePackageModal: () => dispatch(closeModal()),
+    openLoginModal: () => dispatch(openLoginParentModal()),
+    createNotif: (key, default_text, type) => dispatch(createNotif(key, default_text, type)),
     findTrip: (departure_location, destination_location, travel_date, user_id, next_url, count) => dispatch(searchTrips(departure_location, destination_location, travel_date, user_id, next_url, count))
   };
 };

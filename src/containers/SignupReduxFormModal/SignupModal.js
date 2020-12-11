@@ -20,6 +20,7 @@ import { validate } from "./validation";
 import Recaptcha from 'react-recaptcha';
 import {renderField} from "../../containers/ReduxForm/renderField";
 import {FormattedMessage, FormattedDate} from 'react-intl'
+import { withRouter } from "react-router-dom";
 
 
 class RegistrationForm extends Component {
@@ -32,6 +33,11 @@ class RegistrationForm extends Component {
     this.props.closeSignupModal();
     this.props.closeSignupParentModal();
     this.props.openLoginParentModal();
+  }
+
+  handleOnTermsClick = () => {
+    const win = window.open("/terms", "_blank");
+    win.focus();
   }
 
   render () {
@@ -125,7 +131,7 @@ class RegistrationForm extends Component {
         />
         <div className={"push-left"}>
             <Field name="terms_conditions" id="terms_conditions" component="input" type="checkbox"/>
-            <label htmlFor="terms_conditions"><FormattedMessage
+            <label className={"anchor-style"} onClick={this.handleOnTermsClick.bind(this)}><FormattedMessage
               id="signup.agree_terms"
               defaultMessage="I agree to the Terms and Conditions"
             />
@@ -195,10 +201,10 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-let RegistrationFormConnected = connect(
+let RegistrationFormConnected = withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(RegistrationForm);
+)(RegistrationForm));
 
 RegistrationFormConnected = reduxForm ({
   form: 'signup',
