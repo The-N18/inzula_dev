@@ -446,8 +446,7 @@ class DefaultAccountAdapter(object):
         """
         url = reverse("account_confirm_email", args=[emailconfirmation.key])
         ret = build_absolute_uri(request, url)
-        BACKEND_HOST_ADDRESS = 'http://localhost:3000/verify/'+emailconfirmation.key;
-        # BACKEND_HOST_ADDRESS = 'http://15.188.83.142:5000/verify/'+emailconfirmation.key;
+        BACKEND_HOST_ADDRESS = settings.EMAIL_HOST_URL+emailconfirmation.key;
         return BACKEND_HOST_ADDRESS
 
     def send_confirmation_mail(self, request, emailconfirmation, signup):

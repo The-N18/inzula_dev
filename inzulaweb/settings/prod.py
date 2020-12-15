@@ -3,7 +3,7 @@
 from .base import *
 
 # DEBUG = False
-ALLOWED_HOSTS += ['localhost', '127.0.0.1', '15.188.83.142']
+ALLOWED_HOSTS += ['localhost', '127.0.0.1', '15.236.239.146']
 WSGI_APPLICATION = 'inzulaweb.wsgi.prod.application'
 
 STATICFILES_DIRS = [

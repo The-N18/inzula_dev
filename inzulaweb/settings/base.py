@@ -103,10 +103,12 @@ ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULTFROMEMAIL", 'mikaelsondi@gmail.com')
+# EMAIL_HOST_URL = 'http://localhost:3000/verify/'
+EMAIL_HOST_URL = 'http://15.236.239.146:5000/verify/'
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULTFROMEMAIL", 'inzula.app@gmail.com')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'mikaelsondi@gmail.com'
-EMAIL_HOST_PASSWORD = 'ukbbtvvcjtusffpp'
+EMAIL_HOST_USER = 'inzula.app@gmail.com'
+EMAIL_HOST_PASSWORD = 'rnnaupmosyzlfyul'
