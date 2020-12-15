@@ -21,17 +21,30 @@ class NotifCard extends React.Component {
   markAsSeen = () => {
     console.log("mark this notification as seen");
     const {pk} = this.props;
-
   }
 
   render() {
 
-    const {pk, type, trip_dep_date, product_name, trip_dep_loc, trip_des_loc, offer_price} = this.props;
+    const {pk, created_on, type, trip_dep_date, product_name, trip_dep_loc, trip_des_loc, offer_price} = this.props;
     return (
       <Card raised fluid centered className={"notif-card"}>
         <Card.Content>
           <Card.Header>
-            {type === "trip_booked" ?
+          {created_on !== "" ? <span><FormattedMessage
+            id="notif_card.created_on"
+            defaultMessage="On: "
+          />
+          <FormattedDate
+            value={created_on}
+            year="numeric"
+            month="long"
+            day="numeric"
+            weekday="long"
+            hour="numeric"
+            minute="numeric"
+            second="numeric"
+          /> | </span> : ''}
+          {type === "trip_booked" ?
             <FormattedMessage
               id="notif_card.trip_booked"
               defaultMessage="Your trip has been booked"
@@ -40,6 +53,16 @@ class NotifCard extends React.Component {
             <FormattedMessage
               id="notif_card.offer_rec"
               defaultMessage="You have recieved an offer for this request"
+            /> : ''}
+            {type === "request_validated" ?
+            <FormattedMessage
+              id="notif_card.request_validated"
+              defaultMessage="Your booking request has been validated by sender."
+            /> : ''}
+            {type === "request_declined" ?
+            <FormattedMessage
+              id="notif_card.request_declined"
+              defaultMessage="Your booking request has been declined by the sender"
             /> : ''}
             <div className={"notif_card_btns"}>
               <Button color='blue' icon='eye' onClick={this.markAsSeen.bind(this)} title={"mark as seen"}/>
@@ -94,6 +117,7 @@ NotifCard.propTypes = {
   trip_dep_loc: PropTypes.string,
   trip_des_loc: PropTypes.string,
   trip_dep_date: PropTypes.string,
+  created_on: PropTypes.string,
 };
 
 export default connect(

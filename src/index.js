@@ -11,7 +11,11 @@ import authReducer from "./store/reducers/auth";
 import verifyUserReducer from "./store/reducers/verifyUser";
 import appConfigReducer from "./store/reducers/appConfig";
 import myProfileReducer from "./store/reducers/myProfile";
+import userFinanceReducer from "./store/reducers/userFinance";
 import searchbookingsReducer from "./store/reducers/searchBookings";
+import incomingFinancialTransactionsReducer from "./store/reducers/incomingFinancialTransactions";
+import failedFinancialTransactionsReducer from "./store/reducers/failedFinancialTransactions";
+import outgoingFinancialTransactionsReducer from "./store/reducers/outgoingFinancialTransactions";
 import proposePriceOnBookingReducer from "./store/reducers/proposePriceOnBooking";
 import paymentFormModalReducer from "./store/reducers/paymentFormModal";
 import confirmBookingPriceReducer from "./store/reducers/confirmBookingPrice";
@@ -38,6 +42,9 @@ import updateBookingModalReducer from "./store/reducers/updateBookingModal";
 import declineBookingReducer from "./store/reducers/declineBooking";
 import validateBookingReducer from "./store/reducers/validateBooking";
 import deleteAccountReducer from "./store/reducers/deleteAccount";
+import selectableUserReservationsReducer from "./store/reducers/selectableUserReservations";
+import myFundsReducer from "./store/reducers/myFunds";
+import myPaymentMethodsReducer from "./store/reducers/myPaymentMethods";
 import { reducer as formReducer } from 'redux-form'
 import axios from 'axios';
 
@@ -58,6 +65,7 @@ const rootReducer = combineReducers({
   addTrip: addTripReducer,
   userTrips: userTripsReducer,
   userReservations: userReservationsReducer,
+  selectableUserReservations: selectableUserReservationsReducer,
   userBookings: userBookingsReducer,
   senderNotifs: senderNotifsReducer,
   carrierNotifs: carrierNotifsReducer,
@@ -77,6 +85,12 @@ const rootReducer = combineReducers({
   declineBooking: declineBookingReducer,
   validateBooking: validateBookingReducer,
   deleteAccount: deleteAccountReducer,
+  userFinance: userFinanceReducer,
+  incomingFinancialTransactions: incomingFinancialTransactionsReducer,
+  outgoingFinancialTransactions: outgoingFinancialTransactionsReducer,
+  failedFinancialTransactions: failedFinancialTransactionsReducer,
+  myFunds: myFundsReducer,
+  myPaymentMethods: myPaymentMethodsReducer
 });
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";

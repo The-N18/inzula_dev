@@ -28,6 +28,50 @@ from django.db.models import Sum
 
 # Create your views here.
 
+def calculate_min_price(weight, size, category, value):
+    size_coefficients = {
+    's': 1,
+    'm': 2,
+    'l': 5,
+    'xl': 10,
+    }
+    weight_coefficients = {
+        '500g': 0.5,
+        '1kg': 1,
+        '5kg': 5,
+        '10kg': 10,
+        '20kg': 20,
+        '30kg': 30,
+      }
+    value_coefficients = {
+        'low': 0.1,
+        'mid': 0.3,
+        'high': 0.5,
+        'lux': 0.7,
+        'exc': 1,
+      }
+    category_coefficients = {
+        'food': 0.7,
+        'elec': 0.3,
+        'dress': 0.5,
+        'shoe': 0.3,
+        'doc': 0.2,
+        'uts': 0.4,
+        'app': 0.4,
+        'skin': 0.3,
+        'jel': 1,
+        'misc': 0.4
+      }
+    min_price = 0
+    w = weight_coefficients[weight] if weight else 0
+    s = size_coefficients[size] if size else  0
+    v = value_coefficients[value] if value else  0
+    c = category_coefficients[category] if category else  0
+    min_price = w*(10*((0.95*s) + (0.05*v)))
+    min_price = round(min_price, 1)
+    print("min price", min_price)
+    return min_price
+
 
 class UserBookingsRequestListView(generics.ListAPIView):
     """
@@ -44,6 +88,25 @@ class UserBookingsRequestListView(generics.ListAPIView):
         queryset = self.model.objects.all()
         if user_id is not None:
             queryset = queryset.filter(request_by=user_id)
+        return queryset.order_by('-made_on')
+
+
+class SelectableUserBookingsRequestListView(generics.ListAPIView):
+    """
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+
+    """
+    serializer_class = BookingRequestSerializer
+    model = serializer_class.Meta.model
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        user_id = self.request.query_params.get('user_id', None)
+        queryset = self.model.objects.filter(confirmed_by_sender=False)
+        if user_id is not None:
+            queryset = queryset.filter(request_by=user_id)
+            queryset = queryset.filter(~Q(status="awa"))
         return queryset.order_by('-made_on')
 
 
@@ -101,7 +164,7 @@ class SenderNotifsListView(generics.ListAPIView):
 
     def get_queryset(self):
         user_id = self.request.query_params.get('user_id', None)
-        queryset = self.model.objects.filter(type='offer_rec')
+        queryset = self.model.objects.filter(Q(type='offer_rec') | Q(type='request_declined') | Q(type='request_validated'))
         bookings_by_user = BookingRequest.objects.filter(request_by=user_id)
         trips_by_user = Trip.objects.filter(created_by=user_id)
         if user_id is not None:
@@ -272,30 +335,39 @@ class BookingRequestView(CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         pictures = request.FILES.getlist('pictures')
-        departure_location = City.objects.get(pk=request.data["departure_location"])
-        destination_location = City.objects.get(pk=request.data["destination_location"])
-        userprofile = UserProfile.objects.get(user=request.data["created_by"])
-        price = request.data["product_value"]
-        space = request.data["product_size"]
-        weight = request.data["product_weight"]
-        tripId = request.data["tripId"]
-        depDate = request.data["delivery_date"]
+        data = request.data
+        departure_location = City.objects.get(pk=data["departure_location"])
+        destination_location = City.objects.get(pk=data["destination_location"])
+        userprofile = UserProfile.objects.get(user=data["created_by"])
+        price = data["product_value"]
+        space = data["product_size"]
+        weight = data["product_weight"]
+        tripId = data["tripId"]
+        depDate = data["delivery_date"]
+        category = data["product_category"]
+        proposed_price = data["proposed_price"]
         start_date = datetime.datetime.strptime(depDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
         depDate2 = start_date.strftime('%Y-%m-%d')
+        min_price = calculate_min_price(weight, space, category, price)
+        print(proposed_price, min_price)
+        if float(proposed_price) < min_price:
+            return Response({"detail": "Sorry, the price must be at least {}".format(min_price)},
+                            status=status.HTTP_400_BAD_REQUEST,
+                            headers=headers)
         product = Product.objects.create(arrival_date=depDate2,
         departure_location=departure_location,
         destination_location=destination_location,
-        name=request.data["product_name"],
-        description=request.data["product_description"],
-        recipient_name=request.data["recipient_name"],
-        recipient_phone_number=request.data["recipient_phone_number"],
-        proposed_price=request.data["proposed_price"],
+        name=data["product_name"],
+        description=data["product_description"],
+        recipient_name=data["recipient_name"],
+        recipient_phone_number=data["recipient_phone_number"],
+        proposed_price=proposed_price,
         price=price,
         space=space,
         weight=weight,
-        product_category=request.data["product_category"],
-        terms_conditions=request.data["terms_conditions"].capitalize(),
-        user_agreement=request.data["user_agreement"].capitalize(),
+        product_category=category,
+        terms_conditions=data["terms_conditions"].capitalize(),
+        user_agreement=data["user_agreement"].capitalize(),
         created_by=userprofile)
         trip = None
         booking_request = BookingRequest.objects.create(product=product, request_by=userprofile)
@@ -491,6 +563,13 @@ class ValidateBooking(APIView):
         booking_request.confirmed_by_sender = True
         booking_request.status = 'awa'
         booking_request.save()
+        # create notification
+        Notif.objects.create(trip=booking_request.trip,
+        booking_request=booking_request,
+        created_by=booking_request.trip.created_by,
+        price_proposal=None,
+        type='request_validated',
+        status='unseen')
         result = {"detail": 'ok'}
         return Response(result, status=status.HTTP_200_OK)
 
@@ -505,5 +584,12 @@ class DeclineBooking(APIView):
         booking_request.confirmed_by_sender = False
         booking_request.status = 'boo'
         booking_request.save()
+        # create notification
+        Notif.objects.create(trip=booking_request.trip,
+        booking_request=booking_request,
+        created_by=booking_request.trip.created_by,
+        price_proposal=None,
+        type='request_declined',
+        status='unseen')
         result = {"detail": 'ok'}
         return Response(result, status=status.HTTP_200_OK)

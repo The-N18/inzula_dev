@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { api_url } from "../../configurations";
+import { api_url, AUTH_TIMEOUT } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
 import {FormattedMessage} from 'react-intl'
 import {createNotification} from 'react-redux-notify';

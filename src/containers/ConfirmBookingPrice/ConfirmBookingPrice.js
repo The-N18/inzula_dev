@@ -53,7 +53,7 @@ class ConfirmBookingPrice extends React.Component {
       >
       <Modal.Header>Confirm price</Modal.Header>
       <Modal.Content>
-        <p>You are about to pay {price} euros to book this trip for your product.</p>
+        <p>You are about to pay {price} euros and fees of {0.25*price} euros to book this trip for your product.</p>
       </Modal.Content>
       <Modal.Actions>
         <Button positive onClick={this.confirmPaymentPrice.bind(this)}>

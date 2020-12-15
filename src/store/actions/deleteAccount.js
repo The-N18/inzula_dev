@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { api_url } from "../../configurations";
+import { api_url, AUTH_TIMEOUT } from "../../configurations";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
 import {checkAuthTimeout} from "./auth";
 

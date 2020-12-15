@@ -59,22 +59,22 @@ class MyProfile extends React.Component {
   };
 
   render() {
-    const { token, activeIndex, profileType } = this.props;
+    const { token, activeIndex, profileType, lang } = this.props;
     const {isMobile} = this.state;
     // if (token === null) {
     //   return <Redirect to="/" />;
     // }
     const panes = [
       {
-        menuItem: { key: 'profile', icon: 'user', content: isMobile ? '' : 'Profile' },
+        menuItem: { key: 'profile', icon: 'user', content: isMobile ? '' : lang === 'en' ? 'Profile' : 'Profil' },
         render: () => <Tab.Pane attached={false}><ProfileTab/></Tab.Pane>,
       },
       {
-        menuItem: { key: 'reservation', icon: 'calendar', content: profileType === "sender" ? 'My Reservations' : 'My Trips' },
+        menuItem: { key: 'reservation', icon: 'calendar', content: profileType === "sender" ? (lang === 'en' ? 'My Reservations' : 'Mes Reservations') : lang === 'en' ? 'My Trips' : 'Mes voyages' },
         render: () => <Tab.Pane attached={false}><TripsReservationsList/></Tab.Pane>,
       },
       {
-        menuItem: { key: 'alerts', icon: 'bell', content: isMobile ? '' : 'Alerts' },
+        menuItem: { key: 'alerts', icon: 'bell', content: isMobile ? '' : lang === 'en' ? 'Alerts' : 'Notifications' },
         render: () => <Tab.Pane attached={false}><SenderCarrierNotifsList/></Tab.Pane>,
       },
       {
@@ -84,7 +84,7 @@ class MyProfile extends React.Component {
     ];
 
     const tabs = profileType === "sender" ? panes : [...panes, {
-      menuItem: { key: 'booking', icon: 'calendar', content: 'My bookings'},
+      menuItem: { key: 'booking', icon: 'calendar', content: lang === 'en' ? 'Reservations on my trips' : 'Reservations sur mes voyages'},
       render: () => <Tab.Pane attached={false}><UserBookingsList/></Tab.Pane>,
     },]
 
@@ -126,7 +126,8 @@ const mapStateToProps = state => {
     loading: state.auth.loading,
     token: state.auth.token,
     activeIndex: state.myProfile.activeIndex,
-    profileType: state.userInfo.profileType
+    profileType: state.userInfo.profileType,
+    lang: state.appConfig.lang
   };
 };
 

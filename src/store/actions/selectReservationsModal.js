@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { api_url } from "../../configurations";
+import { api_url, AUTH_TIMEOUT } from "../../configurations";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import {checkAuthTimeout} from "./auth";
 
@@ -45,7 +45,7 @@ export const bookTrip = (tripId, selectedBookings, userId) => {
       })
       .then(res => {
         console.log(res.data);
-        dispatch(checkAuthTimeout(3600));
+        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: "You have successfully booked this trip",
           type: NOTIFICATION_TYPE_SUCCESS,

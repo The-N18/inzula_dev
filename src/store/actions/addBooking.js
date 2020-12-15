@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { api_url } from "../../configurations";
+import { api_url, AUTH_TIMEOUT } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
 import {getInitialReservations} from "./userReservations";
 import { updateBookingCloseModal } from "./updateBookingModal";
@@ -71,7 +71,7 @@ recipient_phone_number, terms_conditions, user_agreement) => {
       .post(api_url() + "/bookings/add_request", data, config)
       .then(res => {
         console.log(res.data)
-        dispatch(checkAuthTimeout(3600));
+        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(addBookingSuccess(res.data));
         dispatch(closeModal());
         dispatch(createNotification({
@@ -113,7 +113,7 @@ export const updateBooking = (dta) => {
       .put(api_url() + "/bookings/booking_request/"+dta["pk"]+"/", data)
       .then(res => {
         console.log(res.data)
-        dispatch(checkAuthTimeout(3600));
+        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: 'Your booking has been updated',
           type: NOTIFICATION_TYPE_SUCCESS,
@@ -176,7 +176,7 @@ recipient_phone_number, terms_conditions, user_agreement) => {
       .post(api_url() + "/bookings/add_request", data, config)
       .then(res => {
         console.log(res.data)
-        dispatch(checkAuthTimeout(3600));
+        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(addBookingSuccess(res.data));
         dispatch(createNotification({
           message: 'Your request has been added',
@@ -208,7 +208,7 @@ export const deleteBooking = (booking_id) => {
       .delete(api_url() + "/bookings/booking_request/"+booking_id+"/", {}, config)
       .then(res => {
         console.log(res.data)
-        dispatch(checkAuthTimeout(3600));
+        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: 'Your request has been deleted',
           type: NOTIFICATION_TYPE_SUCCESS,

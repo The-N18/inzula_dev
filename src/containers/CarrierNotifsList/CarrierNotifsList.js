@@ -67,7 +67,7 @@ class CarrierNotifsList extends React.Component {
         /></div> : <div
         id="scrollableDiv"
         style={{
-          height: 400,
+          height: 600,
           overflow: 'auto',
         }}
       >

@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { api_url } from "../../configurations";
+import { api_url, AUTH_TIMEOUT } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import mangopay from 'mangopay2-nodejs-sdk';
@@ -40,7 +40,7 @@ export const payInInzulaWallet = (values) => {
     axios
       .post(api_url() + "/pay/payin", values)
       .then(res => {
-        dispatch(checkAuthTimeout(3600));
+        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
           dispatch(createNotification({
             message: 'Your payment has been processed successfully.',
             type: NOTIFICATION_TYPE_SUCCESS,
@@ -65,7 +65,7 @@ export const getInitialCardData = (values) => {
     axios
       .post(api_url() + "/pay/initCardInfo", values)
       .then(result => {
-        dispatch(checkAuthTimeout(3600));
+        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(setCardRegistrationData(result['data']['data']));
         const card_dta = result['data']['tokenized_data'];
         const card_id = result['data']['card_id'];
@@ -83,13 +83,25 @@ export const payForBooking = (values) => {
     axios
       .post(api_url() + "/pay/PayForBooking", values)
       .then(result => {
-        dispatch(checkAuthTimeout(3600));
         console.log(result);
         // close modals
         dispatch(closePaymentFormModal());
         dispatch(closeModal());
+        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
+        dispatch(createNotification({
+          message: 'Your payment has been processed successfully.',
+          type: NOTIFICATION_TYPE_SUCCESS,
+          duration: 10000,
+          canDismiss: true,
+        }));
       })
       .catch(err => {
+        dispatch(createNotification({
+          message: 'Failed to process payment.',
+          type: NOTIFICATION_TYPE_ERROR,
+          duration: 10000,
+          canDismiss: true,
+        }));
       });
   };
 }
@@ -100,7 +112,7 @@ export const updateCardData = (values) => {
     axios
       .post(api_url() + "/pay/updateCardInfo", values)
       .then(result => {
-        dispatch(checkAuthTimeout(3600));
+        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         console.log(result);
         dispatch(setCardRegistrationData(result['data']))
         dispatch(payToWallet({card_id: result['data']['card_id'], user_id: values['user_id'], selectedBookingIds: values['selectedBookingIds']}));
@@ -115,7 +127,7 @@ export const payToWallet = (values) => {
     axios
       .post(api_url() + "/pay/payToWallet", values)
       .then(result => {
-        dispatch(checkAuthTimeout(3600));
+        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         console.log(result);
         dispatch(setCardRegistrationData(result['data']))
       })

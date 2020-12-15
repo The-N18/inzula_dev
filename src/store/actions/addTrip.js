@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { api_url } from "../../configurations";
+import { api_url, AUTH_TIMEOUT } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
 import {getInitialTrips} from "./userTrips";
@@ -51,7 +51,7 @@ export const tripAddition = (created_by, departure_location, destination_locatio
       })
       .then(res => {
         console.log(res.data)
-        dispatch(checkAuthTimeout(3600));
+        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(addTripSuccess(res.data));
         dispatch(createNotification({
           message: 'Your trip has been added',
@@ -83,7 +83,7 @@ export const updateTrip = (dta) => {
       .put(api_url() + "/trips/trip/"+dta["pk"]+"/", dta)
       .then(res => {
         console.log(res.data)
-        dispatch(checkAuthTimeout(3600));
+        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: 'Your trip has been updated',
           type: NOTIFICATION_TYPE_SUCCESS,
@@ -113,7 +113,7 @@ export const deleteTrip = (tripId) => {
       .delete(api_url() + "/trips/trip/"+tripId+"/", {}, config)
       .then(res => {
         console.log(res.data)
-        dispatch(checkAuthTimeout(3600));
+        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: 'Your trip has been deleted',
           type: NOTIFICATION_TYPE_SUCCESS,

@@ -25,7 +25,7 @@ import { DateInput } from 'semantic-ui-calendar-react';
 import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
 import { openModal, closeModal, bookTrip } from "../../store/actions/selectReservationsModal";
 import TripsReservationsList from "../../containers/TripsReservationsList/TripsReservationsList";
-import UserReservationsList from "../../containers/UserReservationsList/UserReservationsList";
+import SelectableUserReservationsList from "../../containers/SelectableUserReservationsList/SelectableUserReservationsList";
 import { openModalForTrip } from "../../store/actions/sendPackageModal";
 import { openConfirmBookingPrice, setBookingRequestInfo } from "../../store/actions/confirmBookingPrice";
 
@@ -70,7 +70,7 @@ class SelectReservationsModal extends React.Component {
       </Button>
       </Modal.Header>
       <Modal.Content scrolling>
-          <UserReservationsList selectable={true} editable={false}/>
+          <SelectableUserReservationsList selectable={true} editable={false}/>
       </Modal.Content>
       <Modal.Actions>
         <Button color='green' disabled={selected.length === 0} onClick={this.handleConfirmBookingPrice.bind(this)}>

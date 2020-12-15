@@ -5,14 +5,10 @@ from trip.models import Trip
 # Create your models here.
 
 PRODUCT_SIZE_OPTIONS = [
-    ('xxs', 'Extra Extra Small'),
-    ('xs', 'Extra small'),
     ('s', 'Small'),
     ('m', 'Medium'),
     ('l', 'Large'),
     ('xl', 'Extra Large'),
-    ('xxl', 'Extra Extra Large'),
-    ('xxl', 'Extra Extra Extra Large')
 ]
 
 PRODUCT_CATEGORY_OPTIONS = [
@@ -35,8 +31,6 @@ PRODUCT_WEIGHT_OPTIONS = [
     ('10kg', '5.1kg - 10kg'),
     ('20kg', '10.1kg - 20kg'),
     ('30kg', '20.1kg - 30kg'),
-    ('40kg', '30.1kg - 40kg'),
-    ('huge', '40.1kg +')
 ]
 
 PRODUCT_VALUE_OPTIONS = [
@@ -66,6 +60,9 @@ ALERT_TYPE = [
     ('offer_rec', 'Offer recieved'),
     ('trip_booked', 'Trip Booked'),
     ('offer_conf', 'Offer confirmed'),
+    ('request_validated', 'Booking request validated'),
+    ('request_declined', 'Booking request declined'),
+    ('payment_for_booking', 'You have paid for your booking'),
 ]
 
 class Product(models.Model):
@@ -118,7 +115,7 @@ class Notif(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     booking_request = models.ForeignKey(BookingRequest, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     price_proposal = models.ForeignKey(PriceProposal, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
-    created_on = models.DateField(null=True, blank=True)
+    created_on = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     created_by = models.ForeignKey(UserProfile, on_delete=models.PROTECT, related_name='+')
     status = models.CharField(max_length=50, choices=ALERT_STATUS)
     type = models.CharField(max_length=50, choices=ALERT_TYPE)

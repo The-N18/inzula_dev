@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { api_url } from "../../configurations";
+import { api_url, AUTH_TIMEOUT } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
 import {setNaturalUserId} from "./paymentFormModal";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
@@ -45,7 +45,7 @@ export const getBookingTotalPrice = (selectedBookings) => {
         booking_ids: selectedBookings,
       })
       .then(res => {
-        dispatch(checkAuthTimeout(3600));
+        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(setPrice(res['data']['total_price']['product__proposed_price__sum']))
       })
       .catch(err => {
@@ -67,7 +67,7 @@ export const createWalletUser = (userId) => {
       })
       .then(res => {
         console.log(res);
-        dispatch(checkAuthTimeout(3600));
+        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(setNaturalUserId(res['data']['naturalUserId']))
       })
       .catch(err => {

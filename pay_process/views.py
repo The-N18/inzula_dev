@@ -9,14 +9,15 @@ from mangopay.api import APIRequest
 from mangopay.resources import NaturalUser, Wallet, CardRegistration, DirectPayIn, Money, Transaction, Transfer
 from mangopay.utils import Address
 import requests
-from .serializers import TransactionSerializer
+from .serializers import TransactionSerializer, CardSerializer
 from rest_framework.renderers import JSONRenderer
 import json
 from django.db import transaction
-from booking.models import BookingRequest
+from booking.models import BookingRequest, Notif
 from trip.models import Trip
 from rest_framework.generics import CreateAPIView, ListAPIView, GenericAPIView
 from rest_auth.registration.app_settings import register_permission_classes
+from django.db.models import Sum
 
 # Create your views here.
 
@@ -33,9 +34,18 @@ class PayForBooking(CreateAPIView):
             cardExpirationDate = request.data['cardExpirationDate']
             cardCvx = request.data['cardCvx']
 
+            # get price to pay
+            booking_requests = BookingRequest.objects.filter(pk__in=selectedBookingIds)
+            booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
+            booking_amount = booking_requests_price['product__proposed_price__sum']
+            fees_amount = 0.25*booking_amount
+            booking_price = booking_amount + fees_amount
+
+            # Get natural user
             userprofile = User.objects.get(pk=userId).profile
             nat_user_id = userprofile.nat_user_id
             natural_user = NaturalUser.get(nat_user_id)
+
             # Register card for user
             card_registration = CardRegistration(user=natural_user, currency='EUR')
             card_registration.save()
@@ -47,6 +57,7 @@ class PayForBooking(CreateAPIView):
             'cardExpirationDate': cardExpirationDate,
             'cardCvx': cardCvx,
             }
+
             # get tokenized card data
             response = requests.post(card_registration.card_registration_url, data=cardInfo)
             content = response.content
@@ -60,8 +71,8 @@ class PayForBooking(CreateAPIView):
 
             # pay to user wallet
             direct_payin = DirectPayIn(author=natural_user,
-                               debited_funds=Money(amount=4000, currency='EUR'),
-                               fees=Money(amount=100, currency='EUR'),
+                               debited_funds=Money(amount=booking_price, currency='EUR'),
+                               fees=Money(amount=0, currency='EUR'),
                                credited_wallet_id=user_wallet,
                                card_id=card_registration.card_id,
                                secure_mode="DEFAULT",
@@ -77,17 +88,24 @@ class PayForBooking(CreateAPIView):
 
             transfer = Transfer(author=natural_user,
                         credited_user=inzula_user,
-                        debited_funds=Money(amount=1000, currency='EUR'),
-                        fees=Money(amount=100, currency='EUR'),
+                        debited_funds=Money(amount=fees_amount, currency='EUR'),
+                        fees=Money(amount=0, currency='EUR'),
                         debited_wallet=user_wallet,
                         credited_wallet=inzula_wallet)
             transfer.save()
 
+            # change the status of all bookings and create notifications
             for booking in BookingRequest.objects.filter(pk__in=[int(i) for i in selectedBookingIds]):
                 booking.status = 'boo'
                 booking.trip = Trip.objects.get(pk=tripId)
                 booking.save()
-
+                # generate notifications
+                Notif.objects.create(trip=booking.trip,
+                booking_request=booking,
+                created_by=booking.request_by,
+                price_proposal=None,
+                type='payment_for_booking',
+                status='unseen')
             result = {
             }
             return Response(result, status=status.HTTP_200_OK)
@@ -244,20 +262,116 @@ class PayIn(APIView):
         return Response({"result"}, status=status.HTTP_200_OK)
 
 
-class UserTransactions(APIView):
+class IncomingUserTransactions(APIView):
 
     def post(self, request, format=None):
         # get user from user id
         userId = request.data['user_id']
 
-        nat_user_id = User.objects.get(pk=userId).profile.nat_user_id
-        natural_user = NaturalUser.get(nat_user_id)
-
-        transactions = Transaction.all(user_id=natural_user.get_pk(), status='SUCCEEDED')
-
-        serializer = TransactionSerializer(transactions, many=True)
-        jsonResults = JSONRenderer().render(serializer.data)
         result = {
-        'transactions': json.loads(jsonResults)
+        'transactions': []
         }
+
+        nat_user_id = User.objects.get(pk=userId).profile.nat_user_id
+        if nat_user_id is not None:
+            natural_user = NaturalUser.get(nat_user_id)
+
+            transactions = Transaction.all(user_id=natural_user.get_pk(),
+            status='SUCCEEDED',
+            type='PAYIN',
+            sort='CreationDate:asc')
+
+            serializer = TransactionSerializer(transactions, many=True)
+            jsonResults = JSONRenderer().render(serializer.data)
+            result['transactions'] = json.loads(jsonResults)
+            return Response(result, status=status.HTTP_200_OK)
+        return Response(result, status=status.HTTP_200_OK)
+
+
+class OutgoingUserTransactions(APIView):
+
+    def post(self, request, format=None):
+        # get user from user id
+        userId = request.data['user_id']
+
+        result = {
+        'transactions': []
+        }
+
+        nat_user_id = User.objects.get(pk=userId).profile.nat_user_id
+        if nat_user_id is not None:
+            natural_user = NaturalUser.get(nat_user_id)
+
+            transactions = Transaction.all(user_id=natural_user.get_pk(),
+            status='SUCCEEDED',
+            type='PAYOUT',
+            sort='CreationDate:asc')
+
+            serializer = TransactionSerializer(transactions, many=True)
+            jsonResults = JSONRenderer().render(serializer.data)
+            result['transactions'] = json.loads(jsonResults)
+            return Response(result, status=status.HTTP_200_OK)
+        return Response(result, status=status.HTTP_200_OK)
+
+
+class FailedUserTransactions(APIView):
+
+    def post(self, request, format=None):
+        # get user from user id
+        userId = request.data['user_id']
+
+        result = {
+        'transactions': []
+        }
+
+        nat_user_id = User.objects.get(pk=userId).profile.nat_user_id
+        if nat_user_id is not None:
+            natural_user = NaturalUser.get(nat_user_id)
+
+            transactions = Transaction.all(user_id=natural_user.get_pk(), status='FAILED', sort='CreationDate:asc')
+
+            serializer = TransactionSerializer(transactions, many=True)
+            jsonResults = JSONRenderer().render(serializer.data)
+            result['transactions'] = json.loads(jsonResults)
+            return Response(result, status=status.HTTP_200_OK)
+        return Response(result, status=status.HTTP_200_OK)
+
+
+class UserWalletFunds(APIView):
+
+    def post(self, request, format=None):
+        # get user from user id
+        userId = request.data['user_id']
+
+        result = {
+        'funds': ""
+        }
+        userprofile = User.objects.get(pk=userId).profile
+        nat_user_id = userprofile.nat_user_id
+        if nat_user_id is not None:
+            natural_user = NaturalUser.get(nat_user_id)
+            user_wallet = Wallet.get(userprofile.wallet_id)
+            if userprofile.wallet_id is not None and user_wallet is not None:
+                result['funds'] = str(user_wallet.balance) if user_wallet.balance is not None else ""
+            return Response(result, status=status.HTTP_200_OK)
+        return Response(result, status=status.HTTP_200_OK)
+
+class UserCards(APIView):
+
+    def post(self, request, format=None):
+        # get user from user id
+        userId = request.data['user_id']
+
+        result = {
+        'cards': []
+        }
+        userprofile = User.objects.get(pk=userId).profile
+        nat_user_id = userprofile.nat_user_id
+        if nat_user_id is not None:
+            natural_user = NaturalUser.get(nat_user_id)
+            user_cards = natural_user.cards.all()
+            serializer = CardSerializer(user_cards, many=True)
+            jsonResults = JSONRenderer().render(serializer.data)
+            result['cards'] = json.loads(jsonResults)
+            return Response(result, status=status.HTTP_200_OK)
         return Response(result, status=status.HTTP_200_OK)

@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { api_url } from "../../configurations";
+import { api_url, AUTH_TIMEOUT } from "../../configurations";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
 import {checkAuthTimeout} from "./auth";
 import {getInitialReservations} from "./userBookings";
@@ -37,7 +37,7 @@ export const declineBooking = (booking_id, user_id) => {
       .post(api_url() + "/bookings/decline_booking", {bookingId: booking_id})
       .then(res => {
         console.log(res.data)
-        dispatch(checkAuthTimeout(3600));
+        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: 'The booking request has been declined.',
           type: NOTIFICATION_TYPE_SUCCESS,

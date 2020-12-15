@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { api_url } from "../../configurations";
+import { api_url, AUTH_TIMEOUT } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 
@@ -49,7 +49,7 @@ export const getInitialReservations = (user_id) => {
           })
       .then(res => {
         console.log(res.data)
-        dispatch(checkAuthTimeout(3600));
+        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(getInitialReservationsSuccess(res.data["results"], res.data["next"], res.data["count"]));
       })
       .catch(err => {
@@ -75,7 +75,7 @@ export const getReservations = (user_id, next_url, page_count) => {
         .get(next_url)
         .then(res => {
           console.log(res.data)
-          dispatch(checkAuthTimeout(3600));
+          dispatch(checkAuthTimeout(AUTH_TIMEOUT));
           dispatch(getReservationsSuccess(res.data["results"], res.data["next"], res.data["count"]));
         })
         .catch(err => {
@@ -97,7 +97,7 @@ export const getReservations = (user_id, next_url, page_count) => {
             })
         .then(res => {
           console.log(res.data)
-          dispatch(checkAuthTimeout(3600));
+          dispatch(checkAuthTimeout(AUTH_TIMEOUT));
           dispatch(getReservationsSuccess(res.data["results"], res.data["next"], res.data["count"]));
         })
         .catch(err => {

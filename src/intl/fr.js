@@ -202,6 +202,16 @@ export const msg = {
   'trip_card.depart_date': "Date de Départ: ",
   'trip_card.departure_location': "Départ: ",
   'trip_card.destination_location': "Arrivée: ",
+  'notif_card.trip_booked': "Votre voyage a été réservé.",
+  'notif_card.offer_rec': "Vous avez récu une offre pour cette requette.",
+  'notif_card.request_validated': "Votre requette a été validée par le voyageur.",
+  'notif_card.request_declined': "Votre requette a été declinée par le voyageur.",
+  'notif_card.date': "Date de depart: ",
+  'notif_card.created_on': "Le: ",
+  'notif_card.product': "Produit: ",
+  'notif_card.offer_price': "Prix: ",
+  'notif_card.trip': "Voyage: ",
+  'notif_card.mark_seen': "Marquer comme lu",
   'profile_tab.personal_information': "Informations personnelles",
   'profile_tab.first_name': "Prenom(s)",
   'profile_tab.last_name': "Nom(s)",
@@ -238,4 +248,13 @@ export const msg = {
   'send_package.login_msg': "Connectez-vous pour creer une requette.",
   'add_trip.login_msg': "Connectez-vous pour ajouter un voyage.",
 
+  'user_transactions.no_transactions': "Vous n'avez fait aucune transaction.",
+  'user_transactions.loading': "Chargement...",
+
+  'incoming_user_transactions.no_transactions': "Vous n'avez pas de transactions entrantes.",
+  'outgoing_user_transactions.no_transactions': "Vous n'avez effecte aucune transaction.",
+  'failed_user_transactions.no_transactions': "Vous n'avez aucune transaction echouee.",
+  'transaction_card.payin': "Transaction executee: ",
+  'transaction_card.creation_date': "Date de creation: ",
+  'transaction_card.debited_funds': "Fonds debittes: "
 };

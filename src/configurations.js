@@ -5,6 +5,7 @@ export const BACKEND_HOST_ADDRESS = '15.188.83.142';
 export const BACKEND_HOST_PORT = '8000';
 export const BACKEND_FILE_PORT = '8000';
 export const BACKEND_HTTP_PROTOCOL = 'http';
+export const AUTH_TIMEOUT = 3600;
 
 const DO_NOT_APPEND = ['127.0.0.1', 'localhost'];
 

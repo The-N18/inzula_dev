@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { api_url } from "../../configurations";
+import { api_url, AUTH_TIMEOUT } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 
@@ -35,7 +35,7 @@ export const proposePriceOnBooking = (bookingId, userId, price) => {
         price: price,
       })
       .then(res => {
-        dispatch(checkAuthTimeout(3600));
+        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         if(res && res['data'] && res['data']['info']) {
           if(res['data']['info'] === "NO_CORRESPONDING_TRIP") {
             dispatch(createNotification({

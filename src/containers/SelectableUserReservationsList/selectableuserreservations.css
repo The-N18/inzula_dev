@@ -1,0 +1,31 @@
+.profile-tab-section {
+  background-color: #ffffff;
+  margin: 0px !important;
+  padding: 0px !important;
+}
+
+.profile-tab-section-grid {
+  margin: auto !important;
+}
+
+.profile-tab-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2) !important;
+  transition: 0.3s !important;
+}
+
+.profile-tab-card-title {
+  line-height: 30px !important;
+}
+
+.bordered-column {
+  border: 1px solid rgba(34,36,38,.15) !important;
+  border-radius: .28571429rem !important;
+}
+
+.infinite-scroll-component {
+  overflow: hidden !important;
+}
+
+/* .ui.segment {
+  margin: 0px !important;
+} */

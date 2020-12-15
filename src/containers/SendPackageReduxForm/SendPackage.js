@@ -27,7 +27,7 @@ import { bookingAddition } from "../../store/actions/addBooking";
 import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
 import {renderField, renderDateTimePicker, renderFieldWithLabel, renderDropdownList, renderCitiesList} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
-import { sizeOptions, categoryOptions, weightOptions, valueOptions } from "../../utils/options";
+import { sizeOptions, categoryOptions, weightOptions, valueOptions, calculateMinPrice } from "../../utils/options";
 import {FormattedMessage, FormattedDate} from 'react-intl'
 
 
@@ -136,24 +136,16 @@ class SendPackage extends React.Component {
     // }
 
     const handleMinPriceCatChange = (event, value) => {
-      console.log(value);
-      const newUnits = 0;
-      change('min_price', newUnits);
+      change('min_price', calculateMinPrice(product_weight, product_size, value, product_value));
     }
     const handleMinPriceWeiChange = (event, value) => {
-      console.log(value);
-      const newUnits = 1;
-      change('min_price', newUnits);
+      change('min_price', calculateMinPrice(value, product_size, product_category, product_value));
     }
     const handleMinPriceSizChange = (event, value) => {
-      console.log(value);
-      const newUnits = 2;
-      change('min_price', newUnits);
+      change('min_price', calculateMinPrice(product_weight, value, product_category, product_value));
     }
     const handleMinPriceValChange = (event, value) => {
-      console.log(value);
-      const newUnits = 3;
-      change('min_price', newUnits);
+      change('min_price', calculateMinPrice(product_weight, product_size, product_category, value));
     }
 
     return (

@@ -1,23 +1,15 @@
 export const sizeOptions=[
-  { key: 'xxs', value: 'xxs', text: 'Extra Extra Small' },
-  { key: 'xs', value: 'xs', text: 'Extra small' },
   { key: 's', value: 's', text: 'Small' },
   { key: 'm', value: 'm', text: 'Medium' },
   { key: 'l', value: 'l', text: 'Large' },
   { key: 'xl', value: 'xl', text: 'Extra Large' },
-  { key: 'xxl', value: 'xxl', text: 'Extra Extra Large' },
-  { key: 'xxxl', value: 'xxxl', text: 'Extra Extra Extra Large' },
 ];
 
 export const sizeOptionsFr=[
-  { key: 'xxs', value: 'xxs', text: 'Tres tres petit' },
-  { key: 'xs', value: 'xs', text: 'Tres petit' },
   { key: 's', value: 's', text: 'Petit' },
   { key: 'm', value: 'm', text: 'Moyenne' },
   { key: 'l', value: 'l', text: 'Large' },
   { key: 'xl', value: 'xl', text: 'Extra Large' },
-  { key: 'xxl', value: 'xxl', text: 'Extra Extra Large' },
-  { key: 'xxxl', value: 'xxxl', text: 'Extra Extra Extra Large' },
 ];
 
 export const categoryOptions=[
@@ -53,8 +45,6 @@ export const weightOptions=[
   { key: '10kg', value: '10kg', text: '5.1kg - 10kg' },
   { key: '20kg', value: '20kg', text: '10.1kg - 20kg' },
   { key: '30kg', value: '30kg', text: '20.1kg - 30kg' },
-  { key: '40kg', value: '40kg', text: '30.1kg - 40kg' },
-  { key: 'huge', value: 'huge', text: '40.1kg +' },
 ];
 
 export const weightOptionsFr=weightOptions;
@@ -87,14 +77,10 @@ export const optionToText = (option_value, arr) => {
 }
 
 export const sizeMultiOptions=[
-  { key: 'xxs', value: 'xxs', label: 'Extra Extra Small' },
-  { key: 'xs', value: 'xs', label: 'Extra small' },
   { key: 's', value: 's', label: 'Small' },
   { key: 'm', value: 'm', label: 'Medium' },
   { key: 'l', value: 'l', label: 'Large' },
   { key: 'xl', value: 'xl', label: 'Extra Large' },
-  { key: 'xxl', value: 'xxl', label: 'Extra Extra Large' },
-  { key: 'xxxl', value: 'xxxl', label: 'Extra Extra Extra Large' },
 ];
 
 export const categoryMultiOptions=[
@@ -117,8 +103,6 @@ export const weightMultiOptions=[
   { key: '10kg', value: '10kg', label: '5.1kg - 10kg' },
   { key: '20kg', value: '20kg', label: '10.1kg - 20kg' },
   { key: '30kg', value: '30kg', label: '20.1kg - 30kg' },
-  { key: '40kg', value: '40kg', label: '30.1kg - 40kg' },
-  { key: 'huge', value: 'huge', label: '40.1kg +' },
 ];
 
 export const valueMultiOptions=[
@@ -134,3 +118,47 @@ export const tripTypeOptions = [
     {value: 'round_trip', label: 'Round trip'},
     {value: 'one_way_trip', label: 'One way trip'}
 ];
+
+export const calculateMinPrice = (weight, size, category, value) => {
+  const size_coefficients = {
+    's': 1,
+    'm': 2,
+    'l': 5,
+    'xl': 10,
+  };
+  const weight_coefficients = {
+    '500g': 0.5,
+    '1kg': 1,
+    '5kg': 5,
+    '10kg': 10,
+    '20kg': 20,
+    '30kg': 30,
+  };
+  const value_coefficients = {
+    'low': 0.1,
+    'mid': 0.3,
+    'high': 0.5,
+    'lux': 0.7,
+    'exc': 1,
+  };
+  const category_coefficients = {
+    'food': 0.7,
+    'elec': 0.3,
+    'dress': 0.5,
+    'shoe': 0.3,
+    'doc': 0.2,
+    'uts': 0.4,
+    'app': 0.4,
+    'skin': 0.3,
+    'jel': 1,
+    'misc': 0.4
+  };
+  let min_price = 0;
+  let w = weight ? weight_coefficients[weight['value']] : 0;
+  let s = size ? size_coefficients[size['value']] : 0;
+  let v = value ? value_coefficients[value['value']] : 0;
+  let c = category ? category_coefficients[category['value']] : 0;
+  min_price = w*(10*((0.95*s) + (0.05*v)));
+  min_price = Math.round(min_price * 10) / 10
+  return min_price;
+}

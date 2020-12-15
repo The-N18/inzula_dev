@@ -207,7 +207,10 @@ export const msg = {
   'trip_card.destination_location': "Destination: ",
   'notif_card.trip_booked': "Your trip has been booked.",
   'notif_card.offer_rec': "You have recieved an offer for this request.",
-  'notif_card.date': "Date: ",
+  'notif_card.request_validated': "Your booking request has been validated by the carrier.",
+  'notif_card.request_declined': "Your booking request has been declined by the carrier.",
+  'notif_card.date': "Departure Date: ",
+  'notif_card.created_on': "On: ",
   'notif_card.product': "Product: ",
   'notif_card.offer_price': "Price: ",
   'notif_card.trip': "Trip: ",
@@ -247,4 +250,14 @@ export const msg = {
 
   'send_package.login_msg': "Please login to create a booking request.",
   'add_trip.login_msg': "Please login to add a new trip.",
+
+  'user_transactions.no_transactions': "You have not made any transactions yet",
+  'user_transactions.loading': "Loading...",
+
+  'incoming_user_transactions.no_transactions': "You do not have any incoming transactions yet.",
+  'outgoing_user_transactions.no_transactions': "You have not made any transactions yet.",
+  'failed_user_transactions.no_transactions': "You do not have any failed transactions.",
+  'transaction_card.payin': "Transaction executed: ",
+  'transaction_card.creation_date': "Creation Date: ",
+  'transaction_card.debited_funds': "Debited funds: "
 };
