@@ -11,7 +11,9 @@ from utils.pagination import CitySetPagination
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 from rest_auth.registration.views import SocialLoginView
 from allauth.socialaccount.providers.twitter.views import TwitterOAuthAdapter
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from rest_auth.social_serializers import TwitterLoginSerializer
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from rest_auth.registration.views import SocialAccountListView, SocialAccountDisconnectView
 from allauth.account.models import EmailAddress
 from booking.models import BookingRequest
@@ -125,3 +127,7 @@ class TwitterLogin(SocialLoginView):
 
 class FacebookLogin(SocialLoginView):
     adapter_class = FacebookOAuth2Adapter
+
+class GoogleLogin(SocialLoginView):
+    adapter_class = GoogleOAuth2Adapter
+    client_class = OAuth2Client

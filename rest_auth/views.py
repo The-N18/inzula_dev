@@ -85,6 +85,7 @@ class LoginView(GenericAPIView):
         else:
             serializer = serializer_class(instance=self.token,
                                           context={'request': self.request})
+        UserProfile.objects.get_or_create(user=self.user, terms_conditions=True)
         if self.user.profile.profile_pic:
             profile_pic_url = self.user.profile.profile_pic.url
         response = Response({

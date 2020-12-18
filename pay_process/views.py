@@ -112,6 +112,76 @@ class PayForBooking(CreateAPIView):
         return Response({"error": "Error processing payment."}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class PayForBookingCardId(CreateAPIView):
+    permission_classes = register_permission_classes()
+
+    def create(self, request, *args, **kwargs):
+        # get user from user id
+        with transaction.atomic():
+            userId = request.data['userId']
+            tripId = request.data['tripId']
+            selectedBookingIds = request.data['selectedBookingIds']
+            cardId = request.data['cardId']
+
+            # get price to pay
+            booking_requests = BookingRequest.objects.filter(pk__in=selectedBookingIds)
+            booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
+            booking_amount = booking_requests_price['product__proposed_price__sum']
+            fees_amount = 0.25*booking_amount
+            booking_price = booking_amount + fees_amount
+
+            # Get natural user
+            userprofile = User.objects.get(pk=userId).profile
+            nat_user_id = userprofile.nat_user_id
+            natural_user = NaturalUser.get(nat_user_id)
+
+            # get user wallet
+            user_wallet = Wallet(id=userprofile.wallet_id)
+
+            # pay to user wallet
+            direct_payin = DirectPayIn(author=natural_user,
+                               debited_funds=Money(amount=booking_price, currency='EUR'),
+                               fees=Money(amount=0, currency='EUR'),
+                               credited_wallet_id=user_wallet,
+                               card_id=int(cardId),
+                               secure_mode="DEFAULT",
+                               secure_mode_return_url="http://www.localhost:3000")
+            direct_payin.save()
+
+            # transfer money from user wallet to inzula wallet
+            admin_user = User.objects.get(pk=1).profile
+            nat_user_id = admin_user.nat_user_id
+            inzula_user = NaturalUser.get(nat_user_id)
+
+            inzula_wallet = Wallet(id=admin_user.wallet_id)
+
+            transfer = Transfer(author=natural_user,
+                        credited_user=inzula_user,
+                        debited_funds=Money(amount=fees_amount, currency='EUR'),
+                        fees=Money(amount=0, currency='EUR'),
+                        debited_wallet=user_wallet,
+                        credited_wallet=inzula_wallet)
+            transfer.save()
+
+            # change the status of all bookings and create notifications
+            for booking in BookingRequest.objects.filter(pk__in=[int(i) for i in selectedBookingIds]):
+                booking.status = 'boo'
+                booking.trip = Trip.objects.get(pk=tripId)
+                booking.save()
+                # generate notifications
+                Notif.objects.create(trip=booking.trip,
+                booking_request=booking,
+                created_by=booking.request_by,
+                price_proposal=None,
+                type='payment_for_booking',
+                status='unseen')
+            result = {
+            }
+            return Response(result, status=status.HTTP_200_OK)
+        return Response({"error": "Error processing payment."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 class CreateNaturalUser(APIView):
     def post(self, request, format=None):
         # Get or create mangopay user
@@ -279,7 +349,7 @@ class IncomingUserTransactions(APIView):
             transactions = Transaction.all(user_id=natural_user.get_pk(),
             status='SUCCEEDED',
             type='PAYIN',
-            sort='CreationDate:asc')
+            sort='CreationDate:desc')
 
             serializer = TransactionSerializer(transactions, many=True)
             jsonResults = JSONRenderer().render(serializer.data)
@@ -305,7 +375,7 @@ class OutgoingUserTransactions(APIView):
             transactions = Transaction.all(user_id=natural_user.get_pk(),
             status='SUCCEEDED',
             type='PAYOUT',
-            sort='CreationDate:asc')
+            sort='CreationDate:desc')
 
             serializer = TransactionSerializer(transactions, many=True)
             jsonResults = JSONRenderer().render(serializer.data)
@@ -328,7 +398,7 @@ class FailedUserTransactions(APIView):
         if nat_user_id is not None:
             natural_user = NaturalUser.get(nat_user_id)
 
-            transactions = Transaction.all(user_id=natural_user.get_pk(), status='FAILED', sort='CreationDate:asc')
+            transactions = Transaction.all(user_id=natural_user.get_pk(), status='FAILED', sort='CreationDate:desc')
 
             serializer = TransactionSerializer(transactions, many=True)
             jsonResults = JSONRenderer().render(serializer.data)

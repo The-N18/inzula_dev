@@ -1,11 +1,14 @@
-//export const BACKEND_HOST_ADDRESS = '127.0.0.1';
-export const BACKEND_HOST_ADDRESS = '15.236.239.146';
+export const BACKEND_HOST_ADDRESS = '127.0.0.1';
+//export const BACKEND_HOST_ADDRESS = '15.236.239.146';
 // BACKEND_HOST_ADDRESS = 'http://localhost:3000/verify/'+emailconfirmation.key;
 // BACKEND_HOST_ADDRESS = 'http://15.188.83.142:5000/verify/'+emailconfirmation.key;
 export const BACKEND_HOST_PORT = '8000';
 export const BACKEND_FILE_PORT = '8000';
 export const BACKEND_HTTP_PROTOCOL = 'http';
 export const AUTH_TIMEOUT = 3600;
+
+export const GOOGLE_CLIENT_ID = "1018467540475-2dsdk3lijubc8ln26ooa63lg83dsa8fm.apps.googleusercontent.com"
+export const FACEBOOK_APP_ID = "136854898060654"
 
 const DO_NOT_APPEND = ['127.0.0.1', 'localhost'];
 

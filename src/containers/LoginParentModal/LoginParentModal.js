@@ -10,8 +10,13 @@ import styles from './loginparentmodal.css';
 import { NavLink, Redirect } from "react-router-dom";
 import { openLoginParentModal, closeLoginParentModal } from "../../store/actions/loginParentModal";
 import { openLoginModal } from "../../store/actions/loginModal";
+import { googleLogin, facebookLogin } from "../../store/actions/auth";
 import { openSignupParentModal } from "../../store/actions/signupParentModal";
+import GoogleLogin from 'react-google-login';
+// import FacebookLogin from 'react-facebook-login';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import {FormattedMessage, FormattedDate} from 'react-intl'
+import { GOOGLE_CLIENT_ID, FACEBOOK_APP_ID } from "../../configurations";
 
 class LoginParentModal extends React.Component {
 
@@ -20,9 +25,14 @@ class LoginParentModal extends React.Component {
     this.props.openSignupParentModal();
   }
 
-  useFacebook = () => {
+  useFacebook = (response) => {
     console.log("use facebook");
+    this.props.facebookLogin(response);
+  }
 
+  useGoogle = (response) => {
+    console.log("use google", response);
+    this.props.googleLogin(response);
   }
 
   render() {
@@ -45,20 +55,35 @@ class LoginParentModal extends React.Component {
       <Segment basic style={{ padding: "8em 0em" }} textAlign="center">
         <Segment basic textAlign="center" className={"signupparent-segment"}>
         <Segment raised className={"signupparentcard"} textAlign="center">
-          <Button fluid color='facebook' className={"signupparent-button"} onClick={() => this.useFacebook.bind(this)}>
-            <Icon name='facebook' />
-              <FormattedMessage
-                id="login_parent.use_facebook"
-                defaultMessage="Sign in with Facebook"
-              />
-          </Button>
-          <Button fluid color='google plus' className={"signupparent-button"}>
-            <Icon name='google plus' />
-              <FormattedMessage
-                id="login_parent.use_gmail"
-                defaultMessage="Sign in with Gmail"
-              />
-          </Button>
+
+          <FacebookLogin
+            textButton="Login with facebook"
+            appId={FACEBOOK_APP_ID}
+            fields="name,email,picture"
+            callback={this.useFacebook}
+            render={renderProps => (
+              <Button fluid color='facebook' className={"signupparent-button"} onClick={renderProps.onClick}>
+                <Icon name='facebook' />
+                  <FormattedMessage
+                    id="login_parent.use_facebook"
+                    defaultMessage="Sign in with Facebook"
+                  />
+              </Button>)}
+          />
+          <GoogleLogin
+            clientId={GOOGLE_CLIENT_ID}
+            buttonText="Login with google"
+            onSuccess={this.useGoogle}
+            onFailure={this.useGoogle}
+            render={renderProps => (
+              <Button fluid color='google plus' className={"signupparent-button"} onClick={renderProps.onClick}>
+                <Icon name='google plus' />
+                  <FormattedMessage
+                    id="login_parent.use_gmail"
+                    defaultMessage="Sign in with Gmail"
+                  />
+              </Button>)}
+          />
           <Button fluid className={"signupparent-button"} onClick={() => this.props.openLoginModal()}>
             <Icon name='mail' /> <FormattedMessage
               id="login_parent.use_username"
@@ -104,6 +129,8 @@ const mapDispatchToProps = dispatch => {
     closeLoginParentModal: () => dispatch(closeLoginParentModal()),
     openLoginModal: () => dispatch(openLoginModal()),
     openSignupParentModal: () => dispatch(openSignupParentModal()),
+    googleLogin: (response) => dispatch(googleLogin(response)),
+    facebookLogin: (response) => dispatch(facebookLogin(response)),
   };
 };
 

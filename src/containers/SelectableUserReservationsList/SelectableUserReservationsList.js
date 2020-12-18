@@ -15,6 +15,7 @@ import styles from './selectableuserreservations.css';
 import { backend_url, buildImagesLinkList } from "../../configurations";
 import ImageUploader from 'react-images-upload';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { selectBooking } from "../../store/actions/selectReservationsModal";
 import { getSelectableReservations, getInitialSelectableReservations } from "../../store/actions/selectableUserReservations";
 import BookingCard from "../../containers/BookingCard/BookingCard";
 import $ from "jquery";
@@ -41,6 +42,7 @@ class SelectableUserReservationsList extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleScreenSize);
+    this.props.selectBooking([]);
   }
 
   componentDidMount = () => {
@@ -51,6 +53,7 @@ class SelectableUserReservationsList extends React.Component {
     }
 
   fetchMoreData = () => {
+    console.log("Fetch more items");
     const { user_id, next_url, count } = this.props;
     this.props.getSelectableUserReservations(user_id, next_url, count);
   }
@@ -71,27 +74,26 @@ class SelectableUserReservationsList extends React.Component {
     const { loading, reservations, next_url, count, selectable, editable } = this.props;
     const dataLength = reservations ? reservations.length : 0;
     return (
-      <Segment basic className={"profile-tab-section"}>
+      <Segment basic className={"select-booking-section"}>
       {reservations.length === 0 ? <div><FormattedMessage
         id="user_reservations.no_reservations"
         defaultMessage="You have not created any reservations."
       /></div> : <div
-        id="scrollableDiv"
+        id="scrollableDiv2"
         style={{
           height: 400,
           overflow: 'auto',
         }}
       >
-        {/*Put the scroll bar always on the bottom*/}
         <InfiniteScroll
-          dataLength={reservations.length}
+          dataLength={dataLength}
           next={this.fetchMoreData}
           hasMore={count !== null && next_url !== null}
           loader={<h4><FormattedMessage
             id="user_reservations.loading"
             defaultMessage="Loading..."
           /></h4>}
-          scrollableTarget="scrollableDiv"
+          scrollableTarget="scrollableDiv2"
         >
           {reservations.map((item, index) => (
             <div style={{
@@ -141,6 +143,7 @@ const mapDispatchToProps = dispatch => {
   return {
     getSelectableUserReservations: (user_id, next_url, count) => dispatch(getSelectableReservations(user_id, next_url, count)),
     getInitialSelectableUserReservations: (user_id) => dispatch(getInitialSelectableReservations(user_id)),
+    selectBooking: (selected) => dispatch(selectBooking(selected)),
   };
 };
 

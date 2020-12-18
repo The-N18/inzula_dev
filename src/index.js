@@ -35,6 +35,7 @@ import signupParentModalReducer from "./store/reducers/signupParentModal";
 import loginParentModalReducer from "./store/reducers/loginParentModal";
 import signupModalReducer from "./store/reducers/signupModal";
 import loginModalReducer from "./store/reducers/loginModal";
+import paymentOptionsModalReducer from "./store/reducers/paymentOptionsModal";
 import deleteBookingConfirmReducer from "./store/reducers/deleteBookingConfirm";
 import deleteTripConfirmReducer from "./store/reducers/deleteTripConfirm";
 import updateTripModalReducer from "./store/reducers/updateTripModal";
@@ -45,6 +46,7 @@ import deleteAccountReducer from "./store/reducers/deleteAccount";
 import selectableUserReservationsReducer from "./store/reducers/selectableUserReservations";
 import myFundsReducer from "./store/reducers/myFunds";
 import myPaymentMethodsReducer from "./store/reducers/myPaymentMethods";
+import selectCreditCardModalReducer from "./store/reducers/selectCreditCardModal";
 import { reducer as formReducer } from 'redux-form'
 import axios from 'axios';
 
@@ -90,7 +92,9 @@ const rootReducer = combineReducers({
   outgoingFinancialTransactions: outgoingFinancialTransactionsReducer,
   failedFinancialTransactions: failedFinancialTransactionsReducer,
   myFunds: myFundsReducer,
-  myPaymentMethods: myPaymentMethodsReducer
+  myPaymentMethods: myPaymentMethodsReducer,
+  paymentOptionsModal: paymentOptionsModalReducer,
+  selectCreditCardModal: selectCreditCardModalReducer
 });
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";

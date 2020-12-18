@@ -334,6 +334,80 @@ export const checkAuthTimeout = expirationTime => {
    };
  };
 
+
+ export const googleLogin = (values) => {
+  return dispatch => {
+    axios
+      .post(api_url() + "/rest-auth/google/connect", {'access_token': values['accessToken']})
+      .then(res => {
+        console.log("res", res);
+        const token = res.data.key;
+        const userId = res.data.user_id;
+        const userProfileId = res.data.user_profile_id;
+        const username = res.data.username;
+        const first_name = res.data.first_name;
+        const last_name = res.data.last_name;
+        const email = res.data.email;
+        const date_joined = res.data.date_joined;
+        const phone_number = res.data.phone_number;
+        const profile_pic = res.data.profile_pic;
+        const passport_number = res.data.passport_number;
+        const country = res.data.country;
+        const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
+        localStorage.setItem("token", token);
+        localStorage.setItem("expirationDate", expirationDate);
+        localStorage.setItem("userId", userId);
+        localStorage.setItem("username", username);
+        localStorage.setItem("userProfileId", userProfileId);
+        localStorage.setItem("first_name", first_name);
+        localStorage.setItem("last_name", last_name);
+        localStorage.setItem("email", email);
+        localStorage.setItem("phone_number", phone_number);
+        localStorage.setItem("profile_pic", profile_pic);
+        localStorage.setItem("passport_number", passport_number);
+        localStorage.setItem("country", country);
+        dispatch(authSuccess(token));
+        dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country));
+        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
+        dispatch(createNotification({
+          message: "Google Login successful.",
+          type: NOTIFICATION_TYPE_SUCCESS,
+          duration: 10000,
+          canDismiss: true,
+        }));
+        dispatch(closeLoginParentModal());
+      })
+      .catch(err => {
+        dispatch(createNotification({
+          message: "Signup failed. Please check your information.",
+          type: NOTIFICATION_TYPE_ERROR,
+          duration: 10000,
+          canDismiss: true,
+        }));
+      });
+  };
+ };
+
+ export const facebookLogin = (values) => {
+  return dispatch => {
+    axios
+      .post(api_url() + "/rest-auth/facebook/connect", {'access_token': values['accessToken']})
+      .then(res => {
+        console.log("res", res);
+        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
+      })
+      .catch(err => {
+        dispatch(createNotification({
+          message: "Signup failed. Please check your information.",
+          type: NOTIFICATION_TYPE_ERROR,
+          duration: 10000,
+          canDismiss: true,
+        }));
+      });
+  };
+ };
+
+
 export const authCheckState = () => {
    return dispatch => {
      const token = localStorage.getItem("token");

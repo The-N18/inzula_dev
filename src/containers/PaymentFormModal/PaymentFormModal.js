@@ -47,7 +47,7 @@ class PaymentFormModal extends React.Component {
       >
       <Modal.Header>Payment</Modal.Header>
       <Modal.Content>
-        <p>You are about to pay {price} euros.</p>
+        <p>You are about to pay {price+(price*0.25)} euros.</p>
 
         <form onSubmit={handleSubmit(this.submitForm)}>
           <CSRFToken/>

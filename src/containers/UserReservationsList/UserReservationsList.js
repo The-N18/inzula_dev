@@ -84,7 +84,7 @@ class UserReservationsList extends React.Component {
       >
         {/*Put the scroll bar always on the bottom*/}
         <InfiniteScroll
-          dataLength={reservations.length}
+          dataLength={dataLength}
           next={this.fetchMoreData}
           hasMore={count !== null && next_url !== null}
           loader={<h4><FormattedMessage

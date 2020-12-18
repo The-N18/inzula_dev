@@ -20,9 +20,9 @@ class CreditCardCard extends React.Component {
 
   render() {
 
-    const {alias, card_type, creation_date, expiration_date} = this.props;
+    const {alias, card_type, creation_date, expiration_date, onclick, cardId, pk} = this.props;
     return (
-      <Card raised fluid centered className={"notif-card"}>
+      <Card raised fluid centered className={cardId === null ? "notif-card" : cardId === pk ? "notif-card green-bg" : "notif-card grey-bg"} onClick={onclick}>
         <Card.Content>
           <Card.Header>
             <span>{alias} : {card_type}</span>
@@ -52,6 +52,7 @@ class CreditCardCard extends React.Component {
 
 const mapStateToProps = state => {
   return {
+    cardId: state.selectCreditCardModal.cardId,
   };
 };
 
@@ -67,6 +68,7 @@ CreditCardCard.propTypes = {
   creation_date: PropTypes.string,
   expiration_date: PropTypes.string,
   currency: PropTypes.string,
+  onclick: PropTypes.func,
 };
 
 export default connect(

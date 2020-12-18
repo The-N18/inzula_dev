@@ -6,14 +6,6 @@
   float:right;
 }
 
-.green-bg {
-  background-color: #B3E5FC !important;
-}
-
-.grey-bg {
-  background-color: #37474F !important;
-}
-
 
 @media only screen and (min-width: 768px) and (max-width: 950px) {
   .how-it-works-tab .menu {

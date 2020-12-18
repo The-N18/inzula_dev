@@ -24,7 +24,7 @@ from pay_process.urls import urlpatterns as payment_urls
 from userprofile.urls import urlpatterns as userprofile_urls
 from django.views.static import serve
 from django.conf.urls.static import static
-from userprofile.views import FacebookLogin, TwitterLogin, SocialAccountListView, SocialAccountDisconnectView
+from userprofile.views import FacebookLogin, TwitterLogin, GoogleLogin, SocialAccountListView, SocialAccountDisconnectView
 from rest_auth.registration.views import VerifyEmailView
 
 
@@ -32,8 +32,9 @@ urlpatterns = [
     # path('api-auth/', include('rest_framework.urls')),
     # path(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
-    path('rest-auth/facebook/', FacebookLogin.as_view(), name='fb_login'),
-    path('rest-auth/twitter/', TwitterLogin.as_view(), name='twitter_login'),
+    path('rest-auth/facebook/connect', FacebookLogin.as_view(), name='fb_login'),
+    path('rest-auth/twitter/connect', TwitterLogin.as_view(), name='twitter_login'),
+    path('rest-auth/google/connect', GoogleLogin.as_view(), name='google_connect'),
     path('socialaccounts/', SocialAccountListView.as_view(),name='social_account_list'),
     path('socialaccounts/(?P<pk>\d+)/disconnect/', SocialAccountDisconnectView.as_view(), name='social_account_disconnect'),
     path('rest-auth/', include('rest_auth.urls')),

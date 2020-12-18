@@ -18,6 +18,7 @@ import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
 import {renderField} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
 import { bookTrip } from "../../store/actions/selectReservationsModal";
+import { openPaymentOptions } from "../../store/actions/paymentOptionsModal";
 import { openPaymentFormModal } from "../../store/actions/paymentFormModal";
 
 class ConfirmBookingPrice extends React.Component {
@@ -31,8 +32,9 @@ class ConfirmBookingPrice extends React.Component {
     const {bookingId, tripId, userId, price, paymentAmountConfirmed } = this.props;
     this.props.setBookingRequestInfo(bookingId, tripId, userId, price, true);
     this.props.closeConfirmBookingPrice();
-    this.props.openPaymentFormModal();
+    // this.props.openPaymentFormModal();
     this.props.createWalletUser(userId);
+    this.props.openPaymentOptions();
   }
 
   componentDidUpdate(prevProps) {
@@ -89,6 +91,7 @@ const mapDispatchToProps = dispatch => {
     bookTrip: (tripId, selected, user_id) => dispatch(bookTrip(tripId, selected, user_id)),
     getBookingTotalPrice: (selected) => dispatch(getBookingTotalPrice(selected)),
     createWalletUser: (userId) => dispatch(createWalletUser(userId)),
+    openPaymentOptions: () => dispatch(openPaymentOptions()),
   };
 };
 

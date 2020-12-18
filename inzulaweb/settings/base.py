@@ -71,6 +71,7 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 SITE_ID = 1
+REST_USE_JWT = True
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -112,3 +113,9 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'inzula.app@gmail.com'
 EMAIL_HOST_PASSWORD = 'rnnaupmosyzlfyul'
+
+GOOGLE_CLIENT_ID = "1018467540475-2dsdk3lijubc8ln26ooa63lg83dsa8fm.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET = "Z46pZqtOlRb4W3seXrgqjXEi"
+
+FACEBOOK_APP_ID = "136854898060654"
+FACEBOOK_APP_SECRET = "398ba09e1e2981773d9d7d8370f4ddb0"

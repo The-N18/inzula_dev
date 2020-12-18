@@ -257,7 +257,7 @@ export const msg = {
   'incoming_user_transactions.no_transactions': "You do not have any incoming transactions yet.",
   'outgoing_user_transactions.no_transactions': "You have not made any transactions yet.",
   'failed_user_transactions.no_transactions': "You do not have any failed transactions.",
-  'transaction_card.payin': "Transaction executed: ",
+  'transaction_card.payin': "Transaction: ",
   'transaction_card.creation_date': "Creation Date: ",
   'transaction_card.debited_funds': "Debited funds: "
 };

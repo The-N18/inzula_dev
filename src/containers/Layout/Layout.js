@@ -14,6 +14,8 @@ import styles from './layout.css';
 import $ from "jquery";
 import Footer from "../../containers/Footer/Footer";
 import SignupParentModal from "../../containers/SignupParentModal/SignupParentModal";
+import PaymentOptions from "../../containers/PaymentOptions/PaymentOptions";
+import SelectCreditCard from "../../containers/SelectCreditCard/SelectCreditCard";
 import SignupModal from "../../containers/SignupReduxFormModal/SignupModal";
 
 import LoginParentModal from "../../containers/LoginParentModal/LoginParentModal";
@@ -209,6 +211,8 @@ class CustomLayout extends React.Component {
       <UpdateBooking />
       <ProposePriceOnBooking />
       <ConfirmBookingPrice />
+      <PaymentOptions />
+      <SelectCreditCard />
       <PaymentFormModal />
       <DeclineBooking />
       <ValidateBooking />

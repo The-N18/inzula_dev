@@ -105,8 +105,7 @@ class SelectableUserBookingsRequestListView(generics.ListAPIView):
         user_id = self.request.query_params.get('user_id', None)
         queryset = self.model.objects.filter(confirmed_by_sender=False)
         if user_id is not None:
-            queryset = queryset.filter(request_by=user_id)
-            queryset = queryset.filter(~Q(status="awa"))
+            queryset = queryset.filter(Q(request_by=user_id) & ~Q(status="awa") & ~Q(status="boo"))
         return queryset.order_by('-made_on')
 
 

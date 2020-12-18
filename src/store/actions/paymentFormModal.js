@@ -78,6 +78,37 @@ export const getInitialCardData = (values) => {
   };
 }
 
+export const updateCardData = (values) => {
+  return dispatch => {
+    axios
+      .post(api_url() + "/pay/updateCardInfo", values)
+      .then(result => {
+        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
+        console.log(result);
+        dispatch(setCardRegistrationData(result['data']))
+        dispatch(payToWallet({card_id: result['data']['card_id'], user_id: values['user_id'], selectedBookingIds: values['selectedBookingIds']}));
+      })
+      .catch(err => {
+      });
+  };
+}
+
+export const payToWallet = (values) => {
+  return dispatch => {
+    axios
+      .post(api_url() + "/pay/payToWallet", values)
+      .then(result => {
+        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
+        console.log(result);
+        dispatch(setCardRegistrationData(result['data']))
+      })
+      .catch(err => {
+      });
+  };
+}
+
+
+
 export const payForBooking = (values) => {
   return dispatch => {
     axios
@@ -107,31 +138,31 @@ export const payForBooking = (values) => {
 }
 
 
-export const updateCardData = (values) => {
-  return dispatch => {
-    axios
-      .post(api_url() + "/pay/updateCardInfo", values)
-      .then(result => {
-        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
-        console.log(result);
-        dispatch(setCardRegistrationData(result['data']))
-        dispatch(payToWallet({card_id: result['data']['card_id'], user_id: values['user_id'], selectedBookingIds: values['selectedBookingIds']}));
-      })
-      .catch(err => {
-      });
-  };
-}
 
-export const payToWallet = (values) => {
+export const payForBookingWithCardId = (values) => {
   return dispatch => {
     axios
-      .post(api_url() + "/pay/payToWallet", values)
+      .post(api_url() + "/pay/PayForBookingWithCardId", values)
       .then(result => {
-        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         console.log(result);
-        dispatch(setCardRegistrationData(result['data']))
+        // close modals
+        dispatch(closePaymentFormModal());
+        dispatch(closeModal());
+        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
+        dispatch(createNotification({
+          message: 'Your payment has been processed successfully.',
+          type: NOTIFICATION_TYPE_SUCCESS,
+          duration: 10000,
+          canDismiss: true,
+        }));
       })
       .catch(err => {
+        dispatch(createNotification({
+          message: 'Failed to process payment.',
+          type: NOTIFICATION_TYPE_ERROR,
+          duration: 10000,
+          canDismiss: true,
+        }));
       });
   };
 }
