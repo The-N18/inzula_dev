@@ -30,7 +30,7 @@ class BankAccountFormModal extends React.Component {
 
   componentDidMount = () => {
     const {userId} = this.props;
-    this.props.getMaxPayoutAmount(userId);
+    // this.props.getMaxPayoutAmount(userId);
   }
 
   componentDidUpdate(prevProps) {
