@@ -12,6 +12,10 @@ import { openSignupParentModal, closeSignupParentModal } from "../../store/actio
 import { openSignupModal } from "../../store/actions/signupModal";
 import { openLoginParentModal } from "../../store/actions/loginParentModal";
 import {FormattedMessage, FormattedDate} from 'react-intl'
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
+import GoogleLogin from 'react-google-login';
+import { GOOGLE_CLIENT_ID, FACEBOOK_APP_ID } from "../../configurations";
+import { googleLogin, facebookLogin } from "../../store/actions/auth";
 
 
 class SignupParentModal extends React.Component {
@@ -19,6 +23,16 @@ class SignupParentModal extends React.Component {
   handleSignin = () => {
     this.props.closeSignupParentModal();
     this.props.openLoginParentModal();
+  }
+
+  useFacebook = (response) => {
+    console.log("use facebook", response);
+    this.props.facebookLogin(response);
+  }
+
+  useGoogle = (response) => {
+    console.log("use google", response);
+    this.props.googleLogin(response);
   }
 
   render() {
@@ -42,20 +56,34 @@ class SignupParentModal extends React.Component {
       <Segment basic style={{ padding: "6em 0em" }} textAlign="center">
         <Segment basic textAlign="center" className={"signupparent-segment"}>
         <Segment raised className={"signupparentcard"} textAlign="center">
-          <Button fluid color='facebook' className={"signupparent-button"}>
+        <FacebookLogin
+          textButton="Login with facebook"
+          appId={FACEBOOK_APP_ID}
+          fields="name,email,picture"
+          callback={this.useFacebook}
+          render={renderProps => (
+            <Button fluid color='facebook' className={"signupparent-button"} onClick={renderProps.onClick}>
             <Icon name='facebook' />
               <FormattedMessage
                 id="signup.use_fb"
                 defaultMessage="Sign up with Facebook"
               />
-          </Button>
-          <Button fluid color='google plus' className={"signupparent-button"}>
+          </Button>)}
+        />
+        <GoogleLogin
+          clientId={GOOGLE_CLIENT_ID}
+          buttonText="Login with google"
+          onSuccess={this.useGoogle}
+          onFailure={this.useGoogle}
+          render={renderProps => (
+            <Button fluid color='google plus' className={"signupparent-button"} onClick={renderProps.onClick}>
             <Icon name='google plus' />
               <FormattedMessage
                 id="signup.use_gmail"
                 defaultMessage="Sign up with Gmail"
               />
-          </Button>
+          </Button>)}
+        />
           <Button fluid className={"signupparent-button"} onClick={() => this.props.openSignupModal()}>
             <Icon name='mail' />
               <FormattedMessage
@@ -101,7 +129,9 @@ const mapDispatchToProps = dispatch => {
     openSignupParentModal: () => dispatch(openSignupParentModal()),
     closeSignupParentModal: () => dispatch(closeSignupParentModal()),
     openSignupModal: () => dispatch(openSignupModal()),
-    openLoginParentModal: () => dispatch(openLoginParentModal())
+    openLoginParentModal: () => dispatch(openLoginParentModal()),
+    googleLogin: (response) => dispatch(googleLogin(response)),
+    facebookLogin: (response) => dispatch(facebookLogin(response)),
   };
 };
 

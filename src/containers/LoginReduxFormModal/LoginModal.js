@@ -15,6 +15,7 @@ import { authLogin } from "../../store/actions/auth";
 import { connect } from "react-redux";
 import { validate } from "./validation";
 import { openLoginModal, closeLoginModal } from "../../store/actions/loginModal";
+import { closeForgotPasswordModal, openForgotPasswordModal} from "../../store/actions/forgotPasswordModal";
 import { closeLoginParentModal } from "../../store/actions/loginParentModal";
 import { openSignupParentModal } from "../../store/actions/signupParentModal";
 import {renderField} from "../../containers/ReduxForm/renderField";
@@ -33,6 +34,10 @@ class LoginForm extends Component {
     this.props.closeLoginModal();
     this.props.closeLoginParentModal();
     this.props.openSignupParentModal();
+  }
+
+  handleForgotPassword = () => {
+    this.props.openForgotPasswordModal();
   }
 
   render () {
@@ -123,6 +128,13 @@ class LoginForm extends Component {
           defaultMessage="Sign up"
         /></span>
       </Segment>
+      <Segment raised className={"logincard"}>
+        <span className={"mimic-anchor"} onClick={this.handleForgotPassword.bind(this)}>
+        <FormattedMessage
+          id="login.forgot_password"
+          defaultMessage="Forgot password?"
+        /></span>
+      </Segment>
     </React.Fragment>
   </Grid.Column>
 </Grid>
@@ -157,6 +169,7 @@ const mapDispatchToProps = dispatch => {
     closeLoginModal: () => dispatch(closeLoginModal()),
     closeLoginParentModal: () => dispatch(closeLoginParentModal()),
     openSignupParentModal: () => dispatch(openSignupParentModal()),
+    openForgotPasswordModal: () => dispatch(openForgotPasswordModal()),
   };
 };
 

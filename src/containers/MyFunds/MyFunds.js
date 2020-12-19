@@ -8,7 +8,8 @@ import {
   Segment,
   Select,
   Image,
-  Divider
+  Divider,
+  Card
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './myfunds.css';
@@ -18,6 +19,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { getFunds, cashout } from "../../store/actions/myFunds";
 import $ from "jquery";
 import {FormattedMessage, FormattedDate} from 'react-intl'
+import { openBankAccountFormModal } from "../../store/actions/bankAccountFormModal";
 
 class MyFunds extends React.Component {
   constructor(props) {
@@ -54,16 +56,27 @@ class MyFunds extends React.Component {
     this.props.cashout(user_id, 0);
   }
 
+  openCashoutModal = () => {
+    this.props.openBankAccountFormModal();
+  }
+
   render() {
     const { loading, funds } = this.props;
     return (
       <Segment basic className={"profile-tab-section"}>
-      {funds === "" ? <div><FormattedMessage
-        id="my_funds.no_transactions"
-        defaultMessage="You do not have any funds."
-      /></div> : <div>
-      {funds}
-      </div>}
+      <Card>
+        <Card.Content textAlign={"center"}>
+          <Card.Header>{funds}</Card.Header>
+        </Card.Content>
+        <Card.Content extra>
+            <Button basic color='green' fluid onClick={this.openCashoutModal.bind(this)}>
+              <FormattedMessage
+                id="my_funds.cashout"
+                defaultMessage="Cash out"
+              />
+            </Button>
+        </Card.Content>
+      </Card>
       </Segment>
     );
   }
@@ -82,6 +95,7 @@ const mapDispatchToProps = dispatch => {
   return {
     cashout: (user_id, amount) => dispatch(cashout(user_id, amount)),
     getFunds: (user_id) => dispatch(getFunds(user_id)),
+    openBankAccountFormModal: () => dispatch(openBankAccountFormModal()),
   };
 };
 

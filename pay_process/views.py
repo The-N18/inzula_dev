@@ -6,7 +6,7 @@ from .payment_utils import create_or_get_user
 from django.contrib.auth.models import User
 import mangopay
 from mangopay.api import APIRequest
-from mangopay.resources import NaturalUser, Wallet, CardRegistration, DirectPayIn, Money, Transaction, Transfer
+from mangopay.resources import NaturalUser, Wallet, CardRegistration, DirectPayIn, Money, Transaction, Transfer, BankWirePayOut, BankAccount
 from mangopay.utils import Address
 import requests
 from .serializers import TransactionSerializer, CardSerializer
@@ -175,6 +175,54 @@ class PayForBookingCardId(CreateAPIView):
                 price_proposal=None,
                 type='payment_for_booking',
                 status='unseen')
+            result = {
+            }
+            return Response(result, status=status.HTTP_200_OK)
+        return Response({"error": "Error processing payment."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class Cashout(CreateAPIView):
+    permission_classes = register_permission_classes()
+
+    def create(self, request, *args, **kwargs):
+        # get user from user id
+        with transaction.atomic():
+            userId = request.data['userId']
+            amount = request.data['amount']
+            acc_owner_name = request.data['account_owner_name']
+            acc_owner_address = request.data['account_owner_address']
+            acc_owner_postal_code = request.data['account_owner_postal_code']
+            acc_owner_country = request.data['account_owner_country']
+            account_iban = request.data['account_IBAN']
+            account_bic = request.data['account_BIC']
+
+            # Get natural user
+            userprofile = User.objects.get(pk=userId).profile
+            nat_user_id = userprofile.nat_user_id
+            natural_user = NaturalUser.get(nat_user_id)
+
+            # Register account for user
+            bankaccount_iban = BankAccount(owner_name=acc_owner_name,
+                              user_id=nat_user_id,
+                              type="IBAN",
+                              owner_address=Address(address_line_1=acc_owner_address, address_line_2='',
+                              postal_code=acc_owner_postal_code, country=acc_owner_country),
+                              iban=account_iban,
+                              bic=account_bic)
+            bankaccount.save()
+
+            # get user wallet
+            user_wallet = Wallet(id=userprofile.wallet_id)
+
+            # Cashout: Pay from wallet to bank account
+            payout = BankWirePayOut(author=natural_user,
+                       debited_funds=Money(amount=amount, currency='EUR'),
+                       fees=Money(amount=0, currency='EUR'),
+                       debited_wallet=legal_user_wallet,
+                       bank_account=bankaccount,
+                       bank_wire_ref="Cashout from Inzula")
+            payout.save()
+
             result = {
             }
             return Response(result, status=status.HTTP_200_OK)
@@ -423,6 +471,32 @@ class UserWalletFunds(APIView):
             user_wallet = Wallet.get(userprofile.wallet_id)
             if userprofile.wallet_id is not None and user_wallet is not None:
                 result['funds'] = str(user_wallet.balance) if user_wallet.balance is not None else ""
+            return Response(result, status=status.HTTP_200_OK)
+        return Response(result, status=status.HTTP_200_OK)
+
+
+class MaxPayOutAmount(APIView):
+
+    def post(self, request, format=None):
+        # get user from user id
+        userId = request.data['user_id']
+
+        result = {
+        'funds': "",
+        'bookings': "",
+        'max_amt': ""
+        }
+        userprofile = User.objects.get(pk=userId).profile
+        nat_user_id = userprofile.nat_user_id
+        if nat_user_id is not None:
+            natural_user = NaturalUser.get(nat_user_id)
+            user_wallet = Wallet.get(userprofile.wallet_id)
+            if userprofile.wallet_id is not None and user_wallet is not None:
+                result['funds'] = str(user_wallet.balance) if user_wallet.balance is not None else ""
+                booking_requests = BookingRequest.objects.filter(request_by=userprofile, status="boo")
+                booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
+                result['bookings'] = booking_requests_price["product__proposed_price__sum"]
+                result['max_amt'] = float(result['funds'][4:].replace(",", "")) - result['bookings']
             return Response(result, status=status.HTTP_200_OK)
         return Response(result, status=status.HTTP_200_OK)
 

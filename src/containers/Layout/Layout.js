@@ -20,12 +20,14 @@ import SignupModal from "../../containers/SignupReduxFormModal/SignupModal";
 
 import LoginParentModal from "../../containers/LoginParentModal/LoginParentModal";
 import LoginModal from "../../containers/LoginReduxFormModal/LoginModal";
+import ForgotPasswordModal from "../../containers/ForgotPasswordForm/ForgotPasswordForm";
 import DeleteBookingConfirm from "../../containers/DeleteBookingConfirm/DeleteBookingConfirm";
 import DeleteTripConfirm from "../../containers/DeleteTripConfirm/DeleteTripConfirm";
 import UpdateTripForm from "../../containers/UpdateTripFormModal/UpdateTripForm";
 import UpdateBooking from "../../containers/UpdateBookingModal/UpdateBooking";
 import ProposePriceOnBooking from "../../containers/ProposePriceOnBooking/ProposePriceOnBooking";
 import PaymentFormModal from "../../containers/PaymentFormModal/PaymentFormModal";
+import BankAccountFormModal from "../../containers/BankAccountFormModal/BankAccountFormModal";
 import ConfirmBookingPrice from "../../containers/ConfirmBookingPrice/ConfirmBookingPrice";
 import DeclineBooking from "../../containers/DeclineBooking/DeclineBooking";
 import ValidateBooking from "../../containers/ValidateBooking/ValidateBooking";
@@ -205,6 +207,7 @@ class CustomLayout extends React.Component {
       <SignupModal />
       <LoginParentModal />
       <LoginModal />
+      <ForgotPasswordModal />
       <DeleteBookingConfirm />
       <DeleteTripConfirm />
       <UpdateTripForm />
@@ -214,10 +217,11 @@ class CustomLayout extends React.Component {
       <PaymentOptions />
       <SelectCreditCard />
       <PaymentFormModal />
+      <BankAccountFormModal />
       <DeclineBooking />
       <ValidateBooking />
       <DeleteAccount />
-      <Notify />
+      <Notify position={"BottomRight"}/>
         <header className="menuheader">
           <div>
             <a className="logo" onClick={this.handleOnClick.bind(this, '/')}>

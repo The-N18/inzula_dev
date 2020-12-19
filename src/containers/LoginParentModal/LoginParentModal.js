@@ -13,7 +13,6 @@ import { openLoginModal } from "../../store/actions/loginModal";
 import { googleLogin, facebookLogin } from "../../store/actions/auth";
 import { openSignupParentModal } from "../../store/actions/signupParentModal";
 import GoogleLogin from 'react-google-login';
-// import FacebookLogin from 'react-facebook-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import {FormattedMessage, FormattedDate} from 'react-intl'
 import { GOOGLE_CLIENT_ID, FACEBOOK_APP_ID } from "../../configurations";
@@ -26,7 +25,7 @@ class LoginParentModal extends React.Component {
   }
 
   useFacebook = (response) => {
-    console.log("use facebook");
+    console.log("use facebook", response);
     this.props.facebookLogin(response);
   }
 

@@ -11,6 +11,7 @@ import SignupParent from "./containers/SignupParent/SignupParent";
 import MyProfile from "./containers/MyProfile/MyProfile";
 import Transport from "./containers/Transport/Transport";
 import VerifyUser from "./containers/VerifyUser/VerifyUser";
+import ResetPassword from "./containers/ResetPassword/ResetPassword";
 import HomepageLayout from "./containers/Home";
 import SendPage from "./containers/SendPage/SendPage";
 import Faqs from "./containers/staticpages/Faqs/Faqs";
@@ -21,7 +22,6 @@ import Insurance from "./containers/staticpages/Insurance/Insurance";
 import UserAgreement from "./containers/staticpages/UserAgreement/UserAgreement";
 import SearchBookingRequestsPage from "./containers/SearchBookingRequestsPage/SearchBookingRequestsPage";
 import SignupParentWithDiscount from "./containers/SignupParentWithDiscount/SignupParentWithDiscount";
-
 
 const BaseRouter = () => (
   <Hoc>
@@ -37,6 +37,7 @@ const BaseRouter = () => (
     <Route path="/insurance" component={Insurance} />
     <Route path="/search_bookings" component={SearchBookingRequestsPage} />
     <Route path="/verify/:verificationKey" component={VerifyUser} />
+    <Route path="/reset/:uid/:token" component={ResetPassword} />
     <Route exact path="/" component={HomepageLayout} />
   </Hoc>
 );

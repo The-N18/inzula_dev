@@ -36,7 +36,7 @@ class PaymentFormModal extends React.Component {
   }
 
   render() {
-    const { open, handleSubmit, price } = this.props;
+    const { open, handleSubmit, price, invalid } = this.props;
     return (
       <Modal
         centered={false}
@@ -93,7 +93,7 @@ class PaymentFormModal extends React.Component {
             label="CVC"
             component={renderField}
           />
-          <Button positive type="submit">
+          <Button positive type="submit" disabled={invalid}>
             Pay
           </Button>
         </form>

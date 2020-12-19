@@ -11,6 +11,7 @@ import authReducer from "./store/reducers/auth";
 import verifyUserReducer from "./store/reducers/verifyUser";
 import appConfigReducer from "./store/reducers/appConfig";
 import myProfileReducer from "./store/reducers/myProfile";
+import bankAccountFormModalReducer from "./store/reducers/bankAccountFormModal";
 import userFinanceReducer from "./store/reducers/userFinance";
 import searchbookingsReducer from "./store/reducers/searchBookings";
 import incomingFinancialTransactionsReducer from "./store/reducers/incomingFinancialTransactions";
@@ -35,6 +36,7 @@ import signupParentModalReducer from "./store/reducers/signupParentModal";
 import loginParentModalReducer from "./store/reducers/loginParentModal";
 import signupModalReducer from "./store/reducers/signupModal";
 import loginModalReducer from "./store/reducers/loginModal";
+import forgotPasswordModalReducer from "./store/reducers/forgotPasswordModal";
 import paymentOptionsModalReducer from "./store/reducers/paymentOptionsModal";
 import deleteBookingConfirmReducer from "./store/reducers/deleteBookingConfirm";
 import deleteTripConfirmReducer from "./store/reducers/deleteTripConfirm";
@@ -76,6 +78,7 @@ const rootReducer = combineReducers({
   loginParentModal: loginParentModalReducer,
   signupModal: signupModalReducer,
   loginModal: loginModalReducer,
+  forgotPasswordModal: forgotPasswordModalReducer,
   paymentFormModal: paymentFormModalReducer,
   deleteBookingConfirm: deleteBookingConfirmReducer,
   deleteTripConfirm: deleteTripConfirmReducer,
@@ -94,7 +97,8 @@ const rootReducer = combineReducers({
   myFunds: myFundsReducer,
   myPaymentMethods: myPaymentMethodsReducer,
   paymentOptionsModal: paymentOptionsModalReducer,
-  selectCreditCardModal: selectCreditCardModalReducer
+  selectCreditCardModal: selectCreditCardModalReducer,
+  bankAccountFormModal: bankAccountFormModalReducer
 });
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
