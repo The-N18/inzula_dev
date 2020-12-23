@@ -39,6 +39,7 @@ class PaymentFormModal extends React.Component {
     const { open, handleSubmit, price, invalid } = this.props;
     return (
       <Modal
+      closeIcon
         centered={false}
         open={open}
         onClose={() => this.props.closePaymentFormModal()}

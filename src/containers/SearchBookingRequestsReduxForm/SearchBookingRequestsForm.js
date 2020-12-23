@@ -134,6 +134,7 @@ class SearchBookingRequestsForm extends React.Component {
               </Grid.Column>
               </Grid.Row>
               </Grid>
+              <div className={"search-booking-requests-button"}>
             <Button
               size="big"
               type="submit"
@@ -144,6 +145,7 @@ class SearchBookingRequestsForm extends React.Component {
               defaultMessage="Search"
             />
             </Button>
+            </div>
             </form>
         </Segment>
     );

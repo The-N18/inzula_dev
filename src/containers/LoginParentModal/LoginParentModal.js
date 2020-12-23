@@ -38,6 +38,7 @@ class LoginParentModal extends React.Component {
     const { open } = this.props;
     return (
       <Modal
+      closeIcon
         centered={false}
         open={open}
         onClose={() => this.props.closeLoginParentModal()}

@@ -1,10 +1,11 @@
 from django.urls import path, include
-from .views import PayIn, InitCardInfo, Cashout, MaxPayOutAmount, PayForBookingCardId, UserCards, UserWalletFunds, PayForBooking, UpdateCardInfo, CreateNaturalUser, FailedUserTransactions, OutgoingUserTransactions, IncomingUserTransactions
+from .views import PayIn, InitCardInfo, Cashout, MaxPayOutAmount, PayForBookingCardId, PayForBookingPaypal, UserCards, UserWalletFunds, PayForBooking, UpdateCardInfo, CreateNaturalUser, FailedUserTransactions, OutgoingUserTransactions, IncomingUserTransactions
 
 
 urlpatterns = [
     path('PayForBooking', PayForBooking.as_view()),
     path('PayForBookingWithCardId', PayForBookingCardId.as_view()),
+    path('PayForBookingWithPaypal', PayForBookingPaypal.as_view()),
     path('getFunds', UserWalletFunds.as_view()),
     path('getMaxPayoutAmount', MaxPayOutAmount.as_view()),
     path('cashout', Cashout.as_view()),

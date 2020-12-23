@@ -159,6 +159,7 @@ class UpdateBooking extends React.Component {
 
     return (
       <Modal
+      closeIcon
         centered={false}
         open={open}
         onClose={() => this.props.updateBookingCloseModal()}
@@ -166,7 +167,10 @@ class UpdateBooking extends React.Component {
         size='large'
       >
         <Modal.Header>
-        Update Booking
+        <FormattedMessage
+          id="update_booking.title"
+          defaultMessage="Update Booking"
+        />
         </Modal.Header>
         <Modal.Content scrolling>
       <Segment style={{ padding: "0em 0em" }} vertical textAlign="center">

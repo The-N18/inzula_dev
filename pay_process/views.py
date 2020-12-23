@@ -6,7 +6,7 @@ from .payment_utils import create_or_get_user
 from django.contrib.auth.models import User
 import mangopay
 from mangopay.api import APIRequest
-from mangopay.resources import NaturalUser, Wallet, CardRegistration, DirectPayIn, Money, Transaction, Transfer, BankWirePayOut, BankAccount
+from mangopay.resources import NaturalUser, Wallet, PayPalPayIn, CardRegistration, DirectPayIn, Money, Transaction, Transfer, BankWirePayOut, BankAccount
 from mangopay.utils import Address
 import requests
 from .serializers import TransactionSerializer, CardSerializer
@@ -18,6 +18,7 @@ from trip.models import Trip
 from rest_framework.generics import CreateAPIView, ListAPIView, GenericAPIView
 from rest_auth.registration.app_settings import register_permission_classes
 from django.db.models import Sum
+from django.utils import timezone
 
 # Create your views here.
 
@@ -104,6 +105,7 @@ class PayForBooking(CreateAPIView):
                 booking_request=booking,
                 created_by=booking.request_by,
                 price_proposal=None,
+                created_on=timezone.now(),
                 type='payment_for_booking',
                 status='unseen')
             result = {
@@ -173,12 +175,82 @@ class PayForBookingCardId(CreateAPIView):
                 booking_request=booking,
                 created_by=booking.request_by,
                 price_proposal=None,
+                created_on=timezone.now(),
                 type='payment_for_booking',
                 status='unseen')
             result = {
             }
             return Response(result, status=status.HTTP_200_OK)
         return Response({"error": "Error processing payment."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PayForBookingPaypal(CreateAPIView):
+    permission_classes = register_permission_classes()
+
+    def create(self, request, *args, **kwargs):
+        # get user from user id
+        with transaction.atomic():
+            userId = request.data['userId']
+            tripId = request.data['tripId']
+            selectedBookingIds = request.data['selectedBookingIds']
+
+            # get price to pay
+            booking_requests = BookingRequest.objects.filter(pk__in=selectedBookingIds)
+            booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
+            booking_amount = booking_requests_price['product__proposed_price__sum']
+            fees_amount = 0.25*booking_amount
+            booking_price = booking_amount + fees_amount
+
+            # Get natural user
+            userprofile = User.objects.get(pk=userId).profile
+            nat_user_id = userprofile.nat_user_id
+            natural_user = NaturalUser.get(nat_user_id)
+
+            # get user wallet
+            user_wallet = Wallet(id=userprofile.wallet_id)
+
+            # pay to user wallet
+            paypal_payin = PayPalPayIn(author=natural_user,
+                           debited_funds=Money(amount=booking_price, currency='EUR'),
+                           fees=Money(amount=0, currency='EUR'),
+                           return_url = "http://www.localhost:3000",
+                           credited_wallet_id=user_wallet)
+
+            paypal_payin.save()
+
+            # transfer money from user wallet to inzula wallet
+            admin_user = User.objects.get(pk=1).profile
+            nat_user_id = admin_user.nat_user_id
+            inzula_user = NaturalUser.get(nat_user_id)
+
+            inzula_wallet = Wallet(id=admin_user.wallet_id)
+
+            transfer = Transfer(author=natural_user,
+                        credited_user=inzula_user,
+                        debited_funds=Money(amount=fees_amount, currency='EUR'),
+                        fees=Money(amount=0, currency='EUR'),
+                        debited_wallet=user_wallet,
+                        credited_wallet=inzula_wallet)
+            transfer.save()
+
+            # change the status of all bookings and create notifications
+            for booking in BookingRequest.objects.filter(pk__in=[int(i) for i in selectedBookingIds]):
+                booking.status = 'boo'
+                booking.trip = Trip.objects.get(pk=tripId)
+                booking.save()
+                # generate notifications
+                Notif.objects.create(trip=booking.trip,
+                booking_request=booking,
+                created_by=booking.request_by,
+                price_proposal=None,
+                created_on=timezone.now(),
+                type='payment_for_booking',
+                status='unseen')
+            result = {
+            }
+            return Response(result, status=status.HTTP_200_OK)
+        return Response({"error": "Error processing payment."}, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class Cashout(CreateAPIView):

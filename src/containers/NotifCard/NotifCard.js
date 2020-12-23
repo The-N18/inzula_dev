@@ -64,9 +64,9 @@ class NotifCard extends React.Component {
               id="notif_card.request_declined"
               defaultMessage="Your booking request has been declined by the sender"
             /> : ''}
-            <div className={"notif_card_btns"}>
+            {/*<div className={"notif_card_btns"}>
               <Button color='blue' icon='eye' onClick={this.markAsSeen.bind(this)} title={"mark as seen"}/>
-            </div>
+            </div>*/}
           </Card.Header>
           <Card.Description>
             {trip_dep_date !== "" ? <span><FormattedMessage

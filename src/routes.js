@@ -2,12 +2,6 @@ import React from "react";
 import { Route } from "react-router-dom";
 import Hoc from "./hoc/hoc";
 
-import Login from "./containers/Login/Login";
-import LoginRedux from "./containers/LoginReduxForm/Login";
-import Signup from "./containers/Signup/Signup";
-import SignupRedux from "./containers/SignupReduxForm/Signup";
-import LoginParent from "./containers/LoginParent/LoginParent";
-import SignupParent from "./containers/SignupParent/SignupParent";
 import MyProfile from "./containers/MyProfile/MyProfile";
 import Transport from "./containers/Transport/Transport";
 import VerifyUser from "./containers/VerifyUser/VerifyUser";

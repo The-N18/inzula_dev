@@ -166,3 +166,30 @@ export const payForBookingWithCardId = (values) => {
       });
   };
 }
+
+export const payForBookingWithPaypal = (values) => {
+  return dispatch => {
+    axios
+      .post(api_url() + "/pay/PayForBookingWithPaypal", values)
+      .then(result => {
+        console.log(result);
+        dispatch(closePaymentFormModal());
+        dispatch(closeModal());
+        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
+        dispatch(createNotification({
+          message: 'Your payment has been processed successfully.',
+          type: NOTIFICATION_TYPE_SUCCESS,
+          duration: 10000,
+          canDismiss: true,
+        }));
+      })
+      .catch(err => {
+        dispatch(createNotification({
+          message: 'Failed to process payment.',
+          type: NOTIFICATION_TYPE_ERROR,
+          duration: 10000,
+          canDismiss: true,
+        }));
+      });
+  };
+}

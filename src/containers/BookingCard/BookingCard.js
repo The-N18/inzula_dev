@@ -220,7 +220,7 @@ class BookingCard extends React.Component {
             {can_propose ? <Segment compact basic className={"sub-btn-style"}>
               <Button color='blue' icon='money' className={"white-trash"} onClick={this.proposePriceOnBooking.bind(this)}/>
             </Segment> : ''}
-            {editable ? <Grid.Column mobile={2} tablet={2} computer={2}>
+            {editable && status !== "boo" && status !== "awa" && status !== "col" && status !== "del" ? <Grid.Column mobile={2} tablet={2} computer={2}>
               <Segment compact basic className={"sub-btn-style"}>
                 <Button color='blue' icon='edit' className={"booking-card-delete-button"}  onClick={this.updateBooking.bind(this)}/>
                 <Button color='orange' icon='trash' className={"white-trash"} onClick={this.deleteBooking.bind(this)}/>

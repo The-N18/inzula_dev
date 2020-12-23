@@ -115,7 +115,7 @@ class Notif(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     booking_request = models.ForeignKey(BookingRequest, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     price_proposal = models.ForeignKey(PriceProposal, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
-    created_on = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    created_on = models.DateTimeField(null=True, blank=True)
     created_by = models.ForeignKey(UserProfile, on_delete=models.PROTECT, related_name='+')
     status = models.CharField(max_length=50, choices=ALERT_STATUS)
     type = models.CharField(max_length=50, choices=ALERT_TYPE)

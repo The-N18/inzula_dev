@@ -47,6 +47,7 @@ class BankAccountFormModal extends React.Component {
     const { open, handleSubmit, invalid } = this.props;
     return (
       <Modal
+      closeIcon
         centered={false}
         open={open}
         onClose={() => this.props.closeBankAccountFormModal()}

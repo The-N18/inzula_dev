@@ -24,6 +24,8 @@ from django.http import Http404
 import datetime
 from django.contrib.auth.models import User
 from django.db.models import Sum
+from django.utils import timezone
+
 
 
 # Create your views here.
@@ -102,8 +104,15 @@ class SelectableUserBookingsRequestListView(generics.ListAPIView):
     permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
+        start_date = None
+        arrival_date = None
+        products = Product.objects.all()
         user_id = self.request.query_params.get('user_id', None)
-        queryset = self.model.objects.filter(confirmed_by_sender=False)
+        trip_id = self.request.query_params.get('trip_id', None)
+        if trip_id is not None:
+            trip = Trip.objects.get(pk=trip_id)
+            products = products.filter(arrival_date=trip.depart_date, departure_location=trip.departure_location, destination_location=trip.destination_location)
+        queryset = self.model.objects.filter(confirmed_by_sender=False, product__in=products)
         if user_id is not None:
             queryset = queryset.filter(Q(request_by=user_id) & ~Q(status="awa") & ~Q(status="boo"))
         return queryset.order_by('-made_on')
@@ -448,10 +457,10 @@ class BookingRequestDetail(APIView):
 
     def delete(self, request, pk, format=None):
         booking_request = self.get_object(pk)
-        if booking_request.trip is not None or booking_request.confirmed_by_sender or booking_request.status in ['boo', 'con', 'awa', 'col', 'del']:
-            return Response({'detail': 'You cannot delete a booking at this stage.'}, status=status.HTTP_204_NO_CONTENT)
+        if booking_request.confirmed_by_sender or booking_request.status in ['boo', 'con', 'awa', 'col', 'del']:
+            return Response({'detail': 'You cannot delete a booking at this stage.'}, status=status.HTTP_200_OK)
         booking_request.delete()
-        return Response({'detail': 'ok'}, status=status.HTTP_204_NO_CONTENT)
+        return Response({'detail': 'ok'}, status=status.HTTP_200_OK)
 
 
 class NotifDetail(APIView):
@@ -568,6 +577,7 @@ class ValidateBooking(APIView):
         created_by=booking_request.trip.created_by,
         price_proposal=None,
         type='request_validated',
+        created_on=timezone.now(),
         status='unseen')
         result = {"detail": 'ok'}
         return Response(result, status=status.HTTP_200_OK)
@@ -589,6 +599,7 @@ class DeclineBooking(APIView):
         created_by=booking_request.trip.created_by,
         price_proposal=None,
         type='request_declined',
+        created_on=timezone.now(),
         status='unseen')
         result = {"detail": 'ok'}
         return Response(result, status=status.HTTP_200_OK)

@@ -110,7 +110,10 @@ class TripCard extends React.Component {
               className={"buttoncolor trip-card-button"}
               onClick={this.handleBook.bind(this)}
             >
-              <Icon name='check' /> Book
+              <Icon name='check' /> <FormattedMessage
+                id="trip_card.book"
+                defaultMessage="Book"
+              />
             </Button>}
             {!no_book ? '' : <Segment compact basic>
               <Button color='blue' icon='edit' className={"trip-card-delete-button"} onClick={this.updateTrip.bind(this)}/>

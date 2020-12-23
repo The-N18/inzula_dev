@@ -10,6 +10,7 @@ import styles from './signupparentwithdiscount.css';
 import { NavLink, Redirect } from "react-router-dom";
 import { authSetDiscountText } from "../../store/actions/auth";
 import { openSignupModal } from "../../store/actions/signupModal";
+import {FormattedMessage, FormattedDate} from 'react-intl'
 
 class SignupParentWithDiscount extends React.Component {
 
@@ -25,18 +26,18 @@ class SignupParentWithDiscount extends React.Component {
     return (
       <Segment basic style={{ padding: "12em 0em" }} textAlign="center">
       <Header as="h4" textAlign="center" color="teal">
-        Signup now to benefit from a 5% discount for each of your first three parcel epeditions.
+      <FormattedMessage
+        id="signup_discount.title"
+        defaultMessage="Signup now to benefit from a 5% discount for each of your first three parcel epeditions."
+      />
       </Header>
         <Segment basic textAlign="center" className={"signupparent-segment"}>
         <Segment raised className={"signupparentcard"} textAlign="center">
-          <Button fluid color='facebook' className={"signupparent-button"}>
-            <Icon name='facebook' /> Sign up with Facebook
-          </Button>
-          <Button fluid color='google plus' className={"signupparent-button"}>
-            <Icon name='google plus' /> Sign up with Gmail
-          </Button>
           <Button fluid color='white' className={"signupparent-button"} onClick={this.handleOnModalOpen.bind(this)}>
-            <Icon name='mail' /> Use username
+            <Icon name='mail' /> <FormattedMessage
+              id="signup_discount.username"
+              defaultMessage="Use username"
+            />
           </Button>
         </Segment>
       </Segment>

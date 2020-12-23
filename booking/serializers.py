@@ -74,10 +74,14 @@ class NotifListSerializer(serializers.ModelSerializer):
     def get_booking_request(self, obj):
         dct = {
         "product_name": None,
-        "pk": None
+        "pk": None,
+        "departure_date": None,
+        "arrival_date": None
         }
         if obj.booking_request:
             dct['product_name'] = "{}".format(obj.booking_request.product.name)
+            dct['departure_date'] = "{}".format(obj.booking_request.product.departure_date)
+            dct['arrival_date'] = "{}".format(obj.booking_request.product.arrival_date)
             dct['pk'] = obj.booking_request.pk
         return dct
 

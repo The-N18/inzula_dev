@@ -24,7 +24,6 @@ import ImageUploader from 'react-images-upload';
 import { DateInput } from 'semantic-ui-calendar-react';
 import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
 import { openModal, closeModal } from "../../store/actions/sendPackageModal";
-// import SendPackage from "../../containers/SendPackage/SendPackage";
 import SendPackage from "../../containers/SendPackageReduxForm/SendPackage";
 import {FormattedMessage, FormattedDate} from 'react-intl'
 
@@ -42,6 +41,7 @@ class SendPackageModal extends React.Component {
 
     return (
       <Modal
+      closeIcon
       centered={false}
       open={open}
       onClose={() => this.props.closePackageModal()}

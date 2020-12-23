@@ -46,16 +46,16 @@ class SelectableUserReservationsList extends React.Component {
   }
 
   componentDidMount = () => {
-    const { user_id } = this.props;
-    this.props.getInitialSelectableUserReservations(user_id);
+    const { user_id, tripId } = this.props;
+    this.props.getInitialSelectableUserReservations(user_id, tripId);
     window.addEventListener('resize', this.handleScreenSize, false);
     this.handleScreenSize();
     }
 
   fetchMoreData = () => {
     console.log("Fetch more items");
-    const { user_id, next_url, count } = this.props;
-    this.props.getSelectableUserReservations(user_id, next_url, count);
+    const { user_id, tripId, next_url, count } = this.props;
+    this.props.getSelectableUserReservations(user_id, tripId, next_url, count);
   }
 
   getDivHeight = () => {
@@ -136,13 +136,14 @@ const mapStateToProps = state => {
     reservations: state.selectableUserReservations.reservations,
     next_url: state.selectableUserReservations.next_url,
     count: state.selectableUserReservations.count,
+    tripId: state.selectReservationsModal.tripId,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    getSelectableUserReservations: (user_id, next_url, count) => dispatch(getSelectableReservations(user_id, next_url, count)),
-    getInitialSelectableUserReservations: (user_id) => dispatch(getInitialSelectableReservations(user_id)),
+    getSelectableUserReservations: (user_id, trip_id, next_url, count) => dispatch(getSelectableReservations(user_id, trip_id, next_url, count)),
+    getInitialSelectableUserReservations: (user_id, trip_id) => dispatch(getInitialSelectableReservations(user_id, trip_id)),
     selectBooking: (selected) => dispatch(selectBooking(selected)),
   };
 };

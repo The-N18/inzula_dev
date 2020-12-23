@@ -40,6 +40,7 @@ class SignupParentModal extends React.Component {
 
     return (
       <Modal
+      closeIcon
         centered={false}
         open={open}
         onClose={() => this.props.closeSignupParentModal()}

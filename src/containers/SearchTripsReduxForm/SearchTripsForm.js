@@ -166,6 +166,7 @@ class SearchTripsForm extends React.Component {
               </Grid.Column>
               </Grid.Row>
               </Grid>
+              <div className={"search-trips-button"}>
             <Button
               size="big"
               loading={loading}
@@ -177,6 +178,7 @@ class SearchTripsForm extends React.Component {
               defaultMessage="Search"
             />
             </Button>
+            </div>
           </form>
           <Divider/>
           {trips.length === 0 ? <div> <FormattedMessage

@@ -9,6 +9,7 @@ import {
 import { connect } from "react-redux";
 import styles from './transporthowtomakemoney.css';
 import { backend_url } from "../../configurations";
+import {FormattedMessage, FormattedDate} from 'react-intl'
 
 
 class TransportHowToMakeMoney extends React.Component {
@@ -17,14 +18,20 @@ class TransportHowToMakeMoney extends React.Component {
     return (
       <Segment basic className={"services-section"}>
       <Divider/>
-      <Header as='h1' textAlign="center">We are proud to offer these services</Header>
+      <Header as='h1' textAlign="center"><FormattedMessage
+        id="transport_title.services_title"
+        defaultMessage="We are proud to offer these services"
+      /></Header>
       <Grid className={"services-section-grid"}>
         <Grid.Row columns={4}>
           <Grid.Column mobile={16} tablet={8} computer={4}>
             <Segment basic className={"servicescard"}>
               <Image centered src= {backend_url() + '/static/images/convenient.png'} />
               <Segment basic textAlign="center">
-              <Header as='h4' className={"service-title"}>ADD YOUR TRIP</Header>
+              <Header as='h4' className={"service-title"}><FormattedMessage
+                id="transport_title.add_trip"
+                defaultMessage="ADD YOUR TRIP"
+              /></Header>
               </Segment>
             </Segment>
           </Grid.Column>
@@ -32,7 +39,10 @@ class TransportHowToMakeMoney extends React.Component {
             <Segment basic className={"servicescard"}>
             <Image centered src= {backend_url() + '/static/images/paymethods.png'} />
             <Segment basic textAlign="center">
-            <Header as='h4' className={"service-title"}>MAKE TRANSPORT OFFERS</Header>
+            <Header as='h4' className={"service-title"}><FormattedMessage
+              id="transport_title.make_offer"
+              defaultMessage="MAKE TRANSPORT OFFERS"
+            /></Header>
             </Segment>
             </Segment>
           </Grid.Column>
@@ -40,7 +50,10 @@ class TransportHowToMakeMoney extends React.Component {
             <Segment basic className={"servicescard"}>
             <Image centered src= {backend_url() + '/static/images/economy.png'} />
             <Segment basic textAlign="center">
-            <Header as='h4' className={"service-title"}>MEETING WITH THE SENDER - COLLECT THE PACKAGE</Header>
+            <Header as='h4' className={"service-title"}><FormattedMessage
+              id="transport_title.meet_sender"
+              defaultMessage="MEETING WITH THE SENDER - COLLECT THE PACKAGE"
+            /></Header>
             </Segment>
             </Segment>
           </Grid.Column>
@@ -48,7 +61,10 @@ class TransportHowToMakeMoney extends React.Component {
             <Segment basic className={"servicescard"}>
             <Image centered src= {backend_url() + '/static/images/usercommunity.png'} />
             <Segment basic textAlign="center">
-            <Header as='h4' className={"service-title"}>DELIVER THE PACKAGE AND GET PAID</Header>
+            <Header as='h4' className={"service-title"}><FormattedMessage
+              id="transport_title.deliver"
+              defaultMessage="DELIVER THE PACKAGE AND GET PAID"
+            /></Header>
             </Segment>
             </Segment>
           </Grid.Column>

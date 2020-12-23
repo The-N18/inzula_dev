@@ -21,6 +21,7 @@ import { validate } from "./validation";
 import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
 import { updateTripOpenModal, updateTripCloseModal } from "../../store/actions/updateTripModal";
 import { updateTrip } from "../../store/actions/addTrip";
+import {FormattedMessage, FormattedDate} from 'react-intl'
 import 'react-widgets/dist/css/react-widgets.css';
 
 class UpdateTripForm extends React.Component {
@@ -95,6 +96,7 @@ class UpdateTripForm extends React.Component {
     const { departure_location, destination_location, depart_date, comeback_date, trip_type } = this.state;
     return (
       <Modal
+      closeIcon
         centered={false}
         open={open}
         onClose={() => this.props.updateTripCloseModal()}
@@ -102,7 +104,10 @@ class UpdateTripForm extends React.Component {
         size='tiny'
       >
         <Modal.Header>
-        Update Trip
+        <FormattedMessage
+          id="update_trip.title"
+          defaultMessage="Update Trip"
+        />
         </Modal.Header>
         <Modal.Content scrolling>
       <Segment style={{ padding: "1em 0em" }} vertical>
@@ -112,21 +117,15 @@ class UpdateTripForm extends React.Component {
               <CSRFToken/>
               <Segment>
                   <div>
-                    <label>Trip</label>
+                    <label><FormattedMessage
+                      id="update_trip.trip"
+                      defaultMessage="Trip"
+                    /></label>
                     <Field
                       name="trip_type"
                       component={renderSelectList}
                       data={[ 'round_trip', 'one_way_trip' ]}/>
                   </div>
-                {/*<Field
-                  name="departure_location"
-                  component="input"
-                  type="text"
-                  placeholder="Departure"
-                  label="Departure"
-                  className={"custom-field"}
-                  component={renderField}
-                />*/}
                 <Field
                   name="departure_location"
                   placeholder="Departure location"
@@ -136,15 +135,6 @@ class UpdateTripForm extends React.Component {
                   className={"custom-field"}
                   component={renderCitiesList}
                 />
-              {/*<Field
-                  name="destination_location"
-                  component="input"
-                  type="text"
-                  placeholder="Destination"
-                  label="Destination"
-                  className={"custom-field"}
-                  component={renderField}
-                />*/}
                 <Field
                   name="destination_location"
                   placeholder="Destination location"
@@ -155,7 +145,10 @@ class UpdateTripForm extends React.Component {
                   component={renderCitiesList}
                 />
                 <div>
-                  <label>Departure Date</label>
+                  <label><FormattedMessage
+                    id="update_trip.departure_date"
+                    defaultMessage="Departure Date"
+                  /></label>
                   <Field
                     name="depart_date"
                     showTime={false}
@@ -164,7 +157,10 @@ class UpdateTripForm extends React.Component {
                   />
                 </div>
                 {this.props.trip_type === "round_trip" ? <div>
-                  <label>Return Date</label>
+                  <label><FormattedMessage
+                    id="update_trip.return_date"
+                    defaultMessage="Return Date"
+                  /></label>
                   <Field
                     name="comeback_date"
                     showTime={false}
@@ -180,7 +176,10 @@ class UpdateTripForm extends React.Component {
                 className={"buttoncolor transport-add-trip-button"}
                 title={"Please login to add a new trip"}
               >
-                Update your trip
+              <FormattedMessage
+                id="update_trip.btn_title"
+                defaultMessage="Update your trip"
+              />
               </Button>
               </Segment>
             </form>
@@ -190,7 +189,10 @@ class UpdateTripForm extends React.Component {
       </Modal.Content>
       <Modal.Actions>
         <Button negative onClick={() => this.props.updateTripCloseModal()} primary>
-          Cancel <Icon name='cancel' />
+        <FormattedMessage
+          id="update_trip.cancel"
+          defaultMessage="Cancel"
+        /><Icon name='cancel' />
         </Button>
       </Modal.Actions>
       </Modal>

@@ -14,6 +14,7 @@ import { openSelectCreditCard,
         closeSelectCreditCard} from "../../store/actions/selectCreditCardModal";
 import CSRFToken from "../../containers/CSRFToken";
 import PaymentMethodCard from "../../containers/PaymentMethodCard/PaymentMethodCard";
+import { payForBookingWithPaypal } from "../../store/actions/paymentFormModal";
 
 
 class PaymentOptions extends React.Component {
@@ -24,13 +25,16 @@ class PaymentOptions extends React.Component {
   }
 
   payWithPaypal = () => {
+    const {selectedBookingIds, tripId, userId} = this.props;
     console.log("Pay with paypal");
+    this.props.payForBookingWithPaypal({'selectedBookingIds': selectedBookingIds, 'tripId': tripId, 'userId': userId});
   }
 
   render() {
     const { open, price } = this.props;
     return (
       <Modal
+      closeIcon
         centered={false}
         open={open}
         onClose={() => this.props.closePaymentOptions()}
@@ -41,6 +45,7 @@ class PaymentOptions extends React.Component {
       <Modal.Content>
         <p>Select your method of payment.</p>
         <PaymentMethodCard type="credit_card" onclick={this.payWithCreditCard.bind(this)} />
+        <PaymentMethodCard type="paypal" onclick={this.payWithPaypal.bind(this)} />
 
       </Modal.Content>
       <Modal.Actions>
@@ -69,6 +74,7 @@ const mapDispatchToProps = dispatch => {
     openPaymentOptions: () => dispatch(openPaymentOptions()),
     closePaymentOptions: () => dispatch(closePaymentOptions()),
     openSelectCreditCard: () => dispatch(openSelectCreditCard()),
+    payForBookingWithPaypal: (values) => dispatch(payForBookingWithPaypal(values)),
   };
 };
 

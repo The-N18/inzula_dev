@@ -25,6 +25,7 @@ class ProposePriceOnBooking extends React.Component {
     const { open, handleSubmit } = this.props;
     return (
       <Modal
+      closeIcon
         centered={false}
         open={open}
         onClose={() => this.props.closeProposePriceOnBooking()}

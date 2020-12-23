@@ -4,7 +4,7 @@ import { updateObject } from "../utility";
 const initialState = {
   open: false,
   tripId: null,
-  selected: []
+  selected: [],
 };
 
 const openModal = (state, action) => {

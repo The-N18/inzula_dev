@@ -28,6 +28,7 @@ import BookingCard from "../../containers/BookingCard/BookingCard";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { sizeMultiOptions, categoryMultiOptions, weightMultiOptions, valueMultiOptions } from "../../utils/options";
 import { backend_url, get_img_url, buildImagesLinkList } from "../../configurations";
+import {FormattedMessage} from 'react-intl'
 
 
 class SearchBookingRequestsPage extends React.Component {
@@ -104,10 +105,16 @@ class SearchBookingRequestsPage extends React.Component {
     return (
       <Segment basic style={{ padding: "8em 0em" }} textAlign="center">
         <Header as="h4" textAlign="center">
-          Prefer to know what shipping offers are available before committing?
+          <FormattedMessage
+            id="search_requests.title"
+            defaultMessage="Prefer to know what shipping offers are available before committing?"
+          />
         </Header>
         <Header as="h4" textAlign="center">
-          No worries, you can add the country of departure and destination of your trip and thus access the requests for available expeditions.
+        <FormattedMessage
+          id="search_requests.head"
+          defaultMessage="No worries, you can add the country of departure and destination of your trip and thus access the requests for available expeditions."
+        />
         </Header>
         <form onSubmit={handleSubmit(this.submitForm)}>
         <Grid>
@@ -115,12 +122,16 @@ class SearchBookingRequestsPage extends React.Component {
             <Grid.Column mobile={16} tablet={16} computer={5}>
         <div>
           <div>
+          <label>
+          <FormattedMessage
+            id="search_requests.departure"
+            defaultMessage="Departure"
+          />
+          </label>
             <Field
               name="departure_location"
               component="input"
               type="text"
-              placeholder="Departure location"
-              label="Departure location"
               className={"custom-field"}
               component={renderCitiesList}
             />
@@ -130,12 +141,16 @@ class SearchBookingRequestsPage extends React.Component {
           <Grid.Column mobile={16} tablet={16} computer={5}>
           <div>
             <div>
+            <label>
+            <FormattedMessage
+              id="search_requests.destination"
+              defaultMessage="Destination"
+            />
+            </label>
               <Field
                 name="destination_location"
                 component="input"
                 type="text"
-                placeholder="Destination location"
-                label="Destination location"
                 className={"custom-field"}
                 component={renderCitiesList}
               />
@@ -144,7 +159,12 @@ class SearchBookingRequestsPage extends React.Component {
             </Grid.Column>
             <Grid.Column mobile={16} tablet={16} computer={6}>
           <div>
-            <label>Travel Date</label>
+          <label>
+          <FormattedMessage
+            id="search_requests.travel_date"
+            defaultMessage="Travel date"
+          />
+          </label>
             <Field
               name="travel_date"
               showTime={false}
@@ -159,7 +179,10 @@ class SearchBookingRequestsPage extends React.Component {
               <Grid.Row columns={2}>
                 <Grid.Column mobile={16} tablet={8} computer={4}>
                 <div className={"range-div"}>
-                  <p>Price</p>
+                  <p><FormattedMessage
+                    id="search_requests.price"
+                    defaultMessage="Price"
+                  /></p>
                     <MultiSelect
                       options={valueMultiOptions}
                       selected={proposed_price}
@@ -169,7 +192,10 @@ class SearchBookingRequestsPage extends React.Component {
                 </Grid.Column>
                 <Grid.Column mobile={16} tablet={8} computer={4}>
                 <div className={"range-div"}>
-                  <p>Weight</p>
+                  <p><FormattedMessage
+                    id="search_requests.weight"
+                    defaultMessage="Weight"
+                  /></p>
                     <MultiSelect
                       options={weightMultiOptions}
                       selected={weight}
@@ -179,7 +205,10 @@ class SearchBookingRequestsPage extends React.Component {
                 </Grid.Column>
                 <Grid.Column mobile={16} tablet={8} computer={4}>
                 <div className={"range-div"}>
-                <p>Size</p>
+                <p><FormattedMessage
+                  id="search_requests.p_size"
+                  defaultMessage="Product size"
+                /></p>
                   <MultiSelect
                     options={sizeMultiOptions}
                     selected={product_size}
@@ -189,7 +218,10 @@ class SearchBookingRequestsPage extends React.Component {
                 </Grid.Column>
                 <Grid.Column mobile={16} tablet={8} computer={4}>
                 <div className={"range-div"}>
-                <p>Category</p>
+                <p><FormattedMessage
+                  id="search_requests.p_category"
+                  defaultMessage="Product category"
+                /></p>
                   <MultiSelect
                     options={categoryMultiOptions}
                     selected={product_category}
@@ -199,17 +231,25 @@ class SearchBookingRequestsPage extends React.Component {
                 </Grid.Column>
                 </Grid.Row>
               </Grid> : ''}
+          <div className={"search-button"}>
           <Button
             size="big"
             loading={loading}
             disabled={loading}
             className={"buttoncolor search-button"}
           >
-            Search
+          <FormattedMessage
+            id="search_requests.search"
+            defaultMessage="Search"
+          />
           </Button>
+          </div>
           </form>
         <Divider/>
-        {bookings.length === 0 ? <div> No search results. Please try a more general search.</div> : ''}
+        {bookings.length === 0 ? <div><FormattedMessage
+          id="search_requests.no_results"
+          defaultMessage="No search results. Please try a more general search"
+        /></div> : ''}
         <div
           id="scrollableDiv"
           style={{

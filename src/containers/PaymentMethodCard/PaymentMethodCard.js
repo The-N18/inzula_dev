@@ -18,11 +18,6 @@ import {FormattedMessage, FormattedDate} from 'react-intl'
 
 class PaymentMethodCard extends React.Component {
 
-  markAsSeen = () => {
-    console.log("mark this notification as seen");
-    const {pk} = this.props;
-  }
-
   render() {
 
     const {type, onclick} = this.props;
@@ -33,6 +28,10 @@ class PaymentMethodCard extends React.Component {
           {type === "credit_card" ? <span><FormattedMessage
             id="paymentmethodcard.credit_card"
             defaultMessage="Credit Card"
+          /></span> : ''}
+          {type === "paypal" ? <span><FormattedMessage
+            id="paymentmethodcard.paypal"
+            defaultMessage="Paypal"
           /></span> : ''}
           </Card.Header>
           <Card.Description>

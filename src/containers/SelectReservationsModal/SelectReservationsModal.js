@@ -28,6 +28,7 @@ import TripsReservationsList from "../../containers/TripsReservationsList/TripsR
 import SelectableUserReservationsList from "../../containers/SelectableUserReservationsList/SelectableUserReservationsList";
 import { openModalForTrip } from "../../store/actions/sendPackageModal";
 import { openConfirmBookingPrice, setBookingRequestInfo } from "../../store/actions/confirmBookingPrice";
+import {FormattedMessage, FormattedDate} from 'react-intl'
 
 
 class SelectReservationsModal extends React.Component {
@@ -53,6 +54,7 @@ class SelectReservationsModal extends React.Component {
 
     return (
       <Modal
+      closeIcon
       centered={false}
       open={open}
       onClose={() => this.props.closePackageModal()}
@@ -60,13 +62,19 @@ class SelectReservationsModal extends React.Component {
       size='large'
     >
       <Modal.Header>
-      Select bookings for this trip
+      <FormattedMessage
+        id="select_reservations.title"
+        defaultMessage="Select bookings for this trip"
+      />
       <Button icon labelPosition='right' floated='right'
         size="large"
         className={"buttoncolor select-trip-top-button"}
         onClick={this.handleBook.bind(this)}
       >
-        <Icon name='add circle' /> Add a booking
+        <Icon name='add circle' /> <FormattedMessage
+          id="select_reservations.add_booking"
+          defaultMessage="Add a booking"
+        />
       </Button>
       </Modal.Header>
       <Modal.Content scrolling>
@@ -74,10 +82,16 @@ class SelectReservationsModal extends React.Component {
       </Modal.Content>
       <Modal.Actions>
         <Button color='green' disabled={selected.length === 0} onClick={this.handleConfirmBookingPrice.bind(this)}>
-          Book with these reservations <Icon name='check' />
+        <FormattedMessage
+          id="select_reservations.book_with_selected"
+          defaultMessage="Book with these reservations"
+        /><Icon name='check' />
         </Button>
         <Button negative onClick={() => this.props.closePackageModal()} primary>
-          Cancel <Icon name='cancel' />
+        <FormattedMessage
+          id="select_reservations.cancel"
+          defaultMessage="Cancel"
+        /> <Icon name='cancel' />
         </Button>
       </Modal.Actions>
     </Modal>

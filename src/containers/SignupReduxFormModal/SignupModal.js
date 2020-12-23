@@ -47,6 +47,7 @@ class RegistrationForm extends Component {
     }
     return (
       <Modal
+      closeIcon
         centered={false}
         open={open}
         onClose={() => this.props.closeSignupModal()}
@@ -76,59 +77,95 @@ class RegistrationForm extends Component {
       <Grid>
         <Grid.Row columns={2}>
           <Grid.Column mobile={16} tablet={16} computer={8}>
-          <Field
-            name="first_name"
-            component="input"
-            type="text"
-            placeholder="First name"
-            label="First name"
-            component={renderField}
-          />
+          <div>
+            <label for="first_name">
+              <FormattedMessage
+                id="signup.f_name"
+                defaultMessage="First name"
+              />
+            </label>
+            <Field
+              name="first_name"
+              component="input"
+              type="text"
+              component={renderField}
+            />
+          </div>
           </Grid.Column>
         <Grid.Column mobile={16} tablet={16} computer={8}>
+        <div>
+          <label for="last_name">
+            <FormattedMessage
+              id="signup.l_name"
+              defaultMessage="Last name"
+            />
+          </label>
           <Field
             name="last_name"
             component="input"
             type="text"
-            placeholder="Last name"
-            label="Last name"
             component={renderField}
           />
+          </div>
         </Grid.Column>
         </Grid.Row>
       </Grid>
+      <div>
+      <label for="username">
+        <FormattedMessage
+          id="signup.username"
+          defaultMessage="Username"
+        />
+      </label>
       <Field
         name="username"
         component="input"
         type="text"
-        placeholder="Username"
-        label="Username"
         component={renderField}
       />
+      </div>
+      <div>
+      <label for="email">
+        <FormattedMessage
+          id="signup.email"
+          defaultMessage="Email"
+        />
+      </label>
         <Field
           name="email"
           component="input"
           type="email"
-          placeholder="Email address"
-          label="Email address"
           component={renderField}
         />
+        </div>
+        <div>
+        <label for="password">
+          <FormattedMessage
+            id="signup.password"
+            defaultMessage="Password"
+          />
+        </label>
         <Field
           name="password1"
           component="input"
           type="password"
-          placeholder="Password"
-          label="Password"
           component={renderField}
         />
+        </div>
+        <div>
+        <label for="password2">
+          <FormattedMessage
+            id="signup.confirm_password"
+            defaultMessage="Confirm password"
+          />
+        </label>
         <Field
           name="password2"
           component="input"
           type="password"
-          placeholder="Confirm Password"
-          label="Confirm Password"
           component={renderField}
         />
+        </div>
         <div className={"push-left"}>
             <Field name="terms_conditions" id="terms_conditions" component="input" type="checkbox"/>
             <label className={"anchor-style"} onClick={this.handleOnTermsClick.bind(this)}><FormattedMessage

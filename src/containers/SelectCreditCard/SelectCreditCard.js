@@ -91,19 +91,26 @@ class SelectCreditCard extends React.Component {
     const { open, loading, cards, cardId } = this.props;
     return (
       <Modal
+      closeIcon
         centered={false}
         open={open}
         onClose={() => this.props.closeSelectCreditCard()}
         onOpen={() => this.props.openSelectCreditCard()}
         size='tiny'
       >
-      <Modal.Header>Select credit card
+      <Modal.Header><FormattedMessage
+        id="select_credit_card.title"
+        defaultMessage="Select credit card"
+      />
       <Button icon labelPosition='right' floated='right'
         size="large"
         className={"buttoncolor select-trip-top-button"}
         onClick={this.payWithNewCard.bind(this)}
       >
-        <Icon name='add circle' /> Pay with new card
+        <Icon name='add circle' /><FormattedMessage
+          id="select_credit_card.pay_with_new"
+          defaultMessage="Pay with new card"
+        />
       </Button>
       </Modal.Header>
       <Modal.Content>
@@ -146,10 +153,16 @@ class SelectCreditCard extends React.Component {
       </Modal.Content>
       <Modal.Actions>
       <Button color='green' onClick={this.payWithCreditCard.bind(this)} disabled={cardId === null}>
-        Pay
+      <FormattedMessage
+        id="select_credit_card.pay"
+        defaultMessage="Pay"
+      />
       </Button>
       <Button negative onClick={() => this.props.closeSelectCreditCard()}>
-        Cancel
+      <FormattedMessage
+        id="select_credit_card.cancel"
+        defaultMessage="Cancel"
+      />
       </Button>
       </Modal.Actions>
     </Modal>

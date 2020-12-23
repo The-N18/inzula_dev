@@ -47,6 +47,7 @@ class ConfirmBookingPrice extends React.Component {
     const { open, handleSubmit, price } = this.props;
     return (
       <Modal
+      closeIcon
         centered={false}
         open={open}
         onClose={() => this.props.closeConfirmBookingPrice()}

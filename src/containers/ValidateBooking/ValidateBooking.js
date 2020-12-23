@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import styles from './validatebooking.css';
 import { NavLink, Redirect } from "react-router-dom";
 import { openValidateBooking, closeValidateBooking, validateBooking } from "../../store/actions/validateBooking";
+import {FormattedMessage, FormattedDate} from 'react-intl'
 
 class ValidateBooking extends React.Component {
 
@@ -22,22 +23,35 @@ class ValidateBooking extends React.Component {
     const { open } = this.props;
     return (
       <Modal
+      closeIcon
         centered={false}
         open={open}
         onClose={() => this.props.closeValidateBooking()}
         onOpen={() => this.props.openValidateBooking()}
         size='tiny'
       >
-      <Modal.Header>Validate booking</Modal.Header>
+      <Modal.Header><FormattedMessage
+        id="validate_booking.title"
+        defaultMessage="Validate booking"
+      /></Modal.Header>
       <Modal.Content>
-        <p>Are you sure you want to validate this booking?</p>
+        <p><FormattedMessage
+          id="validate_booking.question"
+          defaultMessage="Are you sure you want to validate this booking?"
+        /></p>
       </Modal.Content>
       <Modal.Actions>
         <Button negative onClick={() => this.props.closeValidateBooking()}>
-          No
+        <FormattedMessage
+          id="validate_booking.no"
+          defaultMessage="No"
+        />
         </Button>
         <Button positive onClick={this.handleDelete.bind(this)}>
-          Yes
+        <FormattedMessage
+          id="validate_booking.yes"
+          defaultMessage="Yes"
+        />
         </Button>
       </Modal.Actions>
     </Modal>

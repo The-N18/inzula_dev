@@ -40,12 +40,12 @@ export const getReservationsFail = error => {
   };
 };
 
-export const getInitialSelectableReservations = (user_id) => {
+export const getInitialSelectableReservations = (user_id, tripId) => {
   return dispatch => {
     dispatch(getReservationsStart());
     axios
       .get(api_url() + "/bookings/selectable_bookings_list", {
-            params: {user_id: user_id}
+            params: {user_id: user_id, trip_id: tripId}
           })
       .then(res => {
         console.log(res.data)
@@ -65,7 +65,7 @@ export const getInitialSelectableReservations = (user_id) => {
 }
 
 
-export const getSelectableReservations = (user_id, next_url, page_count) => {
+export const getSelectableReservations = (user_id, tripId, next_url, page_count) => {
   console.log("in search Reservations");
   console.log(next_url);
   if(next_url !== "" && next_url !== null) {
@@ -93,7 +93,7 @@ export const getSelectableReservations = (user_id, next_url, page_count) => {
       dispatch(getReservationsStart());
       axios
         .get(api_url() + "/bookings/selectable_bookings_list", {
-              params: {user_id: user_id}
+              params: {user_id: user_id, trip_id: tripId}
             })
         .then(res => {
           console.log(res.data)
