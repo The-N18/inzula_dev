@@ -28,8 +28,9 @@ from django.conf.urls.static import static
 from userprofile.views import FacebookLogin, TwitterLogin, GoogleLogin, SocialAccountListView, SocialAccountDisconnectView
 from rest_auth.registration.views import VerifyEmailView
 
-path("", react, name="react"),
+
 urlpatterns = [
+    path("", react, name="react"),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
     path('rest-auth/facebook/connect', FacebookLogin.as_view(), name='fb_login'),
     path('rest-auth/twitter/connect', TwitterLogin.as_view(), name='twitter_login'),
