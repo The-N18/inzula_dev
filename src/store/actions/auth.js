@@ -380,7 +380,7 @@ export const checkAuthTimeout = expirationTime => {
       })
       .catch(err => {
         dispatch(createNotification({
-          message: "Signup failed. Please check your information.",
+          message: "Google signup setup failed.",
           type: NOTIFICATION_TYPE_ERROR,
           duration: 10000,
           canDismiss: true,
@@ -434,7 +434,7 @@ export const checkAuthTimeout = expirationTime => {
       })
       .catch(err => {
         dispatch(createNotification({
-          message: "Signup failed. Please check your information.",
+          message: "Facebook signup failed.",
           type: NOTIFICATION_TYPE_ERROR,
           duration: 10000,
           canDismiss: true,

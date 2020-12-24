@@ -20,6 +20,7 @@ from django.conf import settings
 from django.conf.urls import url
 from trip.urls import urlpatterns as trip_urls
 from booking.urls import urlpatterns as booking_urls
+from booking.views import react
 from pay_process.urls import urlpatterns as payment_urls
 from userprofile.urls import urlpatterns as userprofile_urls
 from django.views.static import serve
@@ -29,8 +30,7 @@ from rest_auth.registration.views import VerifyEmailView
 
 
 urlpatterns = [
-    # path('api-auth/', include('rest_framework.urls')),
-    # path(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path("", react, name="react"),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
     path('rest-auth/facebook/connect', FacebookLogin.as_view(), name='fb_login'),
     path('rest-auth/twitter/connect', TwitterLogin.as_view(), name='twitter_login'),

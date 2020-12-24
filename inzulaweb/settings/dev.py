@@ -2,13 +2,14 @@
 
 from .base import *
 
-ALLOWED_HOSTS += ['127.0.0.1', 'localhost', '15.236.239.146', 'https://homologation-webpayment.payline.com']
+ALLOWED_HOSTS += ['127.0.0.1', 'localhost', '52.47.76.117', 'https://homologation-webpayment.payline.com']
 DEBUG = True
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'public'),
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'build/static')
     ]
 
 WSGI_APPLICATION = 'inzulaweb.wsgi.dev.application'

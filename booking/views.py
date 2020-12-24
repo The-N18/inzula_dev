@@ -25,10 +25,21 @@ import datetime
 from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.utils import timezone
-
+import os
+import logging
+from django.conf import settings
+from django.http import HttpResponse
 
 
 # Create your views here.
+index_file_path = os.path.join(settings.REACT_APP_DIR, 'build/index.html')
+
+def react(request):
+    try:
+        with open(index_file_path) as f:
+            return HttpResponse(f.read())
+    except FileNotFoundError:
+        logging.exception('Production build of app not found')
 
 def calculate_min_price(weight, size, category, value):
     size_coefficients = {

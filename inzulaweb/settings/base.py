@@ -105,7 +105,7 @@ ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 CORS_ALLOW_ALL_ORIGINS = True
 
 # EMAIL_HOST_URL = 'http://localhost:3000/verify/'
-EMAIL_HOST_URL = 'http://15.236.239.146:5000/verify/'
+EMAIL_HOST_URL = 'http://52.47.76.117:5000/verify/'
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULTFROMEMAIL", 'inzula.app@gmail.com')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -119,3 +119,5 @@ GOOGLE_CLIENT_SECRET = "Z46pZqtOlRb4W3seXrgqjXEi"
 
 FACEBOOK_APP_ID = "136854898060654"
 FACEBOOK_APP_SECRET = "398ba09e1e2981773d9d7d8370f4ddb0"
+
+REACT_APP_DIR = BASE_DIR
