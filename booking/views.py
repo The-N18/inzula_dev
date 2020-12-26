@@ -32,14 +32,24 @@ from django.http import HttpResponse
 
 
 # Create your views here.
-index_file_path = os.path.join(settings.REACT_APP_DIR, 'build/index.html')
+index_file_path = os.path.join(settings.BASE_DIR, 'build/index.html')
 
-def react(request):
+def index(request):
     try:
         with open(index_file_path) as f:
             return HttpResponse(f.read())
+            # return render(request, 'index.html')
     except FileNotFoundError:
         logging.exception('Production build of app not found')
+        return HttpResponse("Hello, world. You're at the polls index.")
+
+# def react(request):
+#     try:
+#         with open(index_file_path) as f:
+#             # return HttpResponse(f.read())
+#             return render(request, 'index.html')
+#     except FileNotFoundError:
+#         logging.exception('Production build of app not found')
 
 def calculate_min_price(weight, size, category, value):
     size_coefficients = {
