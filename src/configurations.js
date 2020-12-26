@@ -1,9 +1,6 @@
-//export const BACKEND_HOST_ADDRESS = '127.0.0.1';
-export const BACKEND_HOST_ADDRESS = '52.47.76.117';
-// BACKEND_HOST_ADDRESS = 'http://localhost:3000/verify/'+emailconfirmation.key;
-// BACKEND_HOST_ADDRESS = 'http://15.188.83.142:5000/verify/'+emailconfirmation.key;
+export const DEBUG = false;
+export const BACKEND_HOST_ADDRESS = DEBUG ? '127.0.0.1' : '52.47.76.117';
 export const BACKEND_HOST_PORT = '8000';
-export const BACKEND_FILE_PORT = '8000';
 export const BACKEND_HTTP_PROTOCOL = 'http';
 export const AUTH_TIMEOUT = 3600;
 
@@ -13,11 +10,19 @@ export const FACEBOOK_APP_ID = "136854898060654"
 const DO_NOT_APPEND = ['127.0.0.1', 'localhost'];
 
 export const backend_url = () => {
-  return BACKEND_HTTP_PROTOCOL + "://" + BACKEND_HOST_ADDRESS + ":" + BACKEND_HOST_PORT;
+  if(DEBUG) {
+    return BACKEND_HTTP_PROTOCOL + "://" + BACKEND_HOST_ADDRESS + ":" + BACKEND_HOST_PORT;
+  } else {
+    return BACKEND_HTTP_PROTOCOL + "://" + BACKEND_HOST_ADDRESS;
+  }
 }
 
 export const api_url = () => {
-  return BACKEND_HTTP_PROTOCOL + "://" + BACKEND_HOST_ADDRESS + ":" + BACKEND_HOST_PORT;
+  if(DEBUG) {
+    return BACKEND_HTTP_PROTOCOL + "://" + BACKEND_HOST_ADDRESS + ":" + BACKEND_HOST_PORT;
+  } else {
+    return BACKEND_HTTP_PROTOCOL + "://" + BACKEND_HOST_ADDRESS;
+  }
 }
 
 export const get_img_url = (img) => {
