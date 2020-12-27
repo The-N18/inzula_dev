@@ -2,13 +2,13 @@
 # Name of the application
 NAME="inzula"
 # Django project directory
-DJANGODIR=/opt/bitnami/projects/inzula
+DJANGODIR=/home/ubuntu/projects/inzula
 # we will communicte using this unix socket
-SOCKFILE=/opt/bitnami/projects/env/run/gunicorn.sock
+SOCKFILE=/home/ubuntu/projects/env/run/gunicorn.sock
 # the user to run as
-USER=bitnami
+USER=ubuntu
 # the group to run as
-GROUP=bitnami
+GROUP=ubuntu
 # how many worker processes should Gunicorn spawn
 NUM_WORKERS=3
 # which settings file should Django use

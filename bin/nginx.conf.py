@@ -2,22 +2,23 @@ upstream inzula_server {
 # fail_timeout=0 means we always retry an upstream even if it failed
 # to return a good HTTP response (in case the Unicorn master nukes a
 # single worker for timing out).
-server unix:/home/ubuntu/hello_django/run/gunicorn.sock fail_timeout=0;
-}
-http {
-    disable_symlinks off;
+server unix:/home/ubuntu/projects/env/run/gunicorn.sock fail_timeout=0;
 }
 server {
 listen   80;
-server_name example.com;
+listen 443 ssl;
+ssl_certificate /opt/bitnami/apache/conf/bitnami/certs/server.crt;
+ssl_certificate_key /opt/bitnami/apache/conf/bitnami/certs/server.key;
+server_name dkx1b8wlo613w.cloudfront.net inzula.app;
+server_name_in_redirect off;
 client_max_body_size 4G;
-access_log /home/ubuntu/hello_django/logs/nginx-access.log;
-error_log /home/ubuntu/hello_django/logs/nginx-error.log;
-location /static/ {
-alias   /home/ubuntu/hello_django/static/;
+access_log /home/ubuntu/projects/logs/inzula/logs/nginx-access.log;
+error_log /home/ubuntu/projects/logs/inzula/logs/nginx-error.log;
+location /staticfiles/ {
+alias   /home/ubuntu/projects/inzula/static/;
 }
 location /media/ {
-alias   /home/ubuntu/hello_django/media/;
+alias   /home/ubuntu/projects/inzula/media/;
 }
 location / {
 # an HTTP header important enough to have its own Wikipedia entry:
@@ -41,13 +42,13 @@ proxy_redirect off;
 # Try to serve static files from nginx, no point in making an
 # *application* server like Unicorn/Rainbows! serve static files.
 if (!-f $request_filename) {
-proxy_pass http://hello_app_server;
+proxy_pass http://inzula_server;
 break;
-}
 }
 # Error pages
 error_page 500 502 503 504 /500.html;
 location = /500.html {
-root /home/ubuntu/hello_django/static/;
+root /home/ubuntu/projects/inzula/static/;
+}
 }
 }
