@@ -49,6 +49,7 @@ urlpatterns = [
     path('insurance/', index, name='index'),
     path('legal/', index, name='index'),
     path('transparency/', index, name='index'),
+    path('verify/', index, name='index'),
     path('terms/', index, name='index'),
     path('useragreement/', index, name='index'),
     path('signupdiscount/', index, name='index'),
