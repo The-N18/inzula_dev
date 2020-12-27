@@ -5,10 +5,11 @@ upstream inzula_server {
 server unix:/home/ubuntu/projects/env/run/gunicorn.sock fail_timeout=0;
 }
 server {
-listen   80;
-listen 443 ssl;
-ssl_certificate /opt/bitnami/apache/conf/bitnami/certs/server.crt;
-ssl_certificate_key /opt/bitnami/apache/conf/bitnami/certs/server.key;
+listen 80;
+
+#listen 443 ssl;
+#ssl_certificate /opt/bitnami/apache/conf/bitnami/certs/server.crt;
+#ssl_certificate_key /opt/bitnami/apache/conf/bitnami/certs/server.key;
 server_name dkx1b8wlo613w.cloudfront.net inzula.app;
 server_name_in_redirect off;
 client_max_body_size 4G;
