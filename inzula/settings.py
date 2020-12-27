@@ -188,7 +188,7 @@ ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 CORS_ALLOW_ALL_ORIGINS = True
 
 # Email parameters
-EMAIL_HOST_URL = 'http://52.47.76.117:5000/verify/'
+EMAIL_HOST_URL = 'http://inzula.app/verify/'
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULTFROMEMAIL", 'inzula.app@gmail.com')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
