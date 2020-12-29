@@ -92,7 +92,6 @@ def calculate_min_price(weight, size, category, value):
     c = category_coefficients[category] if category else  0
     min_price = w*(10*((0.95*s) + (0.05*v)))
     min_price = round(min_price, 1)
-    print("min price", min_price)
     return min_price
 
 
@@ -378,7 +377,6 @@ class BookingRequestView(CreateAPIView):
         start_date = datetime.datetime.strptime(depDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
         depDate2 = start_date.strftime('%Y-%m-%d')
         min_price = calculate_min_price(weight, space, category, price)
-        print(proposed_price, min_price)
         if float(proposed_price) < min_price:
             return Response({"detail": "Sorry, the price must be at least {}".format(min_price)},
                             status=status.HTTP_400_BAD_REQUEST,

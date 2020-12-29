@@ -43,9 +43,6 @@ def get_or_create_user_wallet(natural_user):
                     currency='EUR',
                     tag='wallet for user_id {}'.format(natural_user.get_pk()))
     wallet.save()
-    print("wallet pk")
-    print(wallet.get_pk())
-    print(wallet.balance)
     return wallet
 
 

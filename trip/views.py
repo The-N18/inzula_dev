@@ -44,7 +44,7 @@ class TripsListView(generics.ListAPIView):
 @ensure_csrf_cookie
 def trip_search(request):
     if request.method == 'GET':
-        print(request.data)
+        pass
         # serializer = SnippetSerializer(data=request.data)
         # if serializer.is_valid():
         #     serializer.save()
