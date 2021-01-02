@@ -106,33 +106,34 @@ class PayForBooking(CreateAPIView):
             direct_payin.save()
 
             # transfer money from user wallet to inzula wallet
-            admin_user = User.objects.get(pk=1).profile
+            admin_simple_user = User.objects.get(pk=1)
+            admin_user = admin_simple_user.profile
             admin_nat_user_id = admin_user.nat_user_id
             inzula_user = None
             if admin_nat_user_id is not None:
                 inzula_user = NaturalUser.get(nat_user_id)
             else:
-                inzula_user = NaturalUser(first_name=user.first_name,
-                                        last_name=user.last_name,
+                inzula_user = NaturalUser(first_name=admin_simple_user.first_name,
+                                        last_name=admin_simple_user.last_name,
                                         address=None,
                                         proof_of_identity=None,
                                         proof_of_address=None,
                                         person_type='NATURAL',
-                                        nationality=userprofile.country,
-                                        country_of_residence=userprofile.country,
+                                        nationality=admin_user.country,
+                                        country_of_residence=admin_user.country,
                                         birthday=1300186358,
-                                        email=user.email)
+                                        email=admin_simple_user.email)
                 inzula_user.save()
-            userprofile.nat_user_id = inzula_user.id
-            userprofile.save()
-            if userprofile.wallet_id is None:
+            admin_user.nat_user_id = inzula_user.id
+            admin_user.save()
+            if admin_user.wallet_id is None:
                 wallet = Wallet(owners=[inzula_user],
                         description='Wallet',
                         currency='EUR',
-                        tag="Wallet for User-{}".format(natural_user.id))
+                        tag="Wallet for User-{}".format(inzula_user.id))
                 wallet.save()
-                userprofile.wallet_id = wallet.get_pk()
-                userprofile.save()
+                admin_user.wallet_id = wallet.get_pk()
+                admin_user.save()
 
             inzula_wallet = Wallet(id=admin_user.wallet_id)
 
@@ -141,7 +142,7 @@ class PayForBooking(CreateAPIView):
                         debited_funds=Money(amount=fees_amount, currency='EUR'),
                         fees=Money(amount=0, currency='EUR'),
                         debited_wallet=user_wallet,
-                        credited_wallet_id=inzula_wallet)
+                        credited_wallet=inzula_wallet)
             transfer.save()
 
             # change the status of all bookings and create notifications
