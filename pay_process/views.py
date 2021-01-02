@@ -141,7 +141,7 @@ class PayForBooking(CreateAPIView):
                         debited_funds=Money(amount=fees_amount, currency='EUR'),
                         fees=Money(amount=0, currency='EUR'),
                         debited_wallet=user_wallet,
-                        credited_wallet_id=inzula_wallet.get_pk())
+                        credited_wallet_id=inzula_wallet)
             transfer.save()
 
             # change the status of all bookings and create notifications
