@@ -25,7 +25,7 @@ import { DateInput } from 'semantic-ui-calendar-react';
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import { bookingAddition } from "../../store/actions/addBooking";
 import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
-import {renderField, renderDateTimePicker, renderFieldWithLabel, renderDropdownList, renderCitiesList} from "../../containers/ReduxForm/renderField";
+import {renderField, renderDateTimePicker, renderPhoneNumber, renderDropdownList, renderCitiesList} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
 import { sizeOptions, sizeOptionsFr, categoryOptions, categoryOptionsFr, weightOptions, weightOptionsFr, valueOptions, valueOptionsFr, calculateMinPrice } from "../../utils/options";
 import {FormattedMessage, FormattedDate} from 'react-intl'
@@ -460,10 +460,15 @@ class SendPackage extends React.Component {
                             id="add_booking.rec_phone_number_field"
                             defaultMessage="Reciever's phone number"
                           /></label>
-                        <Field
+                        {/* <Field
                           name="recipient_phone_number"
                           type="number"
                           component={renderField}
+                        /> */}
+                        <Field
+                          type="text"
+                          name="recipient_phone_number"
+                          component={renderPhoneNumber}
                         />
                     </div>
                         </Grid.Column>

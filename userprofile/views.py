@@ -70,6 +70,7 @@ class UpdateProfileView(CreateAPIView):
         email = request.data["email"]
         country = request.data["country"]
         passport_number = request.data["passport_number"]
+        sex = request.data["sex"]
         picture = request.FILES.get('profile_pic', None)
 
         userprofile = None
@@ -86,6 +87,7 @@ class UpdateProfileView(CreateAPIView):
             userprofile.user.last_name=last_name
             userprofile.user.email=email
             userprofile.user_type=user_type
+            userprofile.sex=sex
             userprofile.user.save()
             userprofile.save()
         serializer = self.get_serializer(userprofile)

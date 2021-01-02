@@ -106,6 +106,7 @@ export const msg = {
   'profile_tab.membership': "Membre depuis: {date_joined}",
   'profile_tab.phone': "Téléphone {phone_number}",
   'profile_tab.email': "Email {email}",
+  'profile_tab.sex': "Sexe",
   'profile_tab.passport': "Numéro de Passeport {passport_number}",
   'profile_tab.upload_imgs': "Ajouter votre photo",
   'profile_tab.perso_info': "Informations personnelles",

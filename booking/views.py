@@ -124,14 +124,14 @@ class SelectableUserBookingsRequestListView(generics.ListAPIView):
     permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        start_date = None
-        arrival_date = None
         products = Product.objects.all()
         user_id = self.request.query_params.get('user_id', None)
         trip_id = self.request.query_params.get('trip_id', None)
         if trip_id is not None:
             trip = Trip.objects.get(pk=trip_id)
-            products = products.filter(arrival_date=trip.depart_date, departure_location=trip.departure_location, destination_location=trip.destination_location)
+            date_range_start = trip.depart_date - datetime.timedelta(days=14)
+            date_range_end = trip.depart_date + datetime.timedelta(days=14)
+            products = products.filter(arrival_date__range=[date_range_start, date_range_end], departure_location=trip.departure_location, destination_location=trip.destination_location)
         queryset = self.model.objects.filter(confirmed_by_sender=False, product__in=products)
         if user_id is not None:
             queryset = queryset.filter(Q(request_by=user_id) & ~Q(status="awa") & ~Q(status="boo"))

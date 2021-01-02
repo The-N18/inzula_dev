@@ -15,6 +15,7 @@ const initialState = {
   country: null,
   profileType: "sender",
   user_type: null,
+  sex: null,
   profileData: {}
 };
 
@@ -32,6 +33,7 @@ const setUserInfo = (state, action) => {
     passport_number: action.passport_number,
     country: action.country,
     user_type: action.user_type,
+    sex: action.sex,
     profileType: action.user_type,
     profileData: {
       first_name: action.first_name,
@@ -42,6 +44,7 @@ const setUserInfo = (state, action) => {
       country: action.country,
       userProfileId: action.userProfileId,
       user_type: action.user_type,
+      sex: action.sex,
     }
   });
 };
@@ -66,7 +69,8 @@ const clearUserInfo = (state, action) => {
     passport_number: null,
     country: null,
     profileType: "sender",
-    user_type: action.user_type,
+    user_type: null,
+    sex: null,
     profileData: {}
   });
 };

@@ -75,6 +75,16 @@ export const userTypeOptionsFr = [
   { key: 'carrier', value: 'carrier', text: 'Transporteur' },
 ];
 
+export const sexOptions= [
+  { key: 'm', value: 'm', text: 'Male' },
+  { key: 'f', value: 'f', text: 'Female' },
+];
+
+export const sexOptionsFr= [
+  { key: 'm', value: 'm', text: 'Masculin' },
+  { key: 'f', value: 'f', text: 'Feminin' },
+];
+
 export const optionToText = (option_value, arr) => {
   // For value, weight, size and category of product only
   let txt = "";

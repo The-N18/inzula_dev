@@ -89,8 +89,6 @@ DEBUG_STATICFILES_DIRS = [
 
 DEBUG_TEMP_DIRS = [
     os.path.join(BASE_DIR, 'public'),
-    os.path.join(BASE_DIR, 'build'),
-    os.path.join(BASE_DIR, 'build/static'),
     ]
 
 DEBUG_STATIC_ROOT = None

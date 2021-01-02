@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {Field, reduxForm} from 'redux-form';
 import {
@@ -19,10 +19,13 @@ import { validate } from "./validation";
 import {countries} from "../../utils/countries";
 import CSRFToken from "../../containers/CSRFToken";
 import DjangoCSRFToken from 'django-react-csrftoken';
-import {renderField, renderDropdownList} from "../../containers/ReduxForm/renderField";
+import {renderField, renderDropdownList, renderPhoneNumber} from "../../containers/ReduxForm/renderField";
 import {FormattedMessage, FormattedDate} from 'react-intl'
 import { openDeleteAccount } from "../../store/actions/deleteAccount";
-import {userTypeOptions, userTypeOptionsFr} from "../../utils/options";
+import {userTypeOptions, userTypeOptionsFr, sexOptions, sexOptionsFr} from "../../utils/options";
+import 'react-phone-number-input/style.css';
+
+
 
 class ProfileTab extends React.Component {
   constructor(props) {
@@ -42,9 +45,12 @@ class ProfileTab extends React.Component {
   }
 
   submitForm = (val) => {
-    const user_type = val['user_type'] ? val['user_type']['value'] : '';
+    console.log(val['phone_number']);
+    // formatPhoneNumberIntl(value)
+    const user_type = val['user_type'] && val['user_type']['value']  ? val['user_type']['value'] : val['user_type'];
+    const sex = val['sex'] && val['sex']['value']  ? val['sex']['value'] : val['sex'];
     const country = val['country'] && val['country']['value'] ? val['country']['value'] : val['country'];
-    this.props.updateProfile(val['first_name'], val['last_name'], val['phone_number'], val['email'], country, val['passport_number'], this.state.picture, user_type);
+    this.props.updateProfile(val['first_name'], val['last_name'], val['phone_number'], val['email'], country, val['passport_number'], this.state.picture, user_type, sex);
   }
 
   deleteYourAccount = () => {
@@ -183,14 +189,26 @@ class ProfileTab extends React.Component {
                         textField="text"/>
                       </div>
                     <div>
+                    <span><FormattedMessage
+                      id="profile_tab.sex"
+                      defaultMessage="Sex"
+                    /></span>
+                    <Field
+                      name="sex"
+                      component={renderDropdownList}
+                      data={lang === "en" ? sexOptions : sexOptionsFr}
+                      valueField="value"
+                      textField="text"/>
+                    </div>
+                    <div>
                       <label htmlFor="phone_number">
                         <FormattedMessage
                           id="profile_tab.phone_number"
                           defaultMessage="Phone number"
                         />
                       </label>
-                      <div>
-                    <Field
+                    <div>
+                    {/* <Field
                       name="phone_number"
                       component="input"
                       type="text"
@@ -198,6 +216,11 @@ class ProfileTab extends React.Component {
                       label="Phone number"
                       className={"custom-field"}
                       component={renderField}
+                    /> */}
+                    <Field
+                      type="text"
+                      name="phone_number"
+                      component={renderPhoneNumber}
                     />
                     </div>
                   </div>
@@ -302,8 +325,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateProfile: (first_name, last_name, phone_number, email, country, passport_number, profile_pic, user_type) =>
-      dispatch(updateUserProfile(first_name, last_name, phone_number, email, country, passport_number, profile_pic, user_type)),
+    updateProfile: (first_name, last_name, phone_number, email, country, passport_number, profile_pic, user_type, sex) =>
+      dispatch(updateUserProfile(first_name, last_name, phone_number, email, country, passport_number, profile_pic, user_type, sex)),
     openDeleteAccount: () => dispatch(openDeleteAccount())
   };
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import {Field, reduxForm} from 'redux-form';
@@ -13,9 +13,23 @@ import './fields.css';
 // import 'react-select/dist/react-select.css';
 import Async from 'react-select/async';
 import { api_url } from "../../configurations";
+import PhoneInput, { formatPhoneNumber, formatPhoneNumberIntl, isValidPhoneNumber } from 'react-phone-number-input';
+import flags from 'react-phone-number-input/flags';
+import 'react-phone-number-input/style.css';
+
 
 moment.locale('en');
 momentLocalizer();
+
+export const renderPhoneNumber = ({ input: { value, onChange }, meta: { touched, error, warning } }) => {
+  return (
+    <PhoneInput
+      flags={flags}
+      value={value.toString()}
+      onChange={onChange}
+      error={value ? (isValidPhoneNumber(value) ? undefined : 'Invalid phone number') : 'Phone number required'} />
+  )
+}
 
 
 export const renderField = ({ input, label, type, disabled, meta: { touched, error, warning } }) => (

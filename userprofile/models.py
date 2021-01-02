@@ -8,6 +8,11 @@ USER_TYPE_OPTIONS = [
     ('carrier', 'Carrier')
 ]
 
+SEX_OPTIONS = [
+    ('m', 'Male'),
+    ('f', 'Female')
+]
+
 class City(models.Model):
     value = models.CharField(max_length=50)
     label = models.CharField(max_length=150)
@@ -50,11 +55,12 @@ class UserSettings(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.PROTECT, primary_key=True, related_name='profile')
     settings = models.ForeignKey(UserSettings, on_delete=models.PROTECT, related_name='+', null=True, blank=True)
-    phone_number = models.IntegerField(null=True, blank=True, default=000000)
+    phone_number = models.CharField(max_length=250, null=True, blank=True, default=000000)
     pay_mode = models.CharField(max_length=50, null=True, blank=True)
     passport_number = models.CharField(max_length=50, null=True, blank=True, default="000000")
     country = models.CharField(max_length=50, null=True, blank=True, default="FR")
-    user_type = models.CharField(max_length=50, choices=USER_TYPE_OPTIONS, null=True, blank=True)
+    user_type = models.CharField(max_length=100, choices=USER_TYPE_OPTIONS, null=True, blank=True)
+    sex = models.CharField(max_length=100, choices=SEX_OPTIONS, null=True, blank=True)
     id_document = models.FileField(upload_to='uploads/id_documents/', null=True, blank=True)
     profile_pic = models.ImageField(upload_to='uploads/profile_images/', blank=True, null=True, default='default.jpg')
     terms_conditions = models.BooleanField(default=False)

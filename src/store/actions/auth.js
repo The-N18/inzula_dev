@@ -80,6 +80,8 @@ export const logout = expirationTime => {
   localStorage.removeItem("email");
   localStorage.removeItem("phone_number");
   localStorage.removeItem("profile_pic");
+  localStorage.removeItem("user_type");
+  localStorage.removeItem("sex");
   return dispatch => {
       type: actionTypes.AUTH_LOGOUT,
       setUserInfo(null, null, null, null, null, null, null, null, null, null, null)
@@ -124,6 +126,7 @@ export const checkAuthTimeout = expirationTime => {
          const passport_number = res.data.passport_number;
          const country = res.data.country;
          const user_type = res.data.user_type;
+         const sex = res.data.sex;
          const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
          localStorage.setItem("token", token);
          localStorage.setItem("expirationDate", expirationDate);
@@ -138,9 +141,10 @@ export const checkAuthTimeout = expirationTime => {
          localStorage.setItem("passport_number", passport_number);
          localStorage.setItem("country", country);
          localStorage.setItem("user_type", user_type);
+         localStorage.setItem("sex", sex);
          localStorage.setItem("date_joined", date_joined);
          dispatch(authSuccess(token));
-         dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country, user_type));
+         dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country, user_type, sex));
          dispatch(checkAuthTimeout(AUTH_TIMEOUT));
          dispatch(createNotification({
            message: "Login successful.",
@@ -231,7 +235,7 @@ export const checkAuthTimeout = expirationTime => {
    };
  };
 
- export const updateUserProfile = (first_name, last_name, phone_number, email, country, passport_number, profile_pic, user_type) => {
+ export const updateUserProfile = (first_name, last_name, phone_number, email, country, passport_number, profile_pic, user_type, sex) => {
    console.log("in updateProfile");
    console.log(profile_pic);
    const config = {
@@ -246,7 +250,8 @@ export const checkAuthTimeout = expirationTime => {
      email: email,
      country: country,
      passport_number: passport_number,
-     user_type: user_type
+     user_type: user_type,
+     sex: sex
    }
    let data = new FormData();
    for( let key in data2 ) {
@@ -274,6 +279,7 @@ export const checkAuthTimeout = expirationTime => {
          const passport_number = res.data.passport_number;
          const country = res.data.country;
          const user_type = res.data.user_type;
+         const sex = res.data.sex;
          const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
          localStorage.setItem("token", token);
          localStorage.setItem("expirationDate", expirationDate);
@@ -288,9 +294,10 @@ export const checkAuthTimeout = expirationTime => {
          localStorage.setItem("passport_number", passport_number);
          localStorage.setItem("country", country);
          localStorage.setItem("user_type", user_type);
+         localStorage.setItem("sex", sex);
          localStorage.setItem("date_joined", date_joined);
          dispatch(authSuccess(token));
-         dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country, user_type));
+         dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country, user_type, sex));
          dispatch(checkAuthTimeout(AUTH_TIMEOUT));
          dispatch(createNotification({
            message: "Profile updated successfully",
@@ -362,6 +369,7 @@ export const checkAuthTimeout = expirationTime => {
         const passport_number = res.data.passport_number;
         const country = res.data.country;
         const user_type = res.data.user_type;
+        const sex = res.data.sex;
         const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
         localStorage.setItem("token", token);
         localStorage.setItem("expirationDate", expirationDate);
@@ -377,8 +385,9 @@ export const checkAuthTimeout = expirationTime => {
         localStorage.setItem("country", country);
         localStorage.setItem("date_joined", date_joined);
         localStorage.setItem("user_type", user_type);
+        localStorage.setItem("sex", sex);
         dispatch(authSuccess(token));
-        dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country, user_type));
+        dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country, user_type, sex));
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: "Google Login successful.",
@@ -419,6 +428,7 @@ export const checkAuthTimeout = expirationTime => {
         const passport_number = res.data.passport_number;
         const country = res.data.country;
         const user_type = res.data.user_type;
+        const sex = res.data.sex;
         const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
         localStorage.setItem("token", token);
         localStorage.setItem("expirationDate", expirationDate);
@@ -434,8 +444,9 @@ export const checkAuthTimeout = expirationTime => {
         localStorage.setItem("country", country);
         localStorage.setItem("date_joined", date_joined);
         localStorage.setItem("user_type", user_type);
+        localStorage.setItem("sex", sex);
         dispatch(authSuccess(token));
-        dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country, user_type));
+        dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country, user_type, sex));
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: "Facebook Login successful.",
@@ -525,6 +536,7 @@ export const authCheckState = () => {
      const country = localStorage.getItem("country");
      const date_joined = localStorage.getItem("date_joined");
      const user_type = localStorage.getItem("user_type");
+     const sex = localStorage.getItem("sex");
      console.log(token);
      if (token === undefined) {
        dispatch(logout());
@@ -534,7 +546,7 @@ export const authCheckState = () => {
          dispatch(logout());
        } else {
          dispatch(authSuccess(token));
-         dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country, user_type));
+         dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country, user_type, sex));
          dispatch(
            checkAuthTimeout(
              (expirationDate.getTime() - new Date().getTime()) / 1000
