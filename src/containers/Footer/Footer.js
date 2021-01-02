@@ -9,10 +9,9 @@ import {
   Image
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './footer.css';
 import { backend_url } from "../../configurations";
 import { withRouter } from "react-router-dom";
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 
 
 class Footer extends React.Component {

@@ -62,6 +62,7 @@ class UpdateProfileView(CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         user_id = request.data["user_id"]
+        user_type = request.data["user_type"]
         user_profile_id = request.data["user_profile_id"]
         first_name = request.data["first_name"]
         last_name = request.data["last_name"]
@@ -84,6 +85,7 @@ class UpdateProfileView(CreateAPIView):
             userprofile.user.first_name=first_name
             userprofile.user.last_name=last_name
             userprofile.user.email=email
+            userprofile.user_type=user_type
             userprofile.user.save()
             userprofile.save()
         serializer = self.get_serializer(userprofile)

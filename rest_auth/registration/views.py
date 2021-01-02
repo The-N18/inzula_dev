@@ -78,6 +78,7 @@ class RegisterView(CreateAPIView):
             'last_name': user.last_name,
             'date_joined': user.date_joined,
             'phone_number': user.profile.phone_number,
+            'user_type': user.profile.user_type,
             'profile_pic': profile_pic_url,
             'user_profile_id': user.profile.pk},
                         status=status.HTTP_201_CREATED,
@@ -86,7 +87,7 @@ class RegisterView(CreateAPIView):
     @transaction.atomic
     def perform_create(self, serializer, request_data):
         user = serializer.save(self.request)
-        userprofile = UserProfile.objects.create(user=user, terms_conditions=request_data['terms_conditions'])
+        userprofile = UserProfile.objects.create(user=user, terms_conditions=request_data['terms_conditions'], user_type=request_data['user_type'], country="FR")
 
         if getattr(settings, 'REST_USE_JWT', False):
             self.token = jwt_encode(user)

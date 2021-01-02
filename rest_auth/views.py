@@ -98,6 +98,8 @@ class LoginView(GenericAPIView):
             'date_joined': self.user.date_joined,
             'profile_pic': profile_pic_url,
             'phone_number': self.user.profile.phone_number,
+            'country': self.user.profile.country,
+            'user_type': self.user.profile.user_type,
             'user_profile_id': self.user.profile.pk}, status=status.HTTP_200_OK)
         if getattr(settings, 'REST_USE_JWT', False):
             from rest_framework_jwt.settings import api_settings as jwt_settings

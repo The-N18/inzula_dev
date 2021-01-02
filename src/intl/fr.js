@@ -16,6 +16,7 @@ export const msg = {
   'home_text_video.ship_now': "Expediez des articles ",
   'home_text_video.earn_money': "Gagnez de l'argent durant vos voyages",
   'gen.loading': "Chargement...",
+  'add_booking.cancel': "Annuler",
   'add_trip_form.earn_money': "Gagnez de l’argent à chaque fois que vous voyagez.",
   'add_trip_form.deliver_parcels': "Livrez les colis de particuliers souhaitant expédier à bas prix et amortissez vos frais de voyages.",
   'add_trip_form.how_it_works': "Comment ça marche ?",
@@ -278,4 +279,5 @@ export const msg = {
   'select_credit_card.pay': "Payer",
   'select_credit_card.cancel': "Annuler",
   'search_requests.no_results': "Pas de resultats, essayez une recherche moins specifique.",
+  'signup.default_profile_type': "Type de Profil par default",
 };

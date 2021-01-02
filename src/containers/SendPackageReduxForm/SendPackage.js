@@ -27,7 +27,7 @@ import { bookingAddition } from "../../store/actions/addBooking";
 import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
 import {renderField, renderDateTimePicker, renderFieldWithLabel, renderDropdownList, renderCitiesList} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
-import { sizeOptions, categoryOptions, weightOptions, valueOptions, calculateMinPrice } from "../../utils/options";
+import { sizeOptions, sizeOptionsFr, categoryOptions, categoryOptionsFr, weightOptions, weightOptionsFr, valueOptions, valueOptionsFr, calculateMinPrice } from "../../utils/options";
 import {FormattedMessage, FormattedDate} from 'react-intl'
 
 
@@ -127,7 +127,7 @@ class SendPackage extends React.Component {
       reset, submitting, invalid, change, product_name,
       departure_location, destination_location, proposed_price,
       product_category, product_weight, product_size, product_value,
-      recipient_name, recipient_phone_number, product_description } = this.props;
+      recipient_name, recipient_phone_number, product_description, lang} = this.props;
     const { isNextValid, activeStep } = this.state;
     // if(token === null) {
     //   console.log("TOKEN");
@@ -383,7 +383,7 @@ class SendPackage extends React.Component {
                         name="product_category"
                         placeholder='Product category'
                         component={renderDropdownList}
-                        data={categoryOptions}
+                        data={lang === "en" ? categoryOptions : categoryOptionsFr}
                         valueField="value"
                         textField="text"
                         onChange={handleMinPriceCatChange}/>
@@ -397,7 +397,7 @@ class SendPackage extends React.Component {
                         name="product_weight"
                         placeholder='Product weight'
                         component={renderDropdownList}
-                        data={weightOptions}
+                        data={lang === "en" ? weightOptions: weightOptionsFr}
                         valueField="value"
                         textField="text"
                         onChange={handleMinPriceWeiChange}/>
@@ -416,7 +416,7 @@ class SendPackage extends React.Component {
                           name="product_size"
                           placeholder='Product size'
                           component={renderDropdownList}
-                          data={sizeOptions}
+                          data={lang === "en" ? sizeOptions: sizeOptionsFr}
                           valueField="value"
                           textField="text"
                           onChange={handleMinPriceSizChange}/>
@@ -430,7 +430,7 @@ class SendPackage extends React.Component {
                             name="product_value"
                             placeholder='Product value'
                             component={renderDropdownList}
-                            data={valueOptions}
+                            data={lang === "en" ? valueOptions: valueOptionsFr}
                             valueField="value"
                             textField="text"
                             onChange={handleMinPriceValChange}/>
@@ -559,6 +559,7 @@ const mapStateToProps = state => {
   return {
     loading: state.addBooking.loading,
     error: state.addBooking.error,
+    lang: state.appConfig.lang,
     token: state.auth.token,
     userId: state.userInfo.userId,
     userProfileId: state.userInfo.userProfileId,

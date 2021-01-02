@@ -62,7 +62,7 @@ class HomeTextVideo extends React.Component {
             <Grid.Column  mobile={16} tablet={16} computer={8}>
               <div className={"player-wrapper"}>
                 <ReactPlayer
-                  url='https://www.youtube.com/watch?v=ysz5S6PUM-U'
+                  url='https://www.youtube.com/watch?v=Ul5v0NPsfa0'
                   loop={true}
                   playing={false}
                   pip={true}

@@ -10,13 +10,12 @@ import {
   Icon
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './tripcard.css';
 import { backend_url, get_img_url } from "../../configurations";
 import { openModalForTrip } from "../../store/actions/sendPackageModal";
 import { openModalSelectReservations } from "../../store/actions/selectReservationsModal";
 import {FormattedMessage, FormattedDate} from 'react-intl'
 import { openDeleteTripConfirm, setTripDeleteTripConfirm } from "../../store/actions/deleteTripConfirm";
-import { updateTripOpenModal, updateTripCloseModal } from "../../store/actions/updateTripModal";
+import { updateTripOpenModal } from "../../store/actions/updateTripModal";
 import { tripTypeOptions } from "../../utils/options";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
 
@@ -42,14 +41,14 @@ class TripCard extends React.Component {
   }
 
   deleteTrip = () => {
-    const {pk, user_id} = this.props;
+    const {pk} = this.props;
     this.props.setTripDeleteTripConfirm(pk);
     this.props.openDeleteTripConfirm();
 
   }
 
   updateTrip = () => {
-    const {title, trip_type, depart_date, img, comeback_date, departure_location, destination_location, creator_user_name, no_book, pk} = this.props;
+    const {trip_type, depart_date, comeback_date, departure_location, destination_location, pk} = this.props;
     const data = {
       "trip_type": trip_type,
       "departure_location": departure_location,
@@ -72,7 +71,7 @@ class TripCard extends React.Component {
 
   render() {
 
-    const {title, trip_type, depart_date, img, comeback_date, departure_location, destination_location, creator_user_name, no_book} = this.props;
+    const {trip_type, depart_date, img, comeback_date, departure_location, destination_location, creator_user_name, no_book} = this.props;
 
     return (
       <Card raised fluid centered className={"home-text-img-card-grid  trip-card-max-h"}>

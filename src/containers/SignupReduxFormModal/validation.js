@@ -8,6 +8,9 @@ export const validate = values => {
   } else if (values.username.length > 15) {
     errors.username = 'Must be 15 characters or less'
   }
+  if (!values.user_type) {
+    errors.user_type = 'Required*'
+  }
   if (!values.email) {
     errors.email = 'Required*'
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {

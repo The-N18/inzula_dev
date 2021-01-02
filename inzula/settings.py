@@ -24,6 +24,7 @@ SECRET_KEY = 'cx7rnzp$skop_mg6h+xy2o6^$6ltn^_7oi5+p*f@b5cg4d*od#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+MANUAL_DEBUG = False
 
 ALLOWED_HOSTS = ['dkx1b8wlo613w.cloudfront.net', 'inzula.app', 'localhost', '127.0.0.1', 'www.inzula.app', '15.237.97.243']
 
@@ -69,17 +70,35 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'inzula.urls'
 
-STATICFILES_DIRS = [
+PROD_TEMP_DIRS = [
+    os.path.join(BASE_DIR, 'build'),
+    os.path.join(BASE_DIR, 'public')
+    ]
+
+PROD_STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'public'),
     os.path.join(BASE_DIR, 'static'),
     os.path.join(BASE_DIR, 'build'),
     os.path.join(BASE_DIR, 'build', 'static')
     ]
 
-TEMP_DIRS = [
-    os.path.join(BASE_DIR, 'build'),
-    os.path.join(BASE_DIR, 'public')
+DEBUG_STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'public'),
+    os.path.join(BASE_DIR, 'static'),
     ]
+
+DEBUG_TEMP_DIRS = [
+    os.path.join(BASE_DIR, 'public'),
+    os.path.join(BASE_DIR, 'build'),
+    os.path.join(BASE_DIR, 'build/static'),
+    ]
+
+DEBUG_STATIC_ROOT = None
+PROD_STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_DIRS = DEBUG_STATICFILES_DIRS if MANUAL_DEBUG else PROD_STATICFILES_DIRS
+TEMP_DIRS = DEBUG_TEMP_DIRS if MANUAL_DEBUG else PROD_TEMP_DIRS
+
 
 TEMPLATES = [
     {
@@ -170,7 +189,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = DEBUG_STATIC_ROOT if MANUAL_DEBUG else PROD_STATIC_ROOT
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

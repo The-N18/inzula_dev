@@ -18,15 +18,17 @@ import { closeSignupParentModal } from "../../store/actions/signupParentModal";
 import { connect } from "react-redux";
 import { validate } from "./validation";
 import Recaptcha from 'react-recaptcha';
-import {renderField} from "../../containers/ReduxForm/renderField";
+import {renderField, renderDropdownList} from "../../containers/ReduxForm/renderField";
 import {FormattedMessage, FormattedDate} from 'react-intl'
 import { withRouter } from "react-router-dom";
+import {userTypeOptions, userTypeOptionsFr} from "../../utils/options";
 
 
 class RegistrationForm extends Component {
 
   submitForm = (val) => {
-    this.props.signup(val['first_name'], val['last_name'], val['username'], val['email'], val['password1'], val['password2'], val['terms_conditions']);
+    const user_type = val['user_type'] ? val['user_type']['value'] : '';
+    this.props.signup(val['first_name'], val['last_name'], val['username'], val['email'], val['password1'], val['password2'], val['terms_conditions'], user_type);
   }
 
   handleSignin = () => {
@@ -41,7 +43,7 @@ class RegistrationForm extends Component {
   }
 
   render () {
-    const {handleSubmit, token, loading, pristine, reset, submitting, invalid, discountText, open} = this.props;
+    const {handleSubmit, token, loading, pristine, reset, submitting, invalid, discountText, open, lang} = this.props;
     if (token) {
       return <Redirect to="/" />;
     }
@@ -165,6 +167,18 @@ class RegistrationForm extends Component {
           type="password"
           component={renderField}
         />
+        <div>
+          <span><FormattedMessage
+            id="signup.default_profile_type"
+            defaultMessage="Default profile type"
+          /></span>
+          <Field
+            name="user_type"
+            component={renderDropdownList}
+            data={lang === "en" ? userTypeOptions : userTypeOptionsFr}
+            valueField="value"
+            textField="text"/>
+          </div>
         </div>
         <div className={"push-left"}>
             <Field name="terms_conditions" id="terms_conditions" component="input" type="checkbox"/>
@@ -223,13 +237,14 @@ const mapStateToProps = state => {
     userId: state.auth.userId,
     discountText: state.auth.discountText,
     open: state.signupModal.open,
+    lang: state.appConfig.lang,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    signup: (first_name, last_name, username, email, password1, password2, terms_conditions) =>
-      dispatch(authSignup(first_name, last_name, username, email, password1, password2, terms_conditions)),
+    signup: (first_name, last_name, username, email, password1, password2, terms_conditions, user_type) =>
+      dispatch(authSignup(first_name, last_name, username, email, password1, password2, terms_conditions, user_type)),
     setDiscountText: (discountText) => dispatch(authSetDiscountText(discountText)),
     openSignupModal: () => dispatch(openSignupModal()),
     closeSignupModal: () => dispatch(closeSignupModal()),

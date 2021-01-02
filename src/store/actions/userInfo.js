@@ -17,11 +17,12 @@ export const clearUserInfo = () => {
     profile_pic: null,
     passport_number: null,
     country: null,
+    user_type: null,
     profileType: "sender",
   };
 };
 
-export const setUserInfo = (userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country) => {
+export const setUserInfo = (userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country, user_type) => {
   return {
     type: actionTypes.SET_USER_INFO,
     userId: userId,
@@ -35,6 +36,8 @@ export const setUserInfo = (userId, username, userProfileId, first_name, last_na
     profile_pic: profile_pic,
     passport_number: passport_number,
     country: country,
+    user_type: user_type,
+    profileType: user_type,
     profileData: {
       first_name: first_name,
       last_name: last_name,
@@ -42,6 +45,7 @@ export const setUserInfo = (userId, username, userProfileId, first_name, last_na
       phone_number: phone_number,
       passport_number: passport_number,
       country: country,
+      user_type: user_type,
       userProfileId: userProfileId,
     }
   };

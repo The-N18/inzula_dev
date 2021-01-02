@@ -42,6 +42,7 @@ import { setActiveIndex } from "../../store/actions/myProfile";
 import { openSignupParentModal } from "../../store/actions/signupParentModal";
 import { openLoginParentModal } from "../../store/actions/loginParentModal";
 
+
 class CustomLayout extends React.Component {
 
   state = {
@@ -231,11 +232,11 @@ class CustomLayout extends React.Component {
             <input className="menu-btn" type="checkbox" id="menu-btn" />
             <label className="menu-icon" htmlFor="menu-btn"><span className="navicon"></span></label>
             <ul className="menu">
-              <li><a  className="red" onClick={this.handleOnClick.bind(this, '/signupdiscount')}>
+              {!authenticated ? <li><a  className="red" onClick={this.handleOnClick.bind(this, '/signupdiscount')}>
               <FormattedMessage
                 id="layout.discount"
                 defaultMessage="15% discount"
-              /></a></li>
+              /></a></li> : ''}
               <li><a onClick={this.handleOnClick.bind(this, '/dispatch')}>
               <FormattedMessage
                 id="layout.dispatch"

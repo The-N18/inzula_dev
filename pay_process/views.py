@@ -43,9 +43,34 @@ class PayForBooking(CreateAPIView):
             booking_price = booking_amount + fees_amount
 
             # Get natural user
-            userprofile = User.objects.get(pk=userId).profile
+            user = User.objects.get(pk=userId)
+            userprofile = user.profile
             nat_user_id = userprofile.nat_user_id
-            natural_user = NaturalUser.get(nat_user_id)
+            natural_user = None
+            if nat_user_id is not None:
+                natural_user = NaturalUser.get(nat_user_id)
+            else:
+                natural_user = NaturalUser(first_name=user.first_name,
+                                        last_name=user.last_name,
+                                        address=None,
+                                        proof_of_identity=None,
+                                        proof_of_address=None,
+                                        person_type='NATURAL',
+                                        nationality=userprofile.country,
+                                        country_of_residence=userprofile.country,
+                                        birthday=1300186358,
+                                        email=user.email)
+                natural_user.save()
+            userprofile.nat_user_id = natural_user.id
+            userprofile.save()
+            if userprofile.wallet_id is None:
+                wallet = Wallet(owners=[natural_user],
+                        description='Wallet',
+                        currency='EUR',
+                        tag="Wallet for User-{}".format(natural_user.id))
+                wallet.save()
+                userprofile.wallet_id = wallet.get_pk()
+                userprofile.save()
 
             # Register card for user
             card_registration = CardRegistration(user=natural_user, currency='EUR')
@@ -133,9 +158,34 @@ class PayForBookingCardId(CreateAPIView):
             booking_price = booking_amount + fees_amount
 
             # Get natural user
-            userprofile = User.objects.get(pk=userId).profile
+            user = User.objects.get(pk=userId)
+            userprofile = user.profile
             nat_user_id = userprofile.nat_user_id
-            natural_user = NaturalUser.get(nat_user_id)
+            natural_user = None
+            if nat_user_id is not None:
+                natural_user = NaturalUser.get(nat_user_id)
+            else:
+                natural_user = NaturalUser(first_name=user.first_name,
+                                        last_name=user.last_name,
+                                        address=None,
+                                        proof_of_identity=None,
+                                        proof_of_address=None,
+                                        person_type='NATURAL',
+                                        nationality=userprofile.country,
+                                        country_of_residence=userprofile.country,
+                                        birthday=1300186358,
+                                        email=user.email)
+                natural_user.save()
+            userprofile.nat_user_id = natural_user.id
+            userprofile.save()
+            if userprofile.wallet_id is None:
+                wallet = Wallet(owners=[natural_user],
+                        description='Wallet',
+                        currency='EUR',
+                        tag="Wallet for User-{}".format(natural_user.id))
+                wallet.save()
+                userprofile.wallet_id = wallet.get_pk()
+                userprofile.save()
 
             # get user wallet
             user_wallet = Wallet(id=userprofile.wallet_id)
@@ -202,9 +252,34 @@ class PayForBookingPaypal(CreateAPIView):
             booking_price = booking_amount + fees_amount
 
             # Get natural user
-            userprofile = User.objects.get(pk=userId).profile
+            user = User.objects.get(pk=userId)
+            userprofile = user.profile
             nat_user_id = userprofile.nat_user_id
-            natural_user = NaturalUser.get(nat_user_id)
+            natural_user = None
+            if nat_user_id is not None:
+                natural_user = NaturalUser.get(nat_user_id)
+            else:
+                natural_user = NaturalUser(first_name=user.first_name,
+                                        last_name=user.last_name,
+                                        address=None,
+                                        proof_of_identity=None,
+                                        proof_of_address=None,
+                                        person_type='NATURAL',
+                                        nationality=userprofile.country,
+                                        country_of_residence=userprofile.country,
+                                        birthday=1300186358,
+                                        email=user.email)
+                natural_user.save()
+            userprofile.nat_user_id = natural_user.id
+            userprofile.save()
+            if userprofile.wallet_id is None:
+                wallet = Wallet(owners=[natural_user],
+                        description='Wallet',
+                        currency='EUR',
+                        tag="Wallet for User-{}".format(natural_user.id))
+                wallet.save()
+                userprofile.wallet_id = wallet.get_pk()
+                userprofile.save()
 
             # get user wallet
             user_wallet = Wallet(id=userprofile.wallet_id)
@@ -269,9 +344,35 @@ class Cashout(CreateAPIView):
             account_bic = request.data['account_BIC']
 
             # Get natural user
-            userprofile = User.objects.get(pk=userId).profile
+            user = User.objects.get(pk=userId)
+            userprofile = user.profile
             nat_user_id = userprofile.nat_user_id
-            natural_user = NaturalUser.get(nat_user_id)
+            natural_user = None
+            if nat_user_id is not None:
+                natural_user = NaturalUser.get(nat_user_id)
+            else:
+                natural_user = NaturalUser(first_name=user.first_name,
+                                        last_name=user.last_name,
+                                        address=None,
+                                        proof_of_identity=None,
+                                        proof_of_address=None,
+                                        person_type='NATURAL',
+                                        nationality=userprofile.country,
+                                        country_of_residence=userprofile.country,
+                                        birthday=1300186358,
+                                        email=user.email)
+                natural_user.save()
+            userprofile.nat_user_id = natural_user.id
+            userprofile.save()
+            if userprofile.wallet_id is None:
+                wallet = Wallet(owners=[natural_user],
+                        description='Wallet',
+                        currency='EUR',
+                        tag="Wallet for User-{}".format(natural_user.id))
+                wallet.save()
+                userprofile.wallet_id = wallet.get_pk()
+                userprofile.save()
+            
 
             # Register account for user
             bankaccount_iban = BankAccount(owner_name=acc_owner_name,
@@ -281,7 +382,7 @@ class Cashout(CreateAPIView):
                               postal_code=acc_owner_postal_code, country=acc_owner_country),
                               iban=account_iban,
                               bic=account_bic)
-            bankaccount.save()
+            bankaccount_iban.save()
 
             # get user wallet
             user_wallet = Wallet(id=userprofile.wallet_id)
@@ -290,8 +391,8 @@ class Cashout(CreateAPIView):
             payout = BankWirePayOut(author=natural_user,
                        debited_funds=Money(amount=amount, currency='EUR'),
                        fees=Money(amount=0, currency='EUR'),
-                       debited_wallet=legal_user_wallet,
-                       bank_account=bankaccount,
+                       debited_wallet=user_wallet,
+                       bank_account=bankaccount_iban,
                        bank_wire_ref="Cashout from Inzula")
             payout.save()
 
@@ -534,7 +635,7 @@ class UserWalletFunds(APIView):
         userId = request.data['user_id']
 
         result = {
-        'funds': ""
+        'funds': "EUR 0"
         }
         userprofile = User.objects.get(pk=userId).profile
         nat_user_id = userprofile.nat_user_id

@@ -65,6 +65,16 @@ export const valueOptionsFr=[
   { key: 'exc', value: 'exc', text: 'Exclusif' },
 ];
 
+export const userTypeOptions = [
+  { key: 'sender', value: 'sender', text: 'Sender' },
+  { key: 'carrier', value: 'carrier', text: 'Carrier' },
+];
+
+export const userTypeOptionsFr = [
+  { key: 'sender', value: 'sender', text: 'Expediteur' },
+  { key: 'carrier', value: 'carrier', text: 'Transporteur' },
+];
+
 export const optionToText = (option_value, arr) => {
   // For value, weight, size and category of product only
   let txt = "";

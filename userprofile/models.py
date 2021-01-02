@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 USER_TYPE_OPTIONS = [
-    ('Sender', 'Sender'),
-    ('Carrier', 'Carrier')
+    ('sender', 'Sender'),
+    ('carrier', 'Carrier')
 ]
 
 class City(models.Model):

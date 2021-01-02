@@ -282,4 +282,5 @@ export const msg = {
   'select_credit_card.pay': "Pay",
   'select_credit_card.cancel': "Cancel",
   'search_requests.no_results': "No search results. Please try a more general search",
+  'signup.default_profile_type': "Default profile type",
 };

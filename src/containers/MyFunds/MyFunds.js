@@ -69,7 +69,7 @@ class MyFunds extends React.Component {
           <Card.Header>{funds}</Card.Header>
         </Card.Content>
         <Card.Content extra>
-            <Button basic color='green' fluid onClick={this.openCashoutModal.bind(this)}>
+            <Button basic color='green' fluid onClick={this.openCashoutModal.bind(this)} disabled={funds === "EUR 0"}>
               <FormattedMessage
                 id="my_funds.cashout"
                 defaultMessage="Cash out"

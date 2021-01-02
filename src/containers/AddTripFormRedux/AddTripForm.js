@@ -153,7 +153,7 @@ class AddTripForm extends React.Component {
                       default='one_way_trip'
                       data={[ 'round_trip', 'one_way_trip' ]}/>
                   </div>*/}
-                  <div>
+                  {/*<div>
                     <span className={"radion-btns-span"}><label><FormattedMessage
                       id="add_trip_form.trip"
                       defaultMessage="Trip"
@@ -168,7 +168,7 @@ class AddTripForm extends React.Component {
                         defaultMessage="Round Trip"
                       /></label></span>
                     </div>
-                  </div>
+                  </div> */}
                   <div>
                     <label><FormattedMessage
                       id="add_trip_form.depart_location"
@@ -219,12 +219,12 @@ class AddTripForm extends React.Component {
                     min={new Date(this.props.depart_date)}
                   />
                 </div> : "" }
-              <Recaptcha
+              {/*<Recaptcha
                 sitekey="6LfycNoZAAAAADPAHBVK7JjxT8V6AvayfwhVaHQa"
                 render="explicit"
                 onloadCallback={this.recaptchaLoaded}
                 verifyCallback={this.verifyCallback}
-              />
+              />*/}
               <Button
                 size="large"
                 type="submit"

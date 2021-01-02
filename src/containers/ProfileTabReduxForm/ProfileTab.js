@@ -22,6 +22,7 @@ import DjangoCSRFToken from 'django-react-csrftoken';
 import {renderField, renderDropdownList} from "../../containers/ReduxForm/renderField";
 import {FormattedMessage, FormattedDate} from 'react-intl'
 import { openDeleteAccount } from "../../store/actions/deleteAccount";
+import {userTypeOptions, userTypeOptionsFr} from "../../utils/options";
 
 class ProfileTab extends React.Component {
   constructor(props) {
@@ -41,8 +42,9 @@ class ProfileTab extends React.Component {
   }
 
   submitForm = (val) => {
+    const user_type = val['user_type'] ? val['user_type']['value'] : '';
     const country = val['country'] && val['country']['value'] ? val['country']['value'] : val['country'];
-    this.props.updateProfile(val['first_name'], val['last_name'], val['phone_number'], val['email'], country, val['passport_number'], this.state.picture);
+    this.props.updateProfile(val['first_name'], val['last_name'], val['phone_number'], val['email'], country, val['passport_number'], this.state.picture, user_type);
   }
 
   deleteYourAccount = () => {
@@ -51,7 +53,7 @@ class ProfileTab extends React.Component {
   }
 
   render () {
-    const {handleSubmit, token, loading, deleteLoading, pristine, reset, submitting, invalid, date_joined, profile_pic, passport_number, phone_number, email} = this.props;
+    const {handleSubmit, token, loading, deleteLoading, pristine, reset, submitting, invalid, date_joined, profile_pic, passport_number, phone_number, email, lang} = this.props;
     return (
       <Segment basic className={"profile-tab-section"}>
       <Grid className={"profile-tab-section-grid"}>
@@ -104,7 +106,7 @@ class ProfileTab extends React.Component {
             <Grid.Row columns={2}>
               <Grid.Column mobile={16} tablet={16} computer={5}>
                 <Segment basic>
-                  <Image centered bordered circular src= {profile_pic !== null && profile_pic !== "null" ? get_img_url(profile_pic) : backend_url() + '/static/images/user_avatar.png'} />
+                  {/*<Image centered bordered circular src= {profile_pic !== null && profile_pic !== "null" ? get_img_url(profile_pic) : backend_url() + '/static/images/user_avatar.png'} />*/}
                   <ImageUploader
                       withIcon={true}
                       buttonText={<FormattedMessage
@@ -168,6 +170,18 @@ class ProfileTab extends React.Component {
                       />
                       </div>
                     </div>
+                    <div>
+                      <span><FormattedMessage
+                        id="signup.default_profile_type"
+                        defaultMessage="Default profile type"
+                      /></span>
+                      <Field
+                        name="user_type"
+                        component={renderDropdownList}
+                        data={lang === "en" ? userTypeOptions : userTypeOptionsFr}
+                        valueField="value"
+                        textField="text"/>
+                      </div>
                     <div>
                       <label htmlFor="phone_number">
                         <FormattedMessage
@@ -277,6 +291,8 @@ const mapStateToProps = state => {
     last_name: state.userInfo.last_name,
     passport_number: state.userInfo.passport_number,
     email: state.userInfo.email,
+    user_type: state.userInfo.user_type,
+    lang: state.appConfig.lang,
     date_joined: state.userInfo.date_joined,
     phone_number: state.userInfo.phone_number,
     profile_pic: state.userInfo.profile_pic,
@@ -286,8 +302,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateProfile: (first_name, last_name, phone_number, email, country, passport_number, profile_pic) =>
-      dispatch(updateUserProfile(first_name, last_name, phone_number, email, country, passport_number, profile_pic)),
+    updateProfile: (first_name, last_name, phone_number, email, country, passport_number, profile_pic, user_type) =>
+      dispatch(updateUserProfile(first_name, last_name, phone_number, email, country, passport_number, profile_pic, user_type)),
     openDeleteAccount: () => dispatch(openDeleteAccount())
   };
 };
