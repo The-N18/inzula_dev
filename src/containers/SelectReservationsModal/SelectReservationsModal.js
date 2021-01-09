@@ -1,34 +1,16 @@
 import React from "react";
 import {
   Button,
-  Form,
-  Grid,
-  Header,
-  Message,
-  Segment,
   Icon,
-  Container,
-  Step,
-  Image,
-  TextArea,
-  Select,
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { NavLink, Redirect } from "react-router-dom";
-import { authLogin } from "../../store/actions/auth";
 import styles from './selectreservations.css';
-import PropTypes from "prop-types";
-import { backend_url, buildImagesLinkList } from "../../configurations";
-import ImageUploader from 'react-images-upload';
-import { DateInput } from 'semantic-ui-calendar-react';
-import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
-import { openModal, closeModal, bookTrip } from "../../store/actions/selectReservationsModal";
-import TripsReservationsList from "../../containers/TripsReservationsList/TripsReservationsList";
+import { openModal, closeModal } from "../../store/actions/selectReservationsModal";
 import SelectableUserReservationsList from "../../containers/SelectableUserReservationsList/SelectableUserReservationsList";
 import { openModalForTrip } from "../../store/actions/sendPackageModal";
 import { openConfirmBookingPrice, setBookingRequestInfo } from "../../store/actions/confirmBookingPrice";
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 
 
 class SelectReservationsModal extends React.Component {

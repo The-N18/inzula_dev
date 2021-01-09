@@ -33,6 +33,10 @@ class PaymentMethodCard extends React.Component {
             id="paymentmethodcard.paypal"
             defaultMessage="Paypal"
           /></span> : ''}
+          {type === "wallet" ? <span><FormattedMessage
+            id="paymentmethodcard.wallet"
+            defaultMessage="Wallet funds"
+          /></span> : ''}
           </Card.Header>
           <Card.Description>
           </Card.Description>

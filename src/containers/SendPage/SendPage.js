@@ -5,7 +5,6 @@ import {
 import { connect } from "react-redux";
 import styles from './sendpage.css';
 import SearchTripsForm from "../../containers/SearchTripsReduxForm/SearchTripsForm";
-import SendPackageModal from "../../containers/SendPackageModal/SendPackageModal";
 import SelectReservationsModal from "../../containers/SelectReservationsModal/SelectReservationsModal";
 
 class SendPage extends React.Component {
@@ -14,7 +13,6 @@ class SendPage extends React.Component {
     return (
       <Segment style={{ padding: "8em 0em" }} vertical>
         <SelectReservationsModal/>
-        <SendPackageModal/>
         <SearchTripsForm/>
       </Segment>
     );

@@ -11,8 +11,6 @@ TRIP_TYPE_OPTIONS = [
 class Trip(models.Model):
     depart_date = models.DateField()
     comeback_date = models.DateField(null=True, blank=True)
-    # departure_location = models.CharField(max_length=250)
-    # destination_location = models.CharField(max_length=250)
     departure_location = models.ForeignKey(City, on_delete=models.PROTECT, related_name='+')
     destination_location = models.ForeignKey(City, on_delete=models.PROTECT, related_name='+')
     proof = models.FileField(upload_to='uploads/', null=True, blank=True)

@@ -2,23 +2,17 @@ import React from "react";
 import PropTypes from "prop-types";
 import {
   Button,
-  Form,
-  Grid,
-  Header,
   Segment,
-  Select,
-  Image,
-  Divider
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './userreservations.css';
-import { backend_url, buildImagesLinkList } from "../../configurations";
-import ImageUploader from 'react-images-upload';
+import { buildImagesLinkList } from "../../configurations";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { getReservations, getInitialReservations } from "../../store/actions/userReservations";
 import BookingCard from "../../containers/BookingCard/BookingCard";
 import $ from "jquery";
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
+import { openModal } from "../../store/actions/sendPackageModal";
 
 class UserReservationsList extends React.Component {
   constructor(props) {
@@ -67,6 +61,11 @@ class UserReservationsList extends React.Component {
     return val;
   }
 
+  handleOpenSendPackageModal = () => {
+    console.log("open modal");
+    this.props.openPackageModal();
+  }
+
   render() {
     const { loading, reservations, next_url, count, selectable, editable } = this.props;
     const dataLength = reservations ? reservations.length : 0;
@@ -75,7 +74,13 @@ class UserReservationsList extends React.Component {
       {reservations.length === 0 ? <div><FormattedMessage
         id="user_reservations.no_reservations"
         defaultMessage="You have not created any reservations."
-      /></div> : <div
+      />
+      <Button color='green' onClick={this.handleOpenSendPackageModal.bind(this)}>
+            <FormattedMessage
+              id="user_reservations.add_booking"
+              defaultMessage="Add a booking"
+          /></Button>
+          </div> : <div
         id="scrollableDiv"
         style={{
           height: 400,
@@ -93,6 +98,11 @@ class UserReservationsList extends React.Component {
           /></h4>}
           scrollableTarget="scrollableDiv"
         >
+          <Button color='green' onClick={this.handleOpenSendPackageModal.bind(this)}>
+            <FormattedMessage
+              id="user_reservations.add_booking"
+              defaultMessage="Add a booking"
+          /></Button>
           {reservations.map((item, index) => (
             <div style={{
               height: this.getDivHeight.bind(this),
@@ -103,6 +113,7 @@ class UserReservationsList extends React.Component {
                 selectable={selectable}
                 title={item["product"]["name"]}
                 pk={item["pk"]}
+                request_by_username={item["request_by_username"]}
                 status={item["status"]}
                 arrival_date={item["product"]["arrival_date"]}
                 description={item["product"]["description"]}
@@ -140,6 +151,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    openPackageModal: () => dispatch(openModal()),
     getUserReservations: (user_id, next_url, count) => dispatch(getReservations(user_id, next_url, count)),
     getInitialUserReservations: (user_id) => dispatch(getInitialReservations(user_id)),
   };

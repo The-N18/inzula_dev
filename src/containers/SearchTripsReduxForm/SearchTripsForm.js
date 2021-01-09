@@ -17,14 +17,13 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { openModal, closeModal } from "../../store/actions/sendPackageModal";
 import { createNotif } from "../../store/actions/appConfig";
 import MultiSelect from "@khanacademy/react-multi-select";
-import 'react-widgets/dist/css/react-widgets.css';
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import {renderField, renderDateTimePicker, renderCitiesList} from "../../containers/ReduxForm/renderField";
 import $ from "jquery";
 import {FormattedMessage, FormattedDate} from 'react-intl'
 import {NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import { openLoginParentModal } from "../../store/actions/loginParentModal";
-
+import 'react-widgets/dist/css/react-widgets.css';
 
 class SearchTripsForm extends React.Component {
 

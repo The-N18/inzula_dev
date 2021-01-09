@@ -25,7 +25,7 @@ class NotifCard extends React.Component {
 
   render() {
 
-    const {pk, created_on, type, trip_dep_date, product_name, trip_dep_loc, trip_des_loc, offer_price} = this.props;
+    const {pk, creator_username, created_on, type, trip_dep_date, product_name, trip_dep_loc, trip_des_loc, offer_price} = this.props;
     return (
       <Card raised fluid centered className={"notif-card"}>
         <Card.Content>
@@ -44,10 +44,19 @@ class NotifCard extends React.Component {
             minute="numeric"
             second="numeric"
           /> | </span> : ''}
+          {created_on !== "" ? <span><FormattedMessage
+            id="notif_card.created_by"
+            defaultMessage="By: "
+          /> {creator_username} | </span> : ''}
           {type === "trip_booked" ?
             <FormattedMessage
               id="notif_card.trip_booked"
               defaultMessage="Your trip has been booked"
+            /> : ''}
+            {type === "payment_for_booking" ?
+            <FormattedMessage
+              id="notif_card.payment_for_booking"
+              defaultMessage="Paid for booking"
             /> : ''}
             {type === "offer_rec" ?
             <FormattedMessage
@@ -118,6 +127,7 @@ NotifCard.propTypes = {
   trip_des_loc: PropTypes.string,
   trip_dep_date: PropTypes.string,
   created_on: PropTypes.string,
+  creator_username: PropTypes.string,
 };
 
 export default connect(

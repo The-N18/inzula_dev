@@ -18,7 +18,8 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { getTrips, getInitialTrips } from "../../store/actions/userTrips";
 import TripCard from "../../containers/TripCard/TripCard";
 import $ from "jquery";
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage, FormattedDate} from 'react-intl';
+import { openAddTripModal } from "../../store/actions/addTripModal";
 
 class UserTripsList extends React.Component {
   constructor(props) {
@@ -68,6 +69,10 @@ class UserTripsList extends React.Component {
     return val;
   }
 
+  handleOpenAddTripModal = () => {
+    this.props.openAddTripModal();
+  }
+
 
   render() {
     const { loading, trips, next_url, count } = this.props;
@@ -77,7 +82,13 @@ class UserTripsList extends React.Component {
       {trips.length === 0 ? <div><FormattedMessage
         id="user_trips.no_trips"
         defaultMessage="You have not created any trips."
-      /></div> : <div
+      />
+      <Button color='green' onClick={this.handleOpenAddTripModal.bind(this)}>
+            <FormattedMessage
+              id="user_trips.add_trip"
+              defaultMessage="Add a trip"
+          /></Button>
+          </div> : <div
         id="scrollableDiv"
         style={{
           height: 400,
@@ -95,6 +106,11 @@ class UserTripsList extends React.Component {
           /></h4>}
           scrollableTarget="scrollableDiv"
         >
+          <Button color='green' onClick={this.handleOpenAddTripModal.bind(this)}>
+            <FormattedMessage
+              id="user_trips.add_trip"
+              defaultMessage="Add a trip"
+          /></Button>
           {trips.map((item, index) => (
             <div style={{
               height: this.getDivHeight.bind(this),
@@ -135,6 +151,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    openAddTripModal: () => dispatch(openAddTripModal()),
     getUserTrips: (user_id, next_url, count) => dispatch(getTrips(user_id, next_url, count)),
     getInitialUserTrips: (user_id, next_url, count) => dispatch(getInitialTrips(user_id, next_url, count))
   };

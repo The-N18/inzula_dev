@@ -19,8 +19,10 @@ from rest_framework.generics import CreateAPIView, ListAPIView, GenericAPIView
 from rest_auth.registration.app_settings import register_permission_classes
 from django.db.models import Sum
 from django.utils import timezone
+from django.db.models import Q
 
 # Create your views here.
+
 
 class PayForBooking(CreateAPIView):
     permission_classes = register_permission_classes()
@@ -282,6 +284,130 @@ class PayForBookingCardId(CreateAPIView):
             }
             return Response(result, status=status.HTTP_200_OK)
         return Response({"error": "Error processing payment."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PayForBookingWithWallet(CreateAPIView):
+    permission_classes = register_permission_classes()
+
+    def create(self, request, *args, **kwargs):
+        # get user from user id
+        with transaction.atomic():
+            userId = request.data['userId']
+            tripId = request.data['tripId']
+            selectedBookingIds = request.data['selectedBookingIds']
+
+            # get price to pay
+            booking_requests = BookingRequest.objects.filter(pk__in=selectedBookingIds)
+            booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
+            booking_amount = booking_requests_price['product__proposed_price__sum']
+            fees_amount = 0.25*booking_amount
+            booking_price = booking_amount + fees_amount
+
+
+            # Get natural user
+            user = User.objects.get(pk=userId)
+            userprofile = user.profile
+            nat_user_id = userprofile.nat_user_id
+            natural_user = None
+            if nat_user_id is not None:
+                natural_user = NaturalUser.get(nat_user_id)
+            else:
+                natural_user = NaturalUser(first_name=user.first_name,
+                                        last_name=user.last_name,
+                                        address=None,
+                                        proof_of_identity=None,
+                                        proof_of_address=None,
+                                        person_type='NATURAL',
+                                        nationality=userprofile.country,
+                                        country_of_residence=userprofile.country,
+                                        birthday=1300186358,
+                                        email=user.email)
+                natural_user.save()
+            userprofile.nat_user_id = natural_user.id
+            userprofile.save()
+            if userprofile.wallet_id is None:
+                wallet = Wallet(owners=[natural_user],
+                        description='Wallet',
+                        currency='EUR',
+                        tag="Wallet for User-{}".format(natural_user.id))
+                wallet.save()
+                userprofile.wallet_id = wallet.get_pk()
+                userprofile.save()
+
+            # get user wallet
+            user_wallet = Wallet.get(userprofile.wallet_id)
+
+            # Check if there are enough funds in user wallet
+            if nat_user_id is not None and userprofile.wallet_id is not None and user_wallet is not None:
+                funds = str(user_wallet.balance) if user_wallet.balance is not None else ""
+                booking_requests = BookingRequest.objects.filter(request_by=userprofile)
+                booking_requests = booking_requests.filter(Q(status="boo") | Q(status="awa"))
+                booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
+                bookings = booking_requests_price["product__proposed_price__sum"]
+                print(funds)
+                print(bookings)
+                payable_funds = float(funds[4:].replace(",", "")) - bookings
+                if payable_funds < booking_price:
+                    return Response({"error": "You do not have enough funds. Use another payment method."}, status=status.HTTP_200_OK)
+
+            # transfer money from user wallet to inzula wallet
+            admin_simple_user = User.objects.get(pk=1)
+            admin_user = admin_simple_user.profile
+            admin_nat_user_id = admin_user.nat_user_id
+            inzula_user = None
+            if admin_nat_user_id is not None:
+                inzula_user = NaturalUser.get(nat_user_id)
+            else:
+                inzula_user = NaturalUser(first_name=admin_simple_user.first_name,
+                                        last_name=admin_simple_user.last_name,
+                                        address=None,
+                                        proof_of_identity=None,
+                                        proof_of_address=None,
+                                        person_type='NATURAL',
+                                        nationality=admin_user.country,
+                                        country_of_residence=admin_user.country,
+                                        birthday=1300186358,
+                                        email=admin_simple_user.email)
+                inzula_user.save()
+            admin_user.nat_user_id = inzula_user.id
+            admin_user.save()
+            if admin_user.wallet_id is None:
+                wallet = Wallet(owners=[inzula_user],
+                        description='Wallet',
+                        currency='EUR',
+                        tag="Wallet for User-{}".format(inzula_user.id))
+                wallet.save()
+                admin_user.wallet_id = wallet.get_pk()
+                admin_user.save()
+
+            inzula_wallet = Wallet(id=admin_user.wallet_id)
+
+            transfer = Transfer(author=natural_user,
+                        credited_user=inzula_user,
+                        debited_funds=Money(amount=fees_amount, currency='EUR'),
+                        fees=Money(amount=0, currency='EUR'),
+                        debited_wallet=user_wallet,
+                        credited_wallet=inzula_wallet)
+            transfer.save()
+
+            # change the status of all bookings and create notifications
+            for booking in BookingRequest.objects.filter(pk__in=[int(i) for i in selectedBookingIds]):
+                booking.status = 'boo'
+                booking.trip = Trip.objects.get(pk=tripId)
+                booking.save()
+                # generate notifications
+                Notif.objects.create(trip=booking.trip,
+                booking_request=booking,
+                created_by=booking.request_by,
+                price_proposal=None,
+                created_on=timezone.now(),
+                type='payment_for_booking',
+                status='unseen')
+            result = {
+            }
+            return Response(result, status=status.HTTP_200_OK)
+        return Response({"error": "Error processing payment."}, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class PayForBookingPaypal(CreateAPIView):
@@ -741,7 +867,8 @@ class MaxPayOutAmount(APIView):
             user_wallet = Wallet.get(userprofile.wallet_id)
             if userprofile.wallet_id is not None and user_wallet is not None:
                 result['funds'] = str(user_wallet.balance) if user_wallet.balance is not None else ""
-                booking_requests = BookingRequest.objects.filter(request_by=userprofile, status="boo")
+                booking_requests = BookingRequest.objects.filter(request_by=userprofile)
+                booking_requests = booking_requests.filter(Q(status="boo") |Q(status="awa"))
                 booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
                 result['bookings'] = booking_requests_price["product__proposed_price__sum"]
                 result['max_amt'] = float(result['funds'][4:].replace(",", "")) - result['bookings']

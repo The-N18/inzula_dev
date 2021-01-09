@@ -14,7 +14,7 @@ import { openSelectCreditCard,
         closeSelectCreditCard} from "../../store/actions/selectCreditCardModal";
 import CSRFToken from "../../containers/CSRFToken";
 import PaymentMethodCard from "../../containers/PaymentMethodCard/PaymentMethodCard";
-import { payForBookingWithPaypal } from "../../store/actions/paymentFormModal";
+import { payForBookingWithPaypal , payForBookingWithWalletFunds} from "../../store/actions/paymentFormModal";
 
 
 class PaymentOptions extends React.Component {
@@ -28,6 +28,12 @@ class PaymentOptions extends React.Component {
     const {selectedBookingIds, tripId, userId} = this.props;
     console.log("Pay with paypal");
     this.props.payForBookingWithPaypal({'selectedBookingIds': selectedBookingIds, 'tripId': tripId, 'userId': userId});
+  }
+
+  payWithWalletFunds = () => {
+    const {selectedBookingIds, tripId, userId} = this.props;
+    console.log("Pay with wallet funds");
+    this.props.payForBookingWithWalletFunds({'selectedBookingIds': selectedBookingIds, 'tripId': tripId, 'userId': userId});
   }
 
   render() {
@@ -46,6 +52,7 @@ class PaymentOptions extends React.Component {
         <p>Select your method of payment.</p>
         <PaymentMethodCard type="credit_card" onclick={this.payWithCreditCard.bind(this)} />
         <PaymentMethodCard type="paypal" onclick={this.payWithPaypal.bind(this)} />
+        <PaymentMethodCard type="wallet" onclick={this.payWithWalletFunds.bind(this)} />
 
       </Modal.Content>
       <Modal.Actions>
@@ -75,6 +82,7 @@ const mapDispatchToProps = dispatch => {
     closePaymentOptions: () => dispatch(closePaymentOptions()),
     openSelectCreditCard: () => dispatch(openSelectCreditCard()),
     payForBookingWithPaypal: (values) => dispatch(payForBookingWithPaypal(values)),
+    payForBookingWithWalletFunds: (values) => dispatch(payForBookingWithWalletFunds(values))
   };
 };
 

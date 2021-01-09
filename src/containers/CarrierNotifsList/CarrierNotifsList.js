@@ -90,6 +90,8 @@ class CarrierNotifsList extends React.Component {
               <NotifCard
                 pk={item["pk"]}
                 type={item["type"]}
+                creator_username={item["creator_username"]}
+                created_on={item["created_on"]}
                 status={item["status"]}
                 booking_request_id={item["booking_request"]["pk"] || ''}
                 product_name={item["booking_request"]["product_name"] || ''}

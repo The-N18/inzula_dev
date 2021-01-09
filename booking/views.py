@@ -14,7 +14,7 @@ from rest_auth.registration.app_settings import RegisterSerializer, register_per
 from rest_framework.generics import CreateAPIView, ListAPIView, GenericAPIView
 from django.db import transaction
 from rest_framework import generics
-from .models import BookingRequest, Product, ProductImage, Notif, PriceProposal
+from .models import BookingRequest, Codes, Product, ProductImage, Notif, PriceProposal
 from .serializers import ProductSerializer, NotifListSerializer, PriceProposalListSerializer, NotifSerializer, BookingRequestSerializer, ProductImageSerializer
 from userprofile.models import Location, UserProfile, Price, Weight, Space, City
 from django.db.models import Q
@@ -29,7 +29,8 @@ import os
 import logging
 from django.conf import settings
 from django.http import HttpResponse
-
+from django.utils.crypto import get_random_string
+import string
 
 # Create your views here.
 index_file_path = os.path.join(settings.BASE_DIR, 'build/index.html')
@@ -192,12 +193,11 @@ class SenderNotifsListView(generics.ListAPIView):
 
     def get_queryset(self):
         user_id = self.request.query_params.get('user_id', None)
-        queryset = self.model.objects.filter(Q(type='offer_rec') | Q(type='request_declined') | Q(type='request_validated'))
+        queryset = self.model.objects.all()
         bookings_by_user = BookingRequest.objects.filter(request_by=user_id)
-        trips_by_user = Trip.objects.filter(created_by=user_id)
+        # trips_by_user = Trip.objects.filter(created_by=user_id)
         if user_id is not None:
-            queryset = queryset.exclude(created_by=user_id)
-            queryset = queryset.exclude(status="seen")
+            queryset = queryset.exclude(Q(created_by=user_id) & Q(status="payment_for_booking"))
             queryset = queryset.filter(booking_request__in=bookings_by_user)
         return queryset.order_by('-created_on')
 
@@ -214,8 +214,8 @@ class CarrierNotifsListView(generics.ListAPIView):
 
     def get_queryset(self):
         user_id = self.request.query_params.get('user_id', None)
-        queryset = self.model.objects.filter(Q(type='trip_booked') | Q(type='offer_conf'))
-        bookings_by_user = BookingRequest.objects.filter(request_by=user_id)
+        queryset = self.model.objects.all()
+        # bookings_by_user = BookingRequest.objects.filter(request_by=user_id)
         trips_by_user = Trip.objects.filter(created_by=user_id)
         if user_id is not None:
             queryset = queryset.exclude(created_by=user_id)
@@ -282,11 +282,17 @@ class PriceProposalCreateView(CreateAPIView):
     def create(self, request, *args, **kwargs):
         booking_request = BookingRequest.objects.get(pk=request.data["booking_id"])
         request_by = UserProfile.objects.get(user=request.data["user_id"])
+        date_range_start = booking_request.product.arrival_date.depart_date - datetime.timedelta(days=14)
+        date_range_end = booking_request.product.arrival_date.depart_date + datetime.timedelta(days=14)
         trips = Trip.objects.filter(departure_location=booking_request.product.departure_location,
                                     destination_location=booking_request.product.destination_location,
-                                    depart_date=booking_request.product.arrival_date)
+                                    depart_date__range=[date_range_start, date_range_end])
         if request_by.pk == booking_request.product.created_by.pk:
             return Response({"info": "CANNOT_MAKE_OFFER_ON_YOUR_OWN_REQUEST"}, status=status.HTTP_200_OK)
+        if booking_request.status == "boo":
+            return Response({"info": "CANNOT_MAKE_OFFER_ON_BOOKED_REQUEST"}, status=status.HTTP_200_OK)
+        if booking_request.status == "awa":
+            return Response({"info": "CANNOT_MAKE_OFFER_ON_VALIDATED_REQUEST"}, status=status.HTTP_200_OK)
         if not trips:
             return Response({"info": "NO_CORRESPONDING_TRIP"}, status=status.HTTP_200_OK)
         price = request.data["price"]
@@ -579,6 +585,16 @@ class BookingRequestsTotalPrice(APIView):
         return Response(result, status=status.HTTP_200_OK)
 
 
+def generateRandomCode(trip_id, booking_id):
+    trip = Trip.objects.get(pk=trip_id)
+    booking = BookingRequest.objects.get(pk=booking_id)
+    code = get_random_string(5, allowed_chars=string.ascii_uppercase + string.digits)
+    if Codes.objects.filter(code=code).exists():
+        generateRandomCode(trip_id, booking_id)
+    else:
+        Codes.objects.create(trip=trip, booking=booking, status="sent_to_sender", code=code, created_on=timezone.now())
+
+
 class ValidateBooking(APIView):
     """
     Validate a booking
@@ -598,6 +614,7 @@ class ValidateBooking(APIView):
         type='request_validated',
         created_on=timezone.now(),
         status='unseen')
+        generateRandomCode(booking_request.trip.pk, booking_request.pk)
         result = {"detail": 'ok'}
         return Response(result, status=status.HTTP_200_OK)
 
@@ -610,8 +627,7 @@ class DeclineBooking(APIView):
 
         booking_request = BookingRequest.objects.get(pk=request.data['bookingId'])
         booking_request.confirmed_by_sender = False
-        booking_request.status = 'boo'
-        booking_request.save()
+        booking_request.status = 'cre'
         # create notification
         Notif.objects.create(trip=booking_request.trip,
         booking_request=booking_request,
@@ -620,5 +636,7 @@ class DeclineBooking(APIView):
         type='request_declined',
         created_on=timezone.now(),
         status='unseen')
+        booking_request.trip = None
+        booking_request.save()
         result = {"detail": 'ok'}
         return Response(result, status=status.HTTP_200_OK)

@@ -70,14 +70,11 @@
   },
   "proxy": {
     "/socket": {
-      "target": "ws://localhost:5000",
+      "target": "ws://localhost:3000",
       "ws": true
     },
     "/config": {
-      "target": "http://localhost:5000"
-    },
-    "": {
-      "target": "http://localhost:8000"
+      "target": "http://localhost:3000"
     },
     "/media/*": {
       "target": "http://localhost:8000"

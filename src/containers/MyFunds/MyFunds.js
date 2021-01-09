@@ -17,6 +17,7 @@ import { backend_url, buildImagesLinkList } from "../../configurations";
 import ImageUploader from 'react-images-upload';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { getFunds, cashout } from "../../store/actions/myFunds";
+import { getMaxPayoutAmount } from "../../store/actions/bankAccountFormModal";
 import $ from "jquery";
 import {FormattedMessage, FormattedDate} from 'react-intl'
 import { openBankAccountFormModal } from "../../store/actions/bankAccountFormModal";
@@ -47,6 +48,7 @@ class MyFunds extends React.Component {
   componentDidMount = () => {
     const { user_id } = this.props;
     this.props.getFunds(user_id);
+    this.props.getMaxPayoutAmount(user_id);
     window.addEventListener('resize', this.handleScreenSize, false);
     this.handleScreenSize();
     }
@@ -61,15 +63,22 @@ class MyFunds extends React.Component {
   }
 
   render() {
-    const { loading, funds } = this.props;
+    const { funds, max_amt } = this.props;
     return (
       <Segment basic className={"profile-tab-section"}>
-      <Card>
+      <Card.Group>
+        <Card>
         <Card.Content textAlign={"center"}>
-          <Card.Header>{funds}</Card.Header>
+          <Card.Header>EUR {max_amt}</Card.Header>
+          <Card.Meta>
+          <FormattedMessage
+            id="my_funds.cashable"
+            defaultMessage="You can cash this out."
+          />
+          </Card.Meta>
         </Card.Content>
         <Card.Content extra>
-            <Button basic color='green' fluid onClick={this.openCashoutModal.bind(this)} disabled={funds === "EUR 0"}>
+            <Button basic color='green' fluid onClick={this.openCashoutModal.bind(this)} disabled={max_amt === 0}>
               <FormattedMessage
                 id="my_funds.cashout"
                 defaultMessage="Cash out"
@@ -77,6 +86,26 @@ class MyFunds extends React.Component {
             </Button>
         </Card.Content>
       </Card>
+
+      <Card>
+      <Card.Content>
+        <Card.Header>{funds}</Card.Header>
+        <Card.Meta>
+        <FormattedMessage
+          id="my_funds.fraction_cashable"
+          defaultMessage="You can only cash out a fraction of this, depending on your pending bookings and operations."
+        />
+        </Card.Meta>
+        <Card.Description>
+        <FormattedMessage
+          id="my_funds.total_deposited"
+          defaultMessage="Total of funds in your wallet."
+        />
+        </Card.Description>
+      </Card.Content>
+      </Card>
+      </Card.Group>
+
       </Segment>
     );
   }
@@ -88,6 +117,7 @@ const mapStateToProps = state => {
     error: state.auth.error,
     user_id: state.userInfo.userId,
     funds: state.myFunds.funds,
+    max_amt: state.bankAccountFormModal.max_amt,
   };
 };
 
@@ -96,6 +126,7 @@ const mapDispatchToProps = dispatch => {
     cashout: (user_id, amount) => dispatch(cashout(user_id, amount)),
     getFunds: (user_id) => dispatch(getFunds(user_id)),
     openBankAccountFormModal: () => dispatch(openBankAccountFormModal()),
+    getMaxPayoutAmount: (user_id) => dispatch(getMaxPayoutAmount(user_id)),
   };
 };
 

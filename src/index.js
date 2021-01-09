@@ -41,6 +41,7 @@ import paymentOptionsModalReducer from "./store/reducers/paymentOptionsModal";
 import deleteBookingConfirmReducer from "./store/reducers/deleteBookingConfirm";
 import deleteTripConfirmReducer from "./store/reducers/deleteTripConfirm";
 import updateTripModalReducer from "./store/reducers/updateTripModal";
+import addTripModalReducer from "./store/reducers/addTripModal";
 import updateBookingModalReducer from "./store/reducers/updateBookingModal";
 import declineBookingReducer from "./store/reducers/declineBooking";
 import validateBookingReducer from "./store/reducers/validateBooking";
@@ -48,7 +49,9 @@ import deleteAccountReducer from "./store/reducers/deleteAccount";
 import selectableUserReservationsReducer from "./store/reducers/selectableUserReservations";
 import myFundsReducer from "./store/reducers/myFunds";
 import myPaymentMethodsReducer from "./store/reducers/myPaymentMethods";
+import completeProfileModalReducer from "./store/reducers/completeProfileModal";
 import selectCreditCardModalReducer from "./store/reducers/selectCreditCardModal";
+import productDeliveryModalReducer from "./store/reducers/productDeliveryModal";
 import { reducer as formReducer } from 'redux-form'
 import axios from 'axios';
 
@@ -83,6 +86,7 @@ const rootReducer = combineReducers({
   deleteBookingConfirm: deleteBookingConfirmReducer,
   deleteTripConfirm: deleteTripConfirmReducer,
   updateTripModal: updateTripModalReducer,
+  addTripModal: addTripModalReducer,
   updateBookingModal: updateBookingModalReducer,
   searchbookingsPage: searchbookingsPageReducer,
   proposePriceOnBooking: proposePriceOnBookingReducer,
@@ -98,7 +102,9 @@ const rootReducer = combineReducers({
   myPaymentMethods: myPaymentMethodsReducer,
   paymentOptionsModal: paymentOptionsModalReducer,
   selectCreditCardModal: selectCreditCardModalReducer,
-  bankAccountFormModal: bankAccountFormModalReducer
+  bankAccountFormModal: bankAccountFormModalReducer,
+  completeProfileModal: completeProfileModalReducer,
+  productDeliveryModal: productDeliveryModalReducer
 });
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";

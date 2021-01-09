@@ -31,31 +31,48 @@ class ProductSerializer(serializers.ModelSerializer):
 class BookingRequestSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
     trip = TripSerializer()
+    request_by_username = serializers.SerializerMethodField()
     class Meta:
         model = BookingRequest
-        fields = ["request_by", "trip", "product",
+        fields = ["request_by", "request_by_username", "trip", "product",
         "confirmed_by_sender", "made_on", "collector_id", "pk", "status"]
 
+    def get_request_by_username(self, obj):
+        if obj.request_by is not None:
+            return obj.request_by.user.username
+        return ""
 
 class NotifSerializer(serializers.ModelSerializer):
     trip = TripSerializer()
     booking_request = BookingRequestSerializer()
+    creator_username = serializers.SerializerMethodField()
 
     class Meta:
         model = Notif
         fields = ["created_by", "trip", "booking_request",
-        "status", "type", "created_on", "pk"]
+        "status", "type", "created_on", "pk", "creator_username"]
+    
+    def get_creator_username(self, obj):
+        if obj.created_by is not None:
+            return obj.created_by.user.username
+        return None
 
 
 class NotifListSerializer(serializers.ModelSerializer):
     trip = serializers.SerializerMethodField()
     booking_request = serializers.SerializerMethodField()
     proposal = serializers.SerializerMethodField()
+    creator_username = serializers.SerializerMethodField()
 
     class Meta:
         model = Notif
         fields = ["created_by", "trip", "booking_request",
-        "status", "type", "created_on", "pk", "proposal"]
+        "status", "type", "created_on", "pk", "proposal", "creator_username"]
+    
+    def get_creator_username(self, obj):
+        if obj.created_by is not None:
+            return obj.created_by.user.username
+        return None
 
     def get_trip(self, obj):
         dct = {

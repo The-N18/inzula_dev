@@ -11,9 +11,6 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './searchbookingrequests.css';
-import AddTripForm from "../../containers/AddTripForm/AddTripForm";
-import TransportHowToMakeMoney from "../../containers/TransportHowToMakeMoney/TransportHowToMakeMoney";
-import SearchBookingRequestsForm from "../../containers/SearchBookingRequestsReduxForm/SearchBookingRequestsForm";
 import 'rc-slider/assets/index.css';
 import Multiselect from 'react-widgets/lib/Multiselect'
 import MultiSelect from "@khanacademy/react-multi-select";
@@ -276,6 +273,7 @@ class SearchBookingRequestsPage extends React.Component {
                 <BookingCard
                   title={item["product"]["name"]}
                   pk={item["pk"]}
+                  request_by_username={item["request_by_username"]}
                   arrival_date={item["product"]["arrival_date"]}
                   description={item["product"]["description"]}
                   departure_location={item["product"]["departure_location"]}

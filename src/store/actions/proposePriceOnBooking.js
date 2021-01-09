@@ -53,6 +53,22 @@ export const proposePriceOnBooking = (bookingId, userId, price) => {
               canDismiss: true,
             }));
           }
+          if(res['data']['info'] === "CANNOT_MAKE_OFFER_ON_BOOKED_REQUEST") {
+            dispatch(createNotification({
+              message: 'Sorry, you cannot make an offer on a booked request.',
+              type: NOTIFICATION_TYPE_WARNING,
+              duration: 30000,
+              canDismiss: true,
+            }));
+          }
+          if(res['data']['info'] === "CANNOT_MAKE_OFFER_ON_VALIDATED_REQUEST") {
+            dispatch(createNotification({
+              message: 'Sorry, you cannot make an offer on a validated request.',
+              type: NOTIFICATION_TYPE_WARNING,
+              duration: 30000,
+              canDismiss: true,
+            }));
+          }
 
         } else {
           dispatch(createNotification({

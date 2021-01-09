@@ -13,6 +13,7 @@ import { deleteTrip } from "../../store/actions/addTrip";
 import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
 import {renderField} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
+import {FormattedMessage} from 'react-intl'
 
 class ProposePriceOnBooking extends React.Component {
 
@@ -32,9 +33,19 @@ class ProposePriceOnBooking extends React.Component {
         onOpen={() => this.props.openProposePriceOnBooking()}
         size='tiny'
       >
-      <Modal.Header>Propose price on booking</Modal.Header>
+      <Modal.Header>
+      <FormattedMessage
+            id="propose_price.title"
+            defaultMessage="Propose price on booking"
+          />
+          </Modal.Header>
       <Modal.Content>
-        <p>Enter the amount you propose to carry this product</p>
+        <p>
+        <FormattedMessage
+            id="propose_price.sub_title"
+            defaultMessage="Enter the amount you propose to carry this product"
+          />
+          </p>
         <form onSubmit={handleSubmit(this.submitForm)}>
           <Field
             name="price"
@@ -45,13 +56,19 @@ class ProposePriceOnBooking extends React.Component {
             component={renderField}
           />
           <Button positive type="submit">
-            Propose price (euros)
+          <FormattedMessage
+            id="propose_price.propose_price"
+            defaultMessage="Propose price (euros)"
+          />
           </Button>
         </form>
       </Modal.Content>
       <Modal.Actions>
         <Button negative onClick={() => this.props.closeProposePriceOnBooking()}>
-          Cancel
+        <FormattedMessage
+            id="propose_price.cancel"
+            defaultMessage="Cancel"
+          />
         </Button>
       </Modal.Actions>
     </Modal>

@@ -22,6 +22,7 @@ import { optionToText, sizeOptions, sizeOptionsFr, categoryOptions, categoryOpti
 import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
 import { openDeclineBooking, setBookingDeclineBooking } from "../../store/actions/declineBooking";
 import { openValidateBooking, setBookingValidateBooking } from "../../store/actions/validateBooking";
+import { openProductDeliveryModal } from "../../store/actions/productDeliveryModal";
 import SimpleImageSlider from "react-simple-image-slider";
 import { Carousel } from "react-responsive-carousel";
 import 'react-responsive-carousel/lib/styles/carousel.css';
@@ -125,6 +126,21 @@ class BookingCard extends React.Component {
 
   }
 
+  productDelivered = () => {
+    const {pk, authenticated} = this.props;
+    if(authenticated) {
+      console.log("Product delivered");
+      this.props.openProductDeliveryModal();
+    } else {
+      createNotification({
+        message: 'Please login to enter the delivery code',
+        type: NOTIFICATION_TYPE_SUCCESS,
+        duration: 30000,
+        canDismiss: true,
+      });
+    }
+  }
+
   computeSliderWidth = () => {
     const {width} = this.state;
     if(width <= 767) {
@@ -143,7 +159,7 @@ class BookingCard extends React.Component {
 
     const {pk, title, description, img, images, product_details,
       arrival_date, departure_location, selectable, editable,
-      destination_location, weight, space, price, product_category,
+      destination_location, weight, space, price, product_category, request_by_username,
       proposed_price, validate_decline, can_propose, lang, status, confirmed_by_sender} = this.props;
     const {isMobile, isTablet} = this.state;
     const colored = validate_decline ? confirmed_by_sender ? 'green' : 'orange' : '';
@@ -176,6 +192,10 @@ class BookingCard extends React.Component {
                 id="booking_card.description"
                 defaultMessage="Description:"
               /> {description}</p>
+              <p className={"booking-card-items-style"}><FormattedMessage
+                id="booking_card.username"
+                defaultMessage="Username:"
+              /> {request_by_username}</p>
               <p className={"booking-card-items-style"}><FormattedMessage
                 id="booking_card.arrival_date"
                 defaultMessage="Arrival date:"
@@ -239,6 +259,16 @@ class BookingCard extends React.Component {
                 />
                 </Button>
 
+                {confirmed_by_sender ? <Button size="mini"
+                  color='blue'
+                  className={"booking-card-delete-button"}
+                  onClick={this.productDelivered.bind(this)}
+                ><FormattedMessage
+                  id="booking_card.product_delivered"
+                  defaultMessage="Product delivered"
+                />
+                </Button> : ""}
+
                 <Button size="mini"
                   color='orange'
                   className={"white-trash"}
@@ -274,6 +304,7 @@ const mapDispatchToProps = dispatch => {
     setBookingValidateBooking: (pk) => dispatch(setBookingValidateBooking(pk)),
     setBookingDeclineBooking: (pk) => dispatch(setBookingDeclineBooking(pk)),
     openValidateBooking: () => dispatch(openValidateBooking()),
+    openProductDeliveryModal: () => dispatch(openProductDeliveryModal()),
     openDeclineBooking: () => dispatch(openDeclineBooking()),
     setBookingRequestId: (bookingId) => dispatch(setBookingRequestId(bookingId)),
     updateBookingOpenModal: (bookingInfo, pk) => dispatch(updateBookingOpenModal(bookingInfo, pk)),
@@ -302,6 +333,9 @@ BookingCard.propTypes = {
   can_propose: PropTypes.boolean,
   pk: PropTypes.number,
   images: PropTypes.array,
+
+  request_by: PropTypes.string,
+  request_by_username: PropTypes.string,
 
   confirmed_by_sender: PropTypes.boolean,
   status: PropTypes.string,

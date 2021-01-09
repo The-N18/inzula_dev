@@ -17,6 +17,7 @@ class HomeTextVideo extends React.Component {
   handleOnClick = (item) => this.props.history.push(item);
 
   render() {
+    const {lang} = this.props;
     return (
       <Segment style={{ padding: "2em 0em" }} vertical>
         <Segment basic className={"home-text-video-section"}>
@@ -62,7 +63,7 @@ class HomeTextVideo extends React.Component {
             <Grid.Column  mobile={16} tablet={16} computer={8}>
               <div className={"player-wrapper"}>
                 <ReactPlayer
-                  url='https://www.youtube.com/watch?v=Ul5v0NPsfa0'
+                  url={lang === 'fr' ? 'https://www.youtube.com/watch?v=Ul5v0NPsfa0' : 'https://www.youtube.com/watch?v=gubjwSynppo'}
                   loop={true}
                   playing={false}
                   pip={true}
@@ -81,7 +82,9 @@ class HomeTextVideo extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    lang: state.appConfig.lang
+  };
 };
 
 const mapDispatchToProps = dispatch => {

@@ -19,7 +19,7 @@ import { NavLink, Redirect } from "react-router-dom";
 import { authLogin } from "../../store/actions/auth";
 import styles from './sendpackage.css';
 import PropTypes from "prop-types";
-import { backend_url } from "../../configurations";
+import { backend_url, isProfileComplete } from "../../configurations";
 import ImageUploader from 'react-images-upload';
 import { DateInput } from 'semantic-ui-calendar-react';
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
@@ -29,6 +29,7 @@ import {renderField, renderDateTimePicker, renderPhoneNumber, renderDropdownList
 import { validate } from "./validation";
 import { sizeOptions, sizeOptionsFr, categoryOptions, categoryOptionsFr, weightOptions, weightOptionsFr, valueOptions, valueOptionsFr, calculateMinPrice } from "../../utils/options";
 import {FormattedMessage, FormattedDate} from 'react-intl'
+import {openCompleteProfileModal} from "../../store/actions/completeProfileModal";
 
 
 class SendPackage extends React.Component {
@@ -87,25 +88,29 @@ class SendPackage extends React.Component {
         canDismiss: true,
       });
     } else {
-      const departureLocation = val['departure_location'] ? val['departure_location']['pk'] : null;
-      const destinationLocation = val['destination_location'] ? val['destination_location']['pk'] : null;
-      this.props.addRequest(tripId,
-        created_by,
-        pictures,
-        departureLocation,
-        val['product_description'],
-        val['product_name'],
-        val['product_category'] ? val['product_category']['value'] : '',
-        val['product_weight'] ? val['product_weight']['value'] : '',
-        val['product_size'] ? val['product_size']['value'] : '',
-        val['product_value'] ? val['product_value']['value'] : '',
-        val['proposed_price'],
-        depdate.toISOString(),
-        destinationLocation,
-        val['recipient_name'],
-        val['recipient_phone_number'],
-        val['terms_conditions'],
-        val['user_agreement']);
+      if(isProfileComplete(localStorage)) {
+        const departureLocation = val['departure_location'] ? val['departure_location']['pk'] : null;
+        const destinationLocation = val['destination_location'] ? val['destination_location']['pk'] : null;
+        this.props.addRequest(tripId,
+          created_by,
+          pictures,
+          departureLocation,
+          val['product_description'],
+          val['product_name'],
+          val['product_category'] ? val['product_category']['value'] : '',
+          val['product_weight'] ? val['product_weight']['value'] : '',
+          val['product_size'] ? val['product_size']['value'] : '',
+          val['product_value'] ? val['product_value']['value'] : '',
+          val['proposed_price'],
+          depdate.toISOString(),
+          destinationLocation,
+          val['recipient_name'],
+          val['recipient_phone_number'],
+          val['terms_conditions'],
+          val['user_agreement']);
+      } else {
+        this.props.openCompleteProfileModal();
+      }
     }
   };
 
@@ -289,40 +294,6 @@ class SendPackage extends React.Component {
                 </div>
                     </Grid.Column>
                     <Grid.Column mobile={16} tablet={16} computer={8}>
-                      <div>
-                        <label htmlFor="proposed_price"><FormattedMessage
-                          id="add_booking.proposed_price_field"
-                          defaultMessage="Proposed price"
-                        /></label>
-                      <Field
-                        name="proposed_price"
-                        type="text"
-                        component={renderField}
-                      />
-                  </div>
-
-                    </Grid.Column>
-                    </Grid.Row>
-                    </Grid>
-                   : ''}
-                   {activeStep === 1 ?
-                     <Grid>
-                     <Grid.Row className={"no-pad"}>
-                      <Grid.Column mobile={16} tablet={16} computer={8}>
-                        <div>
-                          <label htmlFor="min_price"><FormattedMessage
-                            id="add_booking.min_price_field"
-                            defaultMessage="Minimum price"
-                          /></label>
-                       <Field
-                         name="min_price"
-                         type="number"
-                         component={renderField}
-                         disabled={true}
-                       />
-                   </div>
-                     </Grid.Column>
-                     <Grid.Column mobile={16} tablet={16} computer={8}>
                        <div>
                          <label htmlFor="delivery_date"><FormattedMessage
                            id="add_booking.delivery_date_field"
@@ -336,8 +307,9 @@ class SendPackage extends React.Component {
                        />
                    </div>
                      </Grid.Column>
-                   </Grid.Row>
-                   </Grid> : ''}
+                    </Grid.Row>
+                    </Grid>
+                   : ''}
                    {activeStep === 1 ?
                      <Grid>
                        <Grid.Row className={"no-pad"}>
@@ -475,6 +447,39 @@ class SendPackage extends React.Component {
                         </Grid.Row>
                         </Grid> : ''}
                         {activeStep === 1 ?
+                     <Grid>
+                     <Grid.Row className={"no-pad"}>
+                      <Grid.Column mobile={16} tablet={16} computer={8}>
+                        <div>
+                          <label htmlFor="min_price"><FormattedMessage
+                            id="add_booking.min_price_field"
+                            defaultMessage="Minimum price"
+                          /></label>
+                       <Field
+                         name="min_price"
+                         type="number"
+                         component={renderField}
+                         disabled={true}
+                       />
+                   </div>
+                     </Grid.Column>
+                     <Grid.Column mobile={16} tablet={16} computer={8}>
+                      <div>
+                        <label htmlFor="proposed_price"><FormattedMessage
+                          id="add_booking.proposed_price_field"
+                          defaultMessage="Proposed price"
+                        /></label>
+                      <Field
+                        name="proposed_price"
+                        type="text"
+                        component={renderField}
+                      />
+                  </div>
+
+                    </Grid.Column>
+                   </Grid.Row>
+                   </Grid> : ''}
+                        {activeStep === 1 ?
                           <div>
                           <label htmlFor="product_description"><FormattedMessage
                             id="add_booking.p_description_field"
@@ -589,6 +594,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    openCompleteProfileModal: () => dispatch(openCompleteProfileModal()),
     addRequest: (tripId, created_by, pictures, departure_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, destination_location, recipient_name,
     recipient_phone_number, terms_conditions, user_agreement) => dispatch(bookingAddition(tripId, created_by, pictures, departure_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, destination_location, recipient_name,
     recipient_phone_number, terms_conditions, user_agreement)),

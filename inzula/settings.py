@@ -24,7 +24,7 @@ SECRET_KEY = 'cx7rnzp$skop_mg6h+xy2o6^$6ltn^_7oi5+p*f@b5cg4d*od#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-MANUAL_DEBUG = False
+MANUAL_DEBUG = True
 
 ALLOWED_HOSTS = ['dkx1b8wlo613w.cloudfront.net', 'inzula.app', 'localhost', '127.0.0.1', 'www.inzula.app', '15.237.97.243']
 
@@ -219,3 +219,8 @@ GOOGLE_CLIENT_ID = "1018467540475-2dsdk3lijubc8ln26ooa63lg83dsa8fm.apps.googleus
 GOOGLE_CLIENT_SECRET = "Z46pZqtOlRb4W3seXrgqjXEi"
 FACEBOOK_APP_ID = "136854898060654"
 FACEBOOK_APP_SECRET = "398ba09e1e2981773d9d7d8370f4ddb0"
+
+# Twilio config
+TWILIO_ACCOUNT_SID = "AC55c3eef6cb2299201a084d2ba7ccfa1d"
+TWILIO_AUTH_TOKEN = "9041efd0d4e2cdddec4486aab7e360ab"
+PHONE_NUMBER = "+12055462380"

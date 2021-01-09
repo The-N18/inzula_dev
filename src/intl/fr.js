@@ -202,8 +202,8 @@ export const msg = {
   'trip_card.username': "Nom: ",
   'trip_card.comeback_date': "Date de Retour: ",
   'trip_card.depart_date': "Date de Départ: ",
-  'trip_card.departure_location': "Départ: ",
-  'trip_card.destination_location': "Arrivée: ",
+  'trip_card.departure': "Départ: ",
+  'trip_card.destination': "Arrivée: ",
   'notif_card.trip_booked': "Votre voyage a été réservé.",
   'notif_card.offer_rec': "Vous avez récu une offre pour cette requette.",
   'notif_card.request_validated': "Votre requette a été validée par le voyageur.",
@@ -281,4 +281,31 @@ export const msg = {
   'select_credit_card.cancel': "Annuler",
   'search_requests.no_results': "Pas de resultats, essayez une recherche moins specifique.",
   'signup.default_profile_type': "Type de Profil par default",
+  'user_reservations.add_booking': "Ajouter une reservation",
+  'user_trips.add_trip': "Ajouter un voyage",
+  'complete_profile_modal.cancel': "Annuler",
+  'complete_profile_modal.title': "Mettez a jour les informations de votre profil",
+
+  'my_funds.cashable': "Vous pouvez retirer ces fonds.",
+  'my_funds.cashout': "Retirer.",
+  'my_funds.fraction_cashable': "Vous pouvez seulement retirer une fraction de ce montant, depandant de vos requettes et operations en cours.",
+  'my_funds.total_deposited': "Total des fonds dans votre porte monnaie Inzula.",
+
+  'paymentmethodcard.credit_card': "Carte de credit.",
+  'paymentmethodcard.paypal': "Paypal",
+  'paymentmethodcard.wallet': "Porte monnaie Inzula",
+  'notif_card.created_by': "Par: ",
+  'notif_card.payment_for_booking': "Paiement pour reservation.",
+  'booking_card.product_delivered': "Produit livre.",
+
+  'propose_price.title': "Proposez un prix pour transporter la requette",
+  'propose_price.sub_title': "Entrez le montant que vous proposez pour transporter le produit.",
+  'propose_price.propose_price': "Proposez un prix (euros)",
+  'propose_price.cancel': "Annuler",
+
+  'product_delivery.title': "Nous nous rassurons que vous avez bien remis le colis au recepteur.",
+  'product_delivery.enter_code': "Entrez le code recu du recepteur du colis.",
+  'product_delivery.submit_code': "Soumettez le code recu",
+  'product_delivery.cancel': "Annuler",
+
 };

@@ -97,6 +97,53 @@ class UpdateProfileView(CreateAPIView):
                         headers=headers)
 
 
+class CompleteProfileView(CreateAPIView):
+    serializer_class = UserProfileUpdateSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def dispatch(self, *args, **kwargs):
+        return super(CompleteProfileView, self).dispatch(*args, **kwargs)
+
+    def get_response_data(self, user):
+        if getattr(settings, 'REST_USE_JWT', False):
+            data = {
+                'user': user,
+                'token': self.token
+            }
+            return JWTSerializer(data).data
+        else:
+            return TokenSerializer(user.auth_token).data
+
+    def create(self, request, *args, **kwargs):
+        user_id = request.data["user_id"]
+        user_profile_id = request.data["user_profile_id"]
+        first_name = request.data["first_name"]
+        last_name = request.data["last_name"]
+        phone_number = request.data["phone_number"]
+        country = request.data["country"]
+        passport_number = request.data["passport_number"]
+        sex = request.data["sex"]
+
+        userprofile = None
+        if user_profile_id:
+            userprofile = UserProfile.objects.get(pk=user_profile_id)
+
+        if userprofile:
+            userprofile.phone_number=phone_number
+            userprofile.country=country
+            userprofile.passport_number=passport_number
+            userprofile.user.first_name=first_name
+            userprofile.user.last_name=last_name
+            userprofile.sex=sex
+            userprofile.user.save()
+            userprofile.save()
+        serializer = self.get_serializer(userprofile)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data,
+                        status=status.HTTP_200_OK,
+                        headers=headers)
+
+
 class DeleteProfileView(APIView):
     """
     Retrieve or delete a user

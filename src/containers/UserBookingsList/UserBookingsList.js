@@ -103,6 +103,7 @@ class UserBookingsList extends React.Component {
               <BookingCard
                 title={item["product"]["name"]}
                 pk={item["pk"]}
+                request_by_username={item["request_by_username"]}
                 arrival_date={item["product"]["arrival_date"]}
                 description={item["product"]["description"]}
                 departure_location={item["product"]["departure_location"]}

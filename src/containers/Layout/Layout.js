@@ -32,6 +32,8 @@ import ConfirmBookingPrice from "../../containers/ConfirmBookingPrice/ConfirmBoo
 import DeclineBooking from "../../containers/DeclineBooking/DeclineBooking";
 import ValidateBooking from "../../containers/ValidateBooking/ValidateBooking";
 import DeleteAccount from "../../containers/DeleteAccount/DeleteAccount";
+import CompleteProfileModal from "../../containers/CompleteProfileModal/CompleteProfileModal";
+import ProductDeliveryModal from "../../containers/ProductDeliveryModal/ProductDeliveryModal";
 
 import LanguageSwitcherSelector from "../../containers/LanguageSwitcherSelector/LanguageSwitcherSelector";
 import 'react-redux-notify/dist/ReactReduxNotify.css';
@@ -41,6 +43,8 @@ import {FormattedMessage} from 'react-intl'
 import { setActiveIndex } from "../../store/actions/myProfile";
 import { openSignupParentModal } from "../../store/actions/signupParentModal";
 import { openLoginParentModal } from "../../store/actions/loginParentModal";
+import SendPackageModal from "../../containers/SendPackageModal/SendPackageModal";
+import AddTripModal from "../../containers/AddTripModal/AddTripModal";
 
 
 class CustomLayout extends React.Component {
@@ -223,6 +227,10 @@ class CustomLayout extends React.Component {
       <DeclineBooking />
       <ValidateBooking />
       <DeleteAccount />
+      <SendPackageModal/>
+      <AddTripModal />
+      <CompleteProfileModal />
+      <ProductDeliveryModal />
       <Notify position={"BottomRight"}/>
         <header className="menuheader">
           <div>

@@ -21,9 +21,10 @@ import {renderField, renderDateTimePicker, renderSelectList, renderCitiesList} f
 import { validate } from "./validation";
 import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
 import { openLoginParentModal } from "../../store/actions/loginParentModal";
-import 'react-widgets/dist/css/react-widgets.css';
 import {FormattedMessage, FormattedDate} from 'react-intl'
 // const  { DOM: { input, select, textarea } } = React
+import { isProfileComplete } from "../../configurations";
+import {openCompleteProfileModal} from "../../store/actions/completeProfileModal";
 
 class AddTripForm extends React.Component {
 
@@ -67,11 +68,15 @@ class AddTripForm extends React.Component {
     const createdBy = {"user": userId};
     console.log(val);
     if(authenticated) {
-      const departureLocation = val['departure_location'] ? val['departure_location']['pk'] : null;
-      const destinationLocation = val['destination_location'] ? val['destination_location']['pk'] : null;
-      const depdate = val['depart_date'];
-      const cbdate = val['comeback_date'] ? val['comeback_date'] : '';
-      this.props.addTrip(createdBy, departureLocation, destinationLocation, depdate, cbdate, trip_type_check);
+      if(isProfileComplete(localStorage)) {
+        const departureLocation = val['departure_location'] ? val['departure_location']['pk'] : null;
+        const destinationLocation = val['destination_location'] ? val['destination_location']['pk'] : null;
+        const depdate = val['depart_date'];
+        const cbdate = val['comeback_date'] ? val['comeback_date'] : '';
+        this.props.addTrip(createdBy, departureLocation, destinationLocation, depdate, cbdate, trip_type_check);
+      } else {
+        this.props.openCompleteProfileModal();
+      }
     } else {
       this.props.createNotif("add_trip.login_msg", "Please login to add a new trip", NOTIFICATION_TYPE_WARNING);
       this.props.openLoginModal();
@@ -101,44 +106,6 @@ class AddTripForm extends React.Component {
     const { loading, userId, handleSubmit, pristine, reset, submitting, invalid, trip_type_check } = this.props;
     const { departure_location, destination_location, depart_date, comeback_date, trip_type } = this.state;
     return (
-      <Segment style={{ padding: "2em 0em" }} vertical className={"segment-bg-img"}>
-        <Segment basic>
-        <Grid verticalAlign="middle">
-          <Grid.Row verticalAlign="middle" className={"add-trip-grid"}>
-            <Grid.Column  mobile={16} tablet={16} computer={8} textAlign="center" verticalAlign="middle" className={"add-trip-grid-column"}>
-              <Segment basic>
-              <Header as="h2" textAlign="center">
-                <FormattedMessage
-                  id="add_trip_form.earn_money"
-                  defaultMessage="Earn money every time you travel."
-                />
-              </Header>
-              <Header as="h4" textAlign="center">
-                <FormattedMessage
-                  id="add_trip_form.deliver_parcels"
-                  defaultMessage="Deliver parcels to individuals wishing to ship at low prices and amortize your travel costs."
-                />
-              </Header>
-              <Button
-                size="small"
-                className={"buttoncolor search-button"}
-                onClick={this.handleOnClick.bind(this, '/')}
-              >
-              <FormattedMessage
-                id="add_trip_form.how_it_works"
-                defaultMessage="How does it work?"
-              />
-              </Button>
-              </Segment>
-            </Grid.Column>
-            <Grid.Column  mobile={16} tablet={16} computer={8} className={"add-trip-grid-column"}>
-            <Segment>
-            <Header as="h4" textAlign="center" className={"add-trip-form-header"}>
-              <FormattedMessage
-                id="add_trip_form.add_trip"
-                defaultMessage="Add information about your trip to earn money."
-              />
-            </Header>
             <form onSubmit={handleSubmit(this.submitForm)}>
               <CSRFToken/>
               <Segment basic textAlign="center">
@@ -240,12 +207,6 @@ class AddTripForm extends React.Component {
               </Button>
               </Segment>
             </form>
-            </Segment>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-        </Segment>
-      </Segment>
     );
   }
 }
@@ -271,6 +232,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    openCompleteProfileModal: () => dispatch(openCompleteProfileModal()),
     addTrip: (created_by, departure_location, destination_location, depart_date, comeback_date, trip_type) => dispatch(tripAddition(created_by, departure_location, destination_location, depart_date, comeback_date, trip_type)),
     openLoginModal: () => dispatch(openLoginParentModal()),
     createNotif: (key, default_text, type) => dispatch(createNotif(key, default_text, type)),

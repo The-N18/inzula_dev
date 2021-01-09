@@ -91,6 +91,8 @@ class SenderNotifsList extends React.Component {
                 pk={item["pk"]}
                 type={item["type"]}
                 status={item["status"]}
+                created_on={item["created_on"]}
+                creator_username={item["creator_username"]}
                 booking_request_id={item["booking_request"]["pk"] || ''}
                 product_name={item["booking_request"]["product_name"] || ''}
                 trip_id={item["trip"]["pk"] || ''}

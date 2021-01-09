@@ -44,6 +44,7 @@ export const msg = {
   'booking_card.price': "Price: ",
   'booking_card.validate': "Validate",
   'booking_card.decline': "Decline",
+  'booking_card.username': "Username",
   'footer.who_we_are': "Who we are",
   'footer.how_it_works': "How it works",
   'footer.blog': "Blog",
@@ -216,6 +217,7 @@ export const msg = {
   'notif_card.offer_price': "Price: ",
   'notif_card.trip': "Trip: ",
   'notif_card.mark_seen': "Mark as seen",
+  'notif_card.payment_for_booking': "Payment for booking",
   'profile_tab.personal_information': "Personal information",
   'profile_tab.first_name': "First name",
   'profile_tab.last_name': "Last name",
@@ -273,6 +275,13 @@ export const msg = {
   'update_trip.cancel': "Cancel",
   'update_booking.title': "Update Booking",
   'trip_card.book': "Book",
+  'trip_card.username': "Username: ",
+  'trip_card.depart_date': "Depart date: ",
+  'trip_card.comeback_date': "COmeback date: ",
+  'trip_card.departure': "Departure: ",
+  'trip_card.destination': "Destination: ",
+
+
   'signup_discount.username': "Use username",
   'select_reservations.title': "Select bookings for this trip",
   'select_reservations.add_booking': "Add a booking",
@@ -284,4 +293,31 @@ export const msg = {
   'select_credit_card.cancel': "Cancel",
   'search_requests.no_results': "No search results. Please try a more general search",
   'signup.default_profile_type': "Default profile type",
+  'user_reservations.add_booking': "Add a booking",
+  'user_trips.add_trip': "Add a trip",
+  'complete_profile_modal.cancel': "Cancel",
+  'complete_profile_modal.title': "Update your profile",
+
+  'my_funds.cashable': "You can cash this out.",
+  'my_funds.cashout': "Cash out",
+  'my_funds.fraction_cashable': "You can only cash out a fraction of this, depending on your pending bookings and operations.",
+  'my_funds.total_deposited': "Total of funds in your wallet.",
+
+  'paymentmethodcard.credit_card': "Credit card",
+  'paymentmethodcard.paypal': "Paypal",
+  'paymentmethodcard.wallet': "Wallet funds",
+  'notif_card.created_by': "By: ",
+  'booking_card.product_delivered': "Product delivered.",
+
+  'propose_price.title': "Propose price on booking",
+  'propose_price.sub_title': "Enter the amount you propose to carry this product",
+  'propose_price.propose_price': "Propose price (euros)",
+  'propose_price.cancel': "Cancel",
+
+  'product_delivery.title': "We have to ascertain that you have given the parcel to the recipient",
+  'product_delivery.enter_code': "Enter the code recieved from the recipient.",
+  'product_delivery.submit_code': "Submit this code.",
+  'product_delivery.cancel': "Cancel",
+
+
 };

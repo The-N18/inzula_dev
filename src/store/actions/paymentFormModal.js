@@ -193,3 +193,39 @@ export const payForBookingWithPaypal = (values) => {
       });
   };
 }
+
+export const payForBookingWithWalletFunds = (values) => {
+  return dispatch => {
+    axios
+      .post(api_url() + "/pay/PayForBookingWithWalletFunds", values)
+      .then(result => {
+        console.log(result);
+        if("error" in result.data) {
+          dispatch(createNotification({
+            message: 'You do not have enough funds in your wallet. Use another payment method.',
+            type: NOTIFICATION_TYPE_ERROR,
+            duration: 10000,
+            canDismiss: true,
+          }));
+        } else {
+          dispatch(closePaymentFormModal());
+          dispatch(closeModal());
+          dispatch(checkAuthTimeout(AUTH_TIMEOUT));
+          dispatch(createNotification({
+            message: 'Your payment has been processed successfully.',
+            type: NOTIFICATION_TYPE_SUCCESS,
+            duration: 10000,
+            canDismiss: true,
+          }));
+        }
+      })
+      .catch(err => {
+        dispatch(createNotification({
+          message: 'Failed to process payment.',
+          type: NOTIFICATION_TYPE_ERROR,
+          duration: 10000,
+          canDismiss: true,
+        }));
+      });
+  };
+}

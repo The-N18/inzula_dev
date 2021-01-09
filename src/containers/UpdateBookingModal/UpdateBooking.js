@@ -304,38 +304,7 @@ class UpdateBooking extends React.Component {
                     />
                 </div>
                   </Grid.Column>
-                  <Grid.Column mobile={16} tablet={16} computer={8}>
-                    <div>
-                      <label htmlFor="proposed_price"><FormattedMessage
-                        id="add_booking.proposed_price_field"
-                        defaultMessage="Proposed price"
-                      /></label>
-                    <Field
-                      name="proposed_price"
-                      type="text"
-                      component={renderField}
-                    />
-                </div>
-                </Grid.Column>
-                  </Grid.Row>
-                   </Grid>: ''}
-                   {activeStep === 1 ?<Grid>
-                   <Grid.Row>
-                  <Grid.Column mobile={16} tablet={16} computer={8}>
-                      <div>
-                        <label htmlFor="min_price"><FormattedMessage
-                          id="add_booking.min_price_field"
-                          defaultMessage="Minimum price"
-                        /></label>
-                     <Field
-                       name="min_price"
-                       type="number"
-                       component={renderField}
-                       disabled={true}
-                     />
-                 </div>
-                 </Grid.Column>
-                 <Grid.Column mobile={16} tablet={8} computer={8}>
+                  <Grid.Column mobile={16} tablet={8} computer={8}>
                    <div>
                      <label htmlFor="delivery_date"><FormattedMessage
                        id="add_booking.delivery_date_field"
@@ -349,8 +318,10 @@ class UpdateBooking extends React.Component {
                    />
                </div>
                     </Grid.Column>
+                  
                   </Grid.Row>
                    </Grid>: ''}
+                   
                    {activeStep === 1 ?
                      <Grid>
                        <Grid.Row className={"no-pad"}>
@@ -482,6 +453,37 @@ class UpdateBooking extends React.Component {
                         </Grid.Column>
                         </Grid.Row>
                         </Grid> : ''}
+                        {activeStep === 1 ?<Grid>
+                   <Grid.Row>
+                  <Grid.Column mobile={16} tablet={16} computer={8}>
+                      <div>
+                        <label htmlFor="min_price"><FormattedMessage
+                          id="add_booking.min_price_field"
+                          defaultMessage="Minimum price"
+                        /></label>
+                     <Field
+                       name="min_price"
+                       type="number"
+                       component={renderField}
+                       disabled={true}
+                     />
+                 </div>
+                 </Grid.Column>
+                 <Grid.Column mobile={16} tablet={16} computer={8}>
+                    <div>
+                      <label htmlFor="proposed_price"><FormattedMessage
+                        id="add_booking.proposed_price_field"
+                        defaultMessage="Proposed price"
+                      /></label>
+                    <Field
+                      name="proposed_price"
+                      type="text"
+                      component={renderField}
+                    />
+                </div>
+                </Grid.Column>
+                  </Grid.Row>
+                   </Grid>: ''}
                         {activeStep === 1 ?
                           <div>
                           <label htmlFor="product_description"><FormattedMessage

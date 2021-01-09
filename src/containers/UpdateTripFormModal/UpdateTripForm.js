@@ -116,7 +116,7 @@ class UpdateTripForm extends React.Component {
             <form onSubmit={handleSubmit(this.submitForm)} className={"update-trip-form"}>
               <CSRFToken/>
               <Segment>
-                  <div>
+                  {/* <div>
                     <label><FormattedMessage
                       id="update_trip.trip"
                       defaultMessage="Trip"
@@ -125,7 +125,7 @@ class UpdateTripForm extends React.Component {
                       name="trip_type"
                       component={renderSelectList}
                       data={[ 'round_trip', 'one_way_trip' ]}/>
-                  </div>
+                  </div> */}
                 <Field
                   name="departure_location"
                   placeholder="Departure location"

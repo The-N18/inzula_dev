@@ -4,10 +4,8 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './transport.css';
-// import AddTripForm from "../../containers/AddTripForm/AddTripForm";
-import AddTripForm from "../../containers/AddTripFormRedux/AddTripForm";
+import AddTripFormWithText from "../../containers/AddTripFormWithText/AddTripFormWithText";
 import TransportHowToMakeMoney from "../../containers/TransportHowToMakeMoney/TransportHowToMakeMoney";
-// import SearchBookingRequestsForm from "../../containers/SearchBookingRequestsForm/SearchBookingRequestsForm";
 import SearchBookingRequestsForm from "../../containers/SearchBookingRequestsReduxForm/SearchBookingRequestsForm";
 
 class Transport extends React.Component {
@@ -15,7 +13,7 @@ class Transport extends React.Component {
   render() {
     return (
       <Segment style={{ padding: "8em 0em" }} vertical>
-        <AddTripForm/>
+        <AddTripFormWithText/>
         <SearchBookingRequestsForm inNewPage={false}/>
         <TransportHowToMakeMoney/>
       </Segment>

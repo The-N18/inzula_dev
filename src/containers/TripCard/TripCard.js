@@ -10,7 +10,7 @@ import {
   Icon
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { backend_url, get_img_url } from "../../configurations";
+import { backend_url, get_img_url, isProfileComplete } from "../../configurations";
 import { openModalForTrip } from "../../store/actions/sendPackageModal";
 import { openModalSelectReservations } from "../../store/actions/selectReservationsModal";
 import {FormattedMessage, FormattedDate} from 'react-intl'
@@ -18,7 +18,7 @@ import { openDeleteTripConfirm, setTripDeleteTripConfirm } from "../../store/act
 import { updateTripOpenModal } from "../../store/actions/updateTripModal";
 import { tripTypeOptions } from "../../utils/options";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
-
+import {openCompleteProfileModal} from "../../store/actions/completeProfileModal";
 
 class TripCard extends React.Component {
 
@@ -29,7 +29,12 @@ class TripCard extends React.Component {
   handleBook = () => {
     const {trip_id, authenticated} = this.props;
     if(authenticated) {
-      this.props.openReservationsList(trip_id);
+      if(isProfileComplete(localStorage)) {
+        this.props.openReservationsList(trip_id);
+      } else {
+        this.props.openCompleteProfileModal();
+      }
+      
     } else {
       createNotification({
         message: 'Please login to book this trip.',
@@ -82,34 +87,48 @@ class TripCard extends React.Component {
           </Grid.Column>
           <Grid.Column mobile={16} tablet={10} computer={11}>
             <Segment basic textAlign="left">
-              <Header as='h4' className={"booking-card-title"}>{this.tripTypeToName(trip_type, tripTypeOptions)}</Header>
-              <p className={"trip-card-item-style"}>User name: {creator_user_name}</p>
-              {comeback_date ? <p className={"trip-card-item-style"}>Comeback date: <FormattedDate
+              {/* <Header as='h4' className={"booking-card-title"}>{this.tripTypeToName(trip_type, tripTypeOptions)}</Header> */}
+              <p className={"trip-card-item-style"}><FormattedMessage
+                id="trip_card.username"
+                defaultMessage="User name"
+              /> {creator_user_name}</p>
+              {comeback_date ? <p className={"trip-card-item-style"}><FormattedMessage
+                id="trip_card.comeback_date"
+                defaultMessage="Comeback date"
+              /> <FormattedDate
                                                                               value={comeback_date}
                                                                               year="numeric"
                                                                               month="short"
                                                                               day="numeric"
                                                                               weekday="short"
                                                                             /></p> : ''}
-              {depart_date ? <p className={"trip-card-item-style"}>Depart date: <FormattedDate
+              {depart_date ? <p className={"trip-card-item-style"}><FormattedMessage
+                id="trip_card.depart_date"
+                defaultMessage="Depart date"
+              /> <FormattedDate
                                                                               value={depart_date}
                                                                               year="numeric"
                                                                               month="short"
                                                                               day="numeric"
                                                                               weekday="short"
                                                                             /></p> : ''}
-              <p className={"trip-card-item-style"}>Departure: {departure_location && departure_location['label'] ? departure_location['label'] : ''}</p>
-              <p className={"trip-card-item-style"}>Destination: {destination_location && destination_location['label'] ? destination_location['label'] : ''}</p>
+              <p className={"trip-card-item-style"}><FormattedMessage
+                id="trip_card.departure"
+                defaultMessage="Departure"
+              /> {departure_location && departure_location['label'] ? departure_location['label'] : ''}</p>
+              <p className={"trip-card-item-style"}><FormattedMessage
+                id="trip_card.destination"
+                defaultMessage="Destination"
+              /> {destination_location && destination_location['label'] ? destination_location['label'] : ''}</p>
             </Segment>
           </Grid.Column>
           <Grid.Column mobile={16} tablet={16} computer={2}>
             <Segment textAlign={"center"} basic>
-            {no_book ? '' : <Button icon labelPosition='right'
+            {no_book ? '' : <Button
               size="large"
               className={"buttoncolor trip-card-button"}
               onClick={this.handleBook.bind(this)}
-            >
-              <Icon name='check' /> <FormattedMessage
+            ><FormattedMessage
                 id="trip_card.book"
                 defaultMessage="Book"
               />
@@ -135,6 +154,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    openCompleteProfileModal: () => dispatch(openCompleteProfileModal()),
     openPackageModalForTrip: (tripId) => dispatch(openModalForTrip(tripId)),
     openReservationsList: (tripId) => dispatch(openModalSelectReservations(tripId)),
     openDeleteTripConfirm: () => dispatch(openDeleteTripConfirm()),
