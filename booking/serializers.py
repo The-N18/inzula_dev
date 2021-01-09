@@ -1,4 +1,4 @@
-from .models import Product, ProductImage, BookingRequest, Notif, PriceProposal
+from .models import Product, ProductImage, BookingRequest, Notif, PriceProposal, Codes
 from rest_framework import serializers
 from trip.serializers import TripSerializer
 from userprofile.serializers import LocationSerializer, CitySerializer
@@ -140,3 +140,9 @@ class PriceProposalListSerializer(serializers.ModelSerializer):
             dct['product_name'] = "{}".format(obj.booking_request.product.name)
             dct['pk'] = obj.booking_request.pk
         return dct
+
+
+class CodeListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Codes
+        fields = ["created_on", "validated_on", "code", "validation_attempts", "trip", "booking"]

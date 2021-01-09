@@ -15,7 +15,7 @@ from rest_framework.generics import CreateAPIView, ListAPIView, GenericAPIView
 from django.db import transaction
 from rest_framework import generics
 from .models import BookingRequest, Codes, Product, ProductImage, Notif, PriceProposal
-from .serializers import ProductSerializer, NotifListSerializer, PriceProposalListSerializer, NotifSerializer, BookingRequestSerializer, ProductImageSerializer
+from .serializers import ProductSerializer, CodeListSerializer, NotifListSerializer, PriceProposalListSerializer, NotifSerializer, BookingRequestSerializer, ProductImageSerializer
 from userprofile.models import Location, UserProfile, Price, Weight, Space, City
 from django.db.models import Q
 from django.core.serializers import serialize
@@ -308,6 +308,69 @@ class PriceProposalCreateView(CreateAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+class SubmitDeliveryCode(CreateAPIView):
+    serializer_class = CodeListSerializer
+    permission_classes = register_permission_classes()
+
+    def dispatch(self, *args, **kwargs):
+        return super(SubmitDeliveryCode, self).dispatch(*args, **kwargs)
+
+    def get_response_data(self, user):
+        if getattr(settings, 'REST_USE_JWT', False):
+            data = {
+                'user': user,
+                'token': self.token
+            }
+            return JWTSerializer(data).data
+        else:
+            return TokenSerializer(user.auth_token).data
+
+    def create(self, request, *args, **kwargs):
+        code = request.data["code"]
+        user_id = request.data["user_id"]
+        result = {"info": ""}
+        if Codes.objects.filter(code=code).exists():
+            code_obj = Codes.objects.get(code=code)
+            if code_obj.validation_attempts >= settings.MAX_VALIDATION_ATTEMPTS:
+                result["info"] = "MAX_VALIDATION_ATTEMPTS_REACHED"
+                return Response(result, status=status.HTTP_200_OK)
+            else:
+                if code_obj.status == "obsolete":
+                    code_obj.validation_attempts = code_obj.validation_attempts + 1
+                    code_obj.save()
+                    result["info"] = "CODE_IS_OBSOLETE"
+                    return Response(result, status=status.HTTP_200_OK)
+                if code_obj.status == "validated_by_carrier":
+                    code_obj.validation_attempts = code_obj.validation_attempts + 1
+                    code_obj.save()
+                    result["info"] = "CODE_ALREADY_VALIDATED"
+                    return Response(result, status=status.HTTP_200_OK)
+                if code_obj.status == "sent_to_sender":
+                    code_obj.validation_attempts = code_obj.validation_attempts + 1
+                    code_obj.validated_on = timezone.now()
+                    code_obj.status = "validated_by_carrier"
+                    code_obj.save()
+                    result["info"] = "CODE_VALIDATED_SUCCESSFULLY"
+                    # update booking request status
+                    code_obj.booking.status = "del"
+                    code_obj.booking.save()
+                    # create notification
+                    created_by = UserProfile.objects.get(user=user_id)
+                    Notif.objects.create(trip=code_obj.trip,
+                                         booking_request=code_obj.booking,
+                                         created_by=created_by,
+                                         price_proposal=None,
+                                         type="delivered",
+                                         status="unseen")
+                    # Pay the carrier
+                    ## @TODO Complete pay carrier method
+                    return Response(result, status=status.HTTP_200_OK)
+        else:
+            result["info"] = "INVALID_CODE"
+            return Response(result, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 class BookingRequestViewSet(viewsets.ModelViewSet):
     """
     This viewset automatically provides `list`, `create`, `retrieve`,
@@ -595,6 +658,14 @@ def generateRandomCode(trip_id, booking_id):
         Codes.objects.create(trip=trip, booking=booking, status="sent_to_sender", code=code, created_on=timezone.now())
 
 
+def renderCodeObsolete(trip_id, booking_id):
+    trip = Trip.objects.get(pk=trip_id)
+    booking = BookingRequest.objects.get(pk=booking_id)
+    if Codes.objects.filter(Q(code=code) & Q(trip=trip) & Q(booking=booking) & ~Q(status="obsolete")):
+        code_obj = Codes.objects.get(code=code)
+        code_obj.status = "obsolete"
+        code_obj.save()
+
 class ValidateBooking(APIView):
     """
     Validate a booking
@@ -638,5 +709,6 @@ class DeclineBooking(APIView):
         status='unseen')
         booking_request.trip = None
         booking_request.save()
+        renderCodeObsolete(booking_request.trip.pk, booking_request.pk)
         result = {"detail": 'ok'}
         return Response(result, status=status.HTTP_200_OK)

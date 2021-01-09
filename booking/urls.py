@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import BookingRequestView, SelectableUserBookingsRequestListView, ValidateBooking, DeclineBooking, BookingRequestsTotalPrice, UserBookedListRequestListView, SenderNotifsListView, CarrierNotifsListView, PriceProposalCreateView, UserNotifsListView, NotifDetail, NotifCreateView, BookingRequestDetail, UserBookingsRequestListView, ProductsViewSet, ProductImagesViewSet, BookingRequestViewSet, BookingRequestSearchView
+from .views import BookingRequestView, SubmitDeliveryCode, SelectableUserBookingsRequestListView, ValidateBooking, DeclineBooking, BookingRequestsTotalPrice, UserBookedListRequestListView, SenderNotifsListView, CarrierNotifsListView, PriceProposalCreateView, UserNotifsListView, NotifDetail, NotifCreateView, BookingRequestDetail, UserBookingsRequestListView, ProductsViewSet, ProductImagesViewSet, BookingRequestViewSet, BookingRequestSearchView
 
 router = DefaultRouter()
 router.register(r'bookings', BookingRequestViewSet)
@@ -16,6 +16,7 @@ urlpatterns = [
     path('validate_booking', ValidateBooking.as_view()),
     path('decline_booking', DeclineBooking.as_view()),
     path('propose_price', PriceProposalCreateView.as_view()),
+    path('submit_delivery_code', SubmitDeliveryCode.as_view()),
     path('notif/<int:pk>/', NotifDetail.as_view()),
     # path('del_request', DelBookingRequestView.as_view()),
     path('booking_request/<int:pk>/', BookingRequestDetail.as_view()),

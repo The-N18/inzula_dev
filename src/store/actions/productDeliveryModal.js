@@ -22,54 +22,55 @@ export const closeProductDeliveryModal = () => {
 export const submitDeliveryCode = (userId, code) => {
   return dispatch => {
     axios
-      .post(api_url() + "/bookings/submit_code", {
+      .post(api_url() + "/bookings/submit_delivery_code", {
         user_id: userId,
         code: code,
       })
       .then(res => {
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
-        // if(res && res['data'] && res['data']['info']) {
-        //   if(res['data']['info'] === "NO_CORRESPONDING_TRIP") {
-        //     dispatch(createNotification({
-        //       message: 'Sorry, you do not have a corresponding trip to be able to make an offer on this request.',
-        //       type: NOTIFICATION_TYPE_WARNING,
-        //       duration: 30000,
-        //       canDismiss: true,
-        //     }));
-        //   }
-        //   if(res['data']['info'] === "CANNOT_MAKE_OFFER_ON_YOUR_OWN_REQUEST") {
-        //     dispatch(createNotification({
-        //       message: 'Sorry, you cannot make an offer on your own request',
-        //       type: NOTIFICATION_TYPE_WARNING,
-        //       duration: 30000,
-        //       canDismiss: true,
-        //     }));
-        //   }
-        //   if(res['data']['info'] === "CANNOT_MAKE_OFFER_ON_BOOKED_REQUEST") {
-        //     dispatch(createNotification({
-        //       message: 'Sorry, you cannot make an offer on a booked request.',
-        //       type: NOTIFICATION_TYPE_WARNING,
-        //       duration: 30000,
-        //       canDismiss: true,
-        //     }));
-        //   }
-        //   if(res['data']['info'] === "CANNOT_MAKE_OFFER_ON_VALIDATED_REQUEST") {
-        //     dispatch(createNotification({
-        //       message: 'Sorry, you cannot make an offer on a validated request.',
-        //       type: NOTIFICATION_TYPE_WARNING,
-        //       duration: 30000,
-        //       canDismiss: true,
-        //     }));
-        //   }
+        if(res && res['data'] && res['data']['info']) {
+          if(res['data']['info'] === "MAX_VALIDATION_ATTEMPTS_REACHED") {
+            dispatch(createNotification({
+              message: 'Sorry, you have tried to validate this too many times.',
+              type: NOTIFICATION_TYPE_WARNING,
+              duration: 30000,
+              canDismiss: true,
+            }));
+          }
+          if(res['data']['info'] === "CODE_IS_OBSOLETE") {
+            dispatch(createNotification({
+              message: 'Sorry, the code cannot be used anymore. It is obsolete.',
+              type: NOTIFICATION_TYPE_WARNING,
+              duration: 30000,
+              canDismiss: true,
+            }));
+          }
+          if(res['data']['info'] === "CODE_ALREADY_VALIDATED") {
+            dispatch(createNotification({
+              message: 'Sorry, the code has already been validated. Do not try to validate this again.',
+              type: NOTIFICATION_TYPE_WARNING,
+              duration: 30000,
+              canDismiss: true,
+            }));
+          }
+          if(res['data']['info'] === "INVALID_CODE") {
+            dispatch(createNotification({
+              message: 'Sorry, the code is invalid. Check that you took the correct code from the recipient.',
+              type: NOTIFICATION_TYPE_WARNING,
+              duration: 30000,
+              canDismiss: true,
+            }));
+          }
+          if(res['data']['info'] === "CODE_VALIDATED_SUCCESSFULLY") {
+            dispatch(createNotification({
+              message: 'Your code has been validated successfully. your will recieve your payment soon.',
+              type: NOTIFICATION_TYPE_SUCCESS,
+              duration: 30000,
+              canDismiss: true,
+            }));
+          }
 
-        // } else {
-        //   dispatch(createNotification({
-        //     message: 'Your price proposition has been added. The corresponding user is notified.',
-        //     type: NOTIFICATION_TYPE_SUCCESS,
-        //     duration: 10000,
-        //     canDismiss: true,
-        //   }));
-        // }
+        }
         dispatch(closeProductDeliveryModal());
       })
       .catch(err => {

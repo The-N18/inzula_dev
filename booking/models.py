@@ -74,6 +74,7 @@ ALERT_TYPE = [
     ('request_validated', 'Booking request validated'),
     ('request_declined', 'Booking request declined'),
     ('payment_for_booking', 'You have paid for your booking'),
+    ('delivered', 'Product delivered'),
 ]
 
 def send_sms(msg, dest):
