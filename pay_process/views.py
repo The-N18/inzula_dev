@@ -341,12 +341,12 @@ class PayForBookingWithWallet(CreateAPIView):
             if nat_user_id is not None and userprofile.wallet_id is not None and user_wallet is not None:
                 funds = str(user_wallet.balance) if user_wallet.balance is not None else ""
                 booking_requests = BookingRequest.objects.filter(request_by=userprofile)
-                booking_requests = booking_requests.filter(Q(status="boo") | Q(status="awa") | Q(status="cre"))
+                booking_requests = booking_requests.filter(Q(status="boo") | Q(status="awa"))
                 booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
                 bookings = booking_requests_price["product__proposed_price__sum"]
                 payable_funds = float(funds[4:].replace(",", "")) - bookings
                 if payable_funds < booking_price:
-                    return Response({"error": "You do not have enough funds. Use another payment method."}, status=status.HTTP_200_OK)
+                    return Response({"error": "You do not have enough funds. Use another payment method.{}-{}".format(payable_funds, booking_price)}, status=status.HTTP_200_OK)
 
             # transfer money from user wallet to inzula wallet
             admin_simple_user = User.objects.get(pk=1)
