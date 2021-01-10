@@ -6,6 +6,7 @@ from trip.models import Trip
 from django.db.models.signals import post_save
 from django.core.mail import send_mail
 from django.conf import settings
+from datetime import datetime
 
 # Create your models here.
 
@@ -165,14 +166,6 @@ def get_short_booking_detail(booking, lang):
                 return """\nRequette: \nUtilisateur: """ + user + """\n Date de creation: """ + date + """\n Nom: """ + product_name + """\n Lieu de depart: """ + product_departure_location + """\n Lieu d'arrivee: """ + product_destination_location + """\n Date d'arrivee: """ + product_arrival_date
     return ""
 
-def sms_notification(sender, **kwargs):
-    if kwargs["created"]:
-        new_code = kwargs["instance"]
-        # send sms to sender
-        text = """Inzula: Request: """ + get_short_booking_detail(new_code.booking, "en") + """Code: """ + new_code.code + """.\n Communicate this code to recipient. Recipient should give this code to carrier after reception of the product."""
-        text_recipient = new_code.booking.request_by.phone_number
-        send_sms(text, text_recipient)
-
 
 class Notif(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
@@ -190,7 +183,8 @@ def get_alert_detail(alert_type):
         "offer_conf": ["Offer confirmed", "Offre confirmee"],
         "request_validated": ["Request validated", "Requette validee"],
         "request_declined": ["Request declined", "Requette declinee"],
-        "payment_for_booking": ["Payment made on booking", "Paiement effectue sur la reservation"]
+        "payment_for_booking": ["Payment made on booking", "Paiement effectue sur la reservation"],
+        "delivered": ["Product delivered.", "Produit livre."],
     }
     return alert_types[alert_type]
 
@@ -201,7 +195,12 @@ def get_creator(userprofile):
 
 def get_date(date):
     if date is not None and date != "":
-        return date.strftime("%Y-%m-%d")
+        # start_date = datetime.strptime(date, "%Y-%m-%d").date()
+        # depDate2 = start_date.strftime('%Y-%m-%d')
+        # cr_date = datetime.strptime(date, '%Y-%m-%d')
+        if isinstance(date, str):
+            return date
+        return date.strftime('%Y-%m-%d')
     return ""
 
 def get_booking_detail(booking, lang):
@@ -284,6 +283,27 @@ def email_notification(sender, **kwargs):
             get_recipients(new_notif),
             fail_silently=False,
             )
+def send_code_by_email(text, email_recipient):
+    subject_en = """Inzula: [Notification]: Delivery code."""
+    send_mail(
+            subject_en,
+            text,
+            settings.DEFAULT_FROM_EMAIL,
+            [email_recipient],
+            fail_silently=False,
+            )
+
+
+def sms_notification(sender, **kwargs):
+    if kwargs["created"]:
+        new_code = kwargs["instance"]
+        # send sms to sender
+        text = """Inzula: Request: """ + get_short_booking_detail(new_code.booking, "en") + """Code: """ + new_code.code + """.\n Communicate this code to recipient. Recipient should give this code to carrier after reception of the product."""
+        text_recipient = new_code.booking.request_by.phone_number
+        email_recipient = new_code.booking.request_by.user.email
+        send_sms(text, text_recipient)
+        send_code_by_email(text, email_recipient)
+
 
 post_save.connect(email_notification, sender=Notif)
 post_save.connect(sms_notification, sender=Codes)

@@ -69,7 +69,7 @@ class MyFunds extends React.Component {
       <Card.Group>
         <Card>
         <Card.Content textAlign={"center"}>
-          <Card.Header>EUR {max_amt}</Card.Header>
+          <Card.Header>EUR {max_amt === "" ? 0 : max_amt}</Card.Header>
           <Card.Meta>
           <FormattedMessage
             id="my_funds.cashable"
@@ -78,7 +78,7 @@ class MyFunds extends React.Component {
           </Card.Meta>
         </Card.Content>
         <Card.Content extra>
-            <Button basic color='green' fluid onClick={this.openCashoutModal.bind(this)} disabled={max_amt === 0}>
+            <Button basic color='green' fluid onClick={this.openCashoutModal.bind(this)} disabled={max_amt === 0 || max_amt === ""}>
               <FormattedMessage
                 id="my_funds.cashout"
                 defaultMessage="Cash out"

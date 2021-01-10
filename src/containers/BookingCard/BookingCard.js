@@ -252,7 +252,7 @@ class BookingCard extends React.Component {
                   color='blue'
                   className={"booking-card-delete-button"}
                   onClick={this.validateBooking.bind(this)}
-                  disabled={confirmed_by_sender}
+                  disabled={confirmed_by_sender || status === "del"}
                 ><FormattedMessage
                   id="booking_card.validate"
                   defaultMessage="Validate"
@@ -263,6 +263,7 @@ class BookingCard extends React.Component {
                   color='blue'
                   className={"booking-card-delete-button"}
                   onClick={this.productDelivered.bind(this)}
+                  disabled={status === "del"}
                 ><FormattedMessage
                   id="booking_card.product_delivered"
                   defaultMessage="Product delivered"
@@ -273,7 +274,7 @@ class BookingCard extends React.Component {
                   color='orange'
                   className={"white-trash"}
                   onClick={this.declineBooking.bind(this)}
-                  disabled={!confirmed_by_sender}
+                  disabled={!confirmed_by_sender || status === "del"}
                 ><FormattedMessage
                   id="booking_card.decline"
                   defaultMessage="Decline"

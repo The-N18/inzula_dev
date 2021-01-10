@@ -100,6 +100,7 @@ class LoginView(GenericAPIView):
             'phone_number': self.user.profile.phone_number,
             'country': self.user.profile.country,
             'user_type': self.user.profile.user_type,
+            'passport_number': self.user.profile.passport_number,
             'sex': self.user.profile.sex,
             'user_profile_id': self.user.profile.pk}, status=status.HTTP_200_OK)
         if getattr(settings, 'REST_USE_JWT', False):

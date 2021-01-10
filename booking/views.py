@@ -155,7 +155,7 @@ class UserBookedListRequestListView(generics.ListAPIView):
         trips = Trip.objects.filter(created_by=user_id)
         if user_id is not None:
             queryset = queryset.filter(trip__in=trips)
-            queryset = queryset.filter(Q(status="boo") | Q(status="awa"))
+            queryset = queryset.filter(Q(status="boo") | Q(status="awa") | Q(status="del"))
         return queryset.order_by('-made_on')
 
 
@@ -661,10 +661,11 @@ def generateRandomCode(trip_id, booking_id):
 def renderCodeObsolete(trip_id, booking_id):
     trip = Trip.objects.get(pk=trip_id)
     booking = BookingRequest.objects.get(pk=booking_id)
-    if Codes.objects.filter(Q(code=code) & Q(trip=trip) & Q(booking=booking) & ~Q(status="obsolete")):
-        code_obj = Codes.objects.get(code=code)
-        code_obj.status = "obsolete"
-        code_obj.save()
+    if Codes.objects.filter(Q(trip=trip) & Q(booking=booking) & ~Q(status="obsolete")):
+        for item in Codes.objects.filter(Q(trip=trip) & Q(booking=booking) & ~Q(status="obsolete")):
+            # code_obj = Codes.objects.get(code=code)
+            item.status = "obsolete"
+            item.save()
 
 class ValidateBooking(APIView):
     """
@@ -707,8 +708,8 @@ class DeclineBooking(APIView):
         type='request_declined',
         created_on=timezone.now(),
         status='unseen')
-        booking_request.trip = None
-        booking_request.save()
         renderCodeObsolete(booking_request.trip.pk, booking_request.pk)
         result = {"detail": 'ok'}
+        booking_request.trip = None
+        booking_request.save()
         return Response(result, status=status.HTTP_200_OK)

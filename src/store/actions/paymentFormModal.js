@@ -5,6 +5,8 @@ import {checkAuthTimeout} from "./auth";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import mangopay from 'mangopay2-nodejs-sdk';
 import { closeModal } from "./selectReservationsModal";
+import  { closeSelectCreditCard } from "./selectCreditCardModal";
+import {closePaymentOptions} from "./paymentOptionsModal";
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -118,6 +120,8 @@ export const payForBooking = (values) => {
         // close modals
         dispatch(closePaymentFormModal());
         dispatch(closeModal());
+        dispatch(closeSelectCreditCard());
+        dispatch(closePaymentOptions());
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: 'Your payment has been processed successfully.',
@@ -148,6 +152,8 @@ export const payForBookingWithCardId = (values) => {
         // close modals
         dispatch(closePaymentFormModal());
         dispatch(closeModal());
+        dispatch(closeSelectCreditCard());
+        dispatch(closePaymentOptions());
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: 'Your payment has been processed successfully.',
@@ -175,6 +181,7 @@ export const payForBookingWithPaypal = (values) => {
         console.log(result);
         dispatch(closePaymentFormModal());
         dispatch(closeModal());
+        dispatch(closePaymentOptions());
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: 'Your payment has been processed successfully.',
@@ -210,6 +217,7 @@ export const payForBookingWithWalletFunds = (values) => {
         } else {
           dispatch(closePaymentFormModal());
           dispatch(closeModal());
+          dispatch(closePaymentOptions());
           dispatch(checkAuthTimeout(AUTH_TIMEOUT));
           dispatch(createNotification({
             message: 'Your payment has been processed successfully.',
