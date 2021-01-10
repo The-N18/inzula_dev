@@ -866,9 +866,9 @@ class MaxPayOutAmount(APIView):
             if userprofile.wallet_id is not None and user_wallet is not None:
                 result['funds'] = str(user_wallet.balance) if user_wallet.balance is not None else ""
                 booking_requests = BookingRequest.objects.filter(request_by=userprofile)
-                booking_requests = booking_requests.filter(Q(status="boo") |Q(status="awa"))
+                booking_requests = booking_requests.filter(Q(status="boo") | Q(status="awa") | Q(status="del"))
                 booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
-                result['bookings'] = booking_requests_price["product__proposed_price__sum"]
+                result['bookings'] = booking_requests_price["product__proposed_price__sum"] if booking_requests_price["product__proposed_price__sum"] is None else 0
                 result['max_amt'] = float(result['funds'][4:].replace(",", "")) - result['bookings']
             return Response(result, status=status.HTTP_200_OK)
         return Response(result, status=status.HTTP_200_OK)
