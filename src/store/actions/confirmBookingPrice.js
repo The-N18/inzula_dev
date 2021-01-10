@@ -72,7 +72,7 @@ export const createWalletUser = (userId) => {
       })
       .catch(err => {
         dispatch(createNotification({
-          message: 'Failed to get the price to pay.',
+          message: 'Failed to create user.',
           type: NOTIFICATION_TYPE_ERROR,
           duration: 10000,
           canDismiss: true,
