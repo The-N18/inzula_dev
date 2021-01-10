@@ -344,7 +344,7 @@ class PayForBookingWithWallet(CreateAPIView):
                 booking_requests = booking_requests.filter(Q(status="boo") | Q(status="awa"))
                 booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
                 bookings = booking_requests_price["product__proposed_price__sum"]
-                payable_funds = float(funds[4:].replace(",", "")) - bookings
+                payable_funds = float(funds[4:].replace(",", ""))
                 if payable_funds < booking_price:
                     return Response({"error": "You do not have enough funds. Use another payment method.{}-{}".format(payable_funds, booking_price)}, status=status.HTTP_200_OK)
 
