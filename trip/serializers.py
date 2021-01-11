@@ -1,7 +1,7 @@
 from .models import Trip
 from userprofile.models import UserProfile
 from rest_framework import serializers
-from userprofile.serializers import CitySerializer, UserProfileIdSerializer, LocationSerializer, UserProfileDetailsSerializer
+from userprofile.serializers import CitySerializer, UserProfileIdSerializer, UserProfileDetailsSerializer
 
 class TripSerializer(serializers.ModelSerializer):
     created_by = UserProfileIdSerializer()

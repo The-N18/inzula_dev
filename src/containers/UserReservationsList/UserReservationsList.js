@@ -113,6 +113,8 @@ class UserReservationsList extends React.Component {
                 selectable={selectable}
                 title={item["product"]["name"]}
                 pk={item["pk"]}
+                recipient_name={item["product"]["recipient_name"]}
+                recipient_phone_number={item["product"]["recipient_phone_number"]}
                 request_by_username={item["request_by_username"]}
                 status={item["status"]}
                 arrival_date={item["product"]["arrival_date"]}

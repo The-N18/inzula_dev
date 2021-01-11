@@ -1,5 +1,5 @@
 from django.db import models
-from userprofile.models import City, UserProfile, Space
+from userprofile.models import City, UserProfile
 
 # Create your models here.
 
@@ -14,7 +14,6 @@ class Trip(models.Model):
     departure_location = models.ForeignKey(City, on_delete=models.PROTECT, related_name='+')
     destination_location = models.ForeignKey(City, on_delete=models.PROTECT, related_name='+')
     proof = models.FileField(upload_to='uploads/', null=True, blank=True)
-    space_available = models.ForeignKey(Space, on_delete=models.PROTECT, related_name='+', null=True, blank=True)
     created_by = models.ForeignKey(UserProfile, on_delete=models.PROTECT, related_name='+', null=True, blank=True)
     estimated_amount = models.CharField(max_length=50, null=True, blank=True)
     parcel_collection_point = models.CharField(max_length=50, null=True, blank=True)

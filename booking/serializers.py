@@ -1,7 +1,7 @@
 from .models import Product, ProductImage, BookingRequest, Notif, PriceProposal, Codes
 from rest_framework import serializers
 from trip.serializers import TripSerializer
-from userprofile.serializers import LocationSerializer, CitySerializer
+from userprofile.serializers import CitySerializer
 
 
 class ProductImageSerializer(serializers.ModelSerializer):

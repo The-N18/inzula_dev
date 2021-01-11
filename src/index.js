@@ -44,6 +44,7 @@ import updateTripModalReducer from "./store/reducers/updateTripModal";
 import addTripModalReducer from "./store/reducers/addTripModal";
 import updateBookingModalReducer from "./store/reducers/updateBookingModal";
 import declineBookingReducer from "./store/reducers/declineBooking";
+import cancelBookingReducer from "./store/reducers/cancelBooking";
 import validateBookingReducer from "./store/reducers/validateBooking";
 import deleteAccountReducer from "./store/reducers/deleteAccount";
 import selectableUserReservationsReducer from "./store/reducers/selectableUserReservations";
@@ -92,6 +93,7 @@ const rootReducer = combineReducers({
   proposePriceOnBooking: proposePriceOnBookingReducer,
   confirmBookingPrice: confirmBookingPriceReducer,
   declineBooking: declineBookingReducer,
+  cancelBooking: cancelBookingReducer,
   validateBooking: validateBookingReducer,
   deleteAccount: deleteAccountReducer,
   userFinance: userFinanceReducer,

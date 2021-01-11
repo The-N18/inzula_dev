@@ -1,4 +1,4 @@
-from .models import UserProfile, Location, City
+from .models import UserProfile, City
 from rest_framework import serializers
 
 class CitySerializer(serializers.ModelSerializer):
@@ -72,9 +72,3 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
         if obj.user:
             return obj.user.date_joined
         return ""
-
-
-class LocationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Location
-        fields = ['latitude', 'longitude', 'long_address', 'city', 'country']

@@ -31,6 +31,7 @@ import BankAccountFormModal from "../../containers/BankAccountFormModal/BankAcco
 import ConfirmBookingPrice from "../../containers/ConfirmBookingPrice/ConfirmBookingPrice";
 import DeclineBooking from "../../containers/DeclineBooking/DeclineBooking";
 import ValidateBooking from "../../containers/ValidateBooking/ValidateBooking";
+import CancelBooking from "../../containers/CancelBooking/CancelBooking";
 import DeleteAccount from "../../containers/DeleteAccount/DeleteAccount";
 import CompleteProfileModal from "../../containers/CompleteProfileModal/CompleteProfileModal";
 import ProductDeliveryModal from "../../containers/ProductDeliveryModal/ProductDeliveryModal";
@@ -231,6 +232,7 @@ class CustomLayout extends React.Component {
       <AddTripModal />
       <CompleteProfileModal />
       <ProductDeliveryModal />
+      <CancelBooking />
       <Notify position={"BottomRight"}/>
         <header className="menuheader">
           <div>

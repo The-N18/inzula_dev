@@ -13,7 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_auth.registration.app_settings import RegisterSerializer, register_permission_classes
 from rest_framework.generics import CreateAPIView, ListAPIView, GenericAPIView
 from django.db import transaction
-from userprofile.models import Location, UserProfile, City
+from userprofile.models import UserProfile, City
 from booking.models import BookingRequest
 from rest_framework import generics
 from utils.pagination import SearchResultsSetPagination

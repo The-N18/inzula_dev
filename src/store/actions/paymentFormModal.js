@@ -126,7 +126,7 @@ export const payForBooking = (values) => {
         dispatch(createNotification({
           message: 'Your payment has been processed successfully.',
           type: NOTIFICATION_TYPE_SUCCESS,
-          duration: 10000,
+          duration: 0,
           canDismiss: true,
         }));
       })
@@ -134,7 +134,7 @@ export const payForBooking = (values) => {
         dispatch(createNotification({
           message: 'Failed to process payment.',
           type: NOTIFICATION_TYPE_ERROR,
-          duration: 10000,
+          duration: 0,
           canDismiss: true,
         }));
       });
@@ -158,7 +158,7 @@ export const payForBookingWithCardId = (values) => {
         dispatch(createNotification({
           message: 'Your payment has been processed successfully.',
           type: NOTIFICATION_TYPE_SUCCESS,
-          duration: 10000,
+          duration: 0,
           canDismiss: true,
         }));
       })
@@ -166,7 +166,7 @@ export const payForBookingWithCardId = (values) => {
         dispatch(createNotification({
           message: 'Failed to process payment.',
           type: NOTIFICATION_TYPE_ERROR,
-          duration: 10000,
+          duration: 0,
           canDismiss: true,
         }));
       });
@@ -186,7 +186,7 @@ export const payForBookingWithPaypal = (values) => {
         dispatch(createNotification({
           message: 'Your payment has been processed successfully.',
           type: NOTIFICATION_TYPE_SUCCESS,
-          duration: 10000,
+          duration: 0,
           canDismiss: true,
         }));
       })
@@ -194,7 +194,7 @@ export const payForBookingWithPaypal = (values) => {
         dispatch(createNotification({
           message: 'Failed to process payment.',
           type: NOTIFICATION_TYPE_ERROR,
-          duration: 10000,
+          duration: 0,
           canDismiss: true,
         }));
       });
@@ -211,7 +211,7 @@ export const payForBookingWithWalletFunds = (values) => {
           dispatch(createNotification({
             message: 'You do not have enough funds in your wallet. Use another payment method.',
             type: NOTIFICATION_TYPE_ERROR,
-            duration: 10000,
+            duration: 0,
             canDismiss: true,
           }));
         } else {
@@ -222,7 +222,7 @@ export const payForBookingWithWalletFunds = (values) => {
           dispatch(createNotification({
             message: 'Your payment has been processed successfully.',
             type: NOTIFICATION_TYPE_SUCCESS,
-            duration: 10000,
+            duration: 0,
             canDismiss: true,
           }));
         }
@@ -231,7 +231,7 @@ export const payForBookingWithWalletFunds = (values) => {
         dispatch(createNotification({
           message: 'Failed to process payment.',
           type: NOTIFICATION_TYPE_ERROR,
-          duration: 10000,
+          duration: 0,
           canDismiss: true,
         }));
       });

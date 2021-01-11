@@ -104,6 +104,8 @@ class SelectableUserReservationsList extends React.Component {
               <BookingCard
                 selectable={selectable}
                 title={item["product"]["name"]}
+                recipient_name={item["product"]["recipient_name"]}
+                recipient_phone_number={item["product"]["recipient_phone_number"]}
                 request_by_username={item["request_by_username"]}
                 pk={item["pk"]}
                 arrival_date={item["product"]["arrival_date"]}

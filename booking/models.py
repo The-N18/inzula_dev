@@ -74,6 +74,7 @@ ALERT_TYPE = [
     ('offer_conf', 'Offer confirmed'),
     ('request_validated', 'Booking request validated'),
     ('request_declined', 'Booking request declined'),
+    ('request_cancelled', 'Booking request cancelled'),
     ('payment_for_booking', 'You have paid for your booking'),
     ('delivered', 'Product delivered'),
 ]
@@ -108,6 +109,9 @@ class Product(models.Model):
     terms_conditions = models.BooleanField(default=False)
     user_agreement = models.BooleanField(default=False)
 
+    def __str__(self):
+        return '{}: {} - {}'.format(self.name, self.departure_location, self.destination_location)
+
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, default=None, on_delete=models.CASCADE)
@@ -126,11 +130,15 @@ class BookingRequest(models.Model):
     collector_id = models.FileField(upload_to='uploads/', null=True, blank=True)
     status = models.CharField(max_length=50, choices=REQUEST_STATUS)
 
+    def __str__(self):
+        return '{}'.format(self.product)
+
 
 class PriceProposal(models.Model):
     price = models.CharField(max_length=50, null=False, blank=False)
     request_by = models.ForeignKey(UserProfile, on_delete=models.PROTECT, related_name='+')
     booking_request = models.ForeignKey(BookingRequest, on_delete=models.CASCADE, related_name='+')
+
     def __str__(self):
         return self.price
 
@@ -143,6 +151,9 @@ class Codes(models.Model):
     status = models.CharField(max_length=50, choices=CODE_STATUS)
     code = models.CharField(max_length=250, unique=True, null=False)
     validation_attempts = models.IntegerField(default=0, null=False, blank=False)
+
+    def __str__(self):
+        return '{}: {}'.format(self.booking, self.code)
 
 
 def get_short_booking_detail(booking, lang):
@@ -175,6 +186,9 @@ class Notif(models.Model):
     created_by = models.ForeignKey(UserProfile, on_delete=models.PROTECT, related_name='+')
     status = models.CharField(max_length=50, choices=ALERT_STATUS)
     type = models.CharField(max_length=50, choices=ALERT_TYPE)
+    
+    def __str__(self):
+        return '{}: {} {}'.format(self.type, self.booking_request, self.trip)
 
 def get_alert_detail(alert_type):
     alert_types = {
@@ -183,6 +197,7 @@ def get_alert_detail(alert_type):
         "offer_conf": ["Offer confirmed", "Offre confirmee"],
         "request_validated": ["Request validated", "Requette validee"],
         "request_declined": ["Request declined", "Requette declinee"],
+        "request_cancelled": ["Request cancelled", "Requette anulee"],
         "payment_for_booking": ["Payment made on booking", "Paiement effectue sur la reservation"],
         "delivered": ["Product delivered.", "Produit livre."],
     }
@@ -301,7 +316,9 @@ def sms_notification(sender, **kwargs):
         text = """Inzula: Request: """ + get_short_booking_detail(new_code.booking, "en") + """Code: """ + new_code.code + """.\n Communicate this code to recipient. Recipient should give this code to carrier after reception of the product."""
         text_recipient = new_code.booking.request_by.phone_number
         email_recipient = new_code.booking.request_by.user.email
+        package_recipient = new_code.booking.recipient_phone_number
         send_sms(text, text_recipient)
+        send_sms(text, package_recipient)
         send_code_by_email(text, email_recipient)
 
 

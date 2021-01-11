@@ -17,29 +17,12 @@ class City(models.Model):
     value = models.CharField(max_length=50)
     label = models.CharField(max_length=150)
 
+    def __str__(self):
+        return '{}'.format(self.label)
+
 class Price(models.Model):
     amount = models.CharField(max_length=50)
     currency = models.CharField(max_length=50)
-
-class ParcelType(models.Model):
-    type = models.CharField(max_length=50)
-
-class Space(models.Model):
-    volume = models.IntegerField(default=0)
-    units = models.CharField(max_length=50, default="m3")
-
-    def __str__(self):
-        return "{0} - {1}".format(self.volume, self.units)
-
-class Location(models.Model):
-    latitude = models.IntegerField(default=0)
-    longitude = models.IntegerField(default=0)
-    long_address = models.CharField(max_length=250, null=True, blank=True)
-    city = models.CharField(max_length=250)
-    country = models.CharField(max_length=250, null=True, blank=True)
-
-    def __str__(self):
-        return self.city
 
 class Weight(models.Model):
     weight = models.IntegerField(default=0)

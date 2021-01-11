@@ -22,6 +22,7 @@ import { optionToText, sizeOptions, sizeOptionsFr, categoryOptions, categoryOpti
 import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
 import { openDeclineBooking, setBookingDeclineBooking } from "../../store/actions/declineBooking";
 import { openValidateBooking, setBookingValidateBooking } from "../../store/actions/validateBooking";
+import { openCancelBooking, setBookingCancelBooking } from "../../store/actions/cancelBooking";
 import { openProductDeliveryModal } from "../../store/actions/productDeliveryModal";
 import SimpleImageSlider from "react-simple-image-slider";
 import { Carousel } from "react-responsive-carousel";
@@ -91,6 +92,12 @@ class BookingCard extends React.Component {
     this.props.openDeclineBooking();
   }
 
+  cancelBooking = () => {
+    const {pk} = this.props;
+    this.props.setBookingCancelBooking(pk);
+    this.props.openCancelBooking();
+  }
+
   updateBooking = () => {
     const {title, departure_location, destination_location, pk, product_details} = this.props;
     const data = {
@@ -158,7 +165,7 @@ class BookingCard extends React.Component {
   render() {
 
     const {pk, title, description, img, images, product_details,
-      arrival_date, departure_location, selectable, editable,
+      arrival_date, departure_location, selectable, editable, recipient_phone_number, recipient_name,
       destination_location, weight, space, price, product_category, request_by_username,
       proposed_price, validate_decline, can_propose, lang, status, confirmed_by_sender} = this.props;
     const {isMobile, isTablet} = this.state;
@@ -200,17 +207,21 @@ class BookingCard extends React.Component {
                 id="booking_card.arrival_date"
                 defaultMessage="Arrival date:"
               /> <FormattedDate
-                                                                              value={arrival_date}
-                                                                              year="numeric"
-                                                                              month="short"
-                                                                              day="numeric"
-                                                                              weekday="short"
-                                                                            /></p>
-                                                                          <p className={"booking-card-items-style"}>Departure: {departure_location && departure_location["label"] ? departure_location["label"] : ""}</p>
+                  value={arrival_date}
+                  year="numeric"
+                  month="short"
+                  day="numeric"
+                  weekday="short"
+                /></p>
+              <p className={"booking-card-items-style"}>Departure: {departure_location && departure_location["label"] ? departure_location["label"] : ""}</p>
               <p className={"booking-card-items-style"}><FormattedMessage
                 id="booking_card.pickup_loc"
                 defaultMessage="Pickup location:"
               /> {destination_location && destination_location["label"] ? destination_location["label"] : ""}</p>
+              <p className={"booking-card-items-style"}><FormattedMessage
+                id="booking_card.recipient_name"
+                defaultMessage="Recipient:"
+              /> {recipient_name}</p>
             </Segment>
           </Grid.Column>
           <Grid.Column mobile={16} tablet={8} computer={4}>
@@ -235,6 +246,10 @@ class BookingCard extends React.Component {
                 id="booking_card.price"
                 defaultMessage="Price:"
               /> {proposed_price} euros</p>
+              <p className={"booking-card-items-style"}><FormattedMessage
+                id="booking_card.recipient_phone_number"
+                defaultMessage="Recipient Phone:"
+              /> {recipient_phone_number}</p>
             </Segment>
           </Grid.Column>
             {can_propose ? <Segment compact basic className={"sub-btn-style"}>
@@ -244,6 +259,28 @@ class BookingCard extends React.Component {
               <Segment compact basic className={"sub-btn-style"}>
                 <Button color='blue' icon='edit' className={"booking-card-delete-button"}  onClick={this.updateBooking.bind(this)}/>
                 <Button color='orange' icon='trash' className={"white-trash"} onClick={this.deleteBooking.bind(this)}/>
+                {status === "boo" || status === "awa" ? <Button size="mini"
+                  color='orange'
+                  className={"white-trash"}
+                  onClick={this.cancelBooking.bind(this)}
+                ><FormattedMessage
+                  id="booking_card.cancel_booking"
+                  defaultMessage="Cancel"
+                />
+                </Button> : ''}
+              </Segment>
+            </Grid.Column> : ''}
+            {editable && status !== "del" && status !== "cre" ? <Grid.Column mobile={2} tablet={2} computer={2}>
+              <Segment compact basic className={"sub-btn-style"}>
+                {status === "boo" || status === "awa" ? <Button size="mini"
+                  color='orange'
+                  className={"white-trash"}
+                  onClick={this.cancelBooking.bind(this)}
+                ><FormattedMessage
+                  id="booking_card.cancel_booking"
+                  defaultMessage="Cancel"
+                />
+                </Button> : ''}
               </Segment>
             </Grid.Column> : ''}
             {validate_decline ? <Grid.Column mobile={2} tablet={2} computer={2}>
@@ -304,6 +341,8 @@ const mapDispatchToProps = dispatch => {
     openProposePriceOnBooking: () => dispatch(openProposePriceOnBooking()),
     setBookingValidateBooking: (pk) => dispatch(setBookingValidateBooking(pk)),
     setBookingDeclineBooking: (pk) => dispatch(setBookingDeclineBooking(pk)),
+    setBookingCancelBooking: (pk) => dispatch(setBookingCancelBooking(pk)),
+    openCancelBooking: () => dispatch(openCancelBooking()),
     openValidateBooking: () => dispatch(openValidateBooking()),
     openProductDeliveryModal: () => dispatch(openProductDeliveryModal()),
     openDeclineBooking: () => dispatch(openDeclineBooking()),
@@ -337,6 +376,8 @@ BookingCard.propTypes = {
 
   request_by: PropTypes.string,
   request_by_username: PropTypes.string,
+  recipient_name: PropTypes.string,
+  recipient_phone_number: PropTypes.string,
 
   confirmed_by_sender: PropTypes.boolean,
   status: PropTypes.string,

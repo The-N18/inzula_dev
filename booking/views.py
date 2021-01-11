@@ -16,7 +16,7 @@ from django.db import transaction
 from rest_framework import generics
 from .models import BookingRequest, Codes, Product, ProductImage, Notif, PriceProposal
 from .serializers import ProductSerializer, CodeListSerializer, NotifListSerializer, PriceProposalListSerializer, NotifSerializer, BookingRequestSerializer, ProductImageSerializer
-from userprofile.models import Location, UserProfile, Price, Weight, Space, City
+from userprofile.models import UserProfile, City
 from django.db.models import Q
 from django.core.serializers import serialize
 from utils.pagination import SearchResultsSetPagination
@@ -710,6 +710,34 @@ class DeclineBooking(APIView):
         status='unseen')
         renderCodeObsolete(booking_request.trip.pk, booking_request.pk)
         result = {"detail": 'ok'}
+        booking_request.trip = None
+        booking_request.save()
+        return Response(result, status=status.HTTP_200_OK)
+
+
+class CancelBooking(APIView):
+    """
+    Cancel a booking
+    """
+
+    def post(self, request, format=None):
+
+        booking_request = BookingRequest.objects.get(pk=request.data['bookingId'])
+        result = {"detail": 'ok'}
+        if booking_request.status == "del":
+            result["detail"] = "BOOKING_ALREADY_DELIVERED"
+            return Response(result, status=status.HTTP_200_OK)
+        booking_request.confirmed_by_sender = False
+        booking_request.status = 'cre'
+        # create notification
+        Notif.objects.create(trip=booking_request.trip,
+        booking_request=booking_request,
+        created_by=booking_request.request_by,
+        price_proposal=None,
+        type='request_cancelled',
+        created_on=timezone.now(),
+        status='unseen')
+        renderCodeObsolete(booking_request.trip.pk, booking_request.pk)
         booking_request.trip = None
         booking_request.save()
         return Response(result, status=status.HTTP_200_OK)
