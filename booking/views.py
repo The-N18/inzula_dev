@@ -285,7 +285,7 @@ class PriceProposalCreateView(CreateAPIView):
     def create(self, request, *args, **kwargs):
         booking_request = BookingRequest.objects.get(pk=request.data["booking_id"])
         request_by = UserProfile.objects.get(user=request.data["user_id"])
-        date_range_start = booking_request.product.depart_date - datetime.timedelta(days=14)
+        date_range_start = booking_request.product.departure_date - datetime.timedelta(days=14)
         date_range_end = booking_request.product.arrival_date + datetime.timedelta(days=14)
         trips = Trip.objects.filter(departure_location=booking_request.product.departure_location,
                                     destination_location=booking_request.product.destination_location,
