@@ -29,7 +29,7 @@ import {renderField, renderDateTimePicker, renderDropdownList, renderCitiesList}
 import { validate } from "./validation";
 import { updateBooking } from "../../store/actions/addBooking";
 import { updateBookingOpenModal, updateBookingCloseModal } from "../../store/actions/updateBookingModal";
-import { sizeOptions, categoryOptions, weightOptions, valueOptions } from "../../utils/options";
+import { sizeOptions, sizeOptionsFr, categoryOptions, categoryOptionsFr, weightOptions, weightOptionsFr, valueOptions, valueOptionsFr, calculateMinPrice } from "../../utils/options";
 import {FormattedMessage, FormattedDate} from 'react-intl'
 
 class UpdateBooking extends React.Component {
@@ -124,7 +124,7 @@ class UpdateBooking extends React.Component {
 
 
   render() {
-    const { token, handleSubmit, pristine,
+    const { lang, handleSubmit, pristine,
       reset, submitting, invalid, change, product_name,
       departure_location, destination_location, proposed_price,
       product_category, product_weight, product_size, product_value,
@@ -137,24 +137,16 @@ class UpdateBooking extends React.Component {
     // }
 
     const handleMinPriceCatChange = (event, value) => {
-      console.log(value);
-      const newUnits = 0;
-      change('min_price', newUnits);
+      change('min_price', calculateMinPrice(product_weight, product_size, value, product_value));
     }
     const handleMinPriceWeiChange = (event, value) => {
-      console.log(value);
-      const newUnits = 1;
-      change('min_price', newUnits);
+      change('min_price', calculateMinPrice(value, product_size, product_category, product_value));
     }
     const handleMinPriceSizChange = (event, value) => {
-      console.log(value);
-      const newUnits = 2;
-      change('min_price', newUnits);
+      change('min_price', calculateMinPrice(product_weight, value, product_category, product_value));
     }
     const handleMinPriceValChange = (event, value) => {
-      console.log(value);
-      const newUnits = 3;
-      change('min_price', newUnits);
+      change('min_price', calculateMinPrice(product_weight, product_size, product_category, value));
     }
 
     return (
@@ -367,7 +359,7 @@ class UpdateBooking extends React.Component {
                        <Field
                          name="product_category"
                          component={renderDropdownList}
-                         data={categoryOptions}
+                         data={lang === "en" ? categoryOptions : categoryOptionsFr}
                          valueField="value"
                          textField="text"
                          onChange={handleMinPriceCatChange}/>
@@ -381,7 +373,7 @@ class UpdateBooking extends React.Component {
                          name="product_weight"
                          placeholder='Product weight'
                          component={renderDropdownList}
-                         data={weightOptions}
+                         data={lang === "en" ? weightOptions: weightOptionsFr}
                          valueField="value"
                          textField="text"
                          onChange={handleMinPriceWeiChange}/>
@@ -400,7 +392,7 @@ class UpdateBooking extends React.Component {
                         name="product_size"
                         placeholder='Product size'
                         component={renderDropdownList}
-                        data={sizeOptions}
+                        data={lang === "en" ? sizeOptions: sizeOptionsFr}
                         valueField="value"
                         textField="text"
                         onChange={handleMinPriceSizChange}/>
@@ -414,7 +406,7 @@ class UpdateBooking extends React.Component {
                             name="product_value"
                             placeholder='Product value'
                             component={renderDropdownList}
-                            data={valueOptions}
+                            data={lang === "en" ? valueOptions: valueOptionsFr}
                             valueField="value"
                             textField="text"
                             onChange={handleMinPriceValChange}/>
@@ -585,6 +577,7 @@ const mapStateToProps = state => {
     loading: state.addBooking.loading,
     error: state.addBooking.error,
     token: state.auth.token,
+    lang: state.appConfig.lang,
     userId: state.userInfo.userId,
     userProfileId: state.userInfo.userProfileId,
     username: state.userInfo.username,

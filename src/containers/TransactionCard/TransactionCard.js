@@ -12,7 +12,7 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './transactioncard.css';
-import { backend_url, get_img_url } from "../../configurations";
+import { backend_url, get_img_url, formatFunds } from "../../configurations";
 import {FormattedMessage, FormattedDate} from 'react-intl'
 
 
@@ -56,7 +56,7 @@ class TransactionCard extends React.Component {
             {debited_funds !== "" ? <b><FormattedMessage
               id="transaction_card.debited_funds"
               defaultMessage="Debited funds: "
-            />{debited_funds}</b> : ''}
+            />{formatFunds(debited_funds)}</b> : ''}
           </Card.Description>
         </Card.Content>
       </Card>

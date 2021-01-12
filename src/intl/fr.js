@@ -211,6 +211,8 @@ export const msg = {
   'notif_card.request_validated': "Votre requette a été validée par le voyageur.",
   'notif_card.request_declined': "Votre requette a été declinée par le voyageur.",
   'notif_card.request_cancelled': "Vous avez annule votre requette.",
+  'notif_card.payment_for_delivery': "Vous avez recu un paiement pour la livraison effecuee.",
+  'notif_card.product_delivered': "Votre produit a ete livre.",
   'notif_card.date': "Date de depart: ",
   'notif_card.created_on': "Le: ",
   'notif_card.product': "Produit: ",

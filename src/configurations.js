@@ -59,3 +59,19 @@ export const isProfileComplete = (localstorage) => {
   }
   return false;
 }
+
+export const formatFunds = (fundsStrInit) => {
+  const fundsStr = fundsStrInit.replace(",", "");
+  const splittedFunds = fundsStr.split(" "); 
+  const intPart = Number.parseFloat(splittedFunds[1]) / 100
+  const rtn = splittedFunds[0] + " " + intPart.toString();
+  return rtn
+}
+
+export const parseNextUrl = (url) => {
+  const p_url = url.replace("http:", "https:");
+  if(DEBUG) {
+    return url;
+  }
+  return p_url;
+}

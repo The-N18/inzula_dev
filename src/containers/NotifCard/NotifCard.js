@@ -78,6 +78,16 @@ class NotifCard extends React.Component {
               id="notif_card.request_cancelled"
               defaultMessage="You have cancelled your booking request."
             /> : ''}
+            {type === "payment_for_delivery" ?
+            <FormattedMessage
+              id="notif_card.payment_for_delivery"
+              defaultMessage="You have received a payment for the delivery you made."
+            /> : ''}
+            {type === "product_delivered" ?
+            <FormattedMessage
+              id="notif_card.product_delivered"
+              defaultMessage="Your product has been delivered."
+            /> : ''}
             {/*<div className={"notif_card_btns"}>
               <Button color='blue' icon='eye' onClick={this.markAsSeen.bind(this)} title={"mark as seen"}/>
             </div>*/}

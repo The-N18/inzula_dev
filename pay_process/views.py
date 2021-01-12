@@ -41,8 +41,10 @@ class PayForBooking(CreateAPIView):
             booking_requests = BookingRequest.objects.filter(pk__in=selectedBookingIds)
             booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
             booking_amount = booking_requests_price['product__proposed_price__sum']
-            fees_amount = 0.25*booking_amount
-            booking_price = booking_amount + fees_amount
+            fees = booking_amount*0.25
+            fees_amount = fees*100
+            booking_price = booking_amount + fees
+            booking_price = booking_price*100
 
             # Get natural user
             user = User.objects.get(pk=userId)
@@ -181,8 +183,10 @@ class PayForBookingCardId(CreateAPIView):
             booking_requests = BookingRequest.objects.filter(pk__in=selectedBookingIds)
             booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
             booking_amount = booking_requests_price['product__proposed_price__sum']
-            fees_amount = 0.25*booking_amount
-            booking_price = booking_amount + fees_amount
+            fees = booking_amount*0.25
+            fees_amount = fees*100
+            booking_price = booking_amount + fees
+            booking_price = booking_price*100
 
             # Get natural user
             user = User.objects.get(pk=userId)
@@ -300,8 +304,10 @@ class PayForBookingWithWallet(CreateAPIView):
             booking_requests = BookingRequest.objects.filter(pk__in=selectedBookingIds)
             booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
             booking_amount = booking_requests_price['product__proposed_price__sum']
-            fees_amount = 0.25*booking_amount
-            booking_price = booking_amount + fees_amount
+            fees = booking_amount*0.25
+            fees_amount = fees*100
+            booking_price = booking_amount + fees
+            booking_price = booking_price*100
 
 
             # Get natural user
@@ -341,10 +347,11 @@ class PayForBookingWithWallet(CreateAPIView):
             if nat_user_id is not None and userprofile.wallet_id is not None and user_wallet is not None:
                 funds = str(user_wallet.balance) if user_wallet.balance is not None else ""
                 booking_requests = BookingRequest.objects.filter(request_by=userprofile)
-                booking_requests = booking_requests.filter(Q(status="boo") | Q(status="awa"))
                 booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
-                bookings = booking_requests_price["product__proposed_price__sum"]
-                payable_funds = float(funds[4:].replace(",", ""))
+                booking_amount = booking_requests_price['product__proposed_price__sum']
+                fees = booking_amount*0.25
+                booking_price = booking_amount + fees
+                payable_funds = float(funds[4:].replace(",", "")) / 100
                 if payable_funds < booking_price:
                     return Response({"error": "You do not have enough funds. Use another payment method.{}-{}".format(payable_funds, booking_price)}, status=status.HTTP_200_OK)
 
@@ -422,8 +429,10 @@ class PayForBookingPaypal(CreateAPIView):
             booking_requests = BookingRequest.objects.filter(pk__in=selectedBookingIds)
             booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
             booking_amount = booking_requests_price['product__proposed_price__sum']
-            fees_amount = 0.25*booking_amount
-            booking_price = booking_amount + fees_amount
+            fees = booking_amount*0.25
+            fees_amount = fees*100
+            booking_price = booking_amount + fees
+            booking_price = booking_price*100
 
             # Get natural user
             user = User.objects.get(pk=userId)
@@ -842,7 +851,9 @@ class UserWalletFunds(APIView):
             natural_user = NaturalUser.get(nat_user_id)
             user_wallet = Wallet.get(userprofile.wallet_id)
             if userprofile.wallet_id is not None and user_wallet is not None:
-                result['funds'] = str(user_wallet.balance) if user_wallet.balance is not None else ""
+                funds = str(user_wallet.balance) if user_wallet.balance is not None else ""
+                wallet_funds = float(funds[4:].replace(",", "")) / 100
+                result['funds'] = "EUR " + str(wallet_funds)
             return Response(result, status=status.HTTP_200_OK)
         return Response(result, status=status.HTTP_200_OK)
 
@@ -866,12 +877,15 @@ class MaxPayOutAmount(APIView):
             if userprofile.wallet_id is not None and user_wallet is not None:
                 result['funds'] = str(user_wallet.balance) if user_wallet.balance is not None else ""
                 booking_requests = BookingRequest.objects.filter(request_by=userprofile)
-                booking_requests = booking_requests.filter(Q(status="boo") | Q(status="awa") | Q(status="del"))
+                booking_requests = booking_requests.filter(Q(status="boo") | Q(status="awa"))
                 booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
-                result['bookings'] = booking_requests_price["product__proposed_price__sum"] if booking_requests_price["product__proposed_price__sum"] is None else 0
-                result['max_amt'] = float(result['funds'][4:].replace(",", "")) - result['bookings']
+                booking_requests_price = booking_requests_price["product__proposed_price__sum"] if booking_requests_price["product__proposed_price__sum"] is not None else 0
+                wallet_funds = float(result['funds'][4:].replace(",", "")) / 100
+                result['bookings'] = booking_requests_price
+                result['max_amt'] = round(wallet_funds - booking_requests_price, 2) if booking_requests_price<wallet_funds else 0.0
             return Response(result, status=status.HTTP_200_OK)
         return Response(result, status=status.HTTP_200_OK)
+
 
 class UserCards(APIView):
 
@@ -892,3 +906,106 @@ class UserCards(APIView):
             result['cards'] = json.loads(jsonResults)
             return Response(result, status=status.HTTP_200_OK)
         return Response(result, status=status.HTTP_200_OK)
+
+
+def deliverPaymentToCarrier(booking_request_id):
+    booking_request = BookingRequest.objects.get(pk=booking_request_id)
+    trip = booking_request.trip
+    carrier = trip.created_by
+    sender = booking_request.request_by
+    # amount to send to carrier
+    booking_amount = float(booking_request.product.proposed_price)*100
+
+    # Get carrier user
+    carrier_nat_user_id = carrier.nat_user_id
+    carrier_natural_user = None
+    if carrier_nat_user_id is not None:
+        carrier_natural_user = NaturalUser.get(carrier_nat_user_id)
+    else:
+        carrier_natural_user = NaturalUser(first_name=carrier.user.first_name,
+                                last_name=carrier.user.last_name,
+                                address=None,
+                                proof_of_identity=None,
+                                proof_of_address=None,
+                                person_type='NATURAL',
+                                nationality=carrier.country,
+                                country_of_residence=carrier.country,
+                                birthday=1300186358,
+                                email=carrier.user.email)
+        carrier_natural_user.save()
+    carrier.nat_user_id = carrier_natural_user.id
+    carrier.save()
+    if carrier.wallet_id is None:
+        c_wallet = Wallet(owners=[carrier_natural_user],
+                description='Wallet',
+                currency='EUR',
+                tag="Wallet for User-{}".format(carrier_natural_user.id))
+        c_wallet.save()
+        carrier.wallet_id = c_wallet.get_pk()
+        carrier.save()
+
+    # get carrier user wallet
+    carrier_user_wallet = Wallet(id=carrier.wallet_id)
+
+    # Get sender user
+    sender_nat_user_id = sender.nat_user_id
+    sender_natural_user = None
+    if sender_nat_user_id is not None:
+        sender_natural_user = NaturalUser.get(sender_nat_user_id)
+    else:
+        sender_natural_user = NaturalUser(first_name=sender.user.first_name,
+                                last_name=sender.user.last_name,
+                                address=None,
+                                proof_of_identity=None,
+                                proof_of_address=None,
+                                person_type='NATURAL',
+                                nationality=sender.country,
+                                country_of_residence=sender.country,
+                                birthday=1300186358,
+                                email=sender.user.email)
+        sender_natural_user.save()
+    sender.nat_user_id = sender_natural_user.id
+    sender.save()
+    if sender.wallet_id is None:
+        s_wallet = Wallet(owners=[sender_natural_user],
+                description='Wallet',
+                currency='EUR',
+                tag="Wallet for User-{}".format(sender_natural_user.id))
+        s_wallet.save()
+        sender.wallet_id = s_wallet.get_pk()
+        sender.save()
+
+    # get sender user wallet
+    sender_user_wallet = Wallet(id=sender.wallet_id)
+
+    # transfer funds
+    transfer = Transfer(author=sender_natural_user,
+                        credited_user=carrier_natural_user,
+                        debited_funds=Money(amount=booking_amount, currency='EUR'),
+                        fees=Money(amount=0, currency='EUR'),
+                        debited_wallet=sender_user_wallet,
+                        credited_wallet=carrier_user_wallet)
+    transfer.save()
+
+    # update booking
+    booking_request.status = 'del'
+    booking_request.save()
+
+    # generate notifications
+    Notif.objects.create(trip=booking_request.trip,
+    booking_request=booking_request,
+    created_by=booking_request.request_by,
+    price_proposal=None,
+    created_on=timezone.now(),
+    type='payment_for_delivery',
+    status='unseen')
+    Notif.objects.create(trip=booking_request.trip,
+    booking_request=booking_request,
+    created_by=booking_request.request_by,
+    price_proposal=None,
+    created_on=timezone.now(),
+    type='product_delivered',
+    status='unseen')
+
+
+

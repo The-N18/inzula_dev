@@ -77,6 +77,8 @@ ALERT_TYPE = [
     ('request_cancelled', 'Booking request cancelled'),
     ('payment_for_booking', 'You have paid for your booking'),
     ('delivered', 'Product delivered'),
+    ('payment_for_delivery', 'Payment received for delivery'),
+    ('product_delivered', 'Product delivered.')
 ]
 
 def send_sms(msg, dest):
@@ -200,6 +202,8 @@ def get_alert_detail(alert_type):
         "request_cancelled": ["Request cancelled", "Requette anulee"],
         "payment_for_booking": ["Payment made on booking", "Paiement effectue sur la reservation"],
         "delivered": ["Product delivered.", "Produit livre."],
+        "payment_for_delivery": ["Payment received for delivery.", "Paiement recu pour livraison."],
+        "product_delivered": ["Product delivered.", "Votre produit est livre."]
     }
     return alert_types[alert_type]
 
@@ -316,7 +320,7 @@ def sms_notification(sender, **kwargs):
         text = """Inzula: Request: """ + get_short_booking_detail(new_code.booking, "en") + """Code: """ + new_code.code + """.\n Communicate this code to recipient. Recipient should give this code to carrier after reception of the product."""
         text_recipient = new_code.booking.request_by.phone_number
         email_recipient = new_code.booking.request_by.user.email
-        package_recipient = new_code.booking.recipient_phone_number
+        package_recipient = new_code.booking.product.recipient_phone_number
         send_sms(text, text_recipient)
         send_sms(text, package_recipient)
         send_code_by_email(text, email_recipient)

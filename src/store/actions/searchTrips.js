@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { api_url, AUTH_TIMEOUT } from "../../configurations";
+import { api_url, AUTH_TIMEOUT, parseNextUrl } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
@@ -45,7 +45,7 @@ export const searchTrips = (departure_location, destination_location, travel_dat
     return dispatch => {
       dispatch(searchStart());
       axios
-        .get(next_url)
+        .get(parseNextUrl(next_url))
         .then(res => {
           console.log(res.data)
           dispatch(checkAuthTimeout(AUTH_TIMEOUT));

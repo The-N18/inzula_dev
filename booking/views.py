@@ -30,6 +30,7 @@ import logging
 from django.conf import settings
 from django.http import HttpResponse
 from django.utils.crypto import get_random_string
+from pay_process.views import deliverPaymentToCarrier
 import string
 
 # Create your views here.
@@ -197,7 +198,8 @@ class SenderNotifsListView(generics.ListAPIView):
         bookings_by_user = BookingRequest.objects.filter(request_by=user_id)
         # trips_by_user = Trip.objects.filter(created_by=user_id)
         if user_id is not None:
-            queryset = queryset.exclude(Q(created_by=user_id) & Q(status="payment_for_booking"))
+            queryset = queryset.exclude(Q(created_by=user_id) & Q(type="payment_for_booking"))
+            queryset = queryset.exclude(Q(created_by=user_id) & Q(type="payment_for_delivery"))
             queryset = queryset.filter(booking_request__in=bookings_by_user)
         return queryset.order_by('-created_on')
 
@@ -220,6 +222,7 @@ class CarrierNotifsListView(generics.ListAPIView):
         if user_id is not None:
             queryset = queryset.exclude(created_by=user_id)
             queryset = queryset.exclude(status="seen")
+            queryset = queryset.exclude(Q(type="product_delivered"))
             queryset = queryset.filter(trip__in=trips_by_user)
         return queryset.order_by('-created_on')
 
@@ -351,9 +354,8 @@ class SubmitDeliveryCode(CreateAPIView):
                     code_obj.status = "validated_by_carrier"
                     code_obj.save()
                     result["info"] = "CODE_VALIDATED_SUCCESSFULLY"
-                    # update booking request status
-                    code_obj.booking.status = "del"
-                    code_obj.booking.save()
+                    # deliver payment
+                    deliverPaymentToCarrier(code_obj.booking.pk)
                     # create notification
                     created_by = UserProfile.objects.get(user=user_id)
                     Notif.objects.create(trip=code_obj.trip,
@@ -658,12 +660,13 @@ def generateRandomCode(trip_id, booking_id):
         Codes.objects.create(trip=trip, booking=booking, status="sent_to_sender", code=code, created_on=timezone.now())
 
 
-def renderCodeObsolete(trip_id, booking_id):
-    trip = Trip.objects.get(pk=trip_id)
+def renderCodeObsolete(trip, booking_id):
+    trip_ = None
+    if trip is not None:
+        trip_ = Trip.objects.get(pk=trip.pk)
     booking = BookingRequest.objects.get(pk=booking_id)
-    if Codes.objects.filter(Q(trip=trip) & Q(booking=booking) & ~Q(status="obsolete")):
-        for item in Codes.objects.filter(Q(trip=trip) & Q(booking=booking) & ~Q(status="obsolete")):
-            # code_obj = Codes.objects.get(code=code)
+    if Codes.objects.filter(Q(trip=trip_) & Q(booking=booking) & ~Q(status="obsolete")):
+        for item in Codes.objects.filter(Q(trip=trip_) & Q(booking=booking) & ~Q(status="obsolete")):
             item.status = "obsolete"
             item.save()
 
@@ -708,7 +711,7 @@ class DeclineBooking(APIView):
         type='request_declined',
         created_on=timezone.now(),
         status='unseen')
-        renderCodeObsolete(booking_request.trip.pk, booking_request.pk)
+        renderCodeObsolete(booking_request.trip, booking_request.pk)
         result = {"detail": 'ok'}
         booking_request.trip = None
         booking_request.save()
@@ -737,7 +740,7 @@ class CancelBooking(APIView):
         type='request_cancelled',
         created_on=timezone.now(),
         status='unseen')
-        renderCodeObsolete(booking_request.trip.pk, booking_request.pk)
+        renderCodeObsolete(booking_request.trip, booking_request.pk)
         booking_request.trip = None
         booking_request.save()
         return Response(result, status=status.HTTP_200_OK)
