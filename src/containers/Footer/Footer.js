@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import { backend_url } from "../../configurations";
 import { withRouter } from "react-router-dom";
 import {FormattedMessage} from 'react-intl'
+import {Link} from 'react-scroll';
 
 
 class Footer extends React.Component {
@@ -57,7 +58,7 @@ class Footer extends React.Component {
                     id="footer.who_we_are"
                     defaultMessage="Who we are"
                   /></List.Item>
-                <List.Item as="a" href="#" className={"linkstyle"}>
+                <List.Item as="a" href="/" className={"linkstyle"}>
                   <FormattedMessage
                     id="footer.how_it_works"
                     defaultMessage="How it works"

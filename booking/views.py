@@ -30,7 +30,7 @@ import logging
 from django.conf import settings
 from django.http import HttpResponse
 from django.utils.crypto import get_random_string
-from pay_process.views import deliverPaymentToCarrier
+from pay_process.views import deliverPaymentToCarrier, refund_charges
 import string
 
 # Create your views here.
@@ -667,6 +667,8 @@ def renderCodeObsolete(trip, booking_id):
         for item in Codes.objects.filter(Q(trip=trip_) & Q(booking=booking) & ~Q(status="obsolete")):
             item.status = "obsolete"
             item.save()
+    # refund charges
+    refund_charges(booking)
 
 class ValidateBooking(APIView):
     """
@@ -674,7 +676,6 @@ class ValidateBooking(APIView):
     """
 
     def post(self, request, format=None):
-
         booking_request = BookingRequest.objects.get(pk=request.data['bookingId'])
         booking_request.confirmed_by_sender = True
         booking_request.status = 'awa'
@@ -728,9 +729,9 @@ class CancelBooking(APIView):
         if booking_request.status == "del":
             result["detail"] = "BOOKING_ALREADY_DELIVERED"
             return Response(result, status=status.HTTP_200_OK)
-        today = datetime.date.today()
+        today = datetime.datetime.now().date()
         booking_date = booking_request.product.arrival_date
-        delta = datetime.now().date() - posting_date
+        delta = booking_date - today
         if delta.days <= 1:
             result["detail"] = "TOO_LATE_TO_CANCEL"
             return Response(result, status=status.HTTP_200_OK)

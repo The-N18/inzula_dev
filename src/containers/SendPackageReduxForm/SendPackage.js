@@ -62,10 +62,9 @@ class SendPackage extends React.Component {
     }
   }
 
-  onDrop = (picture) => {
-    console.log(picture);
+  onDrop = (pictures) => {
       this.setState({
-          pictures: this.state.pictures.concat(picture),
+          pictures: pictures,
       });
   }
 
@@ -74,11 +73,9 @@ class SendPackage extends React.Component {
   }
 
   submitForm = (val) => {
-    console.log("in submit form");
-    console.log(val);
     const depdate = val['delivery_date'];
     const {pictures} = this.state;
-    const { userId, userProfileId, createNotification, tripId, user_id, next_url, count } = this.props;
+    const { userId, userProfileId, createNotification, tripId } = this.props;
     const created_by = {"user": userId};
     if(userProfileId === null && userId === null) {
       createNotification({

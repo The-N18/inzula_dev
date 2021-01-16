@@ -115,7 +115,7 @@ class PayForBooking(CreateAPIView):
             admin_nat_user_id = admin_user.nat_user_id
             inzula_user = None
             if admin_nat_user_id is not None:
-                inzula_user = NaturalUser.get(nat_user_id)
+                inzula_user = NaturalUser.get(admin_nat_user_id)
             else:
                 inzula_user = NaturalUser(first_name=admin_simple_user.first_name,
                                         last_name=admin_simple_user.last_name,
@@ -237,7 +237,7 @@ class PayForBookingCardId(CreateAPIView):
             admin_nat_user_id = admin_user.nat_user_id
             inzula_user = None
             if admin_nat_user_id is not None:
-                inzula_user = NaturalUser.get(nat_user_id)
+                inzula_user = NaturalUser.get(admin_nat_user_id)
             else:
                 inzula_user = NaturalUser(first_name=admin_simple_user.first_name,
                                         last_name=admin_simple_user.last_name,
@@ -289,6 +289,89 @@ class PayForBookingCardId(CreateAPIView):
             return Response(result, status=status.HTTP_200_OK)
         return Response({"error": "Error processing payment."}, status=status.HTTP_400_BAD_REQUEST)
 
+
+def refund_charges(booking):
+    with transaction.atomic():
+        amount_to_refund = ((float(booking.product.proposed_price)*0.03)+ 1.7)*100
+        userprofile_to_refund = booking.request_by
+
+        # Get natural user to refund
+        recipient_nat_user_id = userprofile_to_refund.nat_user_id
+        recipient_natural_user = None
+        if recipient_nat_user_id is not None:
+            recipient_natural_user = NaturalUser.get(recipient_nat_user_id)
+        else:
+            recipient_natural_user = NaturalUser(first_name=userprofile_to_refund.user.first_name,
+                                    last_name=userprofile_to_refund.user.last_name,
+                                    address=None,
+                                    proof_of_identity=None,
+                                    proof_of_address=None,
+                                    person_type='NATURAL',
+                                    nationality=userprofile_to_refund.country,
+                                    country_of_residence=userprofile_to_refund.country,
+                                    birthday=1300186358,
+                                    email=userprofile_to_refund.user.email)
+            recipient_natural_user.save()
+        userprofile_to_refund.nat_user_id = recipient_natural_user.id
+        userprofile_to_refund.save()
+
+        # get user wallet
+        if userprofile_to_refund.wallet_id is None:
+            wallet = Wallet(owners=[recipient_natural_user],
+                    description='Wallet',
+                    currency='EUR',
+                    tag="Wallet for User-{}".format(recipient_natural_user.id))
+            wallet.save()
+            userprofile_to_refund.wallet_id = wallet.get_pk()
+            userprofile_to_refund.save()
+        user_wallet = Wallet.get(userprofile_to_refund.wallet_id)
+
+        # transfer money from user wallet to inzula wallet
+        # get inzula wallet
+        admin_simple_user = User.objects.get(pk=1)
+        admin_user = admin_simple_user.profile
+        admin_nat_user_id = admin_user.nat_user_id
+        inzula_user = None
+        if admin_nat_user_id is not None:
+            inzula_user = NaturalUser.get(admin_nat_user_id)
+        else:
+            inzula_user = NaturalUser(first_name=admin_simple_user.first_name,
+                                    last_name=admin_simple_user.last_name,
+                                    address=None,
+                                    proof_of_identity=None,
+                                    proof_of_address=None,
+                                    person_type='NATURAL',
+                                    nationality=admin_user.country,
+                                    country_of_residence=admin_user.country,
+                                    birthday=1300186358,
+                                    email=admin_simple_user.email)
+            inzula_user.save()
+        admin_user.nat_user_id = inzula_user.id
+        admin_user.save()
+        # get inzula wallet
+        if admin_user.wallet_id is None:
+            wallet = Wallet(owners=[inzula_user],
+                    description='Wallet',
+                    currency='EUR',
+                    tag="Wallet for User-{}".format(inzula_user.id))
+            wallet.save()
+            admin_user.wallet_id = wallet.get_pk()
+            admin_user.save()
+
+        inzula_wallet = Wallet(id=admin_user.wallet_id)
+
+        # transfer funds from inzula wallet to user wallet
+        print(inzula_user)
+        print(inzula_wallet)
+        print(recipient_natural_user)
+        print(user_wallet)
+        transfer = Transfer(author=inzula_user,
+                    credited_user=recipient_natural_user,
+                    debited_funds=Money(amount=amount_to_refund, currency='EUR'),
+                    fees=Money(amount=0, currency='EUR'),
+                    debited_wallet=inzula_wallet,
+                    credited_wallet=user_wallet)
+        transfer.save()
 
 class PayForBookingWithWallet(CreateAPIView):
     permission_classes = register_permission_classes()
@@ -361,7 +444,7 @@ class PayForBookingWithWallet(CreateAPIView):
             admin_nat_user_id = admin_user.nat_user_id
             inzula_user = None
             if admin_nat_user_id is not None:
-                inzula_user = NaturalUser.get(nat_user_id)
+                inzula_user = NaturalUser.get(admin_nat_user_id)
             else:
                 inzula_user = NaturalUser(first_name=admin_simple_user.first_name,
                                         last_name=admin_simple_user.last_name,

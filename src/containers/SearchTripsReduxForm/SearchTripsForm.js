@@ -90,7 +90,7 @@ class SearchTripsForm extends React.Component {
     const { loading, error, trips, next_url, count, handleSubmit } = this.props;
     const { isMobile, isTablet } = this.state;
     return (
-      <Segment>
+      <Segment id="search_trips_section">
           <Header as="h4" textAlign="center">
             <FormattedMessage
               id="search_trips.title"

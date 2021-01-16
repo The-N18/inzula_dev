@@ -292,7 +292,7 @@ class BookingCard extends React.Component {
                   color='blue'
                   className={"booking-card-delete-button"}
                   onClick={this.validateBooking.bind(this)}
-                  disabled={status === "del"}
+                  disabled={confirmed_by_sender || status === "awa" || status === "del"}
                 ><FormattedMessage
                   id="booking_card.validate"
                   defaultMessage="Validate"

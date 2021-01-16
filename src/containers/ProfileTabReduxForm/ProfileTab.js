@@ -38,15 +38,12 @@ class ProfileTab extends React.Component {
   }
 
   onDrop = (picture) => {
-    console.log(picture);
       this.setState({
           picture: picture,
       });
   }
 
   submitForm = (val) => {
-    console.log(val['phone_number']);
-    // formatPhoneNumberIntl(value)
     const user_type = val['user_type'] && val['user_type']['value']  ? val['user_type']['value'] : val['user_type'];
     const sex = val['sex'] && val['sex']['value']  ? val['sex']['value'] : val['sex'];
     const country = val['country'] && val['country']['value'] ? val['country']['value'] : val['country'];
@@ -54,7 +51,6 @@ class ProfileTab extends React.Component {
   }
 
   deleteYourAccount = () => {
-    console.log("deleteYourAccount");
     this.props.openDeleteAccount();
   }
 

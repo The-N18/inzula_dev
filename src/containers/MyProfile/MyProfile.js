@@ -62,9 +62,9 @@ class MyProfile extends React.Component {
   render() {
     const { token, activeIndex, profileType, lang } = this.props;
     const {isMobile} = this.state;
-    // if (token === null) {
-    //   return <Redirect to="/" />;
-    // }
+    if (token === null || token === "") {
+      return <Redirect to="/" />;
+    }
     const panes = [
       {
         menuItem: { key: 'profile', icon: 'user', content: isMobile ? '' : lang === 'en' ? 'Profile' : 'Profil' },

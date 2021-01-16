@@ -10,7 +10,7 @@ import styles from './hometextvideo.css';
 import ReactPlayer from 'react-player'
 import { withRouter } from "react-router-dom";
 import {FormattedMessage} from 'react-intl'
-
+import {Link} from 'react-scroll';
 
 class HomeTextVideo extends React.Component {
 
@@ -51,12 +51,13 @@ class HomeTextVideo extends React.Component {
               <Button
                 size="small"
                 className={"buttoncolor homevideo-button"}
-                onClick={this.handleOnClick.bind(this, '/dispatch')}
-              >
+                >
+              <Link to="search_trips_section" spy={true} smooth={true}>
               <FormattedMessage
                 id="home_text_video.ship_now"
                 defaultMessage="Ship items now"
               />
+              </Link>
               </Button>
               </Segment>
             </Grid.Column>

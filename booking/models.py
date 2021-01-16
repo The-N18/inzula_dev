@@ -324,7 +324,7 @@ def sms_notification(sender, **kwargs):
     if kwargs["created"]:
         new_code = kwargs["instance"]
         # send sms to sender
-        text = """Inzula: Request: """ + get_short_booking_detail(new_code.booking, "en") + """Code: """ + new_code.code + """.\n Communicate this code to recipient. Recipient should give this code to carrier after reception of the product."""
+        text = """Inzula: Request: """ + get_short_booking_detail(new_code.booking, "en") + """\nCode: """ + new_code.code + """.\n Communicate this code to recipient. Recipient should give this code to carrier after reception of the product."""
         text_recipient = new_code.booking.request_by.phone_number
         sender_username = new_code.booking.request_by.user.username
         email_recipient = new_code.booking.request_by.user.email
