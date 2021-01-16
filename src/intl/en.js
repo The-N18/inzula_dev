@@ -130,7 +130,7 @@ export const msg = {
   'search_trips.title': "Prefer to know what shipping offers are available before committing?",
   'search_trips.h2': "No worries, you can add the country of departure and destination of your trip and thus access the requests for available expeditions.",
   'search_trips.cant_find_trip': "  Can't find a trip?",
-  'search_trips.click_book_request': "click here to save a booking request",
+  'search_trips.click_book_request': "click here to save a parcel",
   'search_trips.get_contacted': "so you can be later contacted by travellers.",
   'search_trips.departure': "Departure",
   'search_trips.destination': "Destination",
@@ -324,6 +324,7 @@ export const msg = {
 
   'my_profile.sender': "Switch to sender mode.",
   'my_profile.carrier': "Switch to carrier mode.",
-  'creditcard_card.creation_date': "Added on: "
+  'creditcard_card.creation_date': "Added on: ",
+  'login.forgot_password': "Forgot password ?"
 
 };

@@ -97,25 +97,12 @@ class SearchTripsForm extends React.Component {
               defaultMessage="Prefer to know what shipping offers are available before committing?"
             />
           </Header>
-          <Header as="h4" textAlign="center">
+          {/* <Header as="h4" textAlign="center">
             <FormattedMessage
               id="search_trips.h2"
               defaultMessage="No worries, you can add the country of departure and destination of your trip and thus access the requests for available expeditions."
             />
-          </Header>
-          <Header as="h4" textAlign="center">
-            <FormattedMessage
-              id="search_trips.cant_find_trip"
-              defaultMessage="Can't find a trip?"
-            /><Button inverted color='green' onClick={this.handleOpenSendPackageModal.bind(this)}>
-            <FormattedMessage
-              id="search_trips.click_book_request"
-              defaultMessage="click here to save a booking request"
-            /></Button> <FormattedMessage
-              id="search_trips.get_contacted"
-              defaultMessage="so you can be later contacted by travellers."
-            />
-          </Header>
+          </Header> */}
           <form onSubmit={handleSubmit(this.submitForm)}>
           <Grid>
             <Grid.Row columns={3}>
@@ -191,6 +178,19 @@ class SearchTripsForm extends React.Component {
             </div>
           </form>
           <Divider/>
+          <Header as="h4" textAlign="center">
+            <FormattedMessage
+              id="search_trips.cant_find_trip"
+              defaultMessage="Can't find a trip?"
+            /><Button inverted color='green' onClick={this.handleOpenSendPackageModal.bind(this)}>
+            <FormattedMessage
+              id="search_trips.click_book_request"
+              defaultMessage="click here to save a booking request"
+            /></Button> <FormattedMessage
+              id="search_trips.get_contacted"
+              defaultMessage="so you can be later contacted by travellers."
+            />
+          </Header>
           {trips.length === 0 ? <div> <FormattedMessage
             id="search_trips.no_results"
             defaultMessage="No search results. Please try a more general search."

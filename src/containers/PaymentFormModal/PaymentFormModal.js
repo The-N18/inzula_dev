@@ -18,6 +18,7 @@ import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
 import {renderField} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
 import CSRFToken from "../../containers/CSRFToken";
+import {FormattedMessage} from 'react-intl'
 
 class PaymentFormModal extends React.Component {
 
@@ -52,56 +53,92 @@ class PaymentFormModal extends React.Component {
 
         <form onSubmit={handleSubmit(this.submitForm)}>
           <CSRFToken/>
+          <div>
+            <label htmlFor="card_f_name"><FormattedMessage
+              id="payment_form.card_f_name"
+              defaultMessage="Card holder first name(s)"
+            /></label>
           <Field
             name="card_f_name"
             component="input"
             type="text"
-            label="Card holder first name(s)"
             component={renderField}
           />
+          </div>
+          <div>
+            <label htmlFor="card_l_name"><FormattedMessage
+              id="payment_form.card_l_name"
+              defaultMessage="Card holder last name(s)"
+            /></label>
           <Field
             name="card_l_name"
             component="input"
             type="text"
-            label="Card holder last name(s)"
             component={renderField}
           />
+          </div>
+          <div>
+            <label htmlFor="card_number"><FormattedMessage
+              id="payment_form.card_number"
+              defaultMessage="Card number"
+            /></label>
           <Field
             name="card_number"
             component="input"
             type="number"
-            label="Card number"
             component={renderField}
           />
+          </div>
+          <div>
+            <label htmlFor="exp_date_mm"><FormattedMessage
+              id="payment_form.exp_date_mm"
+              defaultMessage="MM(expiration)"
+            /></label>
           <Field
             name="exp_date_mm"
             component="input"
             type="number"
-            label="MM(expiration)"
             component={renderField}
           />
+          </div>
+          <div>
+            <label htmlFor="exp_date_yy"><FormattedMessage
+              id="payment_form.exp_date_yy"
+              defaultMessage="YY"
+            /></label>
           <Field
             name="exp_date_yy"
             component="input"
             type="number"
-            label="YY"
             component={renderField}
           />
+          </div>
+          <div>
+            <label htmlFor="cvc"><FormattedMessage
+              id="payment_form.cvc"
+              defaultMessage="CVC"
+            /></label>
           <Field
             name="cvc"
             component="input"
             type="number"
-            label="CVC"
             component={renderField}
           />
+          </div>
           <Button positive type="submit" disabled={invalid || loading}>
-            Pay
+            <FormattedMessage
+              id="payment_form.pay"
+              defaultMessage="Pay"
+            />
           </Button>
         </form>
       </Modal.Content>
       <Modal.Actions>
         <Button negative onClick={() => this.props.closePaymentFormModal()}>
-          Cancel
+          <FormattedMessage
+              id="payment_form.cancel"
+              defaultMessage="Cancel"
+            />
         </Button>
       </Modal.Actions>
     </Modal>

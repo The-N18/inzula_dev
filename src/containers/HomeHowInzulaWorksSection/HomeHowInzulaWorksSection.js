@@ -17,7 +17,7 @@ class HomeHowInzulaWorksSection extends React.Component {
     const {lang} = this.props;
     const panes = [
     {
-      menuItem: lang === 'fr' ? 'Pour expediteurs' : 'For shippers',
+      menuItem: lang === 'fr' ? 'Pour expéditeurs' : 'For shippers',
       render: () => <Tab.Pane attached={false} className={"how-it-works-tabpane"}>
       <Header as='h4' textAlign="center">
         <FormattedMessage

@@ -23,7 +23,6 @@ const BaseRouter = () => (
       <Route path="/signupdiscount" component={SignupParentWithDiscount} />
       <Route path="/profile" component={MyProfile} />
       <Route path="/transport" component={Transport} />
-      {/* <Route path="/dispatch" component={SendPage} /> */}
       <Route path="/faqs" component={Faqs} />
       <Route path="/terms" component={Terms} />
       <Route path="/useragreement" component={UserAgreement} />

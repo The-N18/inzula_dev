@@ -247,6 +247,11 @@ class CustomLayout extends React.Component {
                 id="layout.discount"
                 defaultMessage="15% discount"
               /></a></li> : ''}
+              <li><a onClick={this.handleOnClick.bind(this, '/')}>
+              <FormattedMessage
+                id="layout.dispatch"
+                defaultMessage="Dispatch"
+              /></a></li>
               <li><a onClick={this.handleOnClick.bind(this, '/transport')}>
               <FormattedMessage
                 id="layout.transport"
