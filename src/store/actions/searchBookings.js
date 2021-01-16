@@ -40,7 +40,6 @@ export const searchFail = error => {
 };
 
 export const searchBookings = (departure_location, destination_location, travel_date, product_category, product_size, proposed_price, weight, user_id, next_url, page_count) => {
-  console.log("in searchBookings");
   if(next_url !== "" && next_url !== null) {
     console.log("in if");
     return dispatch => {
@@ -57,8 +56,6 @@ export const searchBookings = (departure_location, destination_location, travel_
         });
     };
   } else {
-    console.log("in else");
-    console.log(user_id);
     return dispatch => {
       dispatch(searchStart());
       axios
@@ -74,7 +71,6 @@ export const searchBookings = (departure_location, destination_location, travel_
               user_id: user_id,
             }})
         .then(res => {
-          console.log(res.data)
           dispatch(searchSuccessOverride(res.data["results"], res.data["next"], res.data["count"]));
           dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         })

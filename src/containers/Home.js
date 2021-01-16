@@ -8,7 +8,7 @@ import {
 import HomeServiceSection from "../containers/HomeServiceSection/HomeServiceSection";
 import HomeHowInzulaWorksSection from "../containers/HomeHowInzulaWorksSection/HomeHowInzulaWorksSection";
 import HomeTextVideo from "../containers/HomeTextVideo/HomeTextVideo";
-import SearchTripsForm from "../containers/SearchTripsReduxForm/SearchTripsForm";
+import SearchTripsForm from "../containers/SearchTripsReduxFormDummy/SearchTripsForm";
 import SelectReservationsModal from "../containers/SelectReservationsModal/SelectReservationsModal";
 
 const getWidth = () => {

@@ -55,7 +55,7 @@ class ProfileTab extends React.Component {
   }
 
   render () {
-    const {handleSubmit, token, loading, deleteLoading, pristine, reset, submitting, invalid, date_joined, profile_pic, passport_number, phone_number, email, lang} = this.props;
+    const {handleSubmit, loading, deleteLoading, username, invalid, date_joined, profile_pic, passport_number, phone_number, email, lang} = this.props;
     return (
       <Segment basic className={"profile-tab-section"}>
       <Grid className={"profile-tab-section-grid"}>
@@ -64,7 +64,9 @@ class ProfileTab extends React.Component {
             <Segment className={"profile-tab-card"}>
               <Image centered bordered circular src= {profile_pic !== null && profile_pic !== "null" ? get_img_url(profile_pic) : backend_url() + '/static/images/user_avatar.png'} />
               <Segment basic textAlign="left">
-              <Header as='h4' className={"profile-tab-card-title"}>{this.props.first_name} {this.props.last_name}</Header>
+              <Header as='h4' className={"profile-tab-card-title"}>
+              <p>{username}</p>
+              <p>{this.props.first_name} {this.props.last_name}</p></Header>
               {date_joined ? <p><FormattedMessage
                 id="profile_tab.member_since"
                 defaultMessage="Member since"
@@ -305,6 +307,7 @@ const mapStateToProps = state => {
     deleteLoading: state.auth.deleteLoading,
     first_name: state.userInfo.first_name,
     last_name: state.userInfo.last_name,
+    username: state.userInfo.username,
     passport_number: state.userInfo.passport_number,
     email: state.userInfo.email,
     user_type: state.userInfo.user_type,

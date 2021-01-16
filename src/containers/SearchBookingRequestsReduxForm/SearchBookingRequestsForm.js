@@ -17,15 +17,13 @@ import BookingCard from "../../containers/BookingCard/BookingCard";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Slider, { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';
-import Multiselect from 'react-widgets/lib/Multiselect'
-import MultiSelect from "@khanacademy/react-multi-select";
 import 'react-widgets/dist/css/react-widgets.css';
 import { Field, reduxForm } from 'redux-form'
 import { withRouter } from "react-router-dom";
 import $ from "jquery";
-import {renderField, renderDateTimePicker, renderCitiesList, renderDropdownList} from "../../containers/ReduxForm/renderField";
+import { renderDateTimePicker, renderCitiesList} from "../../containers/ReduxForm/renderField";
 import { setInitialValues } from "../../store/actions/searchBookingsPage";
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 
 
 class SearchBookingRequestsForm extends React.Component {

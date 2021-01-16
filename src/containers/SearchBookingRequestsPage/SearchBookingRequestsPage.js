@@ -68,7 +68,7 @@ class SearchBookingRequestsPage extends React.Component {
   }
 
   submitForm = (val) => {
-    const { user_id, next_url, count, inNewPage } = this.props;
+    const { user_id, next_url, count } = this.props;
     const { product_category, product_size, proposed_price, weight } = this.state;
     const departureLocation = val['departure_location'] ? val['departure_location']['pk'] : null;
     const destinationLocation = val['destination_location'] ? val['destination_location']['pk'] : null;

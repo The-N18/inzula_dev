@@ -26,12 +26,10 @@ class SignupParentModal extends React.Component {
   }
 
   useFacebook = (response) => {
-    console.log("use facebook", response);
-    this.props.facebookLogin(response);
+    // this.props.facebookLogin(response);
   }
 
   useGoogle = (response) => {
-    console.log("use google", response);
     this.props.googleLogin(response);
   }
 
