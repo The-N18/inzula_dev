@@ -10,9 +10,7 @@ import {
 import { connect } from "react-redux";
 import { searchTrips } from "../../store/actions/searchTrips";
 import styles from './searchtripsform.css';
-import { DateInput } from 'semantic-ui-calendar-react';
 import TripCard from "../../containers/TripCard/TripCard";
-import BookingRequestCard from "../../containers/BookingRequestCard/BookingRequestCard";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { openModal, closeModal } from "../../store/actions/sendPackageModal";
 import { createNotif } from "../../store/actions/appConfig";
@@ -123,13 +121,17 @@ class SearchTripsForm extends React.Component {
             <Grid.Row columns={3}>
               <Grid.Column mobile={16} tablet={16} computer={6}>
           <div>
+          <label htmlFor="departure_location">
+              <FormattedMessage
+                id="search_trips.departure_location"
+                defaultMessage="departure location"
+              />
+            </label>
             <div>
               <Field
                 name="departure_location"
                 component="input"
                 type="text"
-                placeholder="Departure location"
-                label="Departure location"
                 className={"custom-field"}
                 component={renderCitiesList}
               />
@@ -138,13 +140,17 @@ class SearchTripsForm extends React.Component {
             </Grid.Column>
             <Grid.Column mobile={16} tablet={16} computer={6}>
             <div>
+            <label htmlFor="destination_location">
+              <FormattedMessage
+                id="search_trips.destination_location"
+                defaultMessage="destination location"
+              />
+            </label>
               <div>
                 <Field
                   name="destination_location"
                   component="input"
                   type="text"
-                  placeholder="Destination location"
-                  label="Destination location"
                   className={"custom-field"}
                   component={renderCitiesList}
                 />
@@ -153,12 +159,17 @@ class SearchTripsForm extends React.Component {
               </Grid.Column>
               <Grid.Column mobile={16} tablet={16} computer={4}>
               <div>
+              <label htmlFor="travel_date">
+              <FormattedMessage
+                id="search_trips.travel_date"
+                defaultMessage="travel date"
+              />
+            </label>
                 <div>
               <Field
                 name="travel_date"
                 showTime={false}
                 component={renderDateTimePicker}
-                label="Travel date"
               />
               </div>
             </div>

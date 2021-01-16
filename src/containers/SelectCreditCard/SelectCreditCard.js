@@ -71,7 +71,6 @@ class SelectCreditCard extends React.Component {
 
   payWithCreditCard = () => {
     const {cardId, selectedBookingIds, tripId, userId} = this.props;
-    console.log("pay with this card", cardId);
     this.props.payForBookingWithCardId({'cardId': cardId, 'selectedBookingIds': selectedBookingIds, 'tripId': tripId, 'userId': userId})
   }
 
@@ -98,16 +97,16 @@ class SelectCreditCard extends React.Component {
         onOpen={() => this.props.openSelectCreditCard()}
         size='tiny'
       >
-      <Modal.Header><FormattedMessage
+      <Modal.Header>
+        <p><FormattedMessage
         id="select_credit_card.title"
         defaultMessage="Select credit card"
-      />
-      <Button icon labelPosition='right' floated='right'
+      /></p>
+      <Button
         size="large"
         className={"buttoncolor select-trip-top-button"}
         onClick={this.payWithNewCard.bind(this)}
-      >
-        <Icon name='add circle' /><FormattedMessage
+      ><FormattedMessage
           id="select_credit_card.pay_with_new"
           defaultMessage="Pay with new card"
         />
@@ -152,7 +151,7 @@ class SelectCreditCard extends React.Component {
       </Segment>
       </Modal.Content>
       <Modal.Actions>
-      <Button color='green' onClick={this.payWithCreditCard.bind(this)} disabled={cardId === null}>
+      <Button color='green' onClick={this.payWithCreditCard.bind(this)} disabled={cardId === null || loading}>
       <FormattedMessage
         id="select_credit_card.pay"
         defaultMessage="Pay"
@@ -173,6 +172,7 @@ class SelectCreditCard extends React.Component {
 const mapStateToProps = state => {
   return {
     open: state.selectCreditCardModal.open,
+    loading: state.paymentFormModal.loading,
     cards: state.selectCreditCardModal.cards,
     cardId: state.selectCreditCardModal.cardId,
     bookingId: state.confirmBookingPrice.bookingId,

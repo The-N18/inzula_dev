@@ -1,25 +1,21 @@
 import React from "react";
 import {
-  Segment,
   Button,
-  Icon,
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './confirmbookingprice.css';
-import { NavLink, Redirect } from "react-router-dom";
 import { openConfirmBookingPrice,
          closeConfirmBookingPrice,
          setBookingRequestInfo,
          getBookingTotalPrice,
          createWalletUser } from "../../store/actions/confirmBookingPrice";
-import { deleteTrip } from "../../store/actions/addTrip";
-import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
-import {renderField} from "../../containers/ReduxForm/renderField";
+import {reduxForm} from 'redux-form';
 import { validate } from "./validation";
 import { bookTrip } from "../../store/actions/selectReservationsModal";
 import { openPaymentOptions } from "../../store/actions/paymentOptionsModal";
 import { openPaymentFormModal } from "../../store/actions/paymentFormModal";
+import {FormattedMessage} from 'react-intl'
 
 class ConfirmBookingPrice extends React.Component {
 
@@ -54,16 +50,30 @@ class ConfirmBookingPrice extends React.Component {
         onOpen={() => this.props.openConfirmBookingPrice()}
         size='tiny'
       >
-      <Modal.Header>Confirm price</Modal.Header>
+      <Modal.Header>
+      <FormattedMessage
+                  id="confirm_booking.title"
+                  defaultMessage="Confirm price"
+                />
+                </Modal.Header>
       <Modal.Content>
-        <p>You are about to pay {price} euros and fees of {0.25*price} euros to book this trip for your product.</p>
+        <p><FormattedMessage
+                  id="confirm_booking.msg"
+                  values={{ price: `${price}`, fees: `${0.25*price}` }}
+                                  /></p>
       </Modal.Content>
       <Modal.Actions>
         <Button positive onClick={this.confirmPaymentPrice.bind(this)}>
-          Confirm
+        <FormattedMessage
+                  id="confirm_booking.confirm"
+                  defaultMessage="Confirm"
+                />
         </Button>
         <Button negative onClick={() => this.props.closeConfirmBookingPrice()}>
-          Decline
+        <FormattedMessage
+                  id="confirm_booking.decline"
+                  defaultMessage="Decline"
+                />
         </Button>
       </Modal.Actions>
     </Modal>
@@ -95,11 +105,6 @@ const mapDispatchToProps = dispatch => {
     openPaymentOptions: () => dispatch(openPaymentOptions()),
   };
 };
-
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(ConfirmBookingPrice);
 
 let ConfirmBookingPriceConnected = connect(
   mapStateToProps,

@@ -35,9 +35,8 @@ class CreditCardCard extends React.Component {
             <FormattedDate
               value={creation_date}
               year="numeric"
-              month="long"
+              month="numeric"
               day="numeric"
-              weekday="long"
             /> | </span> : ''}
             {expiration_date !== "" ? <b><FormattedMessage
               id="creditcard_card.expiration_date"

@@ -44,7 +44,7 @@ class NotifCard extends React.Component {
             minute="numeric"
             second="numeric"
           /> | </span> : ''}
-          {created_on !== "" ? <span><FormattedMessage
+          {creator_username !== "" && type !== "request_declined" ? <span><FormattedMessage
             id="notif_card.created_by"
             defaultMessage="By: "
           /> {creator_username} | </span> : ''}
@@ -71,6 +71,7 @@ class NotifCard extends React.Component {
             {type === "request_declined" ?
             <FormattedMessage
               id="notif_card.request_declined"
+              values={{ username: `${creator_username}`}}
               defaultMessage="Your booking request has been declined by the sender"
             /> : ''}
             {type === "request_cancelled" ?

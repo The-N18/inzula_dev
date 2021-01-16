@@ -90,6 +90,7 @@ class OutgoingFinancialTransactionsList extends React.Component {
         }} key={index}>
           <TransactionCard
             status={item["status"]}
+            id={item["id"]}
             result_code={item["result_code"]}
             result_message={item["result_message"]}
             type={item["type"]}

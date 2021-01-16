@@ -296,6 +296,8 @@ class PriceProposalCreateView(CreateAPIView):
             return Response({"info": "CANNOT_MAKE_OFFER_ON_BOOKED_REQUEST"}, status=status.HTTP_200_OK)
         if booking_request.status == "awa":
             return Response({"info": "CANNOT_MAKE_OFFER_ON_VALIDATED_REQUEST"}, status=status.HTTP_200_OK)
+        if booking_request.status == "del":
+            return Response({"info": "CANNOT_MAKE_OFFER_ON_DELIVERED_REQUEST"}, status=status.HTTP_200_OK)
         if not trips:
             return Response({"info": "NO_CORRESPONDING_TRIP"}, status=status.HTTP_200_OK)
         price = request.data["price"]
@@ -543,7 +545,6 @@ class BookingRequestDetail(APIView):
         serializer = BookingRequestSerializer(booking_request)
         return Response(serializer.data,
                         status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
         booking_request = self.get_object(pk)
@@ -601,17 +602,14 @@ class BookingRequestSearchView(generics.ListAPIView):
             user_profile = User.objects.get(pk=int(user_id)).profile
             products = products.exclude(created_by=user_profile)
         start_date = None
-        arrival_date = None
         if arrDate != "":
             start_date = datetime.datetime.strptime(arrDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
-            arrival_date = start_date.strftime('%Y-%m-%d')
-        if arrival_date:
-            products = products.filter(arrival_date=arrival_date)
+            date_range_start = start_date - datetime.timedelta(days=14)
+            date_range_end = start_date + datetime.timedelta(days=14)
+            products = products.filter(arrival_date__range=[date_range_start, date_range_end])
         if departure_location:
-            # departure_location_obj = City.objects.filter(pk=departure_location)
             products = products.filter(departure_location__pk=departure_location)
         if destination_location:
-            # destination_location_obj = City.objects.get(pk=destination_location)
             products = products.filter(destination_location__pk=destination_location)
         if len(weight) > 0:
             q_objects = Q()
@@ -729,6 +727,12 @@ class CancelBooking(APIView):
         result = {"detail": 'ok'}
         if booking_request.status == "del":
             result["detail"] = "BOOKING_ALREADY_DELIVERED"
+            return Response(result, status=status.HTTP_200_OK)
+        today = datetime.date.today()
+        booking_date = booking_request.product.arrival_date
+        delta = datetime.now().date() - posting_date
+        if delta.days <= 1:
+            result["detail"] = "TOO_LATE_TO_CANCEL"
             return Response(result, status=status.HTTP_200_OK)
         booking_request.confirmed_by_sender = False
         booking_request.status = 'cre'

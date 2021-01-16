@@ -69,13 +69,12 @@ class MyFunds extends React.Component {
       <Card.Group>
         <Card>
         <Card.Content textAlign={"center"}>
-          <Card.Header>EUR {max_amt === "" ? 0 : max_amt}</Card.Header>
-          <Card.Meta>
+          <Card.Header>
           <FormattedMessage
             id="my_funds.cashable"
             defaultMessage="You can cash this out."
           />
-          </Card.Meta>
+          <p>{max_amt === "" ? 0 : max_amt} EUR</p> </Card.Header>
         </Card.Content>
         <Card.Content extra>
             <Button basic color='green' fluid onClick={this.openCashoutModal.bind(this)} disabled={max_amt === 0 || max_amt === ""}>
@@ -89,19 +88,17 @@ class MyFunds extends React.Component {
 
       <Card>
       <Card.Content>
-        <Card.Header>{funds}</Card.Header>
+        <Card.Header>
+        <FormattedMessage
+          id="my_funds.total_deposited"
+          defaultMessage="Total of funds in your wallet."
+        /> <p>{funds}</p></Card.Header>
         <Card.Meta>
         <FormattedMessage
           id="my_funds.fraction_cashable"
           defaultMessage="You can only cash out a fraction of this, depending on your pending bookings and operations."
         />
         </Card.Meta>
-        <Card.Description>
-        <FormattedMessage
-          id="my_funds.total_deposited"
-          defaultMessage="Total of funds in your wallet."
-        />
-        </Card.Description>
       </Card.Content>
       </Card>
       </Card.Group>

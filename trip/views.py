@@ -130,10 +130,7 @@ class TripSearchView(generics.ListAPIView):
 
     def get_queryset(self):
         departure_location = self.request.query_params.get('departure_location', '')
-        # departure_locations = City.objects.filter(label__startswith=departure_location)
         destination_location = self.request.query_params.get('destination_location', '')
-        # destination_locations = City.objects.filter(label__startswith=destination_location)
-        # depart_date = self.request.query_params.get('depart_date', '')
         arrDate = self.request.query_params.get('travel_date', '')
         user_id = self.request.query_params.get('user_id', '')
         trips = Trip.objects.all()
@@ -141,15 +138,14 @@ class TripSearchView(generics.ListAPIView):
             user_profile = User.objects.get(pk=int(user_id)).profile
             trips = trips.exclude(created_by=user_profile)
         if departure_location:
-            # departure_location_obj = City.objects.filter(pk=departure_location)
             trips = trips.filter(departure_location__pk=departure_location)
         if destination_location:
-            # destination_location_obj = City.objects.get(pk=destination_location)
             trips = trips.filter(destination_location__pk=destination_location)
         if arrDate != "":
             start_date = datetime.datetime.strptime(arrDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
-            arrival_date = start_date.strftime('%Y-%m-%d')
-            trips = trips.filter(Q(depart_date=arrival_date) | Q(comeback_date=arrival_date))
+            date_range_start = start_date - datetime.timedelta(days=14)
+            date_range_end = start_date + datetime.timedelta(days=14)
+            trips = trips.filter(depart_date__range=[date_range_start, date_range_end])
         return trips.order_by('-depart_date')
 
 def validate(date_text):

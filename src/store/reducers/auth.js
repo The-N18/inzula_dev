@@ -31,9 +31,15 @@ const authSetDiscountText = (state, action) => {
 };
 
 const authSuccess = (state, action) => {
-  console.log(action);
   return updateObject(state, {
     token: action.token,
+    error: null,
+    loading: false
+  });
+};
+
+const signupSuccess = (state, action) => {
+  return updateObject(state, {
     error: null,
     loading: false
   });
@@ -80,6 +86,8 @@ const reducer = (state = initialState, action) => {
       return authStart(state, action);
     case actionTypes.AUTH_SUCCESS:
       return authSuccess(state, action);
+    case actionTypes.SIGNUP_SUCCESS:
+      return signupSuccess(state, action);
     case actionTypes.AUTH_FAIL:
       return authFail(state, action);
     case actionTypes.DELETE_ACCOUNT_START:

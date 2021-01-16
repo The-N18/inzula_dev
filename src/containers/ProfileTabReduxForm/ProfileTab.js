@@ -67,7 +67,7 @@ class ProfileTab extends React.Component {
           <Grid.Column mobile={16} tablet={16} computer={5}>
             <Segment className={"profile-tab-card"}>
               <Image centered bordered circular src= {profile_pic !== null && profile_pic !== "null" ? get_img_url(profile_pic) : backend_url() + '/static/images/user_avatar.png'} />
-              <Segment basic textAlign="center">
+              <Segment basic textAlign="left">
               <Header as='h4' className={"profile-tab-card-title"}>{this.props.first_name} {this.props.last_name}</Header>
               {date_joined ? <p><FormattedMessage
                 id="profile_tab.member_since"
@@ -77,7 +77,7 @@ class ProfileTab extends React.Component {
                                   year="numeric"
                                   month="long"
                                   day="numeric"
-                                  weekday="long"
+                                  weekday="short"
                                 /></p> : ''}
               {phone_number ? <p><FormattedMessage
                 id="profile_tab.phone_number_disp"
@@ -254,7 +254,6 @@ class ProfileTab extends React.Component {
                       <div>
                         <Field
                           name="country"
-                          placeholder='Country'
                           component={renderDropdownList}
                           data={countries}
                           valueField="value"
@@ -273,8 +272,6 @@ class ProfileTab extends React.Component {
                         name="passport_number"
                         component="input"
                         type="text"
-                        placeholder="Passport number"
-                        label="Passport number"
                         className={"custom-field"}
                         component={renderField}
                       />

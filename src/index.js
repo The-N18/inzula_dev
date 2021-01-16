@@ -55,6 +55,7 @@ import selectCreditCardModalReducer from "./store/reducers/selectCreditCardModal
 import productDeliveryModalReducer from "./store/reducers/productDeliveryModal";
 import { reducer as formReducer } from 'redux-form'
 import axios from 'axios';
+import MessengerCustomerChat from 'react-messenger-customer-chat';
 
 const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -117,6 +118,13 @@ const store = createStore(rootReducer, composeEnhances(applyMiddleware(thunk)));
 const app = (
   <Provider store={store}>
     <App />
+    <MessengerCustomerChat
+        pageId="102422251842554"
+        appId="136854898060654"
+        themeColor="#bc1823"
+        loggedInGreeting="Bonjour! Comment pouvons nous vous aider?"
+        loggedOutGreeting="Bonjour! Comment pouvons nous vous aider?"
+      />
   </Provider>
 );
 

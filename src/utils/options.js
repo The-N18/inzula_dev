@@ -1,14 +1,14 @@
 export const sizeOptions=[
-  { key: 's', value: 's', text: 'Small' },
-  { key: 'm', value: 'm', text: 'Medium' },
-  { key: 'l', value: 'l', text: 'Large' },
+  { key: 's', value: 's', text: 'Small (fits in a shoe box)' },
+  { key: 'm', value: 'm', text: 'Medium (fits in a hand luggage)' },
+  { key: 'l', value: 'l', text: 'Large (fits in the back of a car)' },
   { key: 'xl', value: 'xl', text: 'Extra Large' },
 ];
 
 export const sizeOptionsFr=[
-  { key: 's', value: 's', text: 'Petit' },
-  { key: 'm', value: 'm', text: 'Moyenne' },
-  { key: 'l', value: 'l', text: 'Large' },
+  { key: 's', value: 's', text: 'Petit (rentre dans une boite de chaussures)' },
+  { key: 'm', value: 'm', text: 'Moyenne (rentre dans une valise de cabine)' },
+  { key: 'l', value: 'l', text: 'Large (rentre dans la malle d\'une voiture)' },
   { key: 'xl', value: 'xl', text: 'Extra Large' },
 ];
 

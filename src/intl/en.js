@@ -26,13 +26,9 @@ export const msg = {
   'add_trip_form.one_way': "One way",
   'add_trip_form.round_trip': "Round trip",
   'add_trip_form.add_your_trip': "Add your trip",
-
   'add_trip_form.dest_location': "Destination location",
   'add_trip_form.depart_location': "Departure location",
   'add_trip_form.trip': "Trip",
-
-
-
   'booking_card.description': "Description: ",
   'booking_card.arrival_date': "Arrival date: ",
   'booking_card.departure_loc': "Departure location: ",
@@ -116,11 +112,11 @@ export const msg = {
   'profile_tab.perso_info': "Personal information",
   'profile_tab.f_name': "First name",
   'profile_tab.l_name': "Last name",
-  'profile_tab.p_number': "Phone number",
+  'profile_tab.phone_number': "Phone number",
   'profile_tab.e_mail': "Email",
   'profile_tab.country': "Country",
-  'profile_tab.p_number': "Passport number",
-  'profile_tab.delete_account': "Delete your account.",
+  'profile_tab.passport_number': "Passport number",
+  'profile_tab.delete_account': "Delete my account.",
   'search_requests.title': "Prefer to know what shipping offers are available before committing?",
   'search_requests.head': "No worries, you can add the country of departure and destination of your trip and thus access the requests for available expeditions.",
   'search_requests.departure': "Departure",
@@ -212,7 +208,7 @@ export const msg = {
   'notif_card.trip_booked': "Your trip has been booked.",
   'notif_card.offer_rec': "You have recieved an offer for this request.",
   'notif_card.request_validated': "Your booking request has been validated by the carrier.",
-  'notif_card.request_declined': "Your booking request has been declined by the carrier.",
+  'notif_card.request_declined': "Your booking request has been declined by the carrier: {username}.",
   'notif_card.product_delivered': "Your product has been delivered.",
   'notif_card.date': "Departure Date: ",
   'notif_card.created_on': "On: ",
@@ -246,28 +242,23 @@ export const msg = {
   'carrier_notifs.no_notifs': "You have no notifications",
   'sender_notifs.loading': "Loading...",
   'sender_notifs.no_notifs': "You have no notifications",
-
   'verify_email.title': "Verifying your email...",
   'verify_email.success': "Email has been verified successfully",
   'verify_email.failed': "Failed to verify your email address.",
-
   'delete_account.title': "Delete your account.",
   'delete_account.question': "Are you sure you want to delete your account?",
   'delete_account.no': "No",
   'delete_account.yes': "Yes, delete my account.",
-
   'send_package.login_msg': "Please login to create a booking request.",
   'add_trip.login_msg': "Please login to add a new trip.",
-
   'user_transactions.no_transactions': "You have not made any transactions yet",
   'user_transactions.loading': "Loading...",
-
   'incoming_user_transactions.no_transactions': "You do not have any incoming transactions yet.",
   'outgoing_user_transactions.no_transactions': "You have not made any transactions yet.",
   'failed_user_transactions.no_transactions': "You do not have any failed transactions.",
   'transaction_card.payin': "Transaction: ",
-  'transaction_card.creation_date': "Creation Date: ",
-  'transaction_card.debited_funds': "Debited funds: ",
+  'transaction_card.creation_date': "Created on: ",
+  'transaction_card.debited_funds': "Debited amount: ",
   'validate_booking.title': "Validate booking",
   'validate_booking.question':"Are you sure you want to validate this booking?",
   'validate_booking.no': "No",
@@ -285,8 +276,6 @@ export const msg = {
   'trip_card.comeback_date': "COmeback date: ",
   'trip_card.departure': "Departure: ",
   'trip_card.destination': "Destination: ",
-
-
   'signup_discount.username': "Use username",
   'select_reservations.title': "Select bookings for this trip",
   'select_reservations.add_booking': "Add a booking",
@@ -302,28 +291,39 @@ export const msg = {
   'user_trips.add_trip': "Add a trip",
   'complete_profile_modal.cancel': "Cancel",
   'complete_profile_modal.title': "Update your profile",
-
-  'my_funds.cashable': "You can cash this out.",
+  'my_funds.cashable': "Amount available for withdrawal:",
   'my_funds.cashout': "Cash out",
-  'my_funds.fraction_cashable': "You can only cash out a fraction of this, depending on your pending bookings and operations.",
-  'my_funds.total_deposited': "Total of funds in your wallet.",
-
+  'my_funds.fraction_cashable': "You can only cash out part of this amount, depending on your pending transactions.",
+  'my_funds.total_deposited': "Total of funds in your wallet: ",
   'paymentmethodcard.credit_card': "Credit card",
   'paymentmethodcard.paypal': "Paypal",
   'paymentmethodcard.wallet': "Wallet funds",
   'notif_card.created_by': "By: ",
   'booking_card.product_delivered': "Product delivered.",
   'booking_card.cancel_booking': "Cancel",
-
   'propose_price.title': "Propose price on booking",
   'propose_price.sub_title': "Enter the amount you propose to carry this product",
   'propose_price.propose_price': "Propose price (euros)",
   'propose_price.cancel': "Cancel",
-
   'product_delivery.title': "We have to ascertain that you have given the parcel to the recipient",
   'product_delivery.enter_code': "Enter the code recieved from the recipient.",
   'product_delivery.submit_code': "Submit this code.",
   'product_delivery.cancel': "Cancel",
 
+  'search_trips.departure_location': "departure location",
+  'search_trips.destination_location': "Destination location",
+
+  'confirm_booking.title': "Confirm price",
+  'confirm_booking.msg': "You are about to pay {price} euros and fees of {fees} euros to book this trip for your product.",
+  'confirm_booking.confirm': "Confirm",
+  'confirm_booking.decline': "Decline",
+
+  'pay_choices.title': "Choice of Payment method",
+  'pay_choices.select': "Select your method of payment.",
+  'pay_choices.cancel': "Cancel",
+
+  'my_profile.sender': "Switch to sender mode.",
+  'my_profile.carrier': "Switch to carrier mode.",
+  'creditcard_card.creation_date': "Added on: "
 
 };

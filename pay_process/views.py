@@ -304,10 +304,9 @@ class PayForBookingWithWallet(CreateAPIView):
             booking_requests = BookingRequest.objects.filter(pk__in=selectedBookingIds)
             booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
             booking_amount = booking_requests_price['product__proposed_price__sum']
-            fees = booking_amount*0.25
-            fees_amount = fees*100
-            booking_price = booking_amount + fees
-            booking_price = booking_price*100
+            fees_amount = booking_amount*0.25
+            fees = fees_amount*100
+            booking_price = (booking_amount + fees_amount)*100
 
 
             # Get natural user
@@ -346,11 +345,12 @@ class PayForBookingWithWallet(CreateAPIView):
             # Check if there are enough funds in user wallet
             if nat_user_id is not None and userprofile.wallet_id is not None and user_wallet is not None:
                 funds = str(user_wallet.balance) if user_wallet.balance is not None else ""
-                booking_requests = BookingRequest.objects.filter(request_by=userprofile)
+                booking_requests = BookingRequest.objects.filter(request_by=userprofile, pk__in=selectedBookingIds)
                 booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
                 booking_amount = booking_requests_price['product__proposed_price__sum']
-                fees = booking_amount*0.25
-                booking_price = booking_amount + fees
+                fees_amount = booking_amount*0.25
+                fees = fees_amount * 100
+                booking_price = booking_amount + fees_amount
                 payable_funds = float(funds[4:].replace(",", "")) / 100
                 if payable_funds < booking_price:
                     return Response({"error": "You do not have enough funds. Use another payment method.{}-{}".format(payable_funds, booking_price)}, status=status.HTTP_200_OK)
@@ -389,7 +389,7 @@ class PayForBookingWithWallet(CreateAPIView):
 
             transfer = Transfer(author=natural_user,
                         credited_user=inzula_user,
-                        debited_funds=Money(amount=fees_amount, currency='EUR'),
+                        debited_funds=Money(amount=fees, currency='EUR'),
                         fees=Money(amount=0, currency='EUR'),
                         debited_wallet=user_wallet,
                         credited_wallet=inzula_wallet)
@@ -411,7 +411,6 @@ class PayForBookingWithWallet(CreateAPIView):
             result = {
             }
             return Response(result, status=status.HTTP_200_OK)
-        return Response({"error": "Error processing payment."}, status=status.HTTP_400_BAD_REQUEST)
 
 
 

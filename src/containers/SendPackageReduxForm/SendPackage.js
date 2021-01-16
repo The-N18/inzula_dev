@@ -192,8 +192,8 @@ class SendPackage extends React.Component {
               textAlign="center"
               verticalAlign="middle"
             >
-              <Grid.Row columns={2}>
-                <Grid.Column mobile={16} tablet={16} computer={4}>
+              <Grid.Row columns={activeStep === 1 ? 2: 1}>
+              {activeStep === 1 ? <Grid.Column mobile={16} tablet={16} computer={4}>
                   <Segment basic>
                     <Image centered bordered circular src= {backend_url() + '/static/images/box.jpg'} />
                     <ImageUploader
@@ -208,8 +208,8 @@ class SendPackage extends React.Component {
                         withPreview={true}
                     />
                   </Segment>
-                </Grid.Column>
-                <Grid.Column mobile={16} tablet={16} computer={12}>
+                </Grid.Column> : ''}
+                <Grid.Column mobile={16} tablet={16} computer={activeStep === 1 ? 12: 16}>
                 {activeStep === 2 ? <Grid
                   textAlign="center"
                   verticalAlign="middle"

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Field, reduxForm} from 'redux-form';
+import {Field, reduxForm, reset} from 'redux-form';
 import styles from './signup.css';
 import {
   Segment,
@@ -258,8 +258,10 @@ let RegistrationFormConnected = withRouter(connect(
   mapDispatchToProps
 )(RegistrationForm));
 
+const afterSubmit = (result, dispatch) => dispatch(reset('signup'));
+
 RegistrationFormConnected = reduxForm ({
-  form: 'signup',
+  form: 'signup', onSubmitSuccess: afterSubmit,
   validate
 }) (RegistrationFormConnected);
 

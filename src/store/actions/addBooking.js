@@ -5,6 +5,7 @@ import {checkAuthTimeout} from "./auth";
 import {getInitialReservations} from "./userReservations";
 import { updateBookingCloseModal } from "./updateBookingModal";
 import {closeModal} from "./sendPackageModal";
+import {getInitialSelectableReservations} from "./selectableUserReservations";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -33,8 +34,8 @@ export const bookingAddition = (tripId, created_by, pictures, departure_location
   product_name, product_category, product_weight, product_size, product_value, proposed_price,
   delivery_date, destination_location, recipient_name,
 recipient_phone_number, terms_conditions, user_agreement) => {
-  console.log("in bookingAddition");
-  console.log(pictures);
+  const userProfileId = localStorage.getItem("userProfileId");
+  const userId = localStorage.getItem("userId");
   const config = {
             headers: { 'content-type': 'multipart/form-data' }
           };
@@ -74,6 +75,8 @@ recipient_phone_number, terms_conditions, user_agreement) => {
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(addBookingSuccess(res.data));
         dispatch(closeModal());
+        dispatch(getInitialReservations(userProfileId));
+        dispatch(getInitialSelectableReservations(userId, tripId));
         dispatch(createNotification({
           message: 'Your request has been added',
           type: NOTIFICATION_TYPE_SUCCESS,
@@ -138,8 +141,7 @@ export const bookingAdditionRedux = (tripId, created_by, pictures, departure_loc
   product_name, product_category, product_weight, product_size, product_value, proposed_price,
   delivery_date, destination_location, recipient_name,
 recipient_phone_number, terms_conditions, user_agreement) => {
-  console.log("in bookingAddition");
-  console.log(pictures);
+  const userProfileId = localStorage.getItem("userProfileId");
   const config = {
             headers: { 'content-type': 'multipart/form-data' }
           };
@@ -184,6 +186,7 @@ recipient_phone_number, terms_conditions, user_agreement) => {
           duration: 10000,
           canDismiss: true,
         }));
+        dispatch(getInitialReservations(userProfileId));
       })
       .catch(err => {
         dispatch(addBookingFail(err));

@@ -36,7 +36,7 @@ class PaymentFormModal extends React.Component {
   }
 
   render() {
-    const { open, handleSubmit, price, invalid } = this.props;
+    const { open, handleSubmit, price, invalid, loading } = this.props;
     return (
       <Modal
       closeIcon
@@ -94,7 +94,7 @@ class PaymentFormModal extends React.Component {
             label="CVC"
             component={renderField}
           />
-          <Button positive type="submit" disabled={invalid}>
+          <Button positive type="submit" disabled={invalid || loading}>
             Pay
           </Button>
         </form>
@@ -112,6 +112,7 @@ class PaymentFormModal extends React.Component {
 const mapStateToProps = state => {
   return {
     open: state.paymentFormModal.open,
+    loading: state.paymentFormModal.loading,
     bookingId: state.confirmBookingPrice.bookingId,
     tripId: state.selectReservationsModal.tripId,
     selectedBookingIds: state.selectReservationsModal.selected,

@@ -102,8 +102,10 @@ let ProposePriceOnBookingConnected = connect(
   mapDispatchToProps
 )(ProposePriceOnBooking);
 
+const afterSubmit = (result, dispatch) => dispatch(reset('propose_price'));
+
 ProposePriceOnBookingConnected = reduxForm ({
-  form: 'propose_price',
+  form: 'propose_price', onSubmitSuccess: afterSubmit,
   validate
 }) (ProposePriceOnBookingConnected);
 

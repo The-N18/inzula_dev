@@ -3,7 +3,7 @@ import * as actionTypes from "./actionTypes";
 import { api_url, AUTH_TIMEOUT } from "../../configurations";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import {checkAuthTimeout} from "./auth";
-import {getInitialReservations} from "./userBookings";
+import {getInitialReservations} from "./userReservations";
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -46,6 +46,14 @@ export const cancelBooking = (booking_id, user_id) => {
               canDismiss: true,
             }));
           }
+          if(res['data']['detail'] === "TOO_LATE_TO_CANCEL") {
+            dispatch(createNotification({
+              message: 'Sorry, your booking cannot be cancelled 1 day before delivery.',
+              type: NOTIFICATION_TYPE_WARNING,
+              duration: 30000,
+              canDismiss: true,
+            }));
+          }
         }
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
@@ -54,7 +62,7 @@ export const cancelBooking = (booking_id, user_id) => {
           duration: 10000,
           canDismiss: true,
         }));
-        dispatch(getInitialReservations(user_id));
+        dispatch(getInitialReservations(userProfileId));
       })
       .catch(err => {
         dispatch(createNotification({

@@ -18,6 +18,7 @@ import UserBookingsList from "../../containers/UserBookingsList/UserBookingsList
 import { setActiveIndex } from "../../store/actions/myProfile";
 import $ from "jquery";
 import { toggleProfileType } from "../../store/actions/userInfo";
+import {FormattedMessage, FormattedDate} from 'react-intl'
 
 
 
@@ -70,11 +71,11 @@ class MyProfile extends React.Component {
         render: () => <Tab.Pane attached={false}><ProfileTab/></Tab.Pane>,
       },
       {
-        menuItem: { key: 'reservation', icon: 'calendar', content: profileType === "sender" ? (lang === 'en' ? 'My Reservations' : 'Mes Reservations') : lang === 'en' ? 'My Trips' : 'Mes voyages' },
+        menuItem: { key: 'reservation', icon: 'calendar', content: profileType === "sender" ? (lang === 'en' ? 'My Parcels' : 'Mes colis') : lang === 'en' ? 'My Trips' : 'Mes voyages' },
         render: () => <Tab.Pane attached={false}><TripsReservationsList/></Tab.Pane>,
       },
       {
-        menuItem: { key: 'alerts', icon: 'bell', content: isMobile ? '' : lang === 'en' ? 'Alerts' : 'Notifications' },
+        menuItem: { key: 'alerts', icon: 'bell', content: isMobile ? '' : lang === 'en' ? 'Alerts' : 'Alertes' },
         render: () => <Tab.Pane attached={false}><SenderCarrierNotifsList/></Tab.Pane>,
       },
       {
@@ -99,7 +100,13 @@ class MyProfile extends React.Component {
             <Grid.Column mobile={16} tablet={16} computer={4} textAlign={"right"} float={"right"}>
               <div>
                 <Message floating compact info>
-                    You are in {profileType} mode. Switch?
+                {profileType === "carrier" ? <FormattedMessage
+                  id="my_profile.sender"
+                  defaultMessage="Passez en mode expediteur."
+                /> : <FormattedMessage
+                id="my_profile.carrier"
+                defaultMessage="Passez en mode voyageur."
+              />}
                     <Radio
                       toggle
                       checked={profileType === "sender"}

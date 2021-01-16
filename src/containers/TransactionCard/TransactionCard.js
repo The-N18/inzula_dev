@@ -20,7 +20,7 @@ class TransactionCard extends React.Component {
 
   render() {
 
-    const {type, creation_date, debited_funds, execution_date} = this.props;
+    const {type, creation_date, debited_funds, execution_date, id} = this.props;
     return (
       <Card raised fluid centered className={"notif-card"}>
         <Card.Content>
@@ -29,14 +29,7 @@ class TransactionCard extends React.Component {
             <span><FormattedMessage
               id="transaction_card.payin"
               defaultMessage="Transaction executed: "
-            />
-            <FormattedDate
-              value={execution_date}
-              year="numeric"
-              month="long"
-              day="numeric"
-              weekday="long"
-            /></span> : ''}
+            />{id}</span> : ''}
           </Card.Header>
           <Card.Description>
             {creation_date !== "" ? <span><FormattedMessage
@@ -77,6 +70,7 @@ const mapDispatchToProps = dispatch => {
 TransactionCard.propTypes = {
   pk: PropTypes.number,
   type: PropTypes.string,
+  id: PropTypes.string,
   nature: PropTypes.string,
   creation_date: PropTypes.string,
   execution_date: PropTypes.string,

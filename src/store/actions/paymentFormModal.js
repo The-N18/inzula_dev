@@ -7,7 +7,6 @@ import mangopay from 'mangopay2-nodejs-sdk';
 import { closeModal } from "./selectReservationsModal";
 import  { closeSelectCreditCard } from "./selectCreditCardModal";
 import {closePaymentOptions} from "./paymentOptionsModal";
-
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
 
@@ -20,6 +19,19 @@ export const openPaymentFormModal = () => {
 export const closePaymentFormModal = () => {
   return {
     type: actionTypes.PAYMENT_FORM_CLOSE_MODAL,
+  };
+};
+
+
+export const startPay = () => {
+  return {
+    type: actionTypes.PAYMENT_FORM_START_PAY
+  };
+};
+
+export const endPay = () => {
+  return {
+    type: actionTypes.PAYMENT_FORM_END_PAY,
   };
 };
 
@@ -113,6 +125,7 @@ export const payToWallet = (values) => {
 
 export const payForBooking = (values) => {
   return dispatch => {
+    dispatch(startPay());
     axios
       .post(api_url() + "/pay/PayForBooking", values)
       .then(result => {
@@ -122,6 +135,7 @@ export const payForBooking = (values) => {
         dispatch(closeModal());
         dispatch(closeSelectCreditCard());
         dispatch(closePaymentOptions());
+        dispatch(endPay());
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: 'Your payment has been processed successfully.',
@@ -131,6 +145,7 @@ export const payForBooking = (values) => {
         }));
       })
       .catch(err => {
+        dispatch(endPay());
         dispatch(createNotification({
           message: 'Failed to process payment.',
           type: NOTIFICATION_TYPE_ERROR,
@@ -145,6 +160,7 @@ export const payForBooking = (values) => {
 
 export const payForBookingWithCardId = (values) => {
   return dispatch => {
+    dispatch(startPay());
     axios
       .post(api_url() + "/pay/PayForBookingWithCardId", values)
       .then(result => {
@@ -154,6 +170,7 @@ export const payForBookingWithCardId = (values) => {
         dispatch(closeModal());
         dispatch(closeSelectCreditCard());
         dispatch(closePaymentOptions());
+        dispatch(endPay());
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: 'Your payment has been processed successfully.',
@@ -163,6 +180,7 @@ export const payForBookingWithCardId = (values) => {
         }));
       })
       .catch(err => {
+        dispatch(endPay());
         dispatch(createNotification({
           message: 'Failed to process payment.',
           type: NOTIFICATION_TYPE_ERROR,
@@ -175,6 +193,7 @@ export const payForBookingWithCardId = (values) => {
 
 export const payForBookingWithPaypal = (values) => {
   return dispatch => {
+    dispatch(startPay());
     axios
       .post(api_url() + "/pay/PayForBookingWithPaypal", values)
       .then(result => {
@@ -182,6 +201,7 @@ export const payForBookingWithPaypal = (values) => {
         dispatch(closePaymentFormModal());
         dispatch(closeModal());
         dispatch(closePaymentOptions());
+        dispatch(endPay());
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: 'Your payment has been processed successfully.',
@@ -191,6 +211,7 @@ export const payForBookingWithPaypal = (values) => {
         }));
       })
       .catch(err => {
+        dispatch(endPay());
         dispatch(createNotification({
           message: 'Failed to process payment.',
           type: NOTIFICATION_TYPE_ERROR,
@@ -203,11 +224,12 @@ export const payForBookingWithPaypal = (values) => {
 
 export const payForBookingWithWalletFunds = (values) => {
   return dispatch => {
+    dispatch(startPay());
     axios
       .post(api_url() + "/pay/PayForBookingWithWalletFunds", values)
       .then(result => {
-        console.log(result);
         if("error" in result.data) {
+          dispatch(endPay());
           dispatch(createNotification({
             message: 'You do not have enough funds in your wallet. Use another payment method.',
             type: NOTIFICATION_TYPE_ERROR,
@@ -218,6 +240,7 @@ export const payForBookingWithWalletFunds = (values) => {
           dispatch(closePaymentFormModal());
           dispatch(closeModal());
           dispatch(closePaymentOptions());
+          dispatch(endPay());
           dispatch(checkAuthTimeout(AUTH_TIMEOUT));
           dispatch(createNotification({
             message: 'Your payment has been processed successfully.',
@@ -228,6 +251,7 @@ export const payForBookingWithWalletFunds = (values) => {
         }
       })
       .catch(err => {
+        dispatch(endPay());
         dispatch(createNotification({
           message: 'Failed to process payment.',
           type: NOTIFICATION_TYPE_ERROR,

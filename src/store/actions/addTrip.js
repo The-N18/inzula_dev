@@ -4,6 +4,7 @@ import { api_url, AUTH_TIMEOUT } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
 import {getInitialTrips} from "./userTrips";
+import {closeAddTripModal} from "./addTripModal";
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -37,7 +38,7 @@ export const toggleCheck = (trip_type_check) => {
 
 
 export const tripAddition = (created_by, departure_location, destination_location, depart_date, comeback_date, trip_type) => {
-  console.log("in tripAddition");
+  const userProfileId = localStorage.getItem("userProfileId");
   return dispatch => {
     dispatch(addTripStart());
     axios
@@ -53,6 +54,8 @@ export const tripAddition = (created_by, departure_location, destination_locatio
         console.log(res.data)
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(addTripSuccess(res.data));
+        dispatch(closeAddTripModal());
+        dispatch(getInitialTrips(userProfileId));
         dispatch(createNotification({
           message: 'Your trip has been added',
           type: NOTIFICATION_TYPE_SUCCESS,

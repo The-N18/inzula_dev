@@ -1,5 +1,6 @@
 import os
 from twilio.rest import Client
+from twilio.base.exceptions import TwilioRestException
 from django.db import models
 from userprofile.models import UserProfile, City
 from trip.models import Trip
@@ -81,16 +82,20 @@ ALERT_TYPE = [
     ('product_delivered', 'Product delivered.')
 ]
 
-def send_sms(msg, dest):
-    account_sid = settings.TWILIO_ACCOUNT_SID
-    auth_token = settings.TWILIO_AUTH_TOKEN
-    client = Client(account_sid, auth_token)
-    message = client.messages.create(
-                        body=msg,
-                        from_=settings.PHONE_NUMBER,
-                        to=dest
-                    )
-    return message.sid
+def send_sms(msg, dest, username):
+    try:
+        account_sid = settings.TWILIO_ACCOUNT_SID
+        auth_token = settings.TWILIO_AUTH_TOKEN
+        client = Client(account_sid, auth_token)
+        message = client.messages.create(
+                            body="""Bonjour """ + username + """,\n""" + msg,
+                            from_=settings.PHONE_NUMBER,
+                            to=dest
+                        )
+        return message.sid
+    except TwilioRestException as e:
+        print(e)
+        return e.code
 
 class Product(models.Model):
     departure_date = models.DateField(null=True, blank=True)
@@ -102,7 +107,7 @@ class Product(models.Model):
     price = models.CharField(max_length=50, choices=PRODUCT_VALUE_OPTIONS)
     product_category = models.CharField(max_length=50, choices=PRODUCT_CATEGORY_OPTIONS)
     created_by = models.ForeignKey(UserProfile, on_delete=models.PROTECT, related_name='+')
-    creation_date = models.DateField(null=True, blank=True)
+    creation_date = models.DateField(auto_now_add=True)
     name = models.CharField(max_length=250)
     description = models.CharField(max_length=250)
     recipient_name = models.CharField(max_length=250)
@@ -128,7 +133,7 @@ class BookingRequest(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.PROTECT, related_name='+', null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='+')
     confirmed_by_sender = models.BooleanField(default=False)
-    made_on = models.DateField(null=True, blank=True)
+    made_on = models.DateField(auto_now_add=True)
     collector_id = models.FileField(upload_to='uploads/', null=True, blank=True)
     status = models.CharField(max_length=50, choices=REQUEST_STATUS)
 
@@ -148,7 +153,7 @@ class PriceProposal(models.Model):
 class Codes(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     booking = models.ForeignKey(BookingRequest, on_delete=models.CASCADE, related_name='+', null=False, blank=False)
-    created_on = models.DateTimeField(null=True, blank=True)
+    created_on = models.DateTimeField(auto_now_add=True)
     validated_on = models.DateTimeField(null=True, blank=True)
     status = models.CharField(max_length=50, choices=CODE_STATUS)
     code = models.CharField(max_length=250, unique=True, null=False)
@@ -172,11 +177,13 @@ def get_short_booking_detail(booking, lang):
             product_name = booking.product.name
             product_departure_location = booking.product.departure_location.label
             product_destination_location = booking.product.destination_location.label
+            recipient_name = booking.product.recipient_name
+            recipient_phone_number = booking.product.recipient_phone_number
             product_arrival_date = get_date(booking.product.arrival_date)
             if lang == "en":
-                return """\nBooking: \nUser: """ + user + """\n Creation Date: """ + date + """\n Name: """ + product_name + """\n Departure location: """ + product_departure_location + """\n Destination location: """ + product_destination_location + """\n Arrival date: """ + product_arrival_date
+                return """\nBooking: \nUser: """ + user + """\n Creation Date: """ + date + """\n Name: """ + product_name + """\n Departure location: """ + product_departure_location + """\n Destination location: """ + product_destination_location + """\n Arrival date: """ + product_arrival_date + """\n Recipient name: """ + recipient_name + """\n Recipient phone number: """ + recipient_phone_number
             if lang == "fr":
-                return """\nRequette: \nUtilisateur: """ + user + """\n Date de creation: """ + date + """\n Nom: """ + product_name + """\n Lieu de depart: """ + product_departure_location + """\n Lieu d'arrivee: """ + product_destination_location + """\n Date d'arrivee: """ + product_arrival_date
+                return """\nRequette: \nUtilisateur: """ + user + """\n Date de creation: """ + date + """\n Nom: """ + product_name + """\n Lieu de depart: """ + product_departure_location + """\n Lieu d'arrivee: """ + product_destination_location + """\n Date d'arrivee: """ + product_arrival_date + """\n Nom du receveur: """ + recipient_name + """\n Nr tel du receveur: """ + recipient_phone_number
     return ""
 
 
@@ -184,7 +191,7 @@ class Notif(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     booking_request = models.ForeignKey(BookingRequest, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     price_proposal = models.ForeignKey(PriceProposal, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
-    created_on = models.DateTimeField(null=True, blank=True)
+    created_on = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(UserProfile, on_delete=models.PROTECT, related_name='+')
     status = models.CharField(max_length=50, choices=ALERT_STATUS)
     type = models.CharField(max_length=50, choices=ALERT_TYPE)
@@ -290,23 +297,23 @@ def email_notification(sender, **kwargs):
         if new_notif.type == "payment_for_booking":
             send_mail(
             subject_en,
-            msg_en + """\n=======================================\n""" + msg_fr,
+            """Hi """ + new_notif.created_by.user.username + """,\n""" + msg_en + """\n=======================================\n""" + msg_fr,
             settings.DEFAULT_FROM_EMAIL,
             [new_notif.created_by.user.email],
             fail_silently=False,
             )
         send_mail(
             subject_en,
-            msg_en + """\n=======================================\n""" + msg_fr,
+            """Bonjour """ + new_notif.created_by.user.username + """,\n""" + msg_en + """\n=======================================\n""" + msg_fr,
             settings.DEFAULT_FROM_EMAIL,
             get_recipients(new_notif),
             fail_silently=False,
             )
-def send_code_by_email(text, email_recipient):
+def send_code_by_email(text, email_recipient, username):
     subject_en = """Inzula: [Notification]: Delivery code."""
     send_mail(
             subject_en,
-            text,
+            """Bonjour """ + username + """,\n""" + text,
             settings.DEFAULT_FROM_EMAIL,
             [email_recipient],
             fail_silently=False,
@@ -319,11 +326,15 @@ def sms_notification(sender, **kwargs):
         # send sms to sender
         text = """Inzula: Request: """ + get_short_booking_detail(new_code.booking, "en") + """Code: """ + new_code.code + """.\n Communicate this code to recipient. Recipient should give this code to carrier after reception of the product."""
         text_recipient = new_code.booking.request_by.phone_number
+        sender_username = new_code.booking.request_by.user.username
         email_recipient = new_code.booking.request_by.user.email
-        package_recipient = new_code.booking.product.recipient_phone_number
-        send_sms(text, text_recipient)
-        send_sms(text, package_recipient)
-        send_code_by_email(text, email_recipient)
+        username = new_code.booking.request_by.user.username
+        package_recipient_phone_number = new_code.booking.product.recipient_phone_number
+        package_recipient_name = new_code.booking.product.recipient_name
+        send_sms(text, text_recipient, sender_username)
+        send_sms(text, package_recipient_phone_number, package_recipient_name)
+        send_code_by_email(text, email_recipient, username)
+        
 
 
 post_save.connect(email_notification, sender=Notif)

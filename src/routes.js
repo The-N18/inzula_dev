@@ -1,5 +1,5 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import Hoc from "./hoc/hoc";
 
 import MyProfile from "./containers/MyProfile/MyProfile";
@@ -19,20 +19,22 @@ import SignupParentWithDiscount from "./containers/SignupParentWithDiscount/Sign
 
 const BaseRouter = () => (
   <Hoc>
-    <Route path="/signupdiscount" component={SignupParentWithDiscount} />
-    <Route path="/profile" component={MyProfile} />
-    <Route path="/transport" component={Transport} />
-    <Route path="/dispatch" component={SendPage} />
-    <Route path="/faqs" component={Faqs} />
-    <Route path="/terms" component={Terms} />
-    <Route path="/useragreement" component={UserAgreement} />
-    <Route path="/transparency" component={Transparency} />
-    <Route path="/legal" component={Legal} />
-    <Route path="/insurance" component={Insurance} />
-    <Route path="/search_bookings" component={SearchBookingRequestsPage} />
-    <Route path="/verify/:verificationKey" component={VerifyUser} />
-    <Route path="/reset/:uid/:token" component={ResetPassword} />
-    <Route exact path="/" component={HomepageLayout} />
+    <Switch>
+      <Route path="/signupdiscount" component={SignupParentWithDiscount} />
+      <Route path="/profile" component={MyProfile} />
+      <Route path="/transport" component={Transport} />
+      {/* <Route path="/dispatch" component={SendPage} /> */}
+      <Route path="/faqs" component={Faqs} />
+      <Route path="/terms" component={Terms} />
+      <Route path="/useragreement" component={UserAgreement} />
+      <Route path="/transparency" component={Transparency} />
+      <Route path="/legal" component={Legal} />
+      <Route path="/insurance" component={Insurance} />
+      <Route path="/search_bookings" component={SearchBookingRequestsPage} />
+      <Route path="/verify/:verificationKey" component={VerifyUser} />
+      <Route path="/reset/:uid/:token" component={ResetPassword} />
+      <Route exact path="/" component={HomepageLayout} />
+    </Switch>
   </Hoc>
 );
 

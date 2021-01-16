@@ -8,6 +8,8 @@ import {
 import HomeServiceSection from "../containers/HomeServiceSection/HomeServiceSection";
 import HomeHowInzulaWorksSection from "../containers/HomeHowInzulaWorksSection/HomeHowInzulaWorksSection";
 import HomeTextVideo from "../containers/HomeTextVideo/HomeTextVideo";
+import SearchTripsForm from "../containers/SearchTripsReduxForm/SearchTripsForm";
+import SelectReservationsModal from "../containers/SelectReservationsModal/SelectReservationsModal";
 
 const getWidth = () => {
   const isSSR = typeof window === "undefined";
@@ -80,6 +82,8 @@ ResponsiveContainer.propTypes = {
 const HomepageLayout = () => (
   <ResponsiveContainer>
     <HomeTextVideo/>
+    <SelectReservationsModal/>
+    <SearchTripsForm/>
     <HomeHowInzulaWorksSection/>
     <HomeServiceSection/>
   </ResponsiveContainer>

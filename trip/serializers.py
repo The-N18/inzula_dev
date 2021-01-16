@@ -11,7 +11,7 @@ class TripSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Trip
-        fields = ['pk', 'depart_date', 'created_by', 'comeback_date', 'trip_type', 'departure_location', 'destination_location', 'creator_user_name']
+        fields = ['pk', 'depart_date', 'created_by', 'comeback_date', 'trip_type', 'departure_location', 'destination_location', 'creator_user_name', 'creation_date']
 
     def get_creator_user_name(self, obj):
         if obj.created_by:
@@ -34,7 +34,7 @@ class TripSearchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Trip
-        fields = ['pk', 'depart_date', 'created_by', 'comeback_date', 'trip_type', 'departure_location', 'destination_location', 'creator_user_name']
+        fields = ['pk', 'depart_date', 'created_by', 'comeback_date', 'trip_type', 'departure_location', 'destination_location', 'creator_user_name', 'creation_date']
 
     def get_creator_user_name(self, obj):
         if obj.created_by:

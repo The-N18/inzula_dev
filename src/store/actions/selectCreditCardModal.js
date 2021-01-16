@@ -56,7 +56,6 @@ export const getCards = (user_id) => {
             {user_id: user_id}
           )
       .then(res => {
-        console.log(res.data)
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(getCardsSuccess(res.data["cards"]));
       })
