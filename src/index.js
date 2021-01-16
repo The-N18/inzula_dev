@@ -119,8 +119,8 @@ const app = (
   <Provider store={store}>
     <App />
     <MessengerCustomerChat
-        pageId="102422251842554"
-        appId="136854898060654"
+        pageId="104964201310475"
+        appId="126437972651965"
         themeColor="#bc1823"
         loggedInGreeting="Bonjour! Comment pouvons nous vous aider?"
         loggedOutGreeting="Bonjour! Comment pouvons nous vous aider?"
