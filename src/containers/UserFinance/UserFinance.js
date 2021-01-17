@@ -65,7 +65,7 @@ class UserFinance extends React.Component {
         render: () => <Tab.Pane attached={false}><MyFunds/></Tab.Pane>,
       },
       {
-        menuItem: { key: 'my_payment_methods', icon: 'money', content: lang === 'en' ? 'My payment methods' : 'Mes methodes de paiement' },
+        menuItem: { key: 'my_payment_methods', icon: 'money', content: lang === 'en' ? 'My payment methods' : 'Mes méthodes de paiement' },
         render: () => <Tab.Pane attached={false}><MyPaymentMethods/></Tab.Pane>,
       },
     ];
