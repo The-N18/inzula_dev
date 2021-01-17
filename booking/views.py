@@ -32,9 +32,13 @@ from django.http import HttpResponse
 from django.utils.crypto import get_random_string
 from pay_process.views import deliverPaymentToCarrier, refund_charges
 import string
+from django.db import transaction
+
 
 # Create your views here.
-index_file_path = os.path.join(settings.BASE_DIR, 'build/index.html')
+debug_index_file_path = os.path.join(settings.BASE_DIR, 'public/index.html')
+prod_index_file_path = os.path.join(settings.BASE_DIR, 'build/index.html')
+index_file_path = debug_index_file_path if settings.MANUAL_DEBUG == True else prod_index_file_path
 
 def index(request):
     try:
@@ -198,7 +202,7 @@ class SenderNotifsListView(generics.ListAPIView):
         bookings_by_user = BookingRequest.objects.filter(request_by=user_id)
         # trips_by_user = Trip.objects.filter(created_by=user_id)
         if user_id is not None:
-            queryset = queryset.exclude(Q(created_by=user_id) & Q(type="payment_for_booking"))
+            # queryset = queryset.exclude(Q(created_by=user_id) & Q(type="payment_for_booking"))
             queryset = queryset.exclude(Q(created_by=user_id) & Q(type="payment_for_delivery"))
             queryset = queryset.filter(booking_request__in=bookings_by_user)
         return queryset.order_by('-created_on')
@@ -245,23 +249,24 @@ class NotifCreateView(CreateAPIView):
             return TokenSerializer(user.auth_token).data
 
     def create(self, request, *args, **kwargs):
-        trip = request.data["trip"]
-        booking_data = request.data["bookings"]
-        type = request.data["type"]
-        notif_status = request.data["status"]
-        created_by = UserProfile.objects.get(user=request.data["created_by"])
-        trip = Trip.objects.get(pk=trip)
-        if isinstance(booking_data, list):
-        # if type(booking_data) is list:
-            for booking_id in booking_data:
-                booking_request = BookingRequest.objects.get(pk=booking_id)
-                notification = Notif.objects.create(trip=trip,
-                booking_request=booking_request,
-                created_by=created_by,
-                price_proposal=None,
-                type=type,
-                status=notif_status)
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        with transaction.atomic():
+            trip = request.data["trip"]
+            booking_data = request.data["bookings"]
+            type = request.data["type"]
+            notif_status = request.data["status"]
+            created_by = UserProfile.objects.get(user=request.data["created_by"])
+            trip = Trip.objects.get(pk=trip)
+            if isinstance(booking_data, list):
+            # if type(booking_data) is list:
+                for booking_id in booking_data:
+                    booking_request = BookingRequest.objects.get(pk=booking_id)
+                    notification = Notif.objects.create(trip=trip,
+                    booking_request=booking_request,
+                    created_by=created_by,
+                    price_proposal=None,
+                    type=type,
+                    status=notif_status)
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 
@@ -283,34 +288,35 @@ class PriceProposalCreateView(CreateAPIView):
             return TokenSerializer(user.auth_token).data
 
     def create(self, request, *args, **kwargs):
-        booking_request = BookingRequest.objects.get(pk=request.data["booking_id"])
-        request_by = UserProfile.objects.get(user=request.data["user_id"])
-        date_range_start = booking_request.product.arrival_date - datetime.timedelta(days=14)
-        date_range_end = booking_request.product.arrival_date + datetime.timedelta(days=14)
-        trips = Trip.objects.filter(departure_location=booking_request.product.departure_location,
-                                    destination_location=booking_request.product.destination_location,
-                                    depart_date__range=[date_range_start, date_range_end])
-        if request_by.pk == booking_request.product.created_by.pk:
-            return Response({"info": "CANNOT_MAKE_OFFER_ON_YOUR_OWN_REQUEST"}, status=status.HTTP_200_OK)
-        if booking_request.status == "boo":
-            return Response({"info": "CANNOT_MAKE_OFFER_ON_BOOKED_REQUEST"}, status=status.HTTP_200_OK)
-        if booking_request.status == "awa":
-            return Response({"info": "CANNOT_MAKE_OFFER_ON_VALIDATED_REQUEST"}, status=status.HTTP_200_OK)
-        if booking_request.status == "del":
-            return Response({"info": "CANNOT_MAKE_OFFER_ON_DELIVERED_REQUEST"}, status=status.HTTP_200_OK)
-        if not trips:
-            return Response({"info": "NO_CORRESPONDING_TRIP"}, status=status.HTTP_200_OK)
-        price = request.data["price"]
-        price_proposal = PriceProposal.objects.create(booking_request=booking_request,
-        request_by=request_by,
-        price=price)
-        notification = Notif.objects.create(trip=None,
-        booking_request=booking_request,
-        price_proposal=price_proposal,
-        created_by=request_by,
-        type='offer_rec',
-        status='unseen')
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        with transaction.atomic():
+            booking_request = BookingRequest.objects.get(pk=request.data["booking_id"])
+            request_by = UserProfile.objects.get(user=request.data["user_id"])
+            date_range_start = booking_request.product.arrival_date - datetime.timedelta(days=14)
+            date_range_end = booking_request.product.arrival_date + datetime.timedelta(days=14)
+            trips = Trip.objects.filter(departure_location=booking_request.product.departure_location,
+                                        destination_location=booking_request.product.destination_location,
+                                        depart_date__range=[date_range_start, date_range_end])
+            if request_by.pk == booking_request.product.created_by.pk:
+                return Response({"info": "CANNOT_MAKE_OFFER_ON_YOUR_OWN_REQUEST"}, status=status.HTTP_200_OK)
+            if booking_request.status == "boo":
+                return Response({"info": "CANNOT_MAKE_OFFER_ON_BOOKED_REQUEST"}, status=status.HTTP_200_OK)
+            if booking_request.status == "awa":
+                return Response({"info": "CANNOT_MAKE_OFFER_ON_VALIDATED_REQUEST"}, status=status.HTTP_200_OK)
+            if booking_request.status == "del":
+                return Response({"info": "CANNOT_MAKE_OFFER_ON_DELIVERED_REQUEST"}, status=status.HTTP_200_OK)
+            if not trips:
+                return Response({"info": "NO_CORRESPONDING_TRIP"}, status=status.HTTP_200_OK)
+            price = request.data["price"]
+            price_proposal = PriceProposal.objects.create(booking_request=booking_request,
+            request_by=request_by,
+            price=price)
+            notification = Notif.objects.create(trip=None,
+            booking_request=booking_request,
+            price_proposal=price_proposal,
+            created_by=request_by,
+            type='offer_rec',
+            status='unseen')
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class SubmitDeliveryCode(CreateAPIView):
@@ -331,48 +337,49 @@ class SubmitDeliveryCode(CreateAPIView):
             return TokenSerializer(user.auth_token).data
 
     def create(self, request, *args, **kwargs):
-        code = request.data["code"]
-        user_id = request.data["user_id"]
-        result = {"info": ""}
-        if Codes.objects.filter(code=code).exists():
-            code_obj = Codes.objects.get(code=code)
-            if code_obj.validation_attempts >= settings.MAX_VALIDATION_ATTEMPTS:
-                result["info"] = "MAX_VALIDATION_ATTEMPTS_REACHED"
-                return Response(result, status=status.HTTP_200_OK)
+        with transaction.atomic():
+            code = request.data["code"]
+            user_id = request.data["user_id"]
+            result = {"info": ""}
+            if Codes.objects.filter(code=code).exists():
+                code_obj = Codes.objects.get(code=code)
+                if code_obj.validation_attempts >= settings.MAX_VALIDATION_ATTEMPTS:
+                    result["info"] = "MAX_VALIDATION_ATTEMPTS_REACHED"
+                    return Response(result, status=status.HTTP_200_OK)
+                else:
+                    if code_obj.status == "obsolete":
+                        code_obj.validation_attempts = code_obj.validation_attempts + 1
+                        code_obj.save()
+                        result["info"] = "CODE_IS_OBSOLETE"
+                        return Response(result, status=status.HTTP_200_OK)
+                    if code_obj.status == "validated_by_carrier":
+                        code_obj.validation_attempts = code_obj.validation_attempts + 1
+                        code_obj.save()
+                        result["info"] = "CODE_ALREADY_VALIDATED"
+                        return Response(result, status=status.HTTP_200_OK)
+                    if code_obj.status == "sent_to_sender":
+                        code_obj.validation_attempts = code_obj.validation_attempts + 1
+                        code_obj.validated_on = timezone.now()
+                        code_obj.status = "validated_by_carrier"
+                        code_obj.save()
+                        result["info"] = "CODE_VALIDATED_SUCCESSFULLY"
+                        # deliver payment
+                        deliverPaymentToCarrier(code_obj.booking.pk)
+                        # create notification
+                        created_by = UserProfile.objects.get(user=user_id)
+                        Notif.objects.create(trip=code_obj.trip,
+                                            booking_request=code_obj.booking,
+                                            created_by=created_by,
+                                            price_proposal=None,
+                                            type="delivered",
+                                            status="unseen")
+                        # Pay the carrier
+                        ## @TODO Complete pay carrier method
+                        return Response(result, status=status.HTTP_200_OK)
             else:
-                if code_obj.status == "obsolete":
-                    code_obj.validation_attempts = code_obj.validation_attempts + 1
-                    code_obj.save()
-                    result["info"] = "CODE_IS_OBSOLETE"
-                    return Response(result, status=status.HTTP_200_OK)
-                if code_obj.status == "validated_by_carrier":
-                    code_obj.validation_attempts = code_obj.validation_attempts + 1
-                    code_obj.save()
-                    result["info"] = "CODE_ALREADY_VALIDATED"
-                    return Response(result, status=status.HTTP_200_OK)
-                if code_obj.status == "sent_to_sender":
-                    code_obj.validation_attempts = code_obj.validation_attempts + 1
-                    code_obj.validated_on = timezone.now()
-                    code_obj.status = "validated_by_carrier"
-                    code_obj.save()
-                    result["info"] = "CODE_VALIDATED_SUCCESSFULLY"
-                    # deliver payment
-                    deliverPaymentToCarrier(code_obj.booking.pk)
-                    # create notification
-                    created_by = UserProfile.objects.get(user=user_id)
-                    Notif.objects.create(trip=code_obj.trip,
-                                         booking_request=code_obj.booking,
-                                         created_by=created_by,
-                                         price_proposal=None,
-                                         type="delivered",
-                                         status="unseen")
-                    # Pay the carrier
-                    ## @TODO Complete pay carrier method
-                    return Response(result, status=status.HTTP_200_OK)
-        else:
-            result["info"] = "INVALID_CODE"
-            return Response(result, status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_204_NO_CONTENT)
+                result["info"] = "INVALID_CODE"
+                return Response(result, status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class BookingRequestViewSet(viewsets.ModelViewSet):
@@ -435,61 +442,62 @@ class BookingRequestView(CreateAPIView):
             return TokenSerializer(user.auth_token).data
 
     def create(self, request, *args, **kwargs):
-        pictures = request.FILES.getlist('pictures')
-        data = request.data
-        departure_location = City.objects.get(pk=data["departure_location"])
-        destination_location = City.objects.get(pk=data["destination_location"])
-        userprofile = UserProfile.objects.get(user=data["created_by"])
-        price = data["product_value"]
-        space = data["product_size"]
-        weight = data["product_weight"]
-        tripId = data["tripId"]
-        depDate = data["delivery_date"]
-        category = data["product_category"]
-        proposed_price = data["proposed_price"]
-        start_date = datetime.datetime.strptime(depDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
-        depDate2 = start_date.strftime('%Y-%m-%d')
-        min_price = calculate_min_price(weight, space, category, price)
-        if float(proposed_price) < min_price:
-            return Response({"detail": "Sorry, the price must be at least {}".format(min_price)},
-                            status=status.HTTP_400_BAD_REQUEST,
+        with transaction.atomic():
+            pictures = request.FILES.getlist('pictures')
+            data = request.data
+            departure_location = City.objects.get(pk=data["departure_location"])
+            destination_location = City.objects.get(pk=data["destination_location"])
+            userprofile = UserProfile.objects.get(user=data["created_by"])
+            price = data["product_value"]
+            space = data["product_size"]
+            weight = data["product_weight"]
+            tripId = data["tripId"]
+            depDate = data["delivery_date"]
+            category = data["product_category"]
+            proposed_price = data["proposed_price"]
+            start_date = datetime.datetime.strptime(depDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
+            depDate2 = start_date.strftime('%Y-%m-%d')
+            min_price = calculate_min_price(weight, space, category, price)
+            if float(proposed_price) < min_price:
+                return Response({"detail": "Sorry, the price must be at least {}".format(min_price)},
+                                status=status.HTTP_400_BAD_REQUEST,
+                                headers=headers)
+            product = Product.objects.create(arrival_date=depDate2,
+            departure_location=departure_location,
+            destination_location=destination_location,
+            name=data["product_name"],
+            description=data["product_description"],
+            recipient_name=data["recipient_name"],
+            recipient_phone_number=data["recipient_phone_number"],
+            proposed_price=proposed_price,
+            price=price,
+            space=space,
+            weight=weight,
+            product_category=category,
+            terms_conditions=data["terms_conditions"].capitalize(),
+            user_agreement=data["user_agreement"].capitalize(),
+            created_by=userprofile)
+            trip = None
+            booking_request = BookingRequest.objects.create(product=product, request_by=userprofile)
+            if tripId != None and tripId != 'null':
+                trip = Trip.objects.get(pk=tripId)
+                booking_request.trip = trip
+                booking_request.save()
+                # Create notification
+                notification = Notif.objects.create(trip=trip,
+                booking_request=booking_request,
+                created_by=userprofile,
+                type="trip_booked",
+                status="unseen")
+            if len(pictures) > 0:
+                for item in pictures:
+                    img = ProductImage(image=item, product=product)
+                    img.save()
+            serializer = self.get_serializer(booking_request)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data,
+                            status=status.HTTP_201_CREATED,
                             headers=headers)
-        product = Product.objects.create(arrival_date=depDate2,
-        departure_location=departure_location,
-        destination_location=destination_location,
-        name=data["product_name"],
-        description=data["product_description"],
-        recipient_name=data["recipient_name"],
-        recipient_phone_number=data["recipient_phone_number"],
-        proposed_price=proposed_price,
-        price=price,
-        space=space,
-        weight=weight,
-        product_category=category,
-        terms_conditions=data["terms_conditions"].capitalize(),
-        user_agreement=data["user_agreement"].capitalize(),
-        created_by=userprofile)
-        trip = None
-        booking_request = BookingRequest.objects.create(product=product, request_by=userprofile)
-        if tripId != None and tripId != 'null':
-            trip = Trip.objects.get(pk=tripId)
-            booking_request.trip = trip
-            booking_request.save()
-            # Create notification
-            notification = Notif.objects.create(trip=trip,
-            booking_request=booking_request,
-            created_by=userprofile,
-            type="trip_booked",
-            status="unseen")
-        if len(pictures) > 0:
-            for item in pictures:
-                img = ProductImage(image=item, product=product)
-                img.save()
-        serializer = self.get_serializer(booking_request)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data,
-                        status=status.HTTP_201_CREATED,
-                        headers=headers)
 
 
 class BookingRequestDetail(APIView):
@@ -508,43 +516,44 @@ class BookingRequestDetail(APIView):
         return Response(serializer.data)
 
     def put(self, request, pk, format=None):
-        booking_request = self.get_object(pk)
-        product = booking_request.product
-        pictures = request.FILES.getlist('pictures')
-        departure_location = City.objects.get(pk=request.data["departure_location"])
-        destination_location = City.objects.get(pk=request.data["destination_location"])
-        userprofile = UserProfile.objects.get(pk=request.data["created_by"])
-        price = request.data["price"] if "price" in request.data else product.price
-        space = request.data["space"] if "space" in request.data else product.space
-        weight = request.data["weight"] if "weight" in request.data else product.weight
-        category = request.data["product_category"] if "product_category" in request.data else product.product_category
-        proposed_price = request.data["proposed_price"] if "proposed_price" in request.data else product.proposed_price
-        depDate = request.data["arrival_date"]
-        start_date = datetime.datetime.strptime(depDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
-        depDate2 = start_date.strftime('%Y-%m-%d')
+        with transaction.atomic():
+            booking_request = self.get_object(pk)
+            product = booking_request.product
+            pictures = request.FILES.getlist('pictures')
+            departure_location = City.objects.get(pk=request.data["departure_location"])
+            destination_location = City.objects.get(pk=request.data["destination_location"])
+            userprofile = UserProfile.objects.get(pk=request.data["created_by"])
+            price = request.data["price"] if "price" in request.data else product.price
+            space = request.data["space"] if "space" in request.data else product.space
+            weight = request.data["weight"] if "weight" in request.data else product.weight
+            category = request.data["product_category"] if "product_category" in request.data else product.product_category
+            proposed_price = request.data["proposed_price"] if "proposed_price" in request.data else product.proposed_price
+            depDate = request.data["arrival_date"]
+            start_date = datetime.datetime.strptime(depDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
+            depDate2 = start_date.strftime('%Y-%m-%d')
 
-        product.arrival_date=depDate2
-        product.departure_location=departure_location
-        product.destination_location=destination_location
-        product.name=request.data["name"]
-        product.description=request.data["description"]
-        product.recipient_name=request.data["recipient_name"]
-        product.recipient_phone_number=request.data["recipient_phone_number"]
-        product.proposed_price=proposed_price
-        product.price=price
-        product.space=space
-        product.weight=weight
-        product.product_category=category
-        product.terms_conditions=request.data["terms_conditions"].capitalize()
-        product.user_agreement=request.data["user_agreement"].capitalize()
-        product.save()
-        if len(pictures) > 0:
-            for item in pictures:
-                img = ProductImage(image=item, product=product)
-                img.save()
-        serializer = BookingRequestSerializer(booking_request)
-        return Response(serializer.data,
-                        status=status.HTTP_200_OK)
+            product.arrival_date=depDate2
+            product.departure_location=departure_location
+            product.destination_location=destination_location
+            product.name=request.data["name"]
+            product.description=request.data["description"]
+            product.recipient_name=request.data["recipient_name"]
+            product.recipient_phone_number=request.data["recipient_phone_number"]
+            product.proposed_price=proposed_price
+            product.price=price
+            product.space=space
+            product.weight=weight
+            product.product_category=category
+            product.terms_conditions=request.data["terms_conditions"].capitalize()
+            product.user_agreement=request.data["user_agreement"].capitalize()
+            product.save()
+            if len(pictures) > 0:
+                for item in pictures:
+                    img = ProductImage(image=item, product=product)
+                    img.save()
+            serializer = BookingRequestSerializer(booking_request)
+            return Response(serializer.data,
+                            status=status.HTTP_200_OK)
 
     def delete(self, request, pk, format=None):
         booking_request = self.get_object(pk)
@@ -676,21 +685,22 @@ class ValidateBooking(APIView):
     """
 
     def post(self, request, format=None):
-        booking_request = BookingRequest.objects.get(pk=request.data['bookingId'])
-        booking_request.confirmed_by_sender = True
-        booking_request.status = 'awa'
-        booking_request.save()
-        # create notification
-        Notif.objects.create(trip=booking_request.trip,
-        booking_request=booking_request,
-        created_by=booking_request.trip.created_by,
-        price_proposal=None,
-        type='request_validated',
-        created_on=timezone.now(),
-        status='unseen')
-        generateRandomCode(booking_request.trip.pk, booking_request.pk)
-        result = {"detail": 'ok'}
-        return Response(result, status=status.HTTP_200_OK)
+        with transaction.atomic():
+            booking_request = BookingRequest.objects.get(pk=request.data['bookingId'])
+            booking_request.confirmed_by_sender = True
+            booking_request.status = 'awa'
+            booking_request.save()
+            # create notification
+            Notif.objects.create(trip=booking_request.trip,
+            booking_request=booking_request,
+            created_by=booking_request.trip.created_by,
+            price_proposal=None,
+            type='request_validated',
+            created_on=timezone.now(),
+            status='unseen')
+            generateRandomCode(booking_request.trip.pk, booking_request.pk)
+            result = {"detail": 'ok'}
+            return Response(result, status=status.HTTP_200_OK)
 
 class DeclineBooking(APIView):
     """
@@ -698,23 +708,23 @@ class DeclineBooking(APIView):
     """
 
     def post(self, request, format=None):
-
-        booking_request = BookingRequest.objects.get(pk=request.data['bookingId'])
-        booking_request.confirmed_by_sender = False
-        booking_request.status = 'cre'
-        # create notification
-        Notif.objects.create(trip=booking_request.trip,
-        booking_request=booking_request,
-        created_by=booking_request.trip.created_by,
-        price_proposal=None,
-        type='request_declined',
-        created_on=timezone.now(),
-        status='unseen')
-        renderCodeObsolete(booking_request.trip, booking_request.pk)
-        result = {"detail": 'ok'}
-        booking_request.trip = None
-        booking_request.save()
-        return Response(result, status=status.HTTP_200_OK)
+        with transaction.atomic():
+            booking_request = BookingRequest.objects.get(pk=request.data['bookingId'])
+            booking_request.confirmed_by_sender = False
+            booking_request.status = 'cre'
+            # create notification
+            Notif.objects.create(trip=booking_request.trip,
+            booking_request=booking_request,
+            created_by=booking_request.trip.created_by,
+            price_proposal=None,
+            type='request_declined',
+            created_on=timezone.now(),
+            status='unseen')
+            renderCodeObsolete(booking_request.trip, booking_request.pk)
+            result = {"detail": 'ok'}
+            booking_request.trip = None
+            booking_request.save()
+            return Response(result, status=status.HTTP_200_OK)
 
 
 class CancelBooking(APIView):
@@ -723,29 +733,29 @@ class CancelBooking(APIView):
     """
 
     def post(self, request, format=None):
-
-        booking_request = BookingRequest.objects.get(pk=request.data['bookingId'])
-        result = {"detail": 'ok'}
-        if booking_request.status == "del":
-            result["detail"] = "BOOKING_ALREADY_DELIVERED"
+        with transaction.atomic():
+            booking_request = BookingRequest.objects.get(pk=request.data['bookingId'])
+            result = {"detail": 'ok'}
+            if booking_request.status == "del":
+                result["detail"] = "BOOKING_ALREADY_DELIVERED"
+                return Response(result, status=status.HTTP_200_OK)
+            today = datetime.datetime.now().date()
+            booking_date = booking_request.product.arrival_date
+            delta = booking_date - today
+            if delta.days <= 1:
+                result["detail"] = "TOO_LATE_TO_CANCEL"
+                return Response(result, status=status.HTTP_200_OK)
+            booking_request.confirmed_by_sender = False
+            booking_request.status = 'cre'
+            # create notification
+            Notif.objects.create(trip=booking_request.trip,
+            booking_request=booking_request,
+            created_by=booking_request.request_by,
+            price_proposal=None,
+            type='request_cancelled',
+            created_on=timezone.now(),
+            status='unseen')
+            renderCodeObsolete(booking_request.trip, booking_request.pk)
+            booking_request.trip = None
+            booking_request.save()
             return Response(result, status=status.HTTP_200_OK)
-        today = datetime.datetime.now().date()
-        booking_date = booking_request.product.arrival_date
-        delta = booking_date - today
-        if delta.days <= 1:
-            result["detail"] = "TOO_LATE_TO_CANCEL"
-            return Response(result, status=status.HTTP_200_OK)
-        booking_request.confirmed_by_sender = False
-        booking_request.status = 'cre'
-        # create notification
-        Notif.objects.create(trip=booking_request.trip,
-        booking_request=booking_request,
-        created_by=booking_request.request_by,
-        price_proposal=None,
-        type='request_cancelled',
-        created_on=timezone.now(),
-        status='unseen')
-        renderCodeObsolete(booking_request.trip, booking_request.pk)
-        booking_request.trip = None
-        booking_request.save()
-        return Response(result, status=status.HTTP_200_OK)

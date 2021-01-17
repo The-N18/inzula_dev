@@ -1,36 +1,25 @@
 import React from "react";
 import {
   Button,
-  Form,
   Grid,
-  Header,
-  Message,
   Segment,
   Icon,
-  Container,
   Step,
   Image,
-  TextArea,
-  Select,
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { NavLink, Redirect } from "react-router-dom";
-import { authLogin } from "../../store/actions/auth";
 import styles from './sendpackage.css';
-import PropTypes from "prop-types";
 import { backend_url } from "../../configurations";
 import ImageUploader from 'react-images-upload';
-import { DateInput } from 'semantic-ui-calendar-react';
-import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
-import { bookingAddition } from "../../store/actions/addBooking";
+import {createNotification} from 'react-redux-notify';
 import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
 import {renderField, renderDateTimePicker, renderDropdownList, renderCitiesList} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
 import { updateBooking } from "../../store/actions/addBooking";
 import { updateBookingOpenModal, updateBookingCloseModal } from "../../store/actions/updateBookingModal";
 import { sizeOptions, sizeOptionsFr, categoryOptions, categoryOptionsFr, weightOptions, weightOptionsFr, valueOptions, valueOptionsFr, calculateMinPrice } from "../../utils/options";
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 
 class UpdateBooking extends React.Component {
 

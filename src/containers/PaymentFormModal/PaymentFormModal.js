@@ -47,9 +47,15 @@ class PaymentFormModal extends React.Component {
         onOpen={() => this.props.openPaymentFormModal()}
         size='tiny'
       >
-      <Modal.Header>Payment</Modal.Header>
+      <Modal.Header><FormattedMessage
+              id="payment_form.title"
+              defaultMessage="Payment"
+            /></Modal.Header>
       <Modal.Content>
-        <p>You are about to pay {price+(price*0.25)} euros.</p>
+        <p><FormattedMessage
+              id="payment_form.price_msg"
+              values={{ price: `${price+(price*0.25)}`}}
+            /></p>
 
         <form onSubmit={handleSubmit(this.submitForm)}>
           <CSRFToken/>

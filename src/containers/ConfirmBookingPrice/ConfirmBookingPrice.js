@@ -57,10 +57,10 @@ class ConfirmBookingPrice extends React.Component {
                 />
                 </Modal.Header>
       <Modal.Content>
-        <p><FormattedMessage
+        <span><FormattedMessage
                   id="confirm_booking.msg"
                   values={{ price: `${price}`, fees: `${0.25*price}` }}
-                                  /></p>
+                                  /></span>
       </Modal.Content>
       <Modal.Actions>
         <Button positive onClick={this.confirmPaymentPrice.bind(this)}>

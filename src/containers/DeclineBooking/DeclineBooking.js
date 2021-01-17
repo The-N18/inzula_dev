@@ -1,13 +1,11 @@
 import React from "react";
 import {
-  Segment,
   Button,
-  Icon,
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './declinebooking.css';
-import { NavLink, Redirect } from "react-router-dom";
+import {FormattedMessage} from 'react-intl'
 import { openDeclineBooking, closeDeclineBooking, declineBooking } from "../../store/actions/declineBooking";
 
 class DeclineBooking extends React.Component {
@@ -29,16 +27,32 @@ class DeclineBooking extends React.Component {
         onOpen={() => this.props.openDeclineBooking()}
         size='tiny'
       >
-      <Modal.Header>Decline booking</Modal.Header>
+      <Modal.Header>
+      <FormattedMessage
+              id="decline_booking.title"
+              defaultMessage="Decline booking"
+            />
+            </Modal.Header>
       <Modal.Content>
-        <p>Are you sure you want to decline this booking?</p>
+        <p>
+        <FormattedMessage
+              id="decline_booking.msg"
+              defaultMessage="Are you sure you want to decline this booking?"
+            />
+            </p>
       </Modal.Content>
       <Modal.Actions>
         <Button negative onClick={() => this.props.closeDeclineBooking()}>
-          No
+        <FormattedMessage
+              id="decline_booking.no"
+              defaultMessage="No"
+            />
         </Button>
         <Button positive onClick={this.handleDelete.bind(this)}>
-          Yes
+        <FormattedMessage
+              id="decline_booking.yes"
+              defaultMessage="Yes"
+            />
         </Button>
       </Modal.Actions>
     </Modal>

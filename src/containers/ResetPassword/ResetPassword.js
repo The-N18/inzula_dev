@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Segment,
-  Icon,
   Header,
   Button
 } from "semantic-ui-react";
@@ -9,8 +8,8 @@ import { connect } from "react-redux";
 import styles from './resetpassword.css';
 import { withRouter } from "react-router-dom";
 import { resetPassword } from "../../store/actions/auth";
-import {FormattedMessage, FormattedDate} from 'react-intl'
-import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
+import {FormattedMessage} from 'react-intl'
+import {Field, reset, reduxForm} from 'redux-form';
 import { validate } from "./validation";
 import {renderField} from "../../containers/ReduxForm/renderField";
 
@@ -18,13 +17,11 @@ class ResetPassword extends React.Component {
 
     submitForm = (val) => {
       const { match } = this.props;
-      console.log("submit");
-      console.log(val);
       this.props.resetPassword(match.params.uid, match.params.token, val['new_password1'], val['new_password2']);
     }
 
   render() {
-    const {loading, error, match, handleSubmit, invalid} = this.props;
+    const {loading, handleSubmit, invalid} = this.props;
     return (
       <Segment style={{ padding: "12em 0em" }} vertical basic>
         <Header as="h4" textAlign="center" color="teal">

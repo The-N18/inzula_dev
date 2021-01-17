@@ -1,15 +1,12 @@
 import React from "react";
 import {
-  Segment,
   Button,
-  Icon,
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './validatebooking.css';
-import { NavLink, Redirect } from "react-router-dom";
 import { openValidateBooking, closeValidateBooking, validateBooking } from "../../store/actions/validateBooking";
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 
 class ValidateBooking extends React.Component {
 

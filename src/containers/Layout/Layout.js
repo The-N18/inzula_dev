@@ -233,7 +233,7 @@ class CustomLayout extends React.Component {
       <CompleteProfileModal />
       <ProductDeliveryModal />
       <CancelBooking />
-      <Notify position={"BottomRight"}/>
+      <Notify position={"BottomLeft"}/>
         <header className="menuheader">
           <div>
             <a className="logo" onClick={this.handleOnClick.bind(this, '/')}>

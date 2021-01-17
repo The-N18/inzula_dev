@@ -1,25 +1,21 @@
 import React from "react";
 import {
-  Segment,
   Button,
-  Icon,
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './bankaccountformmodal.css';
-import { NavLink, Redirect } from "react-router-dom";
 import { openBankAccountFormModal,
          closeBankAccountFormModal,
          getMaxPayoutAmount,
          cashout} from "../../store/actions/bankAccountFormModal";
-import { deleteTrip } from "../../store/actions/addTrip";
-import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
+import {Field, reset, reduxForm} from 'redux-form';
 import {renderField, renderDropdownList} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
 import CSRFToken from "../../containers/CSRFToken";
 import DjangoCSRFToken from 'django-react-csrftoken';
 import {countries} from "../../utils/countries";
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 
 class BankAccountFormModal extends React.Component {
 
@@ -60,90 +56,148 @@ class BankAccountFormModal extends React.Component {
         <CSRFToken/>
         <DjangoCSRFToken/>
         <div>
-          <label htmlFor="max_amount">
+          <div>
+            <label htmlFor="max_amount">
+              <FormattedMessage
+                id="cashout_form.max_amt"
+                defaultMessage="Maximum Amount you can cash out"
+              />
+            </label>
+          </div>
+          <Field
+            name="max_amount"
+            component="input"
+            type="number"
+            component={renderField}
+            disabled
+          />
+        </div>
+        <div>
+        <div>
+          <label htmlFor="amount">
             <FormattedMessage
-              id="profile_tab.max_amt"
-              defaultMessage="Maximum Amount you can cash out"
+              id="cashout_form.amt"
+              defaultMessage="Amount"
             />
           </label>
-          <div>
-        <Field
-          name="max_amount"
-          component="input"
-          type="number"
-          label="Maximum Amount"
-          component={renderField}
-          disabled
-        />
         </div>
+          <Field
+            name="amount"
+            component="input"
+            type="number"
+            component={renderField}
+          />
         </div>
-        <Field
-          name="amount"
-          component="input"
-          type="number"
-          label="Amount"
-          component={renderField}
-        />
+        <div>
+        <div>
+          <label htmlFor="account_owner_name">
+            <FormattedMessage
+              id="cashout_form.account_owner_name"
+              defaultMessage="Account holder name(s)"
+            />
+          </label>
+        </div>
         <Field
           name="account_owner_name"
           component="input"
           type="text"
-          label="Account holder name(s)"
           component={renderField}
         />
+        </div>
+        <div>
+        <div>
+          <label htmlFor="account_owner_address">
+            <FormattedMessage
+              id="cashout_form.account_owner_address"
+              defaultMessage="Account holder address"
+            />
+          </label>
+        </div>
           <Field
             name="account_owner_address"
             component="input"
             type="text"
-            label="Account holder address"
             component={renderField}
           />
+          </div>
+          <div>
+        <div>
+          <label htmlFor="account_owner_postal_code">
+            <FormattedMessage
+              id="cashout_form.account_owner_postal_code"
+              defaultMessage="Postal code"
+            />
+          </label>
+        </div>
           <Field
             name="account_owner_postal_code"
             component="input"
             type="number"
-            label="Postal code"
             component={renderField}
           />
+          </div>
           <div>
             <label htmlFor="country">
               <FormattedMessage
-                id="profile_tab.country"
+                id="cashout_form.country"
                 defaultMessage="Country"
               />
             </label>
             <div>
               <Field
                 name="account_owner_country"
-                placeholder='Country'
                 component={renderDropdownList}
                 data={countries}
                 valueField="value"
                 textField="text" />
               </div>
             </div>
+            <div>
+        <div>
+          <label htmlFor="account_IBAN">
+            <FormattedMessage
+              id="cashout_form.account_IBAN"
+              defaultMessage="IBAN"
+            />
+          </label>
+        </div>
           <Field
             name="account_IBAN"
             component="input"
             type="text"
-            label="IBAN"
             component={renderField}
           />
+          </div>
+          <div>
+        <div>
+          <label htmlFor="account_BIC">
+            <FormattedMessage
+              id="cashout_form.account_BIC"
+              defaultMessage="BIC"
+            />
+          </label>
+        </div>
           <Field
             name="account_BIC"
             component="input"
             type="text"
-            label="BIC"
             component={renderField}
           />
+          </div>
           <Button positive type="submit" disabled={invalid}>
-            Cash out
+            <FormattedMessage
+              id="cashout_form.cashout"
+              defaultMessage="Cash out"
+            />
           </Button>
         </form>
       </Modal.Content>
       <Modal.Actions>
         <Button negative onClick={() => this.props.closeBankAccountFormModal()}>
-          Cancel
+        <FormattedMessage
+              id="cashout_form.cancel"
+              defaultMessage="Cancel"
+            />
         </Button>
       </Modal.Actions>
     </Modal>

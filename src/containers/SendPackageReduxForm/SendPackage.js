@@ -1,34 +1,25 @@
 import React from "react";
 import {
   Button,
-  Form,
   Grid,
-  Header,
-  Message,
   Segment,
   Icon,
-  Container,
   Step,
-  Image,
-  TextArea,
-  Select
+  Image
 } from "semantic-ui-react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { NavLink, Redirect } from "react-router-dom";
-import { authLogin } from "../../store/actions/auth";
 import styles from './sendpackage.css';
 import PropTypes from "prop-types";
 import { backend_url, isProfileComplete } from "../../configurations";
 import ImageUploader from 'react-images-upload';
-import { DateInput } from 'semantic-ui-calendar-react';
-import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
+import {createNotification, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import { bookingAddition } from "../../store/actions/addBooking";
-import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
+import {Field, reduxForm, formValueSelector} from 'redux-form';
 import {renderField, renderDateTimePicker, renderPhoneNumber, renderDropdownList, renderCitiesList} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
 import { sizeOptions, sizeOptionsFr, categoryOptions, categoryOptionsFr, weightOptions, weightOptionsFr, valueOptions, valueOptionsFr, calculateMinPrice } from "../../utils/options";
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 import {openCompleteProfileModal} from "../../store/actions/completeProfileModal";
 
 

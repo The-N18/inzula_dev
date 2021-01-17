@@ -1,13 +1,12 @@
 import React from "react";
 import {
-  Segment,
   Button,
-  Icon,
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './cancelbooking.css';
 import { openCancelBooking, closeCancelBooking, cancelBooking } from "../../store/actions/cancelBooking";
+import {FormattedMessage} from 'react-intl'
 
 class CancelBooking extends React.Component {
 
@@ -28,16 +27,31 @@ class CancelBooking extends React.Component {
         onOpen={() => this.props.openCancelBooking()}
         size='tiny'
       >
-      <Modal.Header>Cancel booking</Modal.Header>
+      <Modal.Header>
+      <FormattedMessage
+              id="cancel_booking.title"
+              defaultMessage="Cancel booking"
+            />
+            </Modal.Header>
       <Modal.Content>
-        <p>Are you sure you want to cancel this booking?</p>
+        <p>
+        <FormattedMessage
+              id="cancel_booking.msg"
+              defaultMessage="Are you sure you want to cancel this booking?"
+            /></p>
       </Modal.Content>
       <Modal.Actions>
         <Button negative onClick={() => this.props.closeCancelBooking()}>
-          No
+          <FormattedMessage
+              id="cancel_booking.no"
+              defaultMessage="No"
+            />
         </Button>
         <Button positive onClick={this.handleCancel.bind(this)}>
-          Yes
+        <FormattedMessage
+              id="cancel_booking.yes"
+              defaultMessage="Yes"
+            />
         </Button>
       </Modal.Actions>
     </Modal>

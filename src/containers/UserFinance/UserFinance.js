@@ -57,7 +57,7 @@ class UserFinance extends React.Component {
         render: () => <Tab.Pane attached={false}><IncomingFinancialTransactionsList/></Tab.Pane>,
       },
       {
-        menuItem: { key: 'failed_transactions', icon: 'exclamation', content: lang === 'en' ? 'Failed transactions' : 'Transactions echouees' },
+        menuItem: { key: 'failed_transactions', icon: 'exclamation', content: lang === 'en' ? 'Failed transactions' : 'Transactions échouées' },
         render: () => <Tab.Pane attached={false}><FailedFinancialTransactionsList/></Tab.Pane>,
       },
       {

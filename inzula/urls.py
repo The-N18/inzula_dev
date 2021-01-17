@@ -49,12 +49,13 @@ urlpatterns = [
     path('insurance/', index, name='index'),
     path('legal/', index, name='index'),
     path('transparency/', index, name='index'),
-    path('verify/(?P<key>[-:\w]+)/', index, name='index'),
+    re_path(r"^verify/(?P<key>[-:\w]+)/$", index, name="verification",),
     path('terms/', index, name='index'),
     path('useragreement/', index, name='index'),
     path('signupdiscount/', index, name='index'),
     path('profile/', index, name='index'),
     path('search_bookings/', index, name='index'),
+    path('reset/<uidb64>/<token>/', index, name='reset_passwd'),
     path('', include('django.contrib.auth.urls')),
 ]
 
