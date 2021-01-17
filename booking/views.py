@@ -49,6 +49,16 @@ def index(request):
         logging.exception('Production build of app not found')
         return HttpResponse("Hello, world. You're at the polls index.")
 
+def indexr(request, uidb64, token):
+    try:
+        with open(index_file_path) as f:
+            return HttpResponse(f.read())
+            # return render(request, 'index.html')
+    except FileNotFoundError:
+        logging.exception('Production build of app not found')
+        return HttpResponse("Hello, world. You're at the polls index.")
+
+
 # def react(request):
 #     try:
 #         with open(index_file_path) as f:

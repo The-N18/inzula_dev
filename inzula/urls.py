@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from booking.views import index
+from booking.views import index, indexr
 from trip.urls import urlpatterns as trip_urls
 from booking.urls import urlpatterns as booking_urls
 from pay_process.urls import urlpatterns as payment_urls
@@ -55,7 +55,7 @@ urlpatterns = [
     path('signupdiscount/', index, name='index'),
     path('profile/', index, name='index'),
     path('search_bookings/', index, name='index'),
-    path('reset/<uidb64>/<token>/', index, name='reset_passwd'),
+    path('reset/<uidb64>/<token>/', indexr, name='reset_passwd'),
     path('', include('django.contrib.auth.urls')),
 ]
 
