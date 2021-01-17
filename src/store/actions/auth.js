@@ -7,6 +7,7 @@ import { closeLoginParentModal } from "./loginParentModal";
 import { closeSignupModal } from "./signupModal";
 import { closeSignupParentModal } from "./signupParentModal";
 import {closeCompleteProfileModal} from "./completeProfileModal";
+import { openVerifyYourEmail } from "./verifyYourEmail";
 
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 
@@ -204,6 +205,7 @@ export const checkAuthTimeout = expirationTime => {
          }));
          dispatch(closeSignupModal());
          dispatch(closeSignupParentModal());
+         dispatch(openVerifyYourEmail());
        })
        .catch(err => {
          dispatch(authFail(err));

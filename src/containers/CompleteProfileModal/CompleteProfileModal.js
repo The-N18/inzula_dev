@@ -1,11 +1,7 @@
 import React from "react";
 import {
   Button,
-  Form,
-  Grid,
-  Header,
   Segment,
-  Radio,
   Modal,
   Icon
 } from "semantic-ui-react";
@@ -21,6 +17,7 @@ class CompleteProfileModal extends React.Component {
 
   goToProfile = () => {
     this.props.history.push('/profile');
+    this.props.closeCompleteProfileModal();
   }
 
 render() {
@@ -42,6 +39,12 @@ render() {
       </Modal.Header>
       <Modal.Content scrolling>
     <Segment vertical>
+      <span className={"profile-link"} onClick={this.goToProfile.bind(this)}>
+        <FormattedMessage
+          id="complete_profile_modal.msg"
+          defaultMessage="see my profile"
+        />
+      </span>
       <CompleteProfileForm />
     </Segment>
     </Modal.Content>

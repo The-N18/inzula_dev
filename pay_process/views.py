@@ -292,7 +292,13 @@ class PayForBookingCardId(CreateAPIView):
 
 def refund_charges(booking):
     with transaction.atomic():
-        amount_to_refund = ( (float(booking.product.proposed_price)*0.25) - ((float(booking.product.proposed_price)*0.03)+ 1.7) )*100
+        charges_amount = float(booking.product.proposed_price)*0.25
+        amount_to_deduce_from_charges = (float(booking.product.proposed_price)*0.03)+ 1.7
+        amount_to_refund = 0.0
+        if amount_to_deduce_from_charges >= charges_amount:
+            amount_to_refund = 0.0
+        else:
+            amount_to_refund = ( charges_amount - amount_to_deduce_from_charges )*100
         userprofile_to_refund = booking.request_by
 
         # Get natural user to refund

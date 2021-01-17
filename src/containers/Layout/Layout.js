@@ -35,7 +35,7 @@ import CancelBooking from "../../containers/CancelBooking/CancelBooking";
 import DeleteAccount from "../../containers/DeleteAccount/DeleteAccount";
 import CompleteProfileModal from "../../containers/CompleteProfileModal/CompleteProfileModal";
 import ProductDeliveryModal from "../../containers/ProductDeliveryModal/ProductDeliveryModal";
-
+import VerifyYourEmailModal from "../../containers/VerifyYourEmailModal/VerifyYourEmailModal";
 import LanguageSwitcherSelector from "../../containers/LanguageSwitcherSelector/LanguageSwitcherSelector";
 import 'react-redux-notify/dist/ReactReduxNotify.css';
 import 'semantic-ui-css/semantic.min.css';
@@ -233,6 +233,7 @@ class CustomLayout extends React.Component {
       <CompleteProfileModal />
       <ProductDeliveryModal />
       <CancelBooking />
+      <VerifyYourEmailModal />
       <Notify position={"BottomLeft"}/>
         <header className="menuheader">
           <div>

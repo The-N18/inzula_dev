@@ -1,27 +1,22 @@
 import React from "react";
 import {
   Button,
-  Form,
-  Grid,
-  Header,
   Segment,
-  Radio
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { tripAddition, toggleCheck } from "../../store/actions/addTrip";
 import styles from './addtripform.css';
 import Recaptcha from 'react-recaptcha';
-import { DateInput } from 'semantic-ui-calendar-react';
 import CSRFToken from "../../containers/CSRFToken";
 import DjangoCSRFToken from 'django-react-csrftoken';
 import {NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import { createNotif } from "../../store/actions/appConfig";
-import {renderField, renderDateTimePicker, renderSelectList, renderCitiesList} from "../../containers/ReduxForm/renderField";
+import { renderDateTimePicker, renderCitiesList} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
 import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
 import { openLoginParentModal } from "../../store/actions/loginParentModal";
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 // const  { DOM: { input, select, textarea } } = React
 import { isProfileComplete } from "../../configurations";
 import {openCompleteProfileModal} from "../../store/actions/completeProfileModal";
@@ -103,8 +98,7 @@ class AddTripForm extends React.Component {
 
 
   render() {
-    const { loading, userId, handleSubmit, pristine, reset, submitting, invalid, trip_type_check } = this.props;
-    const { departure_location, destination_location, depart_date, comeback_date, trip_type } = this.state;
+    const { loading, handleSubmit, invalid } = this.props;
     return (
             <form onSubmit={handleSubmit(this.submitForm)}>
               <CSRFToken/>
@@ -239,25 +233,6 @@ const mapDispatchToProps = dispatch => {
     toggleCheck: (trip_type) => dispatch(toggleCheck(trip_type)),
   };
 };
-
-// export default withRouter(
-// connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(AddTripForm)
-// );
-
-// let AddTripFormConnected = connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(AddTripForm);
-//
-// AddTripFormConnected = reduxForm ({
-//   form: 'add_trip',
-//   validate
-// }) (AddTripFormConnected);
-//
-// export default AddTripFormConnected;
 
 const afterSubmit = (result, dispatch) => dispatch(reset('add_trip'));
 

@@ -53,6 +53,7 @@ import myPaymentMethodsReducer from "./store/reducers/myPaymentMethods";
 import completeProfileModalReducer from "./store/reducers/completeProfileModal";
 import selectCreditCardModalReducer from "./store/reducers/selectCreditCardModal";
 import productDeliveryModalReducer from "./store/reducers/productDeliveryModal";
+import verifyYourEmailReducer from "./store/reducers/verifyYourEmail";
 import { reducer as formReducer } from 'redux-form'
 import axios from 'axios';
 import MessengerCustomerChat from 'react-messenger-customer-chat';
@@ -107,7 +108,8 @@ const rootReducer = combineReducers({
   selectCreditCardModal: selectCreditCardModalReducer,
   bankAccountFormModal: bankAccountFormModalReducer,
   completeProfileModal: completeProfileModalReducer,
-  productDeliveryModal: productDeliveryModalReducer
+  productDeliveryModal: productDeliveryModalReducer,
+  verifyYourEmail: verifyYourEmailReducer,
 });
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";

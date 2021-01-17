@@ -59,8 +59,9 @@ class LoginParentModal extends React.Component {
             appId={FACEBOOK_APP_ID}
             fields="name,email,picture"
             callback={this.useFacebook}
+            isDisabled
             render={renderProps => (
-              <Button fluid color='facebook' className={"signupparent-button"} onClick={renderProps.onClick}>
+              <Button disabled fluid color='facebook' className={"signupparent-button"} onClick={renderProps.onClick}>
                 <Icon name='facebook' />
                   <FormattedMessage
                     id="login_parent.use_facebook"
@@ -73,8 +74,9 @@ class LoginParentModal extends React.Component {
             buttonText="Login with google"
             onSuccess={this.useGoogle}
             onFailure={this.useGoogle}
+            disabled
             render={renderProps => (
-              <Button fluid color='google plus' className={"signupparent-button"} onClick={renderProps.onClick}>
+              <Button disabled fluid color='google plus' className={"signupparent-button"} onClick={renderProps.onClick}>
                 <Icon name='google plus' />
                   <FormattedMessage
                     id="login_parent.use_gmail"

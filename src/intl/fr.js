@@ -14,7 +14,7 @@ export const msg = {
   'layout.logout': "Déconnexion",
   'home_text_video.send_parcels': "Expédiez des colis à vos proches, via des contacts de votre réseau",
   'home_text_video.inzula_use': "INZULA connecte des voyageurs ayant des kgs disponibles et des personnes de leur réseau souhaitant expédier à bas coût",
-  'home_text_video.ship_now': "Expediez des articles ",
+  'home_text_video.ship_now': "Exépdiez des articles ",
   'home_text_video.earn_money': "Gagnez de l'argent durant vos voyages",
   'add_trip_form.earn_money': "Gagnez de l’argent à chaque fois que vous voyagez.",
   'add_trip_form.deliver_parcels': "Livrez les colis de particuliers souhaitant expédier à bas prix et amortissez vos frais de voyages.",
@@ -278,7 +278,7 @@ export const msg = {
   'user_reservations.add_booking': "Ajouter un colis",
   'user_trips.add_trip': "Ajouter un voyage",
   'complete_profile_modal.cancel': "Annuler",
-  'complete_profile_modal.title': "Mettez a jour les informations de votre profil",
+  'complete_profile_modal.title': "Mettez à jour les informations de votre profil",
   'my_funds.cashable': "Montant disponible pour retrait:",
   'my_funds.cashout': "Retirer.",
   'my_funds.fraction_cashable': "Vous pouvez retirer uniquement une partie de ces fonds, en fonction des transactions en cours.",
@@ -311,8 +311,8 @@ export const msg = {
   'pay_choices.select': "Sélectionnez votre méthode de paiement",
   'pay_choices.cancel': "Annuler",
 
-  'my_profile.sender': "Passez en mode expéditeur.",
-  'my_profile.carrier': "Passez en mode voyageur.",
+  'my_profile.sender': "Passer en mode expéditeur.",
+  'my_profile.carrier': "Passer en mode voyageur.",
   'creditcard_card.creation_date': "Ajoutée le: ",
   'login.forgot_password': "Mot de passe oublié ?",
 
@@ -350,4 +350,10 @@ export const msg = {
   'cancel_booking.no': "Non",
   'cancel_booking.yes': "Oui",
 
+  'confirm_cancel_modal.msg': "Si vous confirmez l'annulation de cette requete, vous serez  rembourse d'un montant de {amount}",
+  'complete_profile_modal.msg': "Voir mon profil",
+
+  'verify_email_confirm.title': "Email de verification envoyé",
+  'verify_email_confirm.yes': "Ok",
+  'verify_email_confirm.msg': "Merci de valider le mail reçu dans votre boite mail afin de confirmer votre inscription (si vous n'avez pas reçu le mail, merci de regarder dans les SPAM).",
 };

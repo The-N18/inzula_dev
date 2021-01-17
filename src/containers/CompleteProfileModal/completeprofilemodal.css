@@ -12,6 +12,12 @@
   padding-bottom: 6px !important;
 }
 
+.profile-link {
+  text-decoration: underline;
+  color:#00acee;
+  cursor: pointer;
+}
+
 .txt-align-l {
   text-align: left;
 }

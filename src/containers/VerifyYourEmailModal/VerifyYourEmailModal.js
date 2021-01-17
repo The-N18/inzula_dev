@@ -5,13 +5,13 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './cancelbooking.css';
-import { openVerifyYourEmailBooking, closeVerifyYourEmailBooking } from "../../store/actions/verifyYourEmail";
+import { openVerifyYourEmail, closeVerifyYourEmail } from "../../store/actions/verifyYourEmail";
 import {FormattedMessage} from 'react-intl'
 
-class VerifyYourEmail extends React.Component {
+class VerifyYourEmailModal extends React.Component {
 
   handleCancel = () => {
-    this.props.closeVerifyYourEmailBooking();
+    this.props.closeVerifyYourEmail();
   }
 
   render() {
@@ -21,33 +21,27 @@ class VerifyYourEmail extends React.Component {
       closeIcon
         centered={false}
         open={open}
-        onClose={() => this.props.closeVerifyYourEmailBooking()}
-        onOpen={() => this.props.openVerifyYourEmailBooking()}
+        onClose={() => this.props.closeVerifyYourEmail()}
+        onOpen={() => this.props.openVerifyYourEmail()}
         size='tiny'
       >
       <Modal.Header>
       <FormattedMessage
-              id="cancel_booking.title"
+              id="verify_email_confirm.title"
               defaultMessage="Cancel booking"
             />
             </Modal.Header>
       <Modal.Content>
-        <p>
+        <span>
         <FormattedMessage
-              id="cancel_booking.msg"
+              id="verify_email_confirm.msg"
               defaultMessage="Are you sure you want to cancel this booking?"
-            /></p>
+            /></span>
       </Modal.Content>
       <Modal.Actions>
-        <Button negative onClick={() => this.props.closeCancelBooking()}>
-          <FormattedMessage
-              id="cancel_booking.no"
-              defaultMessage="No"
-            />
-        </Button>
         <Button positive onClick={this.handleCancel.bind(this)}>
         <FormattedMessage
-              id="cancel_booking.yes"
+              id="verify_email_confirm.yes"
               defaultMessage="Yes"
             />
         </Button>
@@ -59,16 +53,14 @@ class VerifyYourEmail extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    open: state.cancelBooking.open,
-    bookingId: state.cancelBooking.bookingId,
-    userId: state.userInfo.userId,
+    open: state.verifyYourEmail.open,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    openVerifyYourEmailBooking: () => dispatch(openVerifyYourEmailBooking()),
-    closeVerifyYourEmailBooking: () => dispatch(closeVerifyYourEmailBooking()),
+    openVerifyYourEmail: () => dispatch(openVerifyYourEmail()),
+    closeVerifyYourEmail: () => dispatch(closeVerifyYourEmail()),
   };
 };
 

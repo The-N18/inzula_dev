@@ -1,27 +1,21 @@
 import React from "react";
 import {
   Button,
-  Form,
   Grid,
-  Header,
   Segment,
-  Radio,
   Modal,
   Icon
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import styles from './addtripform.css';
-import Recaptcha from 'react-recaptcha';
-import { DateInput } from 'semantic-ui-calendar-react';
 import CSRFToken from "../../containers/CSRFToken";
-import DjangoCSRFToken from 'django-react-csrftoken';
-import {renderField, renderDateTimePicker, renderSelectList, renderDropzoneInput, renderCitiesList} from "../../containers/ReduxForm/renderField";
+import {renderDateTimePicker, renderCitiesList} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
 import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
 import { updateTripOpenModal, updateTripCloseModal } from "../../store/actions/updateTripModal";
 import { updateTrip } from "../../store/actions/addTrip";
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 import 'react-widgets/dist/css/react-widgets.css';
 
 class UpdateTripForm extends React.Component {
@@ -62,7 +56,7 @@ class UpdateTripForm extends React.Component {
 
 
   submitForm = (val) => {
-    const {userId, authenticated, pk} = this.props;
+    const {userId, pk} = this.props;
     const createdBy = {"user": userId};
     const departureLocation = val['departure_location'] ? val['departure_location']['pk'] : null;
     const destinationLocation = val['destination_location'] ? val['destination_location']['pk'] : null;

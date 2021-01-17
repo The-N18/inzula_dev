@@ -358,4 +358,11 @@ export const msg = {
   'cancel_booking.no': "No",
   'cancel_booking.yes': "Yes",
 
+  'complete_profile_modal.msg': "See my profile",
+
+  'verify_email_confirm.title': "Verification email sent to your inbox",
+  'verify_email_confirm.yes': "Ok",
+  'verify_email_confirm.msg': "Please click on the link you have received by email. If you don't receive it soon enough, check your SPAM messages.",
+
+
 };
