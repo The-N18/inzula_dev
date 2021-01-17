@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from booking.views import index, indexr
+from booking.views import index, indexr, indexk
 from trip.urls import urlpatterns as trip_urls
 from booking.urls import urlpatterns as booking_urls
 from pay_process.urls import urlpatterns as payment_urls
@@ -49,7 +49,7 @@ urlpatterns = [
     path('insurance/', index, name='index'),
     path('legal/', index, name='index'),
     path('transparency/', index, name='index'),
-    re_path(r"^verify/(?P<key>[-:\w]+)/$", index, name="verification",),
+    re_path(r"^verify/(?P<key>[-:\w]+)/$", indexk, name="verification",),
     path('terms/', index, name='index'),
     path('useragreement/', index, name='index'),
     path('signupdiscount/', index, name='index'),
