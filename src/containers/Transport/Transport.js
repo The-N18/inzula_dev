@@ -12,7 +12,7 @@ class Transport extends React.Component {
 
   render() {
     return (
-      <Segment style={{ padding: "8em 0em" }} vertical>
+      <Segment style={{ padding: "4em 0em" }} vertical>
         <AddTripFormWithText/>
         <SearchBookingRequestsForm inNewPage={false}/>
         <TransportHowToMakeMoney/>

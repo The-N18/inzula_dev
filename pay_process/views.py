@@ -367,17 +367,14 @@ def refund_charges(booking):
         inzula_wallet = Wallet(id=admin_user.wallet_id)
 
         # transfer funds from inzula wallet to user wallet
-        print(inzula_user)
-        print(inzula_wallet)
-        print(recipient_natural_user)
-        print(user_wallet)
-        transfer = Transfer(author=inzula_user,
-                    credited_user=recipient_natural_user,
-                    debited_funds=Money(amount=amount_to_refund, currency='EUR'),
-                    fees=Money(amount=0, currency='EUR'),
-                    debited_wallet=inzula_wallet,
-                    credited_wallet=user_wallet)
-        transfer.save()
+        if amount_to_refund != 0.0:
+            transfer = Transfer(author=inzula_user,
+                        credited_user=recipient_natural_user,
+                        debited_funds=Money(amount=amount_to_refund, currency='EUR'),
+                        fees=Money(amount=0, currency='EUR'),
+                        debited_wallet=inzula_wallet,
+                        credited_wallet=user_wallet)
+            transfer.save()
 
 class PayForBookingWithWallet(CreateAPIView):
     permission_classes = register_permission_classes()
