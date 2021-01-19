@@ -99,7 +99,7 @@ class AddTripFormWithText extends React.Component {
           <Grid.Row verticalAlign="middle" className={"add-trip-grid"}>
             <Grid.Column  mobile={16} tablet={16} computer={8} textAlign="center" verticalAlign="middle" className={"add-trip-grid-column"}>
               <Segment basic>
-              <Header as="h2" textAlign="center">
+              <Header className={"title-h2-header"} textAlign="center">
                 <FormattedMessage
                   id="add_trip_form.earn_money"
                   defaultMessage="Earn money every time you travel."

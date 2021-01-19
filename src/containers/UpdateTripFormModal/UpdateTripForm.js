@@ -86,8 +86,7 @@ class UpdateTripForm extends React.Component {
   };
 
   render() {
-    const { loading, userId, handleSubmit, pristine, reset, submitting, invalid, open } = this.props;
-    const { departure_location, destination_location, depart_date, comeback_date, trip_type } = this.state;
+    const { loading, handleSubmit, invalid, open } = this.props;
     return (
       <Modal
       closeIcon

@@ -7,6 +7,10 @@
   display: inline-block;
 }
 
+.title-h2-header {
+  font-size: 35px !important;
+}
+
 .transport-add-trip-button {
   margin: 0px auto !important;
   display: block !important;

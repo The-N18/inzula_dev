@@ -269,8 +269,11 @@ li > a:only-child:after { content: ''; }
   .menuheader .menu-icon {
     display: none;
   }
+}
+
+@media only screen and (min-width: 950px) {
   .buttoncolor {
-    margin-top: auto !important;
+    margin-top: 10px !important;
   }
 }
 
