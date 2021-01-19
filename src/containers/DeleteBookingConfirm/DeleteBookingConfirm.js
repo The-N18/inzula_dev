@@ -1,13 +1,10 @@
 import React from "react";
 import {
-  Segment,
   Button,
-  Icon,
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './deletebookingconfirm.css';
-import { NavLink, Redirect } from "react-router-dom";
 import { openDeleteBookingConfirm, closeDeleteBookingConfirm } from "../../store/actions/deleteBookingConfirm";
 import { deleteBooking } from "../../store/actions/addBooking";
 

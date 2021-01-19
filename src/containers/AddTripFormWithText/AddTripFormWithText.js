@@ -1,11 +1,9 @@
 import React from "react";
 import {
   Button,
-  Form,
   Grid,
   Header,
   Segment,
-  Radio
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";

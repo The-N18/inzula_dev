@@ -18,7 +18,7 @@ import UserBookingsList from "../../containers/UserBookingsList/UserBookingsList
 import { setActiveIndex } from "../../store/actions/myProfile";
 import $ from "jquery";
 import { toggleProfileType } from "../../store/actions/userInfo";
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 
 
 
@@ -71,7 +71,7 @@ class MyProfile extends React.Component {
         render: () => <Tab.Pane attached={false}><ProfileTab/></Tab.Pane>,
       },
       {
-        menuItem: { key: 'reservation', icon: 'calendar', content: profileType === "sender" ? (lang === 'en' ? 'My Parcels' : 'Mes colis') : lang === 'en' ? 'My Trips' : 'Mes voyages' },
+        menuItem: { key: 'reservation', icon: profileType === "sender" ? 'archive' : 'arrows alternate horizontal', content: isMobile ? '' : profileType === "sender" ? (lang === 'en' ? 'My Parcels' : 'Mes colis') : lang === 'en' ? 'My Trips' : 'Mes voyages' },
         render: () => <Tab.Pane attached={false}><TripsReservationsList/></Tab.Pane>,
       },
       {
@@ -85,7 +85,7 @@ class MyProfile extends React.Component {
     ];
 
     const tabs = profileType === "sender" ? panes : [...panes, {
-      menuItem: { key: 'booking', icon: 'calendar', content: lang === 'en' ? 'Reservations on my trips' : 'Reservations sur mes voyages'},
+      menuItem: { key: 'booking', icon: 'shipping fast', content: isMobile ? '' : lang === 'en' ? 'Reservations on my trips' : 'Reservations sur mes voyages'},
       render: () => <Tab.Pane attached={false}><UserBookingsList/></Tab.Pane>,
     },]
 

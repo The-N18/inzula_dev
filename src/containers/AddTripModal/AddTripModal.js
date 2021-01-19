@@ -1,11 +1,7 @@
 import React from "react";
 import {
   Button,
-  Form,
-  Grid,
-  Header,
   Segment,
-  Radio,
   Modal,
   Icon
 } from "semantic-ui-react";

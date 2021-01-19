@@ -15,7 +15,6 @@ const addTripStart = (state, action) => {
 };
 
 const addTripSuccess = (state, action) => {
-  console.log(action);
   return updateObject(state, {
     error: null,
     loading: false

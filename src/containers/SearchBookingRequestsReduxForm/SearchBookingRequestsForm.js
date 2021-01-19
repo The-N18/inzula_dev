@@ -1,21 +1,13 @@
 import React from "react";
-import PropTypes from "prop-types";
 import {
   Button,
-  Form,
   Header,
   Segment,
-  Divider,
   Grid,
-  Select
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { searchBookings, filterBookings } from "../../store/actions/searchBookings";
+import { searchBookings } from "../../store/actions/searchBookings";
 import styles from './searchbookingrequestsform.css';
-import { DateInput } from 'semantic-ui-calendar-react';
-import BookingCard from "../../containers/BookingCard/BookingCard";
-import InfiniteScroll from 'react-infinite-scroll-component';
-import Slider, { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import 'react-widgets/dist/css/react-widgets.css';
 import { Field, reduxForm } from 'redux-form'

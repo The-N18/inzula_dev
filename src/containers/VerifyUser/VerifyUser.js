@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import styles from './verifyuser.css';
 import { withRouter } from "react-router-dom";
 import { verifyUser } from "../../store/actions/verifyUser";
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 
 class VerifyUser extends React.Component {
 

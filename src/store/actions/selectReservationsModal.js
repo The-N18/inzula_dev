@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { api_url, AUTH_TIMEOUT } from "../../configurations";
-import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
+import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
 import {checkAuthTimeout} from "./auth";
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
@@ -44,7 +44,6 @@ export const bookTrip = (tripId, selectedBookings, userId) => {
         created_by: userId
       })
       .then(res => {
-        console.log(res.data);
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: "You have successfully booked this trip",
@@ -54,7 +53,6 @@ export const bookTrip = (tripId, selectedBookings, userId) => {
         }));
       })
       .catch(err => {
-        console.log(err.response.data)
         dispatch(createNotification({
           message: "Failed to book this trip",
           type: NOTIFICATION_TYPE_ERROR,

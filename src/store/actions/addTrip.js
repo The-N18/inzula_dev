@@ -51,7 +51,6 @@ export const tripAddition = (created_by, departure_location, destination_locatio
         trip_type: trip_type
       })
       .then(res => {
-        console.log(res.data)
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(addTripSuccess(res.data));
         dispatch(closeAddTripModal());
@@ -78,14 +77,10 @@ export const tripAddition = (created_by, departure_location, destination_locatio
 
 export const updateTrip = (dta) => {
   const userProfileId = localStorage.getItem("userProfileId");
-  const config = {
-            headers: { 'content-type': 'multipart/form-data' }
-          };
   return dispatch => {
     axios
       .put(api_url() + "/trips/trip/"+dta["pk"]+"/", dta)
       .then(res => {
-        console.log(res.data)
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: 'Your trip has been updated',
@@ -115,7 +110,6 @@ export const deleteTrip = (tripId) => {
     axios
       .delete(api_url() + "/trips/trip/"+tripId+"/", {}, config)
       .then(res => {
-        console.log(res.data)
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: 'Your trip has been deleted',

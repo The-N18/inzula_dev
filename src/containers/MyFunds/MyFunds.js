@@ -2,24 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import {
   Button,
-  Form,
-  Grid,
-  Header,
   Segment,
-  Select,
-  Image,
-  Divider,
   Card
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './myfunds.css';
-import { backend_url, buildImagesLinkList } from "../../configurations";
-import ImageUploader from 'react-images-upload';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import { getFunds, cashout } from "../../store/actions/myFunds";
 import { getMaxPayoutAmount } from "../../store/actions/bankAccountFormModal";
 import $ from "jquery";
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 import { openBankAccountFormModal } from "../../store/actions/bankAccountFormModal";
 
 class MyFunds extends React.Component {

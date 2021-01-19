@@ -34,7 +34,6 @@ const updateTripStart = (state, action) => {
 };
 
 const updateTripSuccess = (state, action) => {
-  console.log(action);
   return updateObject(state, {
     error: null,
     loading: false

@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Button,
-  Form,
   Header,
   Segment,
   Divider,
@@ -14,11 +13,10 @@ import TripCard from "../../containers/TripCard/TripCard";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { openModal, closeModal } from "../../store/actions/sendPackageModal";
 import { createNotif } from "../../store/actions/appConfig";
-import MultiSelect from "@khanacademy/react-multi-select";
 import { Field, reduxForm, formValueSelector } from 'redux-form'
-import {renderField, renderDateTimePicker, renderCitiesList} from "../../containers/ReduxForm/renderField";
+import {renderDateTimePicker, renderCitiesList} from "../../containers/ReduxForm/renderField";
 import $ from "jquery";
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 import {NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import { openLoginParentModal } from "../../store/actions/loginParentModal";
 import 'react-widgets/dist/css/react-widgets.css';
@@ -39,8 +37,6 @@ class SearchTripsForm extends React.Component {
 
   fetchMoreData = () => {
     const { user_id, next_url, count, departure_location, destination_location, travel_date } = this.props;
-    const departureLocation = departure_location ? departure_location['pk'] : null;
-    const destinationLocation = destination_location ? destination_location['pk'] : null;
     this.props.findTrip(departure_location, destination_location, travel_date, user_id, next_url, count);
   }
 
@@ -87,8 +83,7 @@ class SearchTripsForm extends React.Component {
 
 
   render() {
-    const { loading, error, trips, next_url, count, handleSubmit } = this.props;
-    const { isMobile, isTablet } = this.state;
+    const { loading, trips, next_url, count, handleSubmit } = this.props;
     return (
       <Segment id="search_trips_section">
           <Header as="h4" textAlign="center">
@@ -97,12 +92,6 @@ class SearchTripsForm extends React.Component {
               defaultMessage="Prefer to know what shipping offers are available before committing?"
             />
           </Header>
-          {/* <Header as="h4" textAlign="center">
-            <FormattedMessage
-              id="search_trips.h2"
-              defaultMessage="No worries, you can add the country of departure and destination of your trip and thus access the requests for available expeditions."
-            />
-          </Header> */}
           <form onSubmit={handleSubmit(this.submitForm)}>
           <Grid>
             <Grid.Row columns={3}>
@@ -267,11 +256,6 @@ const mapDispatchToProps = dispatch => {
     findTrip: (departure_location, destination_location, travel_date, user_id, next_url, count) => dispatch(searchTrips(departure_location, destination_location, travel_date, user_id, next_url, count))
   };
 };
-
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(SearchTripsForm);
 
 export default connect(
     mapStateToProps,

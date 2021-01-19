@@ -2,7 +2,7 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { api_url, AUTH_TIMEOUT } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
-import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
+import {createNotification, NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -48,7 +48,6 @@ export const getInitialTransactions = (user_id) => {
             {user_id: user_id}
           )
       .then(res => {
-        console.log(res.data)
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(getInitialTransactionsSuccess(res.data["transactions"], '', ''));
       })
@@ -66,15 +65,12 @@ export const getInitialTransactions = (user_id) => {
 
 
 export const getTransactions = (user_id, next_url, page_count) => {
-  console.log("in search Transactions");
-  console.log(next_url);
   if(next_url !== "" && next_url !== null) {
     return dispatch => {
       dispatch(getTransactionsStart());
       axios
         .post(next_url)
         .then(res => {
-          console.log(res.data)
           dispatch(checkAuthTimeout(AUTH_TIMEOUT));
           dispatch(getTransactionsSuccess(res.data["results"], res.data["next"], res.data["count"]));
         })
@@ -96,7 +92,6 @@ export const getTransactions = (user_id, next_url, page_count) => {
               {user_id: user_id}
             )
         .then(res => {
-          console.log(res.data)
           dispatch(checkAuthTimeout(AUTH_TIMEOUT));
           dispatch(getTransactionsSuccess(res.data["results"], res.data["next"], res.data["count"]));
         })

@@ -4,11 +4,8 @@ import {
   Form,
   Grid,
   Header,
-  Message,
   Segment,
-  Select,
   Icon,
-  Card
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { NavLink, Redirect } from "react-router-dom";
@@ -85,7 +82,7 @@ class ContactUsForm extends React.Component {
 }
 
   render() {
-    const { first_name, last_name, username, email, password1, password2, terms_conditions } = this.state;
+    const { first_name, last_name, username, email, password1, password2 } = this.state;
     const { error, loading, token } = this.props;
     if (token) {
       return <Redirect to="/" />;

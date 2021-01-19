@@ -3,17 +3,12 @@ import PropTypes from "prop-types";
 import {Field, reduxForm} from 'redux-form';
 import {
   Button,
-  Form,
   Grid,
   Header,
   Segment,
-  Select,
-  Image
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './completeprofileform.css';
-import { backend_url, get_img_url } from "../../configurations";
-import ImageUploader from 'react-images-upload';
 import { completeProfileInfo } from "../../store/actions/auth";
 import { validate } from "./validation";
 import {countries} from "../../utils/countries";
@@ -56,7 +51,7 @@ class CompleteProfileForm extends React.Component {
   }
 
   render () {
-    const {handleSubmit, loading, deleteLoading, invalid, date_joined, profile_pic, passport_number, phone_number, email, lang} = this.props;
+    const {handleSubmit, loading, invalid, lang} = this.props;
     return (
       <Segment basic className={"profile-tab-section"}>
           <Grid className={"profile-tab-section-grid"}>

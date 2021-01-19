@@ -113,12 +113,12 @@ class UpdateBooking extends React.Component {
 
 
   render() {
-    const { lang, handleSubmit, pristine,
-      reset, submitting, invalid, change, product_name,
+    const { lang, handleSubmit,
+      invalid, change, product_name,
       departure_location, destination_location, proposed_price,
       product_category, product_weight, product_size, product_value,
       recipient_name, recipient_phone_number, product_description, open } = this.props;
-    const { isNextValid, activeStep } = this.state;
+    const { activeStep } = this.state;
     // if(token === null) {
     //   console.log("TOKEN");
     //   console.log(token);

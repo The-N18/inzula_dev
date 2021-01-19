@@ -13,7 +13,6 @@ import { backend_url } from "../../configurations";
 
 class HomeTextImgCard extends React.Component {
 
-
   render() {
 
     const {title, description, img} = this.props;

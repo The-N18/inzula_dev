@@ -17,7 +17,6 @@ const searchStart = (state, action) => {
 };
 
 const searchSuccess = (state, action) => {
-  console.log(action);
   return updateObject(state, {
     trips: state.trips.concat(action.trips),
     error: null,
@@ -28,7 +27,6 @@ const searchSuccess = (state, action) => {
 };
 
 const searchSuccessOverride = (state, action) => {
-  console.log(action);
   return updateObject(state, {
     trips: action.trips,
     error: null,

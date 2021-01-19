@@ -1,13 +1,10 @@
 import React from "react";
 import {
-  Segment,
   Button,
-  Icon,
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './deletetripconfirm.css';
-import { NavLink, Redirect } from "react-router-dom";
 import { openDeleteTripConfirm, closeDeleteTripConfirm } from "../../store/actions/deleteTripConfirm";
 import { deleteTrip } from "../../store/actions/addTrip";
 

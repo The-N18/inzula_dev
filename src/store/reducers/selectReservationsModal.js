@@ -20,7 +20,6 @@ const selectBooking = (state, action) => {
 };
 
 const openModalSelectReservations = (state, action) => {
-  console.log(action);
   return updateObject(state, {
     open: true,
     tripId: action.tripId

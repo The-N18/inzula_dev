@@ -1,24 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
-  Button,
-  Form,
-  Grid,
-  Header,
   Segment,
-  Select,
-  Image,
-  Divider
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './usernotifslist.css';
-import { backend_url } from "../../configurations";
-import ImageUploader from 'react-images-upload';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { getNotifs, getInitialNotifs } from "../../store/actions/senderNotifs";
 import NotifCard from "../../containers/NotifCard/NotifCard";
 import $ from "jquery";
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 
 class SenderNotifsList extends React.Component {
   constructor(props) {
@@ -54,10 +45,21 @@ class SenderNotifsList extends React.Component {
     this.props.getUserNotifs(user_id, next_url, count);
   }
 
+  getDivHeight = () => {
+    const { isMobile, isTablet } = this.state;
+    let val = 240;
+    if(isTablet) {
+      val = 300;
+    }
+    if(isMobile) {
+      val = 445;
+    }
+    return val;
+  }
+
 
   render() {
-    const { loading, notifs, next_url, count } = this.props;
-    const dataLength = notifs ? notifs.length : 0;
+    const { notifs, next_url, count } = this.props;
     return (
       <Segment basic className={"profile-tab-section"}>
       {notifs && notifs !== undefined && notifs.length === 0 ? <div>
@@ -83,7 +85,7 @@ class SenderNotifsList extends React.Component {
         >
           {notifs && notifs.map((item, index) => (
             <div style={{
-              height: 90,
+              height: this.getDivHeight.bind(this),
               margin: 6,
               padding: 8
             }} key={index}>

@@ -36,7 +36,6 @@ export const validateBooking = (booking_id, user_id) => {
     axios
       .post(api_url() + "/bookings/validate_booking", {bookingId: booking_id})
       .then(res => {
-        console.log(res.data)
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: 'The booking request has been validated.',

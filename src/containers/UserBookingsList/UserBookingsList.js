@@ -1,24 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
-  Button,
-  Form,
-  Grid,
-  Header,
-  Segment,
-  Select,
-  Image,
-  Divider
+  Segment
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './userreservations.css';
-import { backend_url, buildImagesLinkList } from "../../configurations";
-import ImageUploader from 'react-images-upload';
+import { buildImagesLinkList } from "../../configurations";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { getReservations, getInitialReservations } from "../../store/actions/userBookings";
 import BookingCard from "../../containers/BookingCard/BookingCard";
 import $ from "jquery";
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage} from 'react-intl';
 
 class UserBookingsList extends React.Component {
   constructor(props) {
@@ -68,8 +60,7 @@ class UserBookingsList extends React.Component {
 
 
   render() {
-    const { loading, reservations, next_url, count, selectable, editable } = this.props;
-    const dataLength = reservations ? reservations.length : 0;
+    const { reservations, next_url, count } = this.props;
     return (
       <Segment basic className={"profile-tab-section"}>
       {reservations.length === 0 ? <div><FormattedMessage

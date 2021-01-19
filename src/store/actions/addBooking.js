@@ -71,7 +71,6 @@ recipient_phone_number, terms_conditions, user_agreement) => {
     axios
       .post(api_url() + "/bookings/add_request", data, config)
       .then(res => {
-        console.log(res.data)
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(addBookingSuccess(res.data));
         dispatch(closeModal());
@@ -98,9 +97,6 @@ recipient_phone_number, terms_conditions, user_agreement) => {
 
 export const updateBooking = (dta) => {
   const userProfileId = localStorage.getItem("userProfileId");
-  const config = {
-            headers: { 'content-type': 'multipart/form-data' }
-          };
   const data2 = {...dta};
   let data = new FormData();
   for( let key in data2 ) {
@@ -115,7 +111,6 @@ export const updateBooking = (dta) => {
     axios
       .put(api_url() + "/bookings/booking_request/"+dta["pk"]+"/", data)
       .then(res => {
-        console.log(res.data)
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: 'Your booking has been updated',
@@ -177,7 +172,6 @@ recipient_phone_number, terms_conditions, user_agreement) => {
     axios
       .post(api_url() + "/bookings/add_request", data, config)
       .then(res => {
-        console.log(res.data)
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(addBookingSuccess(res.data));
         dispatch(createNotification({
@@ -210,7 +204,6 @@ export const deleteBooking = (booking_id) => {
     axios
       .delete(api_url() + "/bookings/booking_request/"+booking_id+"/", {}, config)
       .then(res => {
-        console.log(res.data)
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: 'Your request has been deleted',

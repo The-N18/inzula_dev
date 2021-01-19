@@ -2,12 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import {
   Grid,
-  Header,
   Segment,
   Image,
   Card,
-  Button,
-  Icon
+  Button
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { backend_url, get_img_url, isProfileComplete } from "../../configurations";
@@ -16,7 +14,6 @@ import { openModalSelectReservations } from "../../store/actions/selectReservati
 import {FormattedMessage, FormattedDate} from 'react-intl'
 import { openDeleteTripConfirm, setTripDeleteTripConfirm } from "../../store/actions/deleteTripConfirm";
 import { updateTripOpenModal } from "../../store/actions/updateTripModal";
-import { tripTypeOptions } from "../../utils/options";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
 import {openCompleteProfileModal} from "../../store/actions/completeProfileModal";
 
@@ -76,7 +73,7 @@ class TripCard extends React.Component {
 
   render() {
 
-    const {trip_type, depart_date, img, comeback_date, departure_location, destination_location, creator_user_name, no_book} = this.props;
+    const {depart_date, img, comeback_date, departure_location, destination_location, creator_user_name, no_book} = this.props;
 
     return (
       <Card raised fluid centered className={"home-text-img-card-grid  trip-card-max-h"}>
@@ -96,22 +93,22 @@ class TripCard extends React.Component {
                 id="trip_card.comeback_date"
                 defaultMessage="Comeback date"
               /> <FormattedDate
-                                                                              value={comeback_date}
-                                                                              year="numeric"
-                                                                              month="short"
-                                                                              day="numeric"
-                                                                              weekday="short"
-                                                                            /></p> : ''}
+                  value={comeback_date}
+                  year="numeric"
+                  month="short"
+                  day="numeric"
+                  weekday="short"
+                /></p> : ''}
               {depart_date ? <p className={"trip-card-item-style"}><FormattedMessage
                 id="trip_card.depart_date"
                 defaultMessage="Depart date"
               /> <FormattedDate
-                                                                              value={depart_date}
-                                                                              year="numeric"
-                                                                              month="short"
-                                                                              day="numeric"
-                                                                              weekday="short"
-                                                                            /></p> : ''}
+                  value={depart_date}
+                  year="numeric"
+                  month="short"
+                  day="numeric"
+                  weekday="short"
+                /></p> : ''}
               <p className={"trip-card-item-style"}><FormattedMessage
                 id="trip_card.departure"
                 defaultMessage="Departure"

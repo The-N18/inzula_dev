@@ -1,18 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
-  Grid,
-  Header,
-  Segment,
-  Image,
   Card,
-  Checkbox,
-  Button,
-  Icon
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './notifcard.css';
-import { backend_url, get_img_url } from "../../configurations";
 import {FormattedMessage, FormattedDate} from 'react-intl'
 
 
@@ -20,12 +12,11 @@ class NotifCard extends React.Component {
 
   markAsSeen = () => {
     console.log("mark this notification as seen");
-    const {pk} = this.props;
   }
 
   render() {
 
-    const {pk, creator_username, created_on, type, trip_dep_date, product_name, trip_dep_loc, trip_des_loc, offer_price} = this.props;
+    const {creator_username, created_on, type, trip_dep_date, product_name, trip_dep_loc, trip_des_loc, offer_price} = this.props;
     return (
       <Card raised fluid centered className={"notif-card"}>
         <Card.Content>

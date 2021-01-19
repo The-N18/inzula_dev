@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { api_url, AUTH_TIMEOUT } from "../../configurations";
-import {clearUserInfo, setUserInfo} from "./userInfo";
+import {setUserInfo} from "./userInfo";
 import { closeLoginModal } from "./loginModal";
 import { closeLoginParentModal } from "./loginParentModal";
 import { closeSignupModal } from "./signupModal";
@@ -9,7 +9,7 @@ import { closeSignupParentModal } from "./signupParentModal";
 import {closeCompleteProfileModal} from "./completeProfileModal";
 import { openVerifyYourEmail } from "./verifyYourEmail";
 
-import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
+import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -120,8 +120,6 @@ export const checkAuthTimeout = expirationTime => {
          password: password
        })
        .then(res => {
-         console.log(res.data);
-         console.log(res.headers);
          const token = res.data.key;
          const userId = res.data.user_id;
          const userProfileId = res.data.user_profile_id;
@@ -166,7 +164,6 @@ export const checkAuthTimeout = expirationTime => {
        })
        .catch(err => {
          dispatch(authFail(err));
-         console.log(err.response.data)
          dispatch(createNotification({
            message: "Login failed. Please check your username and password.",
            type: NOTIFICATION_TYPE_ERROR,
@@ -180,7 +177,6 @@ export const checkAuthTimeout = expirationTime => {
 
 
  export const authSignup = (first_name, last_name, username, email, password1, password2, terms_conditions, user_type) => {
-   console.log("in authSignup");
    return dispatch => {
      dispatch(authStart());
      axios
@@ -220,8 +216,6 @@ export const checkAuthTimeout = expirationTime => {
  };
 
  export const updateUserProfile = (first_name, last_name, phone_number, email, country, passport_number, profile_pic, user_type, sex) => {
-  console.log("in updateProfile");
-  console.log(profile_pic);
   const config = {
             headers: { 'content-type': 'multipart/form-data' }
           };
@@ -241,7 +235,6 @@ export const checkAuthTimeout = expirationTime => {
   for( let key in data2 ) {
     data.append(key, data2[key]);
   }
-  console.log(profile_pic[0]);
   if(profile_pic && profile_pic[0] && profile_pic !== null && profile_pic !== "") {
     data.append('profile_pic', profile_pic[0], profile_pic[0]['name']);
   }
@@ -378,7 +371,6 @@ export const completeProfileInfo = (first_name, last_name, phone_number, country
 
 
  export const deleteAccount = (userProfileId) => {
-   console.log("in deleteAccount");
    return dispatch => {
      dispatch(deleteStart());
      axios
@@ -413,7 +405,6 @@ export const completeProfileInfo = (first_name, last_name, phone_number, country
     axios
       .post(api_url() + "/rest-auth/google/connect", {'access_token': values['accessToken']})
       .then(res => {
-        console.log("res", res);
         const token = res.data.key;
         const userId = res.data.user_id;
         const userProfileId = res.data.user_profile_id;
@@ -472,7 +463,6 @@ export const completeProfileInfo = (first_name, last_name, phone_number, country
     axios
       .post(api_url() + "/rest-auth/facebook/connect", {'access_token': values['accessToken']})
       .then(res => {
-        console.log("res", res);
         const token = res.data.key;
         const userId = res.data.user_id;
         const userProfileId = res.data.user_profile_id;
@@ -531,7 +521,6 @@ export const completeProfileInfo = (first_name, last_name, phone_number, country
      axios
        .post(api_url() + "/rest-auth/password/reset/", {'email': email})
        .then(res => {
-         console.log("res", res);
          dispatch(checkAuthTimeout(AUTH_TIMEOUT));
          dispatch(createNotification({
            message: "Password reset link sent.",
@@ -558,7 +547,6 @@ export const completeProfileInfo = (first_name, last_name, phone_number, country
      axios
        .post(api_url() + "/rest-auth/password/reset/confirm/", {'uid': uid, 'token': token, 'new_password1': password1, 'new_password2': password2})
        .then(res => {
-         console.log("res", res);
          dispatch(checkAuthTimeout(AUTH_TIMEOUT));
          dispatch(createNotification({
            message: "Password set successfully.",
@@ -595,7 +583,6 @@ export const authCheckState = () => {
      const date_joined = localStorage.getItem("date_joined");
      const user_type = localStorage.getItem("user_type");
      const sex = localStorage.getItem("sex");
-     console.log(token);
      if (token === undefined) {
        dispatch(logout());
      } else {
@@ -614,32 +601,3 @@ export const authCheckState = () => {
      }
    };
  };
-
-// export const authCheckState = () => {
-//   console.log("in authCheckState");
-//   const token = localStorage.getItem("token");
-//   const userId = localStorage.getItem("userId");
-//   const userProfileId = localStorage.getItem("userProfileId");
-//   const username = localStorage.getItem("username");
-//   console.log("in authCheckState -------2");
-//   return dispatch => {
-//     if (token === undefined) {
-//       console.log("in authCheckState -------4");
-//       console.log("logout for null token");
-//       return dispatch => {dispatch(logout())};
-//     } else {
-//       console.log("in authCheckState -------6");
-//       const expirationDate = new Date(localStorage.getItem("expirationDate"));
-//       console.log(expirationDate);
-//       console.log(new Date());
-//       if (expirationDate <= new Date()) {
-//         console.log("in authCheckState -------7");
-//         console.log("logout for expirationTime");
-//         return dispatch => {dispatch(logout())};
-//         console.log("in authCheckState -------8");
-//       } else {
-//         dispatch(doNothing())
-//       }
-//     }
-//   };
-// };

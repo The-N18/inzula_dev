@@ -1,16 +1,12 @@
 import React from "react";
 import {
-  Segment,
   Button,
-  Icon,
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './proposepriceonbooking.css';
-import { NavLink, Redirect } from "react-router-dom";
 import { openProposePriceOnBooking, closeProposePriceOnBooking, proposePriceOnBooking } from "../../store/actions/proposePriceOnBooking";
-import { deleteTrip } from "../../store/actions/addTrip";
-import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
+import {Field, reset, reduxForm} from 'redux-form';
 import {renderField} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
 import {FormattedMessage} from 'react-intl'

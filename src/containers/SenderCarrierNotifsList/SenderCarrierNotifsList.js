@@ -1,18 +1,9 @@
 import React from "react";
-import PropTypes from "prop-types";
 import {
-  Button,
-  Form,
-  Grid,
-  Header,
   Segment,
-  Select,
-  Image
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './tripsreservationslist.css';
-import { backend_url } from "../../configurations";
-import ImageUploader from 'react-images-upload';
 import CarrierNotifsList from "../../containers/CarrierNotifsList/CarrierNotifsList";
 import SenderNotifsList from "../../containers/SenderNotifsList/SenderNotifsList";
 

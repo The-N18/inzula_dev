@@ -51,6 +51,10 @@
   }
   .home-text-img-card-description {
     line-height: 12px !important;
+    text-align: justify;
+  }
+  .home-text-img-card-title {
+    line-height: 15px !important;
   }
 }
 
@@ -62,6 +66,10 @@
   }
   .home-text-img-card-description {
     line-height: 12px !important;
+    text-align: justify;
+  }
+  .home-text-img-card-title {
+    line-height: 15px !important;
   }
 }
 
@@ -73,5 +81,9 @@
   }
   .home-text-img-card-description {
     line-height: 12px !important;
+    text-align: justify;
+  }
+  .home-text-img-card-title {
+    line-height: 15px !important;
   }
 }

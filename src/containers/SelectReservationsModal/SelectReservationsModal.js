@@ -32,7 +32,7 @@ class SelectReservationsModal extends React.Component {
   }
 
   render() {
-    const { open, tripId, selected } = this.props;
+    const { open, selected } = this.props;
 
     return (
       <Modal

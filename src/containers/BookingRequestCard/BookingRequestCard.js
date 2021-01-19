@@ -1,23 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
-  Grid,
-  Header,
   Segment,
-  Image,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './bookingrequestcard.css';
-import { backend_url } from "../../configurations";
 
 
 class BookingRequestCard extends React.Component {
 
 
   render() {
-
-    const {title, description, img} = this.props;
-
     return (
       <Segment basic>
         <div class="container">

@@ -17,7 +17,6 @@ const getNotifsStart = (state, action) => {
 };
 
 const getNotifsSuccess = (state, action) => {
-  console.log(action);
   return updateObject(state, {
     notifs: state.notifs.concat(action.notifs),
     error: null,
@@ -28,7 +27,6 @@ const getNotifsSuccess = (state, action) => {
 };
 
 const getInitialNotifsSuccess = (state, action) => {
-  console.log(action);
   return updateObject(state, {
     notifs: action.notifs,
     error: null,

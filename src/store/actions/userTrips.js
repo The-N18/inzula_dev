@@ -2,7 +2,7 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { api_url, AUTH_TIMEOUT, parseNextUrl } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
-import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
+import {createNotification, NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -48,7 +48,6 @@ export const getInitialTrips = (user_id) => {
             params: {user_id: user_id}
           })
       .then(res => {
-        console.log(res.data)
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(getInitialTripsSuccess(res.data["results"], res.data["next"], res.data["count"]));
       })
@@ -66,15 +65,12 @@ export const getInitialTrips = (user_id) => {
 
 
 export const getTrips = (user_id, next_url, page_count) => {
-  console.log("in searchTrips");
-  console.log(next_url);
   if(next_url !== "" && next_url !== null) {
     return dispatch => {
       dispatch(getTripsStart());
       axios
         .get(parseNextUrl(next_url))
         .then(res => {
-          console.log(res.data)
           dispatch(checkAuthTimeout(AUTH_TIMEOUT));
           dispatch(getTripsSuccess(res.data["results"], res.data["next"], res.data["count"]));
         })
@@ -96,7 +92,6 @@ export const getTrips = (user_id, next_url, page_count) => {
               params: {user_id: user_id}
             })
         .then(res => {
-          console.log(res.data)
           dispatch(checkAuthTimeout(AUTH_TIMEOUT));
           dispatch(getTripsSuccess(res.data["results"], res.data["next"], res.data["count"]));
         })

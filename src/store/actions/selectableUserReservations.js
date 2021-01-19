@@ -2,7 +2,7 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { api_url, AUTH_TIMEOUT, parseNextUrl } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
-import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
+import {createNotification, NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -48,7 +48,6 @@ export const getInitialSelectableReservations = (user_id, tripId) => {
             params: {user_id: user_id, trip_id: tripId}
           })
       .then(res => {
-        console.log(res.data)
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(getInitialReservationsSuccess(res.data["results"], res.data["next"], res.data["count"]));
       })
@@ -66,15 +65,12 @@ export const getInitialSelectableReservations = (user_id, tripId) => {
 
 
 export const getSelectableReservations = (user_id, tripId, next_url, page_count) => {
-  console.log("in search Reservations");
-  console.log(next_url);
   if(next_url !== "" && next_url !== null) {
     return dispatch => {
       dispatch(getReservationsStart());
       axios
         .get(parseNextUrl(next_url))
         .then(res => {
-          console.log(res.data)
           dispatch(checkAuthTimeout(AUTH_TIMEOUT));
           dispatch(getReservationsSuccess(res.data["results"], res.data["next"], res.data["count"]));
         })
@@ -96,7 +92,6 @@ export const getSelectableReservations = (user_id, tripId, next_url, page_count)
               params: {user_id: user_id, trip_id: tripId}
             })
         .then(res => {
-          console.log(res.data)
           dispatch(checkAuthTimeout(AUTH_TIMEOUT));
           dispatch(getReservationsSuccess(res.data["results"], res.data["next"], res.data["count"]));
         })

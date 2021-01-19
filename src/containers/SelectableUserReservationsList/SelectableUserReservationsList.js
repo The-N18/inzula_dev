@@ -1,25 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
-  Button,
-  Form,
-  Grid,
-  Header,
   Segment,
-  Select,
-  Image,
-  Divider
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './selectableuserreservations.css';
-import { backend_url, buildImagesLinkList } from "../../configurations";
-import ImageUploader from 'react-images-upload';
+import { buildImagesLinkList } from "../../configurations";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { selectBooking } from "../../store/actions/selectReservationsModal";
 import { getSelectableReservations, getInitialSelectableReservations } from "../../store/actions/selectableUserReservations";
 import BookingCard from "../../containers/BookingCard/BookingCard";
 import $ from "jquery";
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 
 class SelectableUserReservationsList extends React.Component {
   constructor(props) {
@@ -71,7 +63,7 @@ class SelectableUserReservationsList extends React.Component {
   }
 
   render() {
-    const { loading, reservations, next_url, count, selectable, editable } = this.props;
+    const { reservations, next_url, count, selectable, editable } = this.props;
     const dataLength = reservations ? reservations.length : 0;
     return (
       <Segment basic className={"select-booking-section"}>

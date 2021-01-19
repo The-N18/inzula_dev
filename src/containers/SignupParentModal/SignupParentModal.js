@@ -7,11 +7,10 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './signupparentmodal.css';
-import { NavLink, Redirect } from "react-router-dom";
 import { openSignupParentModal, closeSignupParentModal } from "../../store/actions/signupParentModal";
 import { openSignupModal } from "../../store/actions/signupModal";
 import { openLoginParentModal } from "../../store/actions/loginParentModal";
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import GoogleLogin from 'react-google-login';
 import { GOOGLE_CLIENT_ID, FACEBOOK_APP_ID } from "../../configurations";
@@ -62,7 +61,7 @@ class SignupParentModal extends React.Component {
           callback={this.useFacebook}
           isDisabled
           render={renderProps => (
-            <Button fluid color='facebook' className={"signupparent-button"} onClick={renderProps.onClick}>
+            <Button disabled fluid color='facebook' className={"signupparent-button"} onClick={renderProps.onClick}>
             <Icon name='facebook' />
               <FormattedMessage
                 id="signup.use_fb"
@@ -77,7 +76,7 @@ class SignupParentModal extends React.Component {
           onFailure={this.useGoogle}
           disabled
           render={renderProps => (
-            <Button fluid color='google plus' className={"signupparent-button"} onClick={renderProps.onClick}>
+            <Button disabled fluid color='google plus' className={"signupparent-button"} onClick={renderProps.onClick}>
             <Icon name='google plus' />
               <FormattedMessage
                 id="signup.use_gmail"

@@ -1,18 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
-  Grid,
-  Header,
-  Segment,
-  Image,
   Card,
-  Checkbox,
-  Button,
-  Icon
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './transactioncard.css';
-import { backend_url, get_img_url, formatFunds } from "../../configurations";
+import { formatFunds } from "../../configurations";
 import {FormattedMessage, FormattedDate} from 'react-intl'
 
 
@@ -20,9 +13,9 @@ class TransactionCard extends React.Component {
 
   render() {
 
-    const {type, creation_date, debited_funds, execution_date, id} = this.props;
+    const {type, creation_date, debited_funds, id} = this.props;
     return (
-      <Card raised fluid centered className={"notif-card"}>
+      <Card raised fluid centered className={"transaction-card"}>
         <Card.Content>
           <Card.Header>
             {type === "PAYIN" ?

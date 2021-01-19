@@ -2,17 +2,14 @@ import React from "react";
 import {
   Segment,
   Button,
-  Icon,
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './selectcreditcard.css';
-import { NavLink, Redirect } from "react-router-dom";
 import { openSelectCreditCard,
          closeSelectCreditCard,
          getCards,
          selectSingleCard} from "../../store/actions/selectCreditCardModal";
-import CSRFToken from "../../containers/CSRFToken";
 import CreditCardCard from "../../containers/CreditCardCard/CreditCardCard";
 import { openPaymentFormModal, payForBookingWithCardId } from "../../store/actions/paymentFormModal";
 import $ from "jquery";

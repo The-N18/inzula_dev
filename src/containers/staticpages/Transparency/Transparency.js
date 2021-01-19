@@ -1,8 +1,6 @@
 import React from "react";
 import {
   Segment,
-  Button,
-  Icon,
   Header
 } from "semantic-ui-react";
 import { connect } from "react-redux";

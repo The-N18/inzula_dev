@@ -12,7 +12,6 @@ import { connect } from "react-redux";
 import { backend_url } from "../../configurations";
 import { withRouter } from "react-router-dom";
 import {FormattedMessage} from 'react-intl'
-import {Link} from 'react-scroll';
 
 
 class Footer extends React.Component {
@@ -104,7 +103,9 @@ class Footer extends React.Component {
                 <Image size="tiny" inline centered className={"footer-payment-image"} src= {backend_url() + '/static/images/amex.svg'} />
                 <Image size="tiny" inline centered className={"footer-payment-image"} src= {backend_url() + '/static/images/mastercard.svg'} />
                 <Image size="tiny" inline centered className={"footer-payment-image"} src= {backend_url() + '/static/images/paypal.svg'} />
+                <Image size="tiny" inline centered src= {backend_url() + '/static/images/mtn.jpg'} />
                 <Image size="tiny" inline centered src= {backend_url() + '/static/images/visa.svg'} />
+                <Image size="tiny" inline centered src= {backend_url() + '/static/images/orange.png'} />
               </List>
             </Grid.Column>
           </Grid>

@@ -1,30 +1,25 @@
 import React from "react";
-import PropTypes from "prop-types";
 import {
   Button,
-  Form,
   Header,
   Segment,
   Divider,
   Grid,
-  Select,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './searchbookingrequests.css';
 import 'rc-slider/assets/index.css';
-import Multiselect from 'react-widgets/lib/Multiselect'
 import MultiSelect from "@khanacademy/react-multi-select";
 import 'react-widgets/dist/css/react-widgets.css';
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { withRouter } from "react-router-dom";
 import $ from "jquery";
-import {renderField, renderDateTimePicker, renderDropdownList, renderCitiesList} from "../../containers/ReduxForm/renderField";
+import {renderDateTimePicker, renderCitiesList} from "../../containers/ReduxForm/renderField";
 import { searchBookings, filterBookings, searchSuccessOverride } from "../../store/actions/searchBookings";
-import { DateInput } from 'semantic-ui-calendar-react';
 import BookingCard from "../../containers/BookingCard/BookingCard";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { sizeMultiOptions, categoryMultiOptions, weightMultiOptions, valueMultiOptions } from "../../utils/options";
-import { backend_url, get_img_url, buildImagesLinkList } from "../../configurations";
+import { buildImagesLinkList } from "../../configurations";
 import {FormattedMessage} from 'react-intl'
 
 
@@ -97,8 +92,8 @@ class SearchBookingRequestsPage extends React.Component {
   }
 
   render() {
-    const { loading, error, bookings, next_url, count, api_been_called, handleSubmit, inNewPage, authenticated } = this.props;
-    const { travel_date, product_category, product_size, weight, proposed_price } = this.state;
+    const { loading, bookings, next_url, count, api_been_called, handleSubmit } = this.props;
+    const { product_category, product_size, weight, proposed_price } = this.state;
     return (
       <Segment basic style={{ padding: "8em 0em" }} textAlign="center">
         <Header as="h4" textAlign="center">

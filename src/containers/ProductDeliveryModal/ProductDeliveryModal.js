@@ -1,16 +1,12 @@
 import React from "react";
 import {
-  Segment,
   Button,
-  Icon,
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './productdeliverymodal.css';
-import { NavLink, Redirect } from "react-router-dom";
 import { openProductDeliveryModal, closeProductDeliveryModal, submitDeliveryCode } from "../../store/actions/productDeliveryModal";
-import { deleteTrip } from "../../store/actions/addTrip";
-import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
+import {Field, reduxForm} from 'redux-form';
 import {renderField} from "../ReduxForm/renderField";
 import { validate } from "./validation";
 import {FormattedMessage} from 'react-intl'

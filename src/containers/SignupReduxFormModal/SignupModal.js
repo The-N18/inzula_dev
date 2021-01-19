@@ -3,23 +3,21 @@ import {Field, reduxForm, reset} from 'redux-form';
 import styles from './signup.css';
 import {
   Segment,
-  Form,
   Button,
   Grid,
   Header,
   Icon,
   Modal
 } from "semantic-ui-react";
-import { NavLink, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { authSignup, authSetDiscountText } from "../../store/actions/auth";
 import { openSignupModal, closeSignupModal } from "../../store/actions/signupModal";
 import { openLoginParentModal } from "../../store/actions/loginParentModal";
 import { closeSignupParentModal } from "../../store/actions/signupParentModal";
 import { connect } from "react-redux";
 import { validate } from "./validation";
-import Recaptcha from 'react-recaptcha';
 import {renderField, renderDropdownList} from "../../containers/ReduxForm/renderField";
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 import { withRouter } from "react-router-dom";
 import {userTypeOptions, userTypeOptionsFr} from "../../utils/options";
 
@@ -43,7 +41,7 @@ class RegistrationForm extends Component {
   }
 
   render () {
-    const {handleSubmit, token, loading, pristine, reset, submitting, invalid, discountText, open, lang} = this.props;
+    const {handleSubmit, token, loading, invalid, discountText, open, lang} = this.props;
     if (token) {
       return <Redirect to="/" />;
     }

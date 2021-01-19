@@ -3,23 +3,22 @@ import {Field, reduxForm} from 'redux-form';
 import styles from './login.css';
 import {
   Segment,
-  Form,
   Button,
   Grid,
   Header,
   Modal,
   Icon
 } from "semantic-ui-react";
-import { NavLink, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { authLogin } from "../../store/actions/auth";
 import { connect } from "react-redux";
 import { validate } from "./validation";
 import { openLoginModal, closeLoginModal } from "../../store/actions/loginModal";
-import { closeForgotPasswordModal, openForgotPasswordModal} from "../../store/actions/forgotPasswordModal";
+import { openForgotPasswordModal} from "../../store/actions/forgotPasswordModal";
 import { closeLoginParentModal } from "../../store/actions/loginParentModal";
 import { openSignupParentModal } from "../../store/actions/signupParentModal";
 import {renderField} from "../../containers/ReduxForm/renderField";
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 
 
 class LoginForm extends Component {

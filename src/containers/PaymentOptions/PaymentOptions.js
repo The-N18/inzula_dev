@@ -32,7 +32,7 @@ class PaymentOptions extends React.Component {
   }
 
   render() {
-    const { open, price } = this.props;
+    const { open } = this.props;
     return (
       <Modal
       closeIcon

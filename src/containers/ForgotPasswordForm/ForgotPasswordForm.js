@@ -3,24 +3,22 @@ import {Field, reduxForm} from 'redux-form';
 import styles from './login.css';
 import {
   Segment,
-  Form,
   Button,
   Grid,
   Header,
   Modal,
   Icon
 } from "semantic-ui-react";
-import { NavLink, Redirect } from "react-router-dom";
-import { authLogin } from "../../store/actions/auth";
+import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { validate } from "./validation";
 import { forgotPassword } from "../../store/actions/auth";
 import { closeForgotPasswordModal, openForgotPasswordModal} from "../../store/actions/forgotPasswordModal";
-import { openLoginModal, closeLoginModal } from "../../store/actions/loginModal";
+import { closeLoginModal } from "../../store/actions/loginModal";
 import { closeLoginParentModal } from "../../store/actions/loginParentModal";
 import { openSignupParentModal } from "../../store/actions/signupParentModal";
 import {renderField} from "../../containers/ReduxForm/renderField";
-import {FormattedMessage, FormattedDate} from 'react-intl';
+import {FormattedMessage} from 'react-intl';
 import CSRFToken from "../../containers/CSRFToken";
 import DjangoCSRFToken from 'django-react-csrftoken';
 
@@ -39,7 +37,7 @@ class ForgotPasswordForm extends Component {
   }
 
   render () {
-    const {handleSubmit, token, loading, pristine, reset, submitting, invalid, open} = this.props;
+    const {handleSubmit, token, loading, invalid, open} = this.props;
     if (token) {
       return <Redirect to="/" />;
     }

@@ -1,13 +1,11 @@
-import React, {useState} from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import {Field, reduxForm} from 'redux-form';
 import {
   Button,
-  Form,
   Grid,
   Header,
   Segment,
-  Select,
   Image
 } from "semantic-ui-react";
 import { connect } from "react-redux";

@@ -1,24 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
-  Button,
-  Form,
-  Grid,
-  Header,
   Segment,
-  Select,
-  Image,
-  Divider
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './failedfinancialtransactionslist.css';
-import { backend_url, buildImagesLinkList } from "../../configurations";
-import ImageUploader from 'react-images-upload';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import { getTransactions, getInitialTransactions } from "../../store/actions/failedFinancialTransactions";
 import TransactionCard from "../../containers/TransactionCard/TransactionCard";
 import $ from "jquery";
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 
 class FailedFinancialTransactionsList extends React.Component {
   constructor(props) {
@@ -68,8 +58,7 @@ class FailedFinancialTransactionsList extends React.Component {
   }
 
   render() {
-    const { loading, transactions, next_url, count, selectable, editable } = this.props;
-    const dataLength = transactions ? transactions.length : 0;
+    const { transactions } = this.props;
     return (
       <Segment basic className={"profile-tab-section"}>
       {transactions.length === 0 ? <div><FormattedMessage

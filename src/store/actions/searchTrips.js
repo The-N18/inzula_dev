@@ -40,14 +40,12 @@ export const searchFail = error => {
 };
 
 export const searchTrips = (departure_location, destination_location, travel_date, user_id, next_url, page_count) => {
-  console.log("in searchTrips");
   if(next_url !== "" && next_url !== null) {
     return dispatch => {
       dispatch(searchStart());
       axios
         .get(parseNextUrl(next_url))
         .then(res => {
-          console.log(res.data)
           dispatch(checkAuthTimeout(AUTH_TIMEOUT));
           dispatch(searchSuccess(res.data["results"], res.data["next"], res.data["count"]));
         })
@@ -67,7 +65,6 @@ export const searchTrips = (departure_location, destination_location, travel_dat
               user_id: user_id,
             }})
         .then(res => {
-          console.log(res.data)
           dispatch(searchSuccessOverride(res.data["results"], res.data["next"], res.data["count"]));
           dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         })

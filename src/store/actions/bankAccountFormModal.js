@@ -2,9 +2,7 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { api_url, AUTH_TIMEOUT } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
-import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
-import mangopay from 'mangopay2-nodejs-sdk';
-import { closeModal } from "./selectReservationsModal";
+import {createNotification, NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -72,7 +70,6 @@ export const getMaxPayoutAmount = (user_id) => {
             {user_id: user_id}
           )
       .then(res => {
-        console.log(res.data)
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(getMaxPayoutSuccess(res.data["max_amt"]));
       })
@@ -96,7 +93,6 @@ export const cashout = (values) => {
             values
           )
       .then(res => {
-        console.log(res.data)
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(getCashoutSuccess());
       })

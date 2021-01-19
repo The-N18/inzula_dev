@@ -17,7 +17,6 @@ const getTripsStart = (state, action) => {
 };
 
 const getTripsSuccess = (state, action) => {
-  console.log(action);
   return updateObject(state, {
     trips: state.trips.concat(action.trips),
     error: null,
@@ -28,7 +27,6 @@ const getTripsSuccess = (state, action) => {
 };
 
 const getInitialTripsSuccess = (state, action) => {
-  console.log(action);
   return updateObject(state, {
     trips: action.trips,
     error: null,

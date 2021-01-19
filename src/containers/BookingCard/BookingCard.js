@@ -8,23 +8,21 @@ import {
   Card,
   Checkbox,
   Button,
-  Icon
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './bookingcard.css';
-import { backend_url, get_img_url } from "../../configurations";
+import { backend_url } from "../../configurations";
 import { selectBooking } from "../../store/actions/selectReservationsModal";
 import { openDeleteBookingConfirm, setBookingDeleteBookingConfirm } from "../../store/actions/deleteBookingConfirm";
 import { setBookingRequestId, openProposePriceOnBooking } from "../../store/actions/proposePriceOnBooking";
 import {FormattedMessage, FormattedDate} from 'react-intl'
-import { updateBookingOpenModal, updateBookingCloseModal } from "../../store/actions/updateBookingModal";
+import { updateBookingOpenModal } from "../../store/actions/updateBookingModal";
 import { optionToText, sizeOptions, sizeOptionsFr, categoryOptions, categoryOptionsFr, weightOptions, weightOptionsFr, valueOptions, valueOptionsFr } from "../../utils/options";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
 import { openDeclineBooking, setBookingDeclineBooking } from "../../store/actions/declineBooking";
 import { openValidateBooking, setBookingValidateBooking } from "../../store/actions/validateBooking";
 import { openCancelBooking, setBookingCancelBooking } from "../../store/actions/cancelBooking";
 import { openProductDeliveryModal } from "../../store/actions/productDeliveryModal";
-import SimpleImageSlider from "react-simple-image-slider";
 import { Carousel } from "react-responsive-carousel";
 import 'react-responsive-carousel/lib/styles/carousel.css';
 

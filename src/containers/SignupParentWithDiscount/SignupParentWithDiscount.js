@@ -7,10 +7,9 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './signupparentwithdiscount.css';
-import { NavLink, Redirect } from "react-router-dom";
 import { authSetDiscountText } from "../../store/actions/auth";
 import { openSignupModal } from "../../store/actions/signupModal";
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 
 class SignupParentWithDiscount extends React.Component {
 

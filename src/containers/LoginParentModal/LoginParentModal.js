@@ -7,14 +7,13 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './loginparentmodal.css';
-import { NavLink, Redirect } from "react-router-dom";
 import { openLoginParentModal, closeLoginParentModal } from "../../store/actions/loginParentModal";
 import { openLoginModal } from "../../store/actions/loginModal";
 import { googleLogin, facebookLogin } from "../../store/actions/auth";
 import { openSignupParentModal } from "../../store/actions/signupParentModal";
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 import { GOOGLE_CLIENT_ID, FACEBOOK_APP_ID } from "../../configurations";
 
 class LoginParentModal extends React.Component {

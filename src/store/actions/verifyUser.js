@@ -1,8 +1,7 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { api_url } from "../../configurations";
-import {clearUserInfo, setUserInfo} from "./userInfo";
-import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
+import {createNotification, NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -32,11 +31,9 @@ export const verifyUserFail = error => {
      axios
        .post(api_url() + "/account-confirm-email/?key="+verificationKey, {key: verificationKey})
        .then(res => {
-         console.log(res.data);
          dispatch(verifyUserSuccess());
        })
        .catch(err => {
-         console.log(err.response.data);
          dispatch(verifyUserFail(err.response.data));
          dispatch(createNotification({
            message: "User verification failed.",

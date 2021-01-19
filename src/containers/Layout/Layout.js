@@ -2,13 +2,11 @@ import React from "react";
 import {
   Container,
   Image,
-  Dropdown
 } from "semantic-ui-react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { logout } from "../../store/actions/auth";
 import { clearUserInfo } from "../../store/actions/userInfo";
-import { setLang } from "../../store/actions/appConfig";
 import { backend_url, get_img_url } from "../../configurations";
 import styles from './layout.css';
 import $ from "jquery";

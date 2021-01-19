@@ -18,7 +18,6 @@ const searchStart = (state, action) => {
 };
 
 const searchSuccess = (state, action) => {
-  console.log(action);
   return updateObject(state, {
     bookings: state.bookings.concat(action.bookings),
     api_been_called: true,

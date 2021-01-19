@@ -17,7 +17,6 @@ const getTransactionsStart = (state, action) => {
 };
 
 const getTransactionsSuccess = (state, action) => {
-  console.log(action);
   return updateObject(state, {
     transactions: state.transactions.concat(action.transactions),
     error: null,
@@ -28,7 +27,6 @@ const getTransactionsSuccess = (state, action) => {
 };
 
 const getInitialTransactionsSuccess = (state, action) => {
-  console.log(action);
   return updateObject(state, {
     transactions: action.transactions,
     error: null,

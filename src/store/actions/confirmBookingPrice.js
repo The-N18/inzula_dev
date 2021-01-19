@@ -3,7 +3,7 @@ import * as actionTypes from "./actionTypes";
 import { api_url, AUTH_TIMEOUT } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
 import {setNaturalUserId} from "./paymentFormModal";
-import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
+import {createNotification, NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -66,7 +66,6 @@ export const createWalletUser = (userId) => {
         userId: userId,
       })
       .then(res => {
-        console.log(res);
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(setNaturalUserId(res['data']['naturalUserId']))
       })

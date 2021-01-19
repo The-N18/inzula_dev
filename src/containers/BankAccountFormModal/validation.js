@@ -1,6 +1,3 @@
-import React from 'react'
-import { Field, reduxForm } from 'redux-form'
-
 export const validate = values => {
   const errors = {}
   if (!values.amount) {

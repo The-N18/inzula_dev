@@ -1,20 +1,16 @@
 import React from "react";
 import {
-  Segment,
   Button,
-  Icon,
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './paymentformmodal.css';
-import { NavLink, Redirect } from "react-router-dom";
 import { openPaymentFormModal,
          closePaymentFormModal,
          payInInzulaWallet,
          getInitialCardData,
          payForBooking} from "../../store/actions/paymentFormModal";
-import { deleteTrip } from "../../store/actions/addTrip";
-import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
+import {Field, reset, reduxForm} from 'redux-form';
 import {renderField} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
 import CSRFToken from "../../containers/CSRFToken";

@@ -17,7 +17,6 @@ const getReservationsStart = (state, action) => {
 };
 
 const getReservationsSuccess = (state, action) => {
-  console.log(action);
   return updateObject(state, {
     reservations: state.reservations.concat(action.reservations),
     error: null,
@@ -28,7 +27,6 @@ const getReservationsSuccess = (state, action) => {
 };
 
 const getInitialReservationsSuccess = (state, action) => {
-  console.log(action);
   return updateObject(state, {
     reservations: action.reservations,
     error: null,

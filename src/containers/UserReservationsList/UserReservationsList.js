@@ -67,7 +67,7 @@ class UserReservationsList extends React.Component {
   }
 
   render() {
-    const { loading, reservations, next_url, count, selectable, editable } = this.props;
+    const { reservations, next_url, count, selectable, editable } = this.props;
     const dataLength = reservations ? reservations.length : 0;
     return (
       <Segment basic className={"profile-tab-section"}>

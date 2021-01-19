@@ -1,27 +1,17 @@
 import React from "react";
-import PropTypes from "prop-types";
 import {
-  Button,
-  Form,
-  Grid,
-  Header,
   Segment,
-  Select,
-  Image,
-  Divider,
   Tab
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './userfinance.css';
-import { backend_url } from "../../configurations";
-import ImageUploader from 'react-images-upload';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import { setActiveIndex } from "../../store/actions/userFinance";
 import IncomingFinancialTransactionsList from "../../containers/IncomingFinancialTransactionsList/IncomingFinancialTransactionsList";
 import OutgoingFinancialTransactionsList from "../../containers/OutgoingFinancialTransactionsList/OutgoingFinancialTransactionsList";
 import FailedFinancialTransactionsList from "../../containers/FailedFinancialTransactionsList/FailedFinancialTransactionsList";
 import MyFunds from "../../containers/MyFunds/MyFunds";
 import MyPaymentMethods from "../../containers/MyPaymentMethods/MyPaymentMethods";
+import $ from "jquery";
 
 
 class UserFinance extends React.Component {
@@ -30,14 +20,26 @@ class UserFinance extends React.Component {
   }
 
   state = {
+    isMobile: false,
+    isTablet: false
   };
 
-  componentDidMount = () => {
-    console.log("in component did mount");
+  handleScreenSize = () => {
+    if($(window).width() < 768) {
+      this.setState({ isMobile: true });
     }
+    if($(window).width() >= 768) {
+      this.setState({ isTablet: true });
+    }
+  }
 
-  fetchMoreData = () => {
-    console.log("fetch more data");
+  componentDidMount() {
+    window.addEventListener('resize', this.handleScreenSize, false);
+    this.handleScreenSize();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleScreenSize);
   }
 
   handleTabChange = (e, { activeIndex }) => {
@@ -46,26 +48,27 @@ class UserFinance extends React.Component {
 
 
   render() {
-    const { loading, alerts, next_url, count, selectable, activeIndex, lang } = this.props;
+    const { activeIndex, lang } = this.props;
+    const {isMobile} = this.state;
     const panes = [
       {
-        menuItem: { key: 'in_transactions', icon: 'arrow right', content: lang === 'en' ? 'Outgoing transactions' : 'Transactions sortantes' },
+        menuItem: { key: 'in_transactions', icon: 'arrow right', content: isMobile ? '' : lang === 'en' ? 'Outgoing transactions' : 'Transactions sortantes' },
         render: () => <Tab.Pane attached={false}><OutgoingFinancialTransactionsList/></Tab.Pane>,
       },
       {
-        menuItem: { key: 'out_transactions', icon: 'arrow left', content: lang === 'en' ? 'Incoming transactions' : 'Transactions entrantes' },
+        menuItem: { key: 'out_transactions', icon: 'arrow left', content: isMobile ? '' : lang === 'en' ? 'Incoming transactions' : 'Transactions entrantes' },
         render: () => <Tab.Pane attached={false}><IncomingFinancialTransactionsList/></Tab.Pane>,
       },
       {
-        menuItem: { key: 'failed_transactions', icon: 'exclamation', content: lang === 'en' ? 'Failed transactions' : 'Transactions échouées' },
+        menuItem: { key: 'failed_transactions', icon: 'exclamation', content: isMobile ? '' : lang === 'en' ? 'Failed transactions' : 'Transactions échouées' },
         render: () => <Tab.Pane attached={false}><FailedFinancialTransactionsList/></Tab.Pane>,
       },
       {
-        menuItem: { key: 'my_funds', icon: 'money', content: lang === 'en' ? 'My funds' : 'Mes fonds' },
+        menuItem: { key: 'my_funds', icon: 'money', content: isMobile ? '' : lang === 'en' ? 'My funds' : 'Mes fonds' },
         render: () => <Tab.Pane attached={false}><MyFunds/></Tab.Pane>,
       },
       {
-        menuItem: { key: 'my_payment_methods', icon: 'money', content: lang === 'en' ? 'My payment methods' : 'Mes méthodes de paiement' },
+        menuItem: { key: 'my_payment_methods', icon: 'credit card', content: isMobile ? '' : lang === 'en' ? 'My payment methods' : 'Mes méthodes de paiement' },
         render: () => <Tab.Pane attached={false}><MyPaymentMethods/></Tab.Pane>,
       },
     ];
@@ -73,7 +76,7 @@ class UserFinance extends React.Component {
       <Segment basic className={"profile-tab-section"}>
         <Tab
           activeIndex={activeIndex}
-          menu={{ borderless: true, attached: false, tabular: false, vertical: true, fluid: true}}
+          menu={{ borderless: true, attached: false, tabular: false, vertical: isMobile ? false : true, fluid: true}}
           panes={panes}
           onTabChange={this.handleTabChange}
         />

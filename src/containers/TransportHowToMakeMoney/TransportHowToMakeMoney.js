@@ -9,7 +9,7 @@ import {
 import { connect } from "react-redux";
 import styles from './transporthowtomakemoney.css';
 import { backend_url } from "../../configurations";
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 
 
 class TransportHowToMakeMoney extends React.Component {

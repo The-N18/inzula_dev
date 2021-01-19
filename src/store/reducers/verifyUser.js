@@ -14,7 +14,6 @@ const verifyUserStart = (state, action) => {
 };
 
 const verifyUserSuccess = (state, action) => {
-  console.log(action);
   return updateObject(state, {
     error: null,
     loading: false

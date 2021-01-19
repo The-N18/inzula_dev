@@ -2,23 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import {
   Button,
-  Form,
-  Grid,
-  Header,
-  Segment,
-  Select,
-  Image,
-  Divider
+  Segment
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './usertripslist.css';
-import { backend_url } from "../../configurations";
-import ImageUploader from 'react-images-upload';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { getTrips, getInitialTrips } from "../../store/actions/userTrips";
 import TripCard from "../../containers/TripCard/TripCard";
 import $ from "jquery";
-import {FormattedMessage, FormattedDate} from 'react-intl';
+import {FormattedMessage} from 'react-intl';
 import { openAddTripModal } from "../../store/actions/addTripModal";
 
 class UserTripsList extends React.Component {
@@ -75,8 +67,7 @@ class UserTripsList extends React.Component {
 
 
   render() {
-    const { loading, trips, next_url, count } = this.props;
-    const dataLength = trips ? trips.length : 0;
+    const { trips, next_url, count } = this.props;
     return (
       <Segment basic className={"profile-tab-section"}>
       {trips.length === 0 ? <div><FormattedMessage

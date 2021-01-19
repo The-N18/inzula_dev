@@ -1,23 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
-  Button,
-  Form,
-  Grid,
-  Header,
   Segment,
-  Select,
-  Image,
-  Divider
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './mypaymentmethods.css';
-import { backend_url, buildImagesLinkList } from "../../configurations";
-import ImageUploader from 'react-images-upload';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import { getCards, addMethod } from "../../store/actions/myPaymentMethods";
 import $ from "jquery";
-import {FormattedMessage, FormattedDate} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 import CreditCardCard from "../../containers/CreditCardCard/CreditCardCard";
 
 class MyPaymentMethods extends React.Component {

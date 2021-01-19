@@ -1,9 +1,6 @@
-import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { api_url } from "../../configurations";
 
 export const clearUserInfo = () => {
-  console.log("Clear user info");
   return {
     type: actionTypes.CLEAR_USER_INFO,
     userId: null,
@@ -55,7 +52,6 @@ export const setUserInfo = (userId, username, userProfileId, first_name, last_na
 };
 
 export const toggleProfileType = (profileType) => {
-  console.log("in toggleProfileType");
   return {
     type: actionTypes.TOGGLE_PROFILE_TYPE,
     profileType: profileType,

@@ -13,7 +13,6 @@ const openModal = (state, action) => {
 };
 
 const openModalForTrip = (state, action) => {
-  console.log(action);
   return updateObject(state, {
     open: true,
     tripId: action.tripId

@@ -36,7 +36,6 @@ export const cancelBooking = (booking_id, user_id) => {
     axios
       .post(api_url() + "/bookings/cancel_booking", {bookingId: booking_id})
       .then(res => {
-        console.log(res.data)
         if(res && res['data'] && res['data']['info']) {
           if(res['data']['detail'] === "BOOKING_ALREADY_DELIVERED") {
             dispatch(createNotification({

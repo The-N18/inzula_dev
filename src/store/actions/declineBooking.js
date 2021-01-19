@@ -28,15 +28,10 @@ export const closeDeclineBooking = () => {
 };
 
 export const declineBooking = (booking_id, user_id) => {
-  const userProfileId = localStorage.getItem("userProfileId");
-  const config = {
-            headers: { 'content-type': 'multipart/form-data' }
-          };
   return dispatch => {
     axios
       .post(api_url() + "/bookings/decline_booking", {bookingId: booking_id})
       .then(res => {
-        console.log(res.data)
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: 'The booking request has been declined.',

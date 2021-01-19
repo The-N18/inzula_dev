@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Button,
-  Form,
   Header,
   Segment,
   Divider,
@@ -38,8 +37,6 @@ class SearchTripsForm extends React.Component {
 
   fetchMoreData = () => {
     const { user_id, next_url, count, departure_location, destination_location, travel_date } = this.props;
-    const departureLocation = departure_location ? departure_location['pk'] : null;
-    const destinationLocation = destination_location ? destination_location['pk'] : null;
     this.props.history.push("/dispatch");
     this.props.findTrip(departure_location, destination_location, travel_date, user_id, next_url, count);
   }
@@ -96,12 +93,6 @@ class SearchTripsForm extends React.Component {
               defaultMessage="Prefer to know what shipping offers are available before committing?"
             />
           </Header>
-          {/* <Header as="h4" textAlign="center">
-            <FormattedMessage
-              id="search_trips.h2"
-              defaultMessage="No worries, you can add the country of departure and destination of your trip and thus access the requests for available expeditions."
-            />
-          </Header> */}
           <form onSubmit={handleSubmit(this.submitForm)}>
           <Grid>
             <Grid.Row columns={3}>

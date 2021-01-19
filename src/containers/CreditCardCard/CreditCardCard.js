@@ -1,18 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
-  Grid,
-  Header,
-  Segment,
-  Image,
   Card,
-  Checkbox,
-  Button,
-  Icon
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './creditcardcard.css';
-import { backend_url, get_img_url } from "../../configurations";
 import {FormattedMessage, FormattedDate} from 'react-intl'
 
 
@@ -22,7 +14,7 @@ class CreditCardCard extends React.Component {
 
     const {alias, card_type, creation_date, expiration_date, onclick, cardId, pk} = this.props;
     return (
-      <Card raised fluid centered className={cardId === null ? "notif-card" : cardId === pk ? "notif-card green-bg" : "notif-card grey-bg"} onClick={onclick}>
+      <Card raised fluid centered className={cardId === null ? "credit-card" : cardId === pk ? "credit-card green-bg" : "credit-card grey-bg"} onClick={onclick}>
         <Card.Content>
           <Card.Header>
             <span>{alias} : {card_type}</span>
