@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import styles from './deletetripconfirm.css';
 import { openDeleteTripConfirm, closeDeleteTripConfirm } from "../../store/actions/deleteTripConfirm";
 import { deleteTrip } from "../../store/actions/addTrip";
+import {FormattedMessage} from 'react-intl';
 
 class DeleteTripConfirm extends React.Component {
 
@@ -26,16 +27,28 @@ class DeleteTripConfirm extends React.Component {
         onOpen={() => this.props.openDeleteTripConfirm()}
         size='tiny'
       >
-      <Modal.Header>Delete Trip</Modal.Header>
+      <Modal.Header><FormattedMessage
+                id="delete_trip.title"
+                defaultMessage="Delete trip"
+              /></Modal.Header>
       <Modal.Content>
-        <p>Are you sure you want to delete this trip</p>
+        <p><FormattedMessage
+                id="delete_trip.msg"
+                defaultMessage="Are you sure you want to delete this trip?"
+              /></p>
       </Modal.Content>
       <Modal.Actions>
         <Button negative onClick={() => this.props.closeDeleteTripConfirm()}>
-          No
+        <FormattedMessage
+                id="delete_trip.no"
+                defaultMessage="No"
+              />
         </Button>
         <Button positive onClick={this.handleDelete.bind(this)}>
-          Yes
+        <FormattedMessage
+                id="delete_trip.yes"
+                defaultMessage="Yes"
+              />
         </Button>
       </Modal.Actions>
     </Modal>

@@ -267,7 +267,7 @@ export const msg = {
   'signup_discount.username': "Utiliser le nom d'utilisateur",
   'select_reservations.title': "Sélectionner les colis pour ce voyage",
   'select_reservations.add_booking': "Ajouter un colis",
-  'select_reservations.book_with_selected': "Reserver avec les colis sélectionnés",
+  'select_reservations.book_with_selected': "Reserver avec les colis sélectionnés ",
   'select_reservations.cancel': "Annuler",
   'select_credit_card.title': "Sélectionner la carte de crédit",
   'select_credit_card.pay_with_new': "Payer avec une nouvelle carte",
@@ -318,7 +318,7 @@ export const msg = {
 
   'payment_form.title': "Paiement",
   'payment_form.price_msg': "Vous allez payer {price} euros.",
-  'payment_form.card_f_name': "Prenom",
+  'payment_form.card_f_name': "Prénom",
   'payment_form.card_l_name': "Nom",
   'payment_form.card_number': "Numero de carte de credit",
   'payment_form.exp_date_mm': "MM(expiration)",
@@ -329,15 +329,15 @@ export const msg = {
   'add_booking.add_request': "Ajouter un colis",
   'my_funds.no_cards': "Vous n'avez pas de cartes de paiement.",
 
-  'cashout_form.max_amt': "Montant maximum a retirer",
+  'cashout_form.max_amt': "Montant maximum a rétirer",
   'cashout_form.amt': "Montant",
-  'cashout_form.account_owner_name': "Nom et Prenom",
+  'cashout_form.account_owner_name': "Nom et Prénom",
   'cashout_form.account_owner_address': "Adresse",
   'cashout_form.account_owner_postal_code': "Code postal",
   'cashout_form.country': "Pays",
   'cashout_form.account_BIC': "RIB",
   'cashout_form.account_IBAN': "IBAN",
-  'cashout_form.cashout': "Retirer",
+  'cashout_form.cashout': "Rétirer",
   'cashout_form.cancel': "Annuler",
 
   'decline_booking.title': "Décliner la requête",
@@ -356,4 +356,14 @@ export const msg = {
   'verify_email_confirm.title': "Email de verification envoyé",
   'verify_email_confirm.yes': "Ok",
   'verify_email_confirm.msg': "Merci de valider le mail reçu dans votre boite mail afin de confirmer votre inscription (si vous n'avez pas reçu le mail, merci de regarder dans les SPAM).",
+
+  'delete_trip.title': "Supprimer le voyage",
+  'delete_trip.msg': "Etes-vous sur de vouloir supprimer ce voyage?",
+  'delete_trip.no': "Non",
+  'delete_trip.yes': "Oui",
+
+  'delete_booking.title': "Supprimer la requête",
+  'delete_booking.msg': "Etes-vous sur de vouloir supprimer cette requête?",
+  'delete_booking.no': "Non",
+  'delete_booking.yes': "Oui",
 };

@@ -18,7 +18,7 @@ import UserBookingsList from "../../containers/UserBookingsList/UserBookingsList
 import { setActiveIndex } from "../../store/actions/myProfile";
 import $ from "jquery";
 import { toggleProfileType } from "../../store/actions/userInfo";
-import {FormattedMessage} from 'react-intl'
+import {FormattedMessage} from 'react-intl';
 
 
 

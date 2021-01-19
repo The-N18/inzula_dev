@@ -364,5 +364,15 @@ export const msg = {
   'verify_email_confirm.yes': "Ok",
   'verify_email_confirm.msg': "Please click on the link you have received by email. If you don't receive it soon enough, check your SPAM messages.",
 
+  'delete_trip.title': "Delete trip",
+  'delete_trip.msg': "Are you sure you want to delete this trip?",
+  'delete_trip.no': "No",
+  'delete_trip.yes': "Yes",
+
+  'delete_booking.title': "Delete booking",
+  'delete_booking.msg': "Are you sure you want to delete this booking?",
+  'delete_booking.no': "No",
+  'delete_booking.yes': "Yes",
+
 
 };
