@@ -21,6 +21,7 @@ import {renderField, renderDropdownList, renderPhoneNumber} from "../../containe
 import {FormattedMessage, FormattedDate} from 'react-intl'
 import { openDeleteAccount } from "../../store/actions/deleteAccount";
 import {userTypeOptions, userTypeOptionsFr, sexOptions, sexOptionsFr} from "../../utils/options";
+import Files from 'react-files';
 import 'react-phone-number-input/style.css';
 
 
@@ -33,6 +34,7 @@ class ProfileTab extends React.Component {
 
   state = {
     picture: [],
+    passport: [],
   }
 
   onDrop = (picture) => {
@@ -41,11 +43,23 @@ class ProfileTab extends React.Component {
       });
   }
 
+  onFilesChange = (files) => {
+    console.log(files)
+    this.setState({
+      passport: files,
+  });
+  }
+
+  onFilesError = (error, file) => {
+    console.log('error code ' + error.code + ': ' + error.message);
+
+  }
+
   submitForm = (val) => {
     const user_type = val['user_type'] && val['user_type']['value']  ? val['user_type']['value'] : val['user_type'];
     const sex = val['sex'] && val['sex']['value']  ? val['sex']['value'] : val['sex'];
     const country = val['country'] && val['country']['value'] ? val['country']['value'] : val['country'];
-    this.props.updateProfile(val['first_name'], val['last_name'], val['phone_number'], val['email'], country, val['passport_number'], this.state.picture, user_type, sex);
+    this.props.updateProfile(val['first_name'], val['last_name'], val['phone_number'], val['email'], country, val['passport_number'], this.state.picture, user_type, sex, this.state.passport);
   }
 
   deleteYourAccount = () => {
@@ -53,25 +67,52 @@ class ProfileTab extends React.Component {
   }
 
   render () {
-    const {handleSubmit, loading, deleteLoading, username, invalid, date_joined, profile_pic, passport_number, phone_number, email, lang} = this.props;
+    const {handleSubmit, loading, deleteLoading, username, invalid, date_joined, profile_pic, passport_number, phone_number, email, lang, id_document} = this.props;
+    const {passport} = this.state;
     return (
       <Segment basic className={"profile-tab-section"}>
       <Grid className={"profile-tab-section-grid"}>
         <Grid.Row columns={2}>
-          <Grid.Column mobile={16} tablet={16} computer={5}>
+          <Grid.Column mobile={16} tablet={16} computer={6}>
             <Segment className={"profile-tab-card"}>
               <Image centered bordered circular src= {profile_pic !== null && profile_pic !== "null" ? get_img_url(profile_pic) : backend_url() + '/static/images/user_avatar.png'} />
+              <ImageUploader
+                      withIcon={false}
+                      buttonText={<FormattedMessage
+                        id="profile_tab.choose_profile_image"
+                        defaultMessage="Choose profile image"
+                      />}
+                      onChange={this.onDrop}
+                      maxFileSize={5242880}
+                      singleImage={true}
+                      withPreview={true}
+                      label={""}
+                      fileTypeError={<FormattedMessage
+                        id="profile_tab.file_type_error"
+                        defaultMessage="File type not accepted"
+                      />}
+                      fileSizeError={<FormattedMessage
+                        id="profile_tab.file_size_error"
+                        defaultMessage="File is too big"
+                      />}
+                  />
               <Segment basic textAlign="left">
               <Header as='h4' className={"profile-tab-card-title"}>
-              <p>{username}</p>
-              <p>{this.props.first_name} {this.props.last_name}</p></Header>
+              <p><FormattedMessage
+                id="profile_tab.username_"
+                defaultMessage="Username:"
+              />{username}</p>
+              <p><FormattedMessage
+                id="profile_tab.fullname_"
+                defaultMessage="Name:"
+              />{this.props.first_name} {this.props.last_name}</p></Header>
               {date_joined ? <p><FormattedMessage
                 id="profile_tab.member_since"
                 defaultMessage="Member since"
               /><FormattedDate
                                   value={date_joined}
                                   year="numeric"
-                                  month="long"
+                                  month="short"
                                   day="numeric"
                                   weekday="short"
                                 /></p> : ''}
@@ -103,27 +144,10 @@ class ProfileTab extends React.Component {
               </Button>
             </Segment>
           </Grid.Column>
-          <Grid.Column mobile={16} tablet={16} computer={11} className={"profile-tab-card bordered-column"}>
+          <Grid.Column mobile={16} tablet={16} computer={10} className={"profile-tab-card bordered-column"}>
           <Grid className={"profile-tab-section-grid"}>
             <Grid.Row columns={2}>
-              <Grid.Column mobile={16} tablet={16} computer={5}>
-                <Segment basic>
-                  {/*<Image centered bordered circular src= {profile_pic !== null && profile_pic !== "null" ? get_img_url(profile_pic) : backend_url() + '/static/images/user_avatar.png'} />*/}
-                  <ImageUploader
-                      withIcon={true}
-                      buttonText={<FormattedMessage
-                        id="profile_tab.choose_profile_image"
-                        defaultMessage="Choose profile image"
-                      />}
-                      onChange={this.onDrop}
-                      imgExtension={['.jpg', '.gif', '.png', '.gif']}
-                      maxFileSize={5242880}
-                      singleImage={true}
-                      withPreview={true}
-                  />
-                </Segment>
-              </Grid.Column>
-              <Grid.Column mobile={16} tablet={16} computer={11}>
+              <Grid.Column mobile={16} tablet={16} computer={16}>
                 <Segment basic textAlign="center">
                 <Header as='h4' className={"profile-tab-card-title"}>
                   <FormattedMessage
@@ -256,7 +280,7 @@ class ProfileTab extends React.Component {
                           textField="text" />
                         </div>
                       </div>
-                    <div>
+                      <div>
                       <label htmlFor="country">
                         <FormattedMessage
                           id="profile_tab.passport_number"
@@ -271,6 +295,38 @@ class ProfileTab extends React.Component {
                         className={"custom-field"}
                         component={renderField}
                       />
+                      </div>
+                    </div>
+                    <div>
+                      <label htmlFor="country">
+                        <FormattedMessage
+                          id="profile_tab.passport_proof"
+                          defaultMessage="Passport proof"
+                        />
+                      </label>
+                      <div>
+                      <Files
+                        className='files-dropzone'
+                        onChange={this.onFilesChange}
+                        onError={this.onFilesError}
+                        accepts={['.pdf', '.doc', '.docx']}
+                        maxFiles={1}
+                        maxFileSize={10000000}
+                        minFileSize={0}
+                        clickable
+                      >
+                        <Button
+                          className={"buttoncolor-passport"}
+                          size="small"
+                        >
+                        <FormattedMessage
+                          id="profile_tab.passport_upload_btn"
+                          defaultMessage="Save"
+                        />
+                        </Button>
+                        <p className={"passport-file-name"}>{passport.length > 0 ? passport[0]['name'] : ''}</p>
+                        <p className={"passport-file-name"}>{id_document !== null ? id_document : ''}</p>
+                      </Files>
                       </div>
                     </div>
                     <Button
@@ -313,14 +369,15 @@ const mapStateToProps = state => {
     date_joined: state.userInfo.date_joined,
     phone_number: state.userInfo.phone_number,
     profile_pic: state.userInfo.profile_pic,
+    id_document: state.userInfo.id_document,
     initialValues: state.userInfo.profileData
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateProfile: (first_name, last_name, phone_number, email, country, passport_number, profile_pic, user_type, sex) =>
-      dispatch(updateUserProfile(first_name, last_name, phone_number, email, country, passport_number, profile_pic, user_type, sex)),
+    updateProfile: (first_name, last_name, phone_number, email, country, passport_number, profile_pic, user_type, sex, passport_file) =>
+      dispatch(updateUserProfile(first_name, last_name, phone_number, email, country, passport_number, profile_pic, user_type, sex, passport_file)),
     openDeleteAccount: () => dispatch(openDeleteAccount())
   };
 };

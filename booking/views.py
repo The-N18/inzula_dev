@@ -539,6 +539,7 @@ class BookingRequestDetail(APIView):
             booking_request = self.get_object(pk)
             product = booking_request.product
             pictures = request.FILES.getlist('pictures')
+            print(pictures)
             departure_location = City.objects.get(pk=request.data["departure_location"])
             destination_location = City.objects.get(pk=request.data["destination_location"])
             userprofile = UserProfile.objects.get(pk=request.data["created_by"])
@@ -567,6 +568,8 @@ class BookingRequestDetail(APIView):
             product.user_agreement=request.data["user_agreement"].capitalize()
             product.save()
             if len(pictures) > 0:
+                # delete previous images
+                ProductImage.objects.filter(product=product).delete()
                 for item in pictures:
                     img = ProductImage(image=item, product=product)
                     img.save()
@@ -686,7 +689,7 @@ def generateRandomCode(trip_id, booking_id):
         Codes.objects.create(trip=trip, booking=booking, status="sent_to_sender", code=code, created_on=timezone.now())
 
 
-def renderCodeObsolete(trip, booking_id):
+def renderCodeObsolete(trip, booking_id, in_decline):
     trip_ = None
     if trip is not None:
         trip_ = Trip.objects.get(pk=trip.pk)
@@ -696,7 +699,8 @@ def renderCodeObsolete(trip, booking_id):
             item.status = "obsolete"
             item.save()
     # refund charges
-    refund_charges(booking)
+    if in_decline == False:
+        refund_charges(booking)
 
 class ValidateBooking(APIView):
     """
@@ -739,7 +743,7 @@ class DeclineBooking(APIView):
             type='request_declined',
             created_on=timezone.now(),
             status='unseen')
-            renderCodeObsolete(booking_request.trip, booking_request.pk)
+            renderCodeObsolete(booking_request.trip, booking_request.pk, True)
             result = {"detail": 'ok'}
             booking_request.trip = None
             booking_request.save()
@@ -774,7 +778,7 @@ class CancelBooking(APIView):
             type='request_cancelled',
             created_on=timezone.now(),
             status='unseen')
-            renderCodeObsolete(booking_request.trip, booking_request.pk)
+            renderCodeObsolete(booking_request.trip, booking_request.pk, False)
             booking_request.trip = None
             booking_request.save()
             return Response(result, status=status.HTTP_200_OK)

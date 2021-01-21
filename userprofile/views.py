@@ -72,6 +72,7 @@ class UpdateProfileView(CreateAPIView):
         passport_number = request.data["passport_number"]
         sex = request.data["sex"]
         picture = request.FILES.get('profile_pic', None)
+        id_document = request.FILES.get('id_document', None)
 
         userprofile = None
         if user_profile_id:
@@ -80,6 +81,8 @@ class UpdateProfileView(CreateAPIView):
         if userprofile:
             if picture is not None:
                 userprofile.profile_pic=picture
+            if id_document is not None:
+                userprofile.id_document=id_document
             userprofile.phone_number=phone_number
             userprofile.country=country
             userprofile.passport_number=passport_number
@@ -123,12 +126,16 @@ class CompleteProfileView(CreateAPIView):
         country = request.data["country"]
         passport_number = request.data["passport_number"]
         sex = request.data["sex"]
+        id_document = request.FILES.get('id_document', None)
+
 
         userprofile = None
         if user_profile_id:
             userprofile = UserProfile.objects.get(pk=user_profile_id)
 
         if userprofile:
+            if id_document is not None:
+                userprofile.id_document=id_document
             userprofile.phone_number=phone_number
             userprofile.country=country
             userprofile.passport_number=passport_number

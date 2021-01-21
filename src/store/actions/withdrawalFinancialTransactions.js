@@ -9,13 +9,13 @@ axios.defaults.xsrfCookieName = "csrftoken";
 
 export const getTransactionsStart = () => {
   return {
-    type: actionTypes.GET_INCOMING_TRANSACTIONS_START
+    type: actionTypes.GET_WITHDRAWAL_TRANSACTIONS_START
   };
 };
 
 export const getTransactionsSuccess = (transactions, next, count) => {
   return {
-    type: actionTypes.GET_INCOMING_TRANSACTIONS_SUCCESS,
+    type: actionTypes.GET_WITHDRAWAL_TRANSACTIONS_SUCCESS,
     transactions: transactions,
     loading: false,
     next_url: next,
@@ -25,7 +25,7 @@ export const getTransactionsSuccess = (transactions, next, count) => {
 
 export const getInitialTransactionsSuccess = (transactions, next, count) => {
   return {
-    type: actionTypes.GET_INITIAL_INCOMING_TRANSACTIONS_SUCCESS,
+    type: actionTypes.GET_INITIAL_WITHDRAWAL_TRANSACTIONS_SUCCESS,
     transactions: transactions,
     loading: false,
     next_url: next,
@@ -35,7 +35,7 @@ export const getInitialTransactionsSuccess = (transactions, next, count) => {
 
 export const getTransactionsFail = error => {
   return {
-    type: actionTypes.GET_INCOMING_TRANSACTIONS_FAIL,
+    type: actionTypes.GET_WITHDRAWAL_TRANSACTIONS_FAIL,
     error: error
   };
 };
@@ -44,7 +44,7 @@ export const getInitialTransactions = (user_id) => {
   return dispatch => {
     dispatch(getTransactionsStart());
     axios
-      .post(api_url() + "/pay/incomingUserTransactions",
+      .post(api_url() + "/pay/withdrawalUserTransactions",
             {user_id: user_id}
           )
       .then(res => {
@@ -88,7 +88,7 @@ export const getTransactions = (user_id, next_url, page_count) => {
     return dispatch => {
       dispatch(getTransactionsStart());
       axios
-        .post(api_url() + "/pay/outgoingUserTransactions",
+        .post(api_url() + "/pay/withdrawalUserTransactions",
               {user_id: user_id}
             )
         .then(res => {

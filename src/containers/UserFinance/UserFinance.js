@@ -9,6 +9,8 @@ import { setActiveIndex } from "../../store/actions/userFinance";
 import IncomingFinancialTransactionsList from "../../containers/IncomingFinancialTransactionsList/IncomingFinancialTransactionsList";
 import OutgoingFinancialTransactionsList from "../../containers/OutgoingFinancialTransactionsList/OutgoingFinancialTransactionsList";
 import FailedFinancialTransactionsList from "../../containers/FailedFinancialTransactionsList/FailedFinancialTransactionsList";
+import DepositFinancialTransactionsList from "../../containers/DepositFinancialTransactionsList/DepositFinancialTransactionsList";
+import WithdrawalFinancialTransactionsList from "../../containers/WithdrawalFinancialTransactionsList/WithdrawalFinancialTransactionsList";
 import MyFunds from "../../containers/MyFunds/MyFunds";
 import MyPaymentMethods from "../../containers/MyPaymentMethods/MyPaymentMethods";
 import $ from "jquery";
@@ -52,12 +54,20 @@ class UserFinance extends React.Component {
     const {isMobile} = this.state;
     const panes = [
       {
-        menuItem: { key: 'in_transactions', icon: 'arrow right', content: isMobile ? '' : lang === 'en' ? 'Outgoing transactions' : 'Transactions sortantes' },
+        menuItem: { key: 'in_transactions', icon: 'arrow left', content: isMobile ? '' : lang === 'en' ? 'Incoming transactions' : 'Transactions entrantes' },
+        render: () => <Tab.Pane attached={false}><IncomingFinancialTransactionsList/></Tab.Pane>,
+      },
+      {
+        menuItem: { key: 'out_transactions', icon: 'arrow right', content: isMobile ? '' : lang === 'en' ? 'Outgoing transactions' : 'Transactions sortantes' },
         render: () => <Tab.Pane attached={false}><OutgoingFinancialTransactionsList/></Tab.Pane>,
       },
       {
-        menuItem: { key: 'out_transactions', icon: 'arrow left', content: isMobile ? '' : lang === 'en' ? 'Incoming transactions' : 'Transactions entrantes' },
-        render: () => <Tab.Pane attached={false}><IncomingFinancialTransactionsList/></Tab.Pane>,
+        menuItem: { key: 'deposit_transactions', icon: 'arrow circle left', content: isMobile ? '' : lang === 'en' ? 'Funds\' deposits' : 'Depots de fonds' },
+        render: () => <Tab.Pane attached={false}><DepositFinancialTransactionsList/></Tab.Pane>,
+      },
+      {
+        menuItem: { key: 'withdrawal_transactions', icon: 'arrow circle right', content: isMobile ? '' : lang === 'en' ? 'Funds\' withdrawals' : 'Retraits de fonds' },
+        render: () => <Tab.Pane attached={false}><WithdrawalFinancialTransactionsList/></Tab.Pane>,
       },
       {
         menuItem: { key: 'failed_transactions', icon: 'exclamation', content: isMobile ? '' : lang === 'en' ? 'Failed transactions' : 'Transactions échouées' },

@@ -36,7 +36,7 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ['profile_pic', 'phone_number', 'date_joined', 'first_name', 'last_name', 'email', 'username', 'user_id', 'user_profile_id', 'passport_number', 'country', 'user_type', 'sex']
+        fields = ['profile_pic', 'phone_number', 'date_joined', 'first_name', 'last_name', 'email', 'username', 'user_id', 'user_profile_id', 'passport_number', 'country', 'user_type', 'sex', 'id_document']
 
     def get_first_name(self, obj):
         if obj.user:

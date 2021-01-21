@@ -1,4 +1,4 @@
-export const DEBUG = false;
+export const DEBUG = true;
 //export const BACKEND_HOST_ADDRESS = DEBUG ? '127.0.0.1' : '35.181.124.82';
 export const BACKEND_HOST_ADDRESS = DEBUG ? '127.0.0.1' : 'dkx1b8wlo613w.cloudfront.net';
 export const BACKEND_HOST_PORT = '8000';
@@ -45,6 +45,18 @@ export const buildImagesLinkList = (images) => {
   return [];
 }
 
+export const mimic_img = (images) => {
+  if(images.length > 0) {
+    let imgLinks = [];
+    let max_img = images.length > 3 ? 3 : images.length;
+    for(let i = 0; i < max_img; i++) {
+      imgLinks.push({name: get_img_url(images[i]['image'])});
+    }
+    return imgLinks;
+  }
+  return [];
+}
+
 export const isProfileComplete = (localstorage) => {
   const token = localStorage.getItem("token");
   const uname = localStorage.getItem("username");
@@ -54,7 +66,8 @@ export const isProfileComplete = (localstorage) => {
   const passp = localStorage.getItem("passport_number");
   const ctry = localStorage.getItem("country");
   const sex = localStorage.getItem("sex");
-  if(token !== "" && uname !== "" && fname !== "" && lname !== "" && phone !== "" && phone !== null && phone !== "undefined" && phone !== "0" && passp !== ""  && passp !== null  && passp !== "undefined" && ctry !== "" && ctry !== "undefined" && ctry !== null && sex !== "" && sex !== "undefined" && sex !== null) {
+  const id_document = localStorage.getItem("id_document");
+  if(id_document !=="" && id_document !== null && token !== "" && uname !== "" && fname !== "" && lname !== "" && phone !== "" && phone !== null && phone !== "undefined" && phone !== "0" && passp !== ""  && passp !== null  && passp !== "undefined" && ctry !== "" && ctry !== "undefined" && ctry !== null && sex !== "" && sex !== "undefined" && sex !== null) {
     return true;
   }
   return false;

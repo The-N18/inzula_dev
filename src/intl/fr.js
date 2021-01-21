@@ -221,7 +221,7 @@ export const msg = {
   'profile_tab.email': "Adresse email",
   'profile_tab.phone_number_disp': "Tel.:",
   'profile_tab.email_disp': "Email:",
-  'profile_tab.passport_number_disp': "Passport:",
+  'profile_tab.passport_number_disp': "Passeport:",
   'profile_tab.member_since': "Membre depuis: ",
   'profile_tab.save': "Sauvegarder",
   'profile_tab.choose_profile_image': "Choisir une photo de profil",
@@ -251,7 +251,7 @@ export const msg = {
   'failed_user_transactions.no_transactions': "Vous n'avez aucune transaction échouée.",
   'transaction_card.payin': "Transaction: ",
   'transaction_card.creation_date': "Créée le: ",
-  'transaction_card.debited_funds': "Montant debitté: ",
+  'transaction_card.debited_funds': "Montant : ",
   'validate_booking.title': "Valider la réservation",
   'validate_booking.question':"Etes-vous sur de vouloir valider cette requête?",
   'validate_booking.no': "Non",
@@ -303,7 +303,7 @@ export const msg = {
   'search_trips.destination_location': "Lieu d'arrivée",
   
   'confirm_booking.title': "Confirmer le montant",
-  'confirm_booking.msg': "Vous allez payer {price} euros et les frais de {fees} euros pour réserver ce voyage pour le/les produits sélectionés..",
+  'confirm_booking.msg': "Vous allez payer {price} euros et les frais de {fees} euros pour réserver ce voyage pour le/les produits sélectionés.",
   'confirm_booking.confirm': "Confirmer",
   'confirm_booking.decline': "Decliner",
 
@@ -329,6 +329,7 @@ export const msg = {
   'add_booking.add_request': "Ajouter un colis",
   'my_funds.no_cards': "Vous n'avez pas de cartes de paiement.",
 
+  'cashout_form.title': "Entrez vos informations bancaires pour votre retrait",
   'cashout_form.max_amt': "Montant maximum a rétirer",
   'cashout_form.amt': "Montant",
   'cashout_form.account_owner_name': "Nom et Prénom",
@@ -350,7 +351,7 @@ export const msg = {
   'cancel_booking.no': "Non",
   'cancel_booking.yes': "Oui",
 
-  'confirm_cancel_modal.msg': "Si vous confirmez l'annulation de cette requete, vous serez  rembourse d'un montant de {amount}",
+  'confirm_cancel_modal.msg': "Si vous confirmez l'annulation de cette requete, vous serez  remboursé d'un montant de {amount} EUR",
   'complete_profile_modal.msg': "Voir mon profil",
 
   'verify_email_confirm.title': "Email de verification envoyé",
@@ -366,4 +367,11 @@ export const msg = {
   'delete_booking.msg': "Etes-vous sur de vouloir supprimer cette requête?",
   'delete_booking.no': "Non",
   'delete_booking.yes': "Oui",
+
+  'profile_tab.username_': "Nom d'utilisateur: ",
+  'profile_tab.fullname_': "Nom: ",
+  'profile_tab.file_size_error': "Fichier trop grand",
+  'profile_tab.file_type_error': "Type de fichier non accepté",
+  'profile_tab.passport_proof': "Passeport",
+  'profile_tab.passport_upload_btn': "Cliquer pour téléverser le document du passeport.",
 };

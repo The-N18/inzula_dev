@@ -77,7 +77,7 @@ class MyFunds extends React.Component {
         </Card.Content>
       </Card>
 
-      <Card>
+      {/* <Card>
       <Card.Content>
         <Card.Header>
         <FormattedMessage
@@ -91,7 +91,7 @@ class MyFunds extends React.Component {
         />
         </Card.Meta>
       </Card.Content>
-      </Card>
+      </Card> */}
       </Card.Group>
 
       </Segment>

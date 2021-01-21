@@ -1,5 +1,7 @@
 .profile-tab-section {
   background-color: #ffffff;
+  margin: 0px !important;
+  padding: 0px !important;
 }
 
 .profile-tab-section-grid {
@@ -20,18 +22,10 @@
   border-radius: .28571429rem !important;
 }
 
-.profile-tab-card img {
-  max-width: 250px !important;
-  max-height: 250px !important;
+.infinite-scroll-component {
+  overflow: hidden !important;
 }
 
-.buttoncolor-passport {
-  background-color: #545972;
-  color: #ffffff;
-}
-
-.passport-file-name {
-  color:darkturquoise;
-  text-decoration: underline;
-  cursor: pointer;
-}
+/* .ui.segment {
+  margin: 0px !important;
+} */

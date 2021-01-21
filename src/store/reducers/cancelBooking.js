@@ -3,7 +3,8 @@ import { updateObject } from "../utility";
 
 const initialState = {
   open: false,
-  bookingId: 0
+  bookingId: 0,
+  refundAmt: 0,
 };
 
 const openCancelBooking = (state, action) => {
@@ -18,6 +19,12 @@ const setBookingCancelBooking = (state, action) => {
   });
 };
 
+const setRefundAmtCancelBooking = (state, action) => {
+  return updateObject(state, {
+    refundAmt: action.refundAmt,
+  });
+};
+
 
 const closeCancelBooking = (state, action) => {
   return updateObject(state, {
@@ -29,6 +36,8 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.CANCEL_BOOKING_SET_BOOKING:
       return setBookingCancelBooking(state, action);
+    case actionTypes.CANCEL_BOOKING_SET_REFUND_AMOUNT:
+      return setRefundAmtCancelBooking(state, action);
     case actionTypes.CANCEL_BOOKING_CLOSE_MODAL:
       return closeCancelBooking(state, action);
     case actionTypes.CANCEL_BOOKING_OPEN_MODAL:

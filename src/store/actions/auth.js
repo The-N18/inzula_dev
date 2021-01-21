@@ -91,9 +91,10 @@ export const logout = expirationTime => {
   localStorage.removeItem("profile_pic");
   localStorage.removeItem("user_type");
   localStorage.removeItem("sex");
+  localStorage.removeItem("id_document");
   return dispatch => {
       type: actionTypes.AUTH_LOGOUT,
-      setUserInfo(null, null, null, null, null, null, null, null, null, null, null)
+      setUserInfo(null, null, null, null, null, null, null, null, null, null, null, null)
     };
 };
 
@@ -130,6 +131,7 @@ export const checkAuthTimeout = expirationTime => {
          const date_joined = res.data.date_joined;
          const phone_number = res.data.phone_number;
          const profile_pic = res.data.profile_pic;
+         const id_document = res.data.id_document;
          const passport_number = res.data.passport_number;
          const country = res.data.country;
          const user_type = res.data.user_type;
@@ -145,13 +147,14 @@ export const checkAuthTimeout = expirationTime => {
          localStorage.setItem("email", email);
          localStorage.setItem("phone_number", phone_number);
          localStorage.setItem("profile_pic", profile_pic);
+         localStorage.setItem("id_document", id_document);
          localStorage.setItem("passport_number", passport_number);
          localStorage.setItem("country", country);
          localStorage.setItem("user_type", user_type);
          localStorage.setItem("sex", sex);
          localStorage.setItem("date_joined", date_joined);
          dispatch(authSuccess(token));
-         dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country, user_type, sex));
+         dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country, user_type, sex, id_document));
          dispatch(checkAuthTimeout(AUTH_TIMEOUT));
          dispatch(createNotification({
            message: "Login successful.",
@@ -215,7 +218,7 @@ export const checkAuthTimeout = expirationTime => {
    };
  };
 
- export const updateUserProfile = (first_name, last_name, phone_number, email, country, passport_number, profile_pic, user_type, sex) => {
+ export const updateUserProfile = (first_name, last_name, phone_number, email, country, passport_number, profile_pic, user_type, sex, passport_file) => {
   const config = {
             headers: { 'content-type': 'multipart/form-data' }
           };
@@ -238,6 +241,9 @@ export const checkAuthTimeout = expirationTime => {
   if(profile_pic && profile_pic[0] && profile_pic !== null && profile_pic !== "") {
     data.append('profile_pic', profile_pic[0], profile_pic[0]['name']);
   }
+  if(passport_file && passport_file[0] && passport_file !== null && passport_file !== "") {
+    data.append('id_document', passport_file[0], passport_file[0]['name']);
+  }
   return dispatch => {
     dispatch(authStart());
     axios
@@ -253,6 +259,7 @@ export const checkAuthTimeout = expirationTime => {
         const date_joined = res.data.date_joined;
         const phone_number = res.data.phone_number;
         const profile_pic = res.data.profile_pic;
+        const id_document = res.data.id_document;
         const passport_number = res.data.passport_number;
         const country = res.data.country;
         const user_type = res.data.user_type;
@@ -267,6 +274,7 @@ export const checkAuthTimeout = expirationTime => {
         localStorage.setItem("last_name", last_name);
         localStorage.setItem("email", email);
         localStorage.setItem("phone_number", phone_number);
+        localStorage.setItem("id_document", id_document);
         localStorage.setItem("profile_pic", profile_pic);
         localStorage.setItem("passport_number", passport_number);
         localStorage.setItem("country", country);
@@ -274,7 +282,7 @@ export const checkAuthTimeout = expirationTime => {
         localStorage.setItem("sex", sex);
         localStorage.setItem("date_joined", date_joined);
         dispatch(authSuccess(token));
-        dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country, user_type, sex));
+        dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country, user_type, sex, id_document));
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: "Profile updated successfully",
@@ -296,7 +304,7 @@ export const checkAuthTimeout = expirationTime => {
 };
 
 
-export const completeProfileInfo = (first_name, last_name, phone_number, country, passport_number, sex) => {
+export const completeProfileInfo = (first_name, last_name, phone_number, country, passport_number, sex, passport_file) => {
   const config = {
             headers: { 'content-type': 'multipart/form-data' }
           };
@@ -314,6 +322,9 @@ export const completeProfileInfo = (first_name, last_name, phone_number, country
   for( let key in data2 ) {
     data.append(key, data2[key]);
   }
+  if(passport_file && passport_file[0] && passport_file !== null && passport_file !== "") {
+    data.append('id_document', passport_file[0], passport_file[0]['name']);
+  }
   return dispatch => {
     dispatch(authStart());
     axios
@@ -330,6 +341,7 @@ export const completeProfileInfo = (first_name, last_name, phone_number, country
         const passport_number = res.data.passport_number;
         const country = res.data.country;
         const sex = res.data.sex;
+        const id_document = res.data.id_document;
         const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
         localStorage.setItem("token", token);
         localStorage.setItem("expirationDate", expirationDate);
@@ -338,6 +350,7 @@ export const completeProfileInfo = (first_name, last_name, phone_number, country
         localStorage.setItem("userProfileId", userProfileId);
         localStorage.setItem("first_name", first_name);
         localStorage.setItem("last_name", last_name);
+        localStorage.setItem("id_document", id_document);
         localStorage.setItem("phone_number", phone_number);
         localStorage.setItem("passport_number", passport_number);
         localStorage.setItem("country", country);
@@ -348,7 +361,7 @@ export const completeProfileInfo = (first_name, last_name, phone_number, country
         const profile_pic = localStorage.getItem("profile_pic");
         dispatch(authSuccess(token));
         dispatch(closeCompleteProfileModal());
-        dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country, user_type, sex));
+        dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country, user_type, sex, id_document));
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: "Profile updated successfully",
@@ -415,6 +428,7 @@ export const completeProfileInfo = (first_name, last_name, phone_number, country
         const date_joined = res.data.date_joined;
         const phone_number = res.data.phone_number;
         const profile_pic = res.data.profile_pic;
+        const id_document = res.data.id_document;
         const passport_number = res.data.passport_number;
         const country = res.data.country;
         const user_type = res.data.user_type;
@@ -430,13 +444,14 @@ export const completeProfileInfo = (first_name, last_name, phone_number, country
         localStorage.setItem("email", email);
         localStorage.setItem("phone_number", phone_number);
         localStorage.setItem("profile_pic", profile_pic);
+        localStorage.setItem("id_document", id_document);
         localStorage.setItem("passport_number", passport_number);
         localStorage.setItem("country", country);
         localStorage.setItem("date_joined", date_joined);
         localStorage.setItem("user_type", user_type);
         localStorage.setItem("sex", sex);
         dispatch(authSuccess(token));
-        dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country, user_type, sex));
+        dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country, user_type, sex, id_document));
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: "Google Login successful.",
@@ -473,6 +488,7 @@ export const completeProfileInfo = (first_name, last_name, phone_number, country
         const date_joined = res.data.date_joined;
         const phone_number = res.data.phone_number;
         const profile_pic = res.data.profile_pic;
+        const id_document = res.data.id_document;
         const passport_number = res.data.passport_number;
         const country = res.data.country;
         const user_type = res.data.user_type;
@@ -488,13 +504,14 @@ export const completeProfileInfo = (first_name, last_name, phone_number, country
         localStorage.setItem("email", email);
         localStorage.setItem("phone_number", phone_number);
         localStorage.setItem("profile_pic", profile_pic);
+        localStorage.setItem("id_document", id_document);
         localStorage.setItem("passport_number", passport_number);
         localStorage.setItem("country", country);
         localStorage.setItem("date_joined", date_joined);
         localStorage.setItem("user_type", user_type);
         localStorage.setItem("sex", sex);
         dispatch(authSuccess(token));
-        dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country, user_type, sex));
+        dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country, user_type, sex, id_document));
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: "Facebook Login successful.",
@@ -578,6 +595,7 @@ export const authCheckState = () => {
      const email = localStorage.getItem("email");
      const phone_number = localStorage.getItem("phone_number");
      const profile_pic = localStorage.getItem("profile_pic");
+     const id_document = localStorage.getItem("id_document");
      const passport_number = localStorage.getItem("passport_number");
      const country = localStorage.getItem("country");
      const date_joined = localStorage.getItem("date_joined");
@@ -591,7 +609,7 @@ export const authCheckState = () => {
          dispatch(logout());
        } else {
          dispatch(authSuccess(token));
-         dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country, user_type, sex));
+         dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country, user_type, sex, id_document));
          dispatch(
            checkAuthTimeout(
              (expirationDate.getTime() - new Date().getTime()) / 1000

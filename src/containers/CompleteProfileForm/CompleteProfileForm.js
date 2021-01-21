@@ -17,6 +17,7 @@ import DjangoCSRFToken from 'django-react-csrftoken';
 import {renderField, renderDropdownList, renderPhoneNumber} from "../ReduxForm/renderField";
 import {FormattedMessage} from 'react-intl'
 import {sexOptions, sexOptionsFr} from "../../utils/options";
+import Files from 'react-files';
 import 'react-phone-number-input/style.css';
 
 
@@ -29,6 +30,7 @@ class CompleteProfileForm extends React.Component {
 
   state = {
     picture: [],
+    passport: [],
   }
 
   onDrop = (picture) => {
@@ -36,6 +38,18 @@ class CompleteProfileForm extends React.Component {
       this.setState({
           picture: picture,
       });
+  }
+
+  onFilesChange = (files) => {
+    console.log(files)
+    this.setState({
+      passport: files,
+  });
+  }
+
+  onFilesError = (error, file) => {
+    console.log('error code ' + error.code + ': ' + error.message);
+
   }
 
   submitForm = (val) => {
@@ -51,7 +65,8 @@ class CompleteProfileForm extends React.Component {
   }
 
   render () {
-    const {handleSubmit, loading, invalid, lang} = this.props;
+    const {handleSubmit, loading, invalid, lang, id_document} = this.props;
+    const {passport} = this.state;
     return (
       <Segment basic className={"profile-tab-section"}>
           <Grid className={"profile-tab-section-grid"}>
@@ -158,6 +173,38 @@ class CompleteProfileForm extends React.Component {
                         className={"custom-field"}
                         component={renderField}
                       />
+                      <div>
+                      <label htmlFor="country">
+                        <FormattedMessage
+                          id="profile_tab.passport_proof"
+                          defaultMessage="Passport proof"
+                        />
+                      </label>
+                      <div>
+                      <Files
+                        className='files-dropzone'
+                        onChange={this.onFilesChange}
+                        onError={this.onFilesError}
+                        accepts={['.pdf', '.doc', '.docx']}
+                        maxFiles={1}
+                        maxFileSize={10000000}
+                        minFileSize={0}
+                        clickable
+                      >
+                        <Button
+                          className={"buttoncolor-passport"}
+                          size="small"
+                        >
+                        <FormattedMessage
+                          id="profile_tab.passport_upload_btn"
+                          defaultMessage="Save"
+                        />
+                        </Button>
+                        <p className={"passport-file-name"}>{passport.length > 0 ? passport[0]['name'] : ''}</p>
+                        <p className={"passport-file-name"}>{id_document !== null ? id_document : ''}</p>
+                      </Files>
+                      </div>
+                    </div>
                     <Button
                       className={"buttoncolor"}
                       size="large"
@@ -194,14 +241,15 @@ const mapStateToProps = state => {
     date_joined: state.userInfo.date_joined,
     phone_number: state.userInfo.phone_number,
     profile_pic: state.userInfo.profile_pic,
+    id_document: state.userInfo.id_document,
     initialValues: state.userInfo.profileData
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    completeProfileInfo: (first_name, last_name, phone_number, country, passport_number, sex) =>
-      dispatch(completeProfileInfo(first_name, last_name, phone_number, country, passport_number, sex)),
+    completeProfileInfo: (first_name, last_name, phone_number, country, passport_number, sex, passport_file) =>
+      dispatch(completeProfileInfo(first_name, last_name, phone_number, country, passport_number, sex, passport_file)),
   };
 };
 

@@ -43,6 +43,13 @@ class UpdateBooking extends React.Component {
     }
   }
 
+  // componentDidUpdate(prevProps) {
+  //   const { userId, change } = this.props;
+  //   if (prevProps.images === undefined && this.props.images && this.props.images.length !== 0) {
+  //     this.onDrop(this.props.images);
+  //   }
+  // }
+
   handleBackButtonClick = (e) => {
     if(this.state.activeStep === 2) {
       this.setState({ activeStep: 1});
@@ -52,9 +59,8 @@ class UpdateBooking extends React.Component {
   }
 
   onDrop = (picture) => {
-    console.log(picture);
       this.setState({
-          pictures: this.state.pictures.concat(picture),
+          pictures: picture,
       });
   }
 
@@ -114,7 +120,7 @@ class UpdateBooking extends React.Component {
 
   render() {
     const { lang, handleSubmit,
-      invalid, change, product_name,
+      invalid, change, product_name, images,
       departure_location, destination_location, proposed_price,
       product_category, product_weight, product_size, product_value,
       recipient_name, recipient_phone_number, product_description, open } = this.props;
@@ -191,7 +197,10 @@ class UpdateBooking extends React.Component {
               <Grid.Row columns={2}>
                 <Grid.Column mobile={16} tablet={16} computer={4}>
                   <Segment basic>
-                    <Image centered bordered circular src= {backend_url() + '/static/images/box.jpg'} />
+                    {/* <Image centered bordered circular src= {backend_url() + '/static/images/box.jpg'} /> */}
+                    {images && images.length > 0 ? images.map((item, index) => (
+                      <Image centered bordered size="tiny" src={item['name']} />
+                    )) : ''}
                     <ImageUploader
                         withIcon={true}
                         buttonText={<FormattedMessage
@@ -562,6 +571,7 @@ const mapStateToProps = state => {
   const recipient_name = selector(state, 'recipient_name')
   const recipient_phone_number = selector(state, 'recipient_phone_number')
   const product_description = selector(state, 'product_description')
+  const images = selector(state, 'images')
   return {
     loading: state.addBooking.loading,
     error: state.addBooking.error,
@@ -582,6 +592,7 @@ const mapStateToProps = state => {
     recipient_name: recipient_name,
     recipient_phone_number: recipient_phone_number,
     product_description: product_description,
+    images: images,
     delivery_date: delivery_date,
     initialValues: state.updateBookingModal.bookingInfo,
     open: state.updateBookingModal.open,

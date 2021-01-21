@@ -143,7 +143,7 @@ class PayForBooking(CreateAPIView):
 
             transfer = Transfer(author=natural_user,
                         credited_user=inzula_user,
-                        debited_funds=Money(amount=fees_amount, currency='EUR'),
+                        debited_funds=Money(amount=booking_price, currency='EUR'),
                         fees=Money(amount=0, currency='EUR'),
                         debited_wallet=user_wallet,
                         credited_wallet=inzula_wallet)
@@ -265,7 +265,7 @@ class PayForBookingCardId(CreateAPIView):
 
             transfer = Transfer(author=natural_user,
                         credited_user=inzula_user,
-                        debited_funds=Money(amount=fees_amount, currency='EUR'),
+                        debited_funds=Money(amount=booking_price, currency='EUR'),
                         fees=Money(amount=0, currency='EUR'),
                         debited_wallet=user_wallet,
                         credited_wallet=inzula_wallet)
@@ -292,13 +292,15 @@ class PayForBookingCardId(CreateAPIView):
 
 def refund_charges(booking):
     with transaction.atomic():
-        charges_amount = float(booking.product.proposed_price)*0.25
+        booking_amt = float(booking.product.proposed_price)
+        charges_amount = float(booking_amt)*0.25
+        total_amt = charges_amount + booking_amt
         amount_to_deduce_from_charges = (float(booking.product.proposed_price)*0.03)+ 1.7
         amount_to_refund = 0.0
-        if amount_to_deduce_from_charges >= charges_amount:
+        if amount_to_deduce_from_charges >= total_amt:
             amount_to_refund = 0.0
         else:
-            amount_to_refund = ( charges_amount - amount_to_deduce_from_charges )*100
+            amount_to_refund = ( total_amt - amount_to_deduce_from_charges )*100
         userprofile_to_refund = booking.request_by
 
         # Get natural user to refund
@@ -390,10 +392,10 @@ class PayForBookingWithWallet(CreateAPIView):
             booking_requests = BookingRequest.objects.filter(pk__in=selectedBookingIds)
             booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
             booking_amount = booking_requests_price['product__proposed_price__sum']
-            fees_amount = booking_amount*0.25
+            fees_amount = float(booking_amount)*0.25
             fees = fees_amount*100
-            booking_price = (booking_amount + fees_amount)*100
-
+            booking_price = booking_amount + fees_amount
+            bookings_price = (float(booking_amount) + fees_amount)*100
 
             # Get natural user
             user = User.objects.get(pk=userId)
@@ -436,6 +438,7 @@ class PayForBookingWithWallet(CreateAPIView):
                 booking_amount = booking_requests_price['product__proposed_price__sum']
                 fees_amount = booking_amount*0.25
                 fees = fees_amount * 100
+                bookings_price = (float(booking_amount) + fees_amount)*100
                 booking_price = booking_amount + fees_amount
                 payable_funds = float(funds[4:].replace(",", "")) / 100
                 if payable_funds < booking_price:
@@ -475,7 +478,7 @@ class PayForBookingWithWallet(CreateAPIView):
 
             transfer = Transfer(author=natural_user,
                         credited_user=inzula_user,
-                        debited_funds=Money(amount=fees, currency='EUR'),
+                        debited_funds=Money(amount=bookings_price, currency='EUR'),
                         fees=Money(amount=0, currency='EUR'),
                         debited_wallet=user_wallet,
                         credited_wallet=inzula_wallet)
@@ -857,12 +860,18 @@ class IncomingUserTransactions(APIView):
         }
 
         nat_user_id = User.objects.get(pk=userId).profile.nat_user_id
+        admin_userprofile = User.objects.get(pk=1).profile
+        admin_nat_user_id = admin_userprofile.nat_user_id
+        admin_natural_user = None
+        if admin_nat_user_id is not None:
+            admin_natural_user = NaturalUser.get(admin_nat_user_id)
         if nat_user_id is not None:
             natural_user = NaturalUser.get(nat_user_id)
 
-            transactions = Transaction.all(user_id=natural_user.get_pk(),
+            transactions = Transaction.all(user_id=admin_natural_user.get_pk(),
             status='SUCCEEDED',
-            type='PAYIN',
+            type='TRANSFER',
+            credited_user_id=natural_user.get_pk(),
             sort='CreationDate:desc')
 
             serializer = TransactionSerializer(transactions, many=True)
@@ -873,6 +882,42 @@ class IncomingUserTransactions(APIView):
 
 
 class OutgoingUserTransactions(APIView):
+
+    def post(self, request, format=None):
+        # get user from user id
+        userId = request.data['user_id']
+
+        result = {
+        'transactions': []
+        }
+        userprofile = User.objects.get(pk=userId).profile
+        nat_user_id = userprofile.nat_user_id
+        admin_userprofile = User.objects.get(pk=1).profile
+        admin_nat_user_id = admin_userprofile.nat_user_id
+        admin_natural_user = None
+        if admin_nat_user_id is not None:
+            admin_natural_user = NaturalUser.get(admin_nat_user_id)
+        if nat_user_id is not None:
+            natural_user = NaturalUser.get(nat_user_id)
+
+            transactions = Transaction.all(user_id=natural_user.get_pk(),
+            status='SUCCEEDED',
+            type='TRANSFER',
+            credited_user_id=admin_natural_user.get_pk(),
+            sort='CreationDate:desc')
+            # if userprofile.wallet_id is not None:
+            #     user_wallet = Wallet(id=userprofile.wallet_id)
+            #     transactions = user_wallet.transactions.all(status='SUCCEEDED',
+            #                                         type='TRANSFER',
+            #                                         sort='CreationDate:desc')
+            serializer = TransactionSerializer(transactions, many=True)
+            jsonResults = JSONRenderer().render(serializer.data)
+            result['transactions'] = json.loads(jsonResults)
+            return Response(result, status=status.HTTP_200_OK)
+        return Response(result, status=status.HTTP_200_OK)
+
+
+class WithdrawalUserTransactions(APIView):
 
     def post(self, request, format=None):
         # get user from user id
@@ -896,6 +941,32 @@ class OutgoingUserTransactions(APIView):
             result['transactions'] = json.loads(jsonResults)
             return Response(result, status=status.HTTP_200_OK)
         return Response(result, status=status.HTTP_200_OK)
+
+
+class DepositUserTransactions(APIView):
+
+    def post(self, request, format=None):
+        # get user from user id
+        userId = request.data['user_id']
+
+        result = {
+        'transactions': []
+        }
+
+        nat_user_id = User.objects.get(pk=userId).profile.nat_user_id
+        if nat_user_id is not None:
+            natural_user = NaturalUser.get(nat_user_id)
+
+            transactions = Transaction.all(user_id=natural_user.get_pk(),
+            status='SUCCEEDED',
+            type='PAYIN',
+            sort='CreationDate:desc')
+            serializer = TransactionSerializer(transactions, many=True)
+            jsonResults = JSONRenderer().render(serializer.data)
+            result['transactions'] = json.loads(jsonResults)
+            return Response(result, status=status.HTTP_200_OK)
+        return Response(result, status=status.HTTP_200_OK)
+
 
 
 class FailedUserTransactions(APIView):
@@ -968,6 +1039,26 @@ class MaxPayOutAmount(APIView):
                 wallet_funds = float(result['funds'][4:].replace(",", "")) / 100
                 result['bookings'] = booking_requests_price
                 result['max_amt'] = round(wallet_funds - booking_requests_price, 2) if booking_requests_price<wallet_funds else 0.0
+            return Response(result, status=status.HTTP_200_OK)
+        return Response(result, status=status.HTTP_200_OK)
+
+
+class RefundAmount(APIView):
+
+    def post(self, request, format=None):
+        # get bookingId
+        bookingId = request.data['bookingId']
+        result = {
+        'amt': 0
+        }
+        if bookingId != 0:
+            booking_request = BookingRequest.objects.get(pk=bookingId)
+            br_price = booking_request.product.proposed_price
+            br_price_and_charges = float(br_price) + (float(br_price) * 0.25)
+            amount_to_refund = br_price_and_charges - ((float(br_price) * 0.03) + 1.7)
+            if amount_to_refund >= float(br_price_and_charges):
+                amount_to_refund = 0.0
+            result["amt"] = amount_to_refund
             return Response(result, status=status.HTTP_200_OK)
         return Response(result, status=status.HTTP_200_OK)
 

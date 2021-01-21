@@ -74,6 +74,7 @@ class LoginView(GenericAPIView):
     def get_response(self):
         serializer_class = self.get_response_serializer()
         profile_pic_url = None
+        id_document_url = None
 
         if getattr(settings, 'REST_USE_JWT', False):
             data = {
@@ -88,6 +89,8 @@ class LoginView(GenericAPIView):
         UserProfile.objects.get_or_create(user=self.user, terms_conditions=True)
         if self.user.profile.profile_pic:
             profile_pic_url = self.user.profile.profile_pic.url
+        if self.user.profile.id_document:
+            id_document_url = self.user.profile.id_document.url
         response = Response({
             'key': str(self.token),
             'user_id': self.user.pk,
@@ -97,6 +100,7 @@ class LoginView(GenericAPIView):
             'last_name': self.user.last_name,
             'date_joined': self.user.date_joined,
             'profile_pic': profile_pic_url,
+            'id_document': id_document_url,
             'phone_number': self.user.profile.phone_number,
             'country': self.user.profile.country,
             'user_type': self.user.profile.user_type,

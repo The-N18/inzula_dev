@@ -255,7 +255,7 @@ export const msg = {
   'failed_user_transactions.no_transactions': "You do not have any failed transactions.",
   'transaction_card.payin': "Transaction: ",
   'transaction_card.creation_date': "Created on: ",
-  'transaction_card.debited_funds': "Debited amount: ",
+  'transaction_card.debited_funds': "Amount : ",
   'validate_booking.title': "Validate booking",
   'validate_booking.question':"Are you sure you want to validate this booking?",
   'validate_booking.no': "No",
@@ -337,6 +337,7 @@ export const msg = {
   'add_booking.add_request': "Add a booking request",
   'my_funds.no_cards': "You do not have any cards.",
 
+  'cashout_form.title': "Enter bank account to which you want to cash out",
   'cashout_form.max_amt': "Maximum Amount you can cash out",
   'cashout_form.amt': "Amount",
   'cashout_form.account_owner_name': "Account holder name(s)",
@@ -358,6 +359,7 @@ export const msg = {
   'cancel_booking.no': "No",
   'cancel_booking.yes': "Yes",
 
+  'confirm_cancel_modal.msg': "If you confirm the cancellation of this booking, you will be refunded {amount} EUR",
   'complete_profile_modal.msg': "See my profile",
 
   'verify_email_confirm.title': "Verification email sent to your inbox",
@@ -374,5 +376,11 @@ export const msg = {
   'delete_booking.no': "No",
   'delete_booking.yes': "Yes",
 
+  'profile_tab.username_': "Username: ",
+  'profile_tab.fullname_': "Name: ",
+  'profile_tab.file_size_error': "File is too big",
+  'profile_tab.file_type_error': "File type not accepted",
+  'profile_tab.passport_proof': "Passport document",
+  'profile_tab.passport_upload_btn': "Click to upload passport document",
 
 };

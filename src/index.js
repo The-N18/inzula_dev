@@ -15,6 +15,8 @@ import bankAccountFormModalReducer from "./store/reducers/bankAccountFormModal";
 import userFinanceReducer from "./store/reducers/userFinance";
 import searchbookingsReducer from "./store/reducers/searchBookings";
 import incomingFinancialTransactionsReducer from "./store/reducers/incomingFinancialTransactions";
+import depositFinancialTransactionsReducer from "./store/reducers/depositFinancialTransactions";
+import withdrawalFinancialTransactionsReducer from "./store/reducers/withdrawalFinancialTransactions";
 import failedFinancialTransactionsReducer from "./store/reducers/failedFinancialTransactions";
 import outgoingFinancialTransactionsReducer from "./store/reducers/outgoingFinancialTransactions";
 import proposePriceOnBookingReducer from "./store/reducers/proposePriceOnBooking";
@@ -100,6 +102,8 @@ const rootReducer = combineReducers({
   deleteAccount: deleteAccountReducer,
   userFinance: userFinanceReducer,
   incomingFinancialTransactions: incomingFinancialTransactionsReducer,
+  depositFinancialTransactions: depositFinancialTransactionsReducer,
+  withdrawalFinancialTransactions: withdrawalFinancialTransactionsReducer,
   outgoingFinancialTransactions: outgoingFinancialTransactionsReducer,
   failedFinancialTransactions: failedFinancialTransactionsReducer,
   myFunds: myFundsReducer,

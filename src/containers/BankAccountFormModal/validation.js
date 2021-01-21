@@ -4,8 +4,6 @@ export const validate = values => {
     errors.amount = '*Required'
   } else if (isNaN(Number(values.amount))) {
     errors.amount = 'Must be a number'
-  } else if (values.amount > values.max_amount) {
-    errors.amount = 'Must be less than the max amount'
   }
 
   if (!values.account_owner_name) {

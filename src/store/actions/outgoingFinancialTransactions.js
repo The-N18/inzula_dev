@@ -44,7 +44,7 @@ export const getInitialTransactions = (user_id) => {
   return dispatch => {
     dispatch(getTransactionsStart());
     axios
-      .post(api_url() + "/pay/incomingUserTransactions",
+      .post(api_url() + "/pay/outgoingUserTransactions",
             {user_id: user_id}
           )
       .then(res => {
@@ -88,7 +88,7 @@ export const getTransactions = (user_id, next_url, page_count) => {
     return dispatch => {
       dispatch(getTransactionsStart());
       axios
-        .post(api_url() + "/pay/incomingUserTransactions",
+        .post(api_url() + "/pay/outgoingUserTransactions",
               {user_id: user_id}
             )
         .then(res => {

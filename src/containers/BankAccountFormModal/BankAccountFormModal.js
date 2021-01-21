@@ -43,19 +43,24 @@ class BankAccountFormModal extends React.Component {
     const { open, handleSubmit, invalid } = this.props;
     return (
       <Modal
-      closeIcon
+        closeIcon
         centered={false}
         open={open}
         onClose={() => this.props.closeBankAccountFormModal()}
         onOpen={() => this.props.openBankAccountFormModal()}
         size='tiny'
       >
-      <Modal.Header>Enter bank account to which you want to cash out</Modal.Header>
+      <Modal.Header>
+      <FormattedMessage
+                id="cashout_form.title"
+                defaultMessage="Maximum Amount you can cash out"
+              />
+              </Modal.Header>
       <Modal.Content>
         <form onSubmit={handleSubmit(this.submitForm)}>
         <CSRFToken/>
         <DjangoCSRFToken/>
-        <div>
+        {/* <div>
           <div>
             <label htmlFor="max_amount">
               <FormattedMessage
@@ -71,7 +76,7 @@ class BankAccountFormModal extends React.Component {
             component={renderField}
             disabled
           />
-        </div>
+        </div> */}
         <div>
         <div>
           <label htmlFor="amount">

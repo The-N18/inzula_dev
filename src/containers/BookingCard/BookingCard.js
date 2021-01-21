@@ -11,7 +11,7 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './bookingcard.css';
-import { backend_url } from "../../configurations";
+import { backend_url, mimic_img } from "../../configurations";
 import { selectBooking } from "../../store/actions/selectReservationsModal";
 import { openDeleteBookingConfirm, setBookingDeleteBookingConfirm } from "../../store/actions/deleteBookingConfirm";
 import { setBookingRequestId, openProposePriceOnBooking } from "../../store/actions/proposePriceOnBooking";
@@ -21,7 +21,7 @@ import { optionToText, sizeOptions, sizeOptionsFr, categoryOptions, categoryOpti
 import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
 import { openDeclineBooking, setBookingDeclineBooking } from "../../store/actions/declineBooking";
 import { openValidateBooking, setBookingValidateBooking } from "../../store/actions/validateBooking";
-import { openCancelBooking, setBookingCancelBooking } from "../../store/actions/cancelBooking";
+import { openCancelBooking, setBookingCancelBooking, getRefundAmt } from "../../store/actions/cancelBooking";
 import { openProductDeliveryModal } from "../../store/actions/productDeliveryModal";
 import { Carousel } from "react-responsive-carousel";
 import 'react-responsive-carousel/lib/styles/carousel.css';
@@ -54,7 +54,6 @@ class BookingCard extends React.Component {
   }
 
   componentDidMount = () => {
-    const { user_id, next_url, count } = this.props;
     window.addEventListener('resize', this.handleScreenSize, false);
     this.handleScreenSize();
     }
@@ -93,11 +92,12 @@ class BookingCard extends React.Component {
   cancelBooking = () => {
     const {pk} = this.props;
     this.props.setBookingCancelBooking(pk);
+    this.props.getRefundAmt(pk);
     this.props.openCancelBooking();
   }
 
   updateBooking = () => {
-    const {title, departure_location, destination_location, pk, product_details} = this.props;
+    const {title, pk, product_details} = this.props;
     const data = {
       "product_name": title,
       "departure_location": product_details['departure_location'],
@@ -111,6 +111,7 @@ class BookingCard extends React.Component {
       "product_weight": product_details['weight'],
       "proposed_price": product_details['proposed_price'],
       "product_description": product_details['description'],
+      "images": mimic_img(product_details['images']),
     };
     this.props.updateBookingOpenModal(data, pk);
   }
@@ -162,11 +163,10 @@ class BookingCard extends React.Component {
 
   render() {
 
-    const {pk, title, description, img, images, product_details,
+    const {pk, title, description, images,
       arrival_date, departure_location, selectable, editable, recipient_phone_number, recipient_name,
       destination_location, weight, space, price, product_category, request_by_username,
       proposed_price, validate_decline, can_propose, lang, status, confirmed_by_sender} = this.props;
-    const {isMobile, isTablet} = this.state;
     const colored = validate_decline ? confirmed_by_sender ? 'green' : 'orange' : '';
 
     return (
@@ -344,6 +344,7 @@ const mapDispatchToProps = dispatch => {
     setBookingDeclineBooking: (pk) => dispatch(setBookingDeclineBooking(pk)),
     setBookingCancelBooking: (pk) => dispatch(setBookingCancelBooking(pk)),
     openCancelBooking: () => dispatch(openCancelBooking()),
+    getRefundAmt: (pk) => dispatch(getRefundAmt(pk)),
     openValidateBooking: () => dispatch(openValidateBooking()),
     openProductDeliveryModal: () => dispatch(openProductDeliveryModal()),
     openDeclineBooking: () => dispatch(openDeclineBooking()),

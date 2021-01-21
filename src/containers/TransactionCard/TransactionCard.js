@@ -18,11 +18,10 @@ class TransactionCard extends React.Component {
       <Card raised fluid centered className={"transaction-card"}>
         <Card.Content>
           <Card.Header>
-            {type === "PAYIN" ?
             <span><FormattedMessage
               id="transaction_card.payin"
               defaultMessage="Transaction executed: "
-            />{id}</span> : ''}
+            />{id}</span>
           </Card.Header>
           <Card.Description>
             {creation_date !== "" ? <span><FormattedMessage

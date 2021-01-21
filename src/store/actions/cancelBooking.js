@@ -21,17 +21,42 @@ export const setBookingCancelBooking = (bookingId) => {
   };
 };
 
+export const setRefundAmtCancelBooking = (refundAmt) => {
+  return {
+    type: actionTypes.CANCEL_BOOKING_SET_REFUND_AMOUNT,
+    refundAmt: refundAmt,
+  };
+};
+
 export const closeCancelBooking = () => {
   return {
     type: actionTypes.CANCEL_BOOKING_CLOSE_MODAL,
   };
 };
 
+export const getRefundAmt = (bookingId) => {
+  return dispatch => {
+    axios
+      .post(api_url() + "/pay/getRefundAmt",
+            {bookingId: bookingId}
+          )
+      .then(res => {
+        dispatch(checkAuthTimeout(AUTH_TIMEOUT));
+        dispatch(setRefundAmtCancelBooking(res.data["amt"]));
+      })
+      .catch(err => {
+        dispatch(createNotification({
+          message: "Failed to get your funds",
+          type: NOTIFICATION_TYPE_ERROR,
+          duration: 10000,
+          canDismiss: true,
+        }));
+      });
+  };
+}
+
 export const cancelBooking = (booking_id, user_id) => {
   const userProfileId = localStorage.getItem("userProfileId");
-  const config = {
-            headers: { 'content-type': 'multipart/form-data' }
-          };
   return dispatch => {
     axios
       .post(api_url() + "/bookings/cancel_booking", {bookingId: booking_id})
@@ -55,6 +80,7 @@ export const cancelBooking = (booking_id, user_id) => {
           }
         }
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
+        dispatch(setBookingCancelBooking(0));
         dispatch(createNotification({
           message: 'The booking request has been cancelled.',
           type: NOTIFICATION_TYPE_SUCCESS,
@@ -70,6 +96,7 @@ export const cancelBooking = (booking_id, user_id) => {
           duration: 10000,
           canDismiss: true,
         }));
+        dispatch(setBookingCancelBooking(0));
       });
   };
 }

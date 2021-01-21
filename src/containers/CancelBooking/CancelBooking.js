@@ -5,10 +5,17 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import styles from './cancelbooking.css';
-import { openCancelBooking, closeCancelBooking, cancelBooking } from "../../store/actions/cancelBooking";
+import { openCancelBooking, closeCancelBooking, cancelBooking, getRefundAmt } from "../../store/actions/cancelBooking";
 import {FormattedMessage} from 'react-intl'
 
 class CancelBooking extends React.Component {
+
+  // componentDidUpdate(prevProps) {
+  //   const { bookingId } = this.props;
+  //   if (prevProps.open === false && this.props.open === true) {
+  //     this.props.getRefundAmt(bookingId);
+  //   }
+  // }
 
   handleCancel = () => {
     const {bookingId, userId} = this.props;
@@ -17,7 +24,7 @@ class CancelBooking extends React.Component {
   }
 
   render() {
-    const { open } = this.props;
+    const { open, refundAmt } = this.props;
     return (
       <Modal
       closeIcon
@@ -34,11 +41,17 @@ class CancelBooking extends React.Component {
             />
             </Modal.Header>
       <Modal.Content>
-        <p>
+      <span>
         <FormattedMessage
               id="cancel_booking.msg"
               defaultMessage="Are you sure you want to cancel this booking?"
-            /></p>
+            /></span>
+        <br/>
+        <span>
+        <FormattedMessage
+          id="confirm_cancel_modal.msg"
+          values={{ amount: `${refundAmt}` }}
+        /></span>
       </Modal.Content>
       <Modal.Actions>
         <Button negative onClick={() => this.props.closeCancelBooking()}>
@@ -63,12 +76,14 @@ const mapStateToProps = state => {
   return {
     open: state.cancelBooking.open,
     bookingId: state.cancelBooking.bookingId,
+    refundAmt: state.cancelBooking.refundAmt,
     userId: state.userInfo.userId,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    getRefundAmt: (id) => dispatch(getRefundAmt(id)),
     openCancelBooking: () => dispatch(openCancelBooking()),
     closeCancelBooking: () => dispatch(closeCancelBooking()),
     cancelBooking: (bookingId, userId) => dispatch(cancelBooking(bookingId, userId)),
