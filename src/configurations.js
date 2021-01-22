@@ -1,4 +1,4 @@
-export const DEBUG = true;
+export const DEBUG = false;
 //export const BACKEND_HOST_ADDRESS = DEBUG ? '127.0.0.1' : '35.181.124.82';
 export const BACKEND_HOST_ADDRESS = DEBUG ? '127.0.0.1' : 'dkx1b8wlo613w.cloudfront.net';
 export const BACKEND_HOST_PORT = '8000';
