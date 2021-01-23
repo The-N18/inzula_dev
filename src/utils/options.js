@@ -26,13 +26,13 @@ export const categoryOptions=[
 ];
 
 export const categoryOptionsFr=[
-  { key: 'food', value: 'food', text: 'Denrees alimentaires' },
+  { key: 'food', value: 'food', text: 'Denrées alimentaires' },
   { key: 'elec', value: 'elec', text: 'Electronique' },
   { key: 'dress', value: 'dress', text: 'Vetements' },
   { key: 'shoe', value: 'shoe', text: 'Chaussures' },
   { key: 'doc', value: 'doc', text: 'Documents' },
   { key: 'uts', value: 'uts', text: 'Utensils de cuisine' },
-  { key: 'app', value: 'app', text: 'Equipements electriques' },
+  { key: 'app', value: 'app', text: 'Equipements électriques' },
   { key: 'skin', value: 'skin', text: 'Soins de la peau' },
   { key: 'jel', value: 'jel', text: 'Bijoux' },
   { key: 'misc', value: 'misc', text: 'Autres' },
@@ -71,7 +71,7 @@ export const userTypeOptions = [
 ];
 
 export const userTypeOptionsFr = [
-  { key: 'sender', value: 'sender', text: 'Expediteur' },
+  { key: 'sender', value: 'sender', text: 'Expéditeur' },
   { key: 'carrier', value: 'carrier', text: 'Transporteur' },
 ];
 
@@ -82,7 +82,7 @@ export const sexOptions= [
 
 export const sexOptionsFr= [
   { key: 'm', value: 'm', text: 'Masculin' },
-  { key: 'f', value: 'f', text: 'Feminin' },
+  { key: 'f', value: 'f', text: 'Féminin' },
 ];
 
 export const optionToText = (option_value, arr) => {
@@ -97,9 +97,16 @@ export const optionToText = (option_value, arr) => {
 }
 
 export const sizeMultiOptions=[
-  { key: 's', value: 's', label: 'Small' },
-  { key: 'm', value: 'm', label: 'Medium' },
-  { key: 'l', value: 'l', label: 'Large' },
+  { key: 's', value: 's', label: 'Small (fits in a shoe box)' },
+  { key: 'm', value: 'm', label: 'Medium (fits in a hand luggage)' },
+  { key: 'l', value: 'l', label: 'Large (fits in the back of a car)' },
+  { key: 'xl', value: 'xl', label: 'Extra Large' },
+];
+
+export const sizeMultiOptionsFr=[
+  { key: 's', value: 's', label: 'Petit (rentre dans une boite de chaussures)' },
+  { key: 'm', value: 'm', label: 'Moyenne (rentre dans une valise de cabine)' },
+  { key: 'l', value: 'l', label: 'Large (rentre dans la malle d\'une voiture)' },
   { key: 'xl', value: 'xl', label: 'Extra Large' },
 ];
 
@@ -116,6 +123,19 @@ export const categoryMultiOptions=[
   { key: 'misc', value: 'misc', label: 'Miscellaneous' },
 ];
 
+export const categoryMultiOptionsFr=[
+  { key: 'food', value: 'food', label: 'Denrées alimentaires' },
+  { key: 'elec', value: 'elec', label: 'Electronique' },
+  { key: 'dress', value: 'dress', label: 'Vetements' },
+  { key: 'shoe', value: 'shoe', label: 'Chaussures' },
+  { key: 'doc', value: 'doc', label: 'Documents' },
+  { key: 'uts', value: 'uts', label: 'Utensils de cuisine' },
+  { key: 'app', value: 'app', label: 'Equipements electriques' },
+  { key: 'skin', value: 'skin', label: 'Soins de la peau' },
+  { key: 'jel', value: 'jel', label: 'Bijoux' },
+  { key: 'misc', value: 'misc', label: 'Autres' },
+];
+
 export const weightMultiOptions=[
   { key: '500g', value: '500g', label: '0.1 - 500g' },
   { key: '1kg', value: '1kg', label: '500g - 1kg' },
@@ -125,12 +145,22 @@ export const weightMultiOptions=[
   { key: '30kg', value: '30kg', label: '20.1kg - 30kg' },
 ];
 
+export const weightMultiOptionsFr=weightMultiOptions;
+
 export const valueMultiOptions=[
   { key: 'low', value: 'low', label: 'Low value' },
   { key: 'mid', value: 'mid', label: 'Medium value' },
   { key: 'high', value: 'high', label: 'High value' },
   { key: 'lux', value: 'lux', label: 'Luxury item' },
   { key: 'exc', value: 'exc', label: 'Exclusive' },
+];
+
+export const valueMultiOptionsFr=[
+  { key: 'low', value: 'low', label: 'Valeur basse' },
+  { key: 'mid', value: 'mid', label: 'Valeur moyenne' },
+  { key: 'high', value: 'high', label: 'Grande valeur' },
+  { key: 'lux', value: 'lux', label: 'Luxueux' },
+  { key: 'exc', value: 'exc', label: 'Exclusif' },
 ];
 
 

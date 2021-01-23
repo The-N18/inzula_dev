@@ -16,7 +16,7 @@ from django.db import transaction
 from rest_framework import generics
 from .models import BookingRequest, Codes, Product, ProductImage, Notif, PriceProposal
 from .serializers import ProductSerializer, CodeListSerializer, NotifListSerializer, PriceProposalListSerializer, NotifSerializer, BookingRequestSerializer, ProductImageSerializer
-from userprofile.models import UserProfile, City
+from userprofile.models import UserProfile, City, Discount
 from django.db.models import Q
 from django.core.serializers import serialize
 from utils.pagination import SearchResultsSetPagination
@@ -672,9 +672,15 @@ class BookingRequestsTotalPrice(APIView):
     """
 
     def post(self, request, format=None):
-
+        userId = request.data['userId']
+        userprofile = UserProfile.objects.get(user=userId)
         booking_requests = BookingRequest.objects.filter(pk__in=request.data['booking_ids'])
         booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
+        if Discount.objects.filter(userprofile=userprofile).exists():
+            discount = Discount.objects.filter(userprofile=userprofile).first()
+            percentage_promo = discount.percentage_promo
+            if percentage_promo.usage_count < percentage_promo.max_usage_count:
+                booking_requests_price = {'product__proposed_price__sum': float(booking_requests_price['product__proposed_price__sum']) * 0.95}
         result = {"total_price": booking_requests_price}
         return Response(result, status=status.HTTP_200_OK)
 

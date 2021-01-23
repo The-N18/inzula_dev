@@ -304,7 +304,7 @@ class SendPackage extends React.Component {
                          /></label>
                        <Field
                          name="departure_location"
-                         component="input"
+                         label={lang === "en" ? "Select departure location" : "Sélectionnez le lieu de départ"}
                          type="text"
                          component={renderCitiesList}
                        />
@@ -318,7 +318,7 @@ class SendPackage extends React.Component {
                          /></label>
                      <Field
                        name="destination_location"
-                       component="input"
+                       label={lang === "en" ? "Select destination location" : "Sélectionnez la destination"}
                        type="text"
                        component={renderCitiesList}
                      />

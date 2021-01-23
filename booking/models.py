@@ -179,11 +179,12 @@ def get_short_booking_detail(booking, lang):
             product_destination_location = booking.product.destination_location.label
             recipient_name = booking.product.recipient_name
             recipient_phone_number = booking.product.recipient_phone_number
+            carrier_phone_number = booking.trip.created_by.phone_number if booking.trip else None
             product_arrival_date = get_date(booking.product.arrival_date)
             if lang == "en":
-                return """\nBooking: \nUser: """ + user + """\n Creation Date: """ + date + """\n Name: """ + product_name + """\n Departure location: """ + product_departure_location + """\n Destination location: """ + product_destination_location + """\n Arrival date: """ + product_arrival_date + """\n Recipient name: """ + recipient_name + """\n Recipient phone number: """ + recipient_phone_number
+                return """\nBooking: \nUser: """ + user + """\n Creation Date: """ + date + """\n Name: """ + product_name + """\n Departure location: """ + product_departure_location + """\n Destination location: """ + product_destination_location + """\n Arrival date: """ + product_arrival_date + """\n Recipient name: """ + recipient_name + """\n Recipient phone number: """ + recipient_phone_number + """\n Carrier phone number: """ + carrier_phone_number
             if lang == "fr":
-                return """\nRequette: \nUtilisateur: """ + user + """\n Date de creation: """ + date + """\n Nom: """ + product_name + """\n Lieu de depart: """ + product_departure_location + """\n Lieu d'arrivee: """ + product_destination_location + """\n Date d'arrivee: """ + product_arrival_date + """\n Nom du receveur: """ + recipient_name + """\n Nr tel du receveur: """ + recipient_phone_number
+                return """\nRequette: \nUtilisateur: """ + user + """\n Date de creation: """ + date + """\n Nom: """ + product_name + """\n Lieu de depart: """ + product_departure_location + """\n Lieu d'arrivee: """ + product_destination_location + """\n Date d'arrivee: """ + product_arrival_date + """\n Nom du receveur: """ + recipient_name + """\n Nr tel du receveur: """ + recipient_phone_number + """\n  Nr tel du transporteur: """ + carrier_phone_number
     return ""
 
 
@@ -277,7 +278,7 @@ def get_price(price_proposal, lang):
     return ""
 
 def get_recipients(new_notif):
-    lst = []
+    lst = [settings.INZULA_EMAIL]
     if new_notif.booking_request is not None:
         if new_notif.booking_request.request_by is not None and new_notif.booking_request.request_by.pk != new_notif.created_by.pk:
             lst.append(new_notif.booking_request.request_by.user.email)
@@ -299,7 +300,7 @@ def email_notification(sender, **kwargs):
             subject_en,
             """Hi """ + new_notif.created_by.user.username + """,\n""" + msg_en + """\n=======================================\n""" + msg_fr,
             settings.DEFAULT_FROM_EMAIL,
-            [new_notif.created_by.user.email],
+            [new_notif.created_by.user.email, settings.INZULA_EMAIL],
             fail_silently=False,
             )
         send_mail(
@@ -315,7 +316,7 @@ def send_code_by_email(text, email_recipient, username):
             subject_en,
             """Bonjour """ + username + """,\n""" + text,
             settings.DEFAULT_FROM_EMAIL,
-            [email_recipient],
+            [email_recipient, settings.INZULA_EMAIL],
             fail_silently=False,
             )
 

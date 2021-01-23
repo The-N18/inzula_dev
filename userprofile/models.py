@@ -35,6 +35,18 @@ class UserSettings(models.Model):
     keep_me_logged_in = models.BooleanField(default=True)
     can_take_parcel = models.BooleanField(default=True)
 
+class PromoCode(models.Model):
+    code = models.CharField(max_length=15)
+    discount = models.CharField(max_length=15)
+    max_usage_count = models.IntegerField(default=1)
+    usage_count = models.IntegerField(default=0)
+
+class PercentagePromo(models.Model):
+    code = models.CharField(max_length=15)
+    percentage = models.IntegerField(default=0)
+    max_usage_count = models.IntegerField(default=0)
+    usage_count = models.IntegerField(default=0)
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.PROTECT, primary_key=True, related_name='profile')
     settings = models.ForeignKey(UserSettings, on_delete=models.PROTECT, related_name='+', null=True, blank=True)
@@ -52,3 +64,9 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return "{0}: {1} - {2}".format(self.user.username, self.user.first_name, self.user.last_name)
+
+class Discount(models.Model):
+    userprofile = models.ForeignKey(UserProfile, on_delete=models.PROTECT, related_name='+', null=True, blank=True)
+    promo_code = models.ForeignKey(PromoCode, on_delete=models.PROTECT, related_name='+', null=True, blank=True)
+    percentage_promo = models.ForeignKey(PercentagePromo, on_delete=models.PROTECT, related_name='+', null=True, blank=True)
+    description = models.CharField(max_length=250, null=True, blank=True)

@@ -25,8 +25,9 @@ import {userTypeOptions, userTypeOptionsFr} from "../../utils/options";
 class RegistrationForm extends Component {
 
   submitForm = (val) => {
+    const {with_discount} = this.props;
     const user_type = val['user_type'] ? val['user_type']['value'] : '';
-    this.props.signup(val['first_name'], val['last_name'], val['username'], val['email'], val['password1'], val['password2'], val['terms_conditions'], user_type);
+    this.props.signup(val['first_name'], val['last_name'], val['username'], val['email'], val['password1'], val['password2'], val['terms_conditions'], user_type, with_discount);
   }
 
   handleSignin = () => {
@@ -235,14 +236,15 @@ const mapStateToProps = state => {
     userId: state.auth.userId,
     discountText: state.auth.discountText,
     open: state.signupModal.open,
+    with_discount: state.signupModal.with_discount,
     lang: state.appConfig.lang,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    signup: (first_name, last_name, username, email, password1, password2, terms_conditions, user_type) =>
-      dispatch(authSignup(first_name, last_name, username, email, password1, password2, terms_conditions, user_type)),
+    signup: (first_name, last_name, username, email, password1, password2, terms_conditions, user_type, with_discount) =>
+      dispatch(authSignup(first_name, last_name, username, email, password1, password2, terms_conditions, user_type, with_discount)),
     setDiscountText: (discountText) => dispatch(authSetDiscountText(discountText)),
     openSignupModal: () => dispatch(openSignupModal()),
     closeSignupModal: () => dispatch(closeSignupModal()),

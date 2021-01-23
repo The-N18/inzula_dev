@@ -96,21 +96,21 @@ export const renderSelectList = ({ input, data }) =>
   };
 
 
-export const renderCitiesList = ({ input, data, label, meta: { touched, error, warning } }) => {
-  console.log(input['value']);
+export const renderCitiesList = ({ input, data, label, meta: { touched, error, warning }}) => {
+  console.log(input);
+  console.log(data);
+  console.log(label);
   return <div>
-          <label>{label}</label>
-          <div>
             <Async
             clearValue
             name={input['name']}
             value={input['value']}
+            placeholder={label}
             onBlur={() => input.onBlur()}
             onChange={input.onChange}
             loadOptions={getCities}/>
             {touched && ((error && <span className={"error-on-input"}>{error}</span>) || (warning && <span>{warning}</span>))}
           </div>
-        </div>
 }
 
 

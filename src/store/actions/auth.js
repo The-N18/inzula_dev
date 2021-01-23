@@ -179,7 +179,7 @@ export const checkAuthTimeout = expirationTime => {
 
 
 
- export const authSignup = (first_name, last_name, username, email, password1, password2, terms_conditions, user_type) => {
+ export const authSignup = (first_name, last_name, username, email, password1, password2, terms_conditions, user_type, with_discount) => {
    return dispatch => {
      dispatch(authStart());
      axios
@@ -191,7 +191,8 @@ export const checkAuthTimeout = expirationTime => {
          password1: password1,
          password2: password2,
          terms_conditions: terms_conditions,
-         user_type: user_type
+         user_type: user_type,
+         with_discount: with_discount
        })
        .then(res => {
          dispatch(signupSuccess());

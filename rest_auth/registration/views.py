@@ -31,7 +31,7 @@ from rest_auth.registration.serializers import (VerifyEmailSerializer,
 from rest_auth.utils import jwt_encode
 from rest_auth.views import LoginView
 from .app_settings import RegisterSerializer, register_permission_classes
-from userprofile.models import UserProfile
+from userprofile.models import UserProfile, PercentagePromo, Discount
 
 sensitive_post_parameters_m = method_decorator(
     sensitive_post_parameters('password1', 'password2')
@@ -62,13 +62,27 @@ class RegisterView(CreateAPIView):
             return TokenSerializer(user.auth_token).data
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        with_discount = request.data["with_discount"] if "with_discount" in request.data else False
+        request_data = {
+            "first_name": request.data["first_name"],
+            "last_name": request.data["last_name"],
+            "username": request.data["username"],
+            "email": request.data["email"],
+            "password1": request.data["password1"],
+            "password2": request.data["password2"],
+            "terms_conditions": request.data["terms_conditions"],
+            "user_type": request.data["user_type"],
+        }
+        serializer = self.get_serializer(data=request_data)
         serializer.is_valid(raise_exception=True)
-        user = self.perform_create(serializer, request.data)
-        headers = self.get_success_headers(serializer.data)
+        user = self.perform_create(serializer, request_data)
+        headers = self.get_success_headers(request_data)
         profile_pic_url = None
         if user.profile.profile_pic:
             profile_pic_url = user.profile.profile_pic.url
+        if with_discount:
+            p_promo = PercentagePromo.objects.create(code="5_3", percentage=5, max_usage_count=3, usage_count=0)
+            Discount.objects.create(userprofile=user.profile, percentage_promo=p_promo)
         return Response({
             #'key': self.get_response_data(user)['key'],
             'user_id': user.pk,

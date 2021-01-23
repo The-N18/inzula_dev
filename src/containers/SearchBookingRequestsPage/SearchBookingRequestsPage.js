@@ -18,7 +18,7 @@ import {renderDateTimePicker, renderCitiesList} from "../../containers/ReduxForm
 import { searchBookings, filterBookings, searchSuccessOverride } from "../../store/actions/searchBookings";
 import BookingCard from "../../containers/BookingCard/BookingCard";
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { sizeMultiOptions, categoryMultiOptions, weightMultiOptions, valueMultiOptions } from "../../utils/options";
+import { sizeMultiOptions, sizeMultiOptionsFr, categoryMultiOptions, categoryMultiOptionsFr, weightMultiOptions, weightMultiOptionsFr, valueMultiOptions, valueMultiOptionsFr } from "../../utils/options";
 import { buildImagesLinkList } from "../../configurations";
 import {FormattedMessage} from 'react-intl'
 
@@ -92,7 +92,7 @@ class SearchBookingRequestsPage extends React.Component {
   }
 
   render() {
-    const { loading, bookings, next_url, count, api_been_called, handleSubmit } = this.props;
+    const { loading, bookings, next_url, count, api_been_called, handleSubmit, lang } = this.props;
     const { product_category, product_size, weight, proposed_price } = this.state;
     return (
       <Segment basic style={{ padding: "8em 0em" }} textAlign="center">
@@ -122,7 +122,7 @@ class SearchBookingRequestsPage extends React.Component {
           </label>
             <Field
               name="departure_location"
-              component="input"
+              label={lang === "en" ? "Select departure location" : "Sélectionnez le lieu de départ"}
               type="text"
               className={"custom-field"}
               component={renderCitiesList}
@@ -141,7 +141,7 @@ class SearchBookingRequestsPage extends React.Component {
             </label>
               <Field
                 name="destination_location"
-                component="input"
+                label={lang === "en" ? "Select destination location" : "Sélectionnez la destination"}
                 type="text"
                 className={"custom-field"}
                 component={renderCitiesList}
@@ -176,7 +176,13 @@ class SearchBookingRequestsPage extends React.Component {
                     defaultMessage="Price"
                   /></p>
                     <MultiSelect
-                      options={valueMultiOptions}
+                      overrideStrings={{
+                        selectSomeItems: lang === "en" ? "Filter by value...": "Filtrez par valeur...",
+                        allItemsAreSelected: lang === "en" ? "All Items are Selected" : "Tous les éléments sont sélectionnés",
+                        selectAll: lang === "en" ? "Select All": "Tout sélectionner",
+                        search: lang === "en" ? "Search" : "Rechercher",
+                    }}
+                      options={lang === "en" ? valueMultiOptions: valueMultiOptionsFr}
                       selected={proposed_price}
                       onSelectedChanged={proposed_price => this.setState({proposed_price})}
                     />
@@ -189,7 +195,13 @@ class SearchBookingRequestsPage extends React.Component {
                     defaultMessage="Weight"
                   /></p>
                     <MultiSelect
-                      options={weightMultiOptions}
+                    overrideStrings={{
+                      selectSomeItems: lang === "en" ? "Filter by weight...": "Filtrez par le poids...",
+                      allItemsAreSelected: lang === "en" ? "All Items are Selected" : "Tous les éléments sont sélectionnés",
+                      selectAll: lang === "en" ? "Select All": "Tout sélectionner",
+                      search: lang === "en" ? "Search" : "Rechercher",
+                  }}
+                      options={lang === "en" ? weightMultiOptions: weightMultiOptionsFr}
                       selected={weight}
                       onSelectedChanged={weight => this.setState({weight})}
                     />
@@ -202,7 +214,13 @@ class SearchBookingRequestsPage extends React.Component {
                   defaultMessage="Product size"
                 /></p>
                   <MultiSelect
-                    options={sizeMultiOptions}
+                  overrideStrings={{
+                    selectSomeItems: lang === "en" ? "Filter by size...": "Filtrez par la taille...",
+                    allItemsAreSelected: lang === "en" ? "All Items are Selected" : "Tous les éléments sont sélectionnés",
+                    selectAll: lang === "en" ? "Select All": "Tout sélectionner",
+                    search: lang === "en" ? "Search" : "Rechercher",
+                }}
+                    options={lang === "en" ? sizeMultiOptions: sizeMultiOptionsFr}
                     selected={product_size}
                     onSelectedChanged={product_size => this.setState({product_size})}
                   />
@@ -215,7 +233,13 @@ class SearchBookingRequestsPage extends React.Component {
                   defaultMessage="Product category"
                 /></p>
                   <MultiSelect
-                    options={categoryMultiOptions}
+                  overrideStrings={{
+                    selectSomeItems: lang === "en" ? "Filter by category...": "Filtrez par la categorie...",
+                    allItemsAreSelected: lang === "en" ? "All Items are Selected" : "Tous les éléments sont sélectionnés",
+                    selectAll: lang === "en" ? "Select All": "Tout sélectionner",
+                    search: lang === "en" ? "Search" : "Rechercher",
+                }}
+                    options={lang === "en" ? categoryMultiOptions: categoryMultiOptionsFr}
                     selected={product_category}
                     onSelectedChanged={product_category => this.setState({product_category})}
                   />
@@ -304,6 +328,7 @@ const mapStateToProps = state => {
     loading: state.searchBookings.loading,
     error: state.searchBookings.error,
     bookings: state.searchBookings.bookings,
+    lang: state.appConfig.lang,
     api_been_called: state.searchBookings.api_been_called,
     next_url: state.searchBookings.next_url,
     count: state.searchBookings.count,

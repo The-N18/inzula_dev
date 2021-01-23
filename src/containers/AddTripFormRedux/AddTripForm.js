@@ -98,7 +98,7 @@ class AddTripForm extends React.Component {
 
 
   render() {
-    const { loading, handleSubmit, invalid } = this.props;
+    const { loading, handleSubmit, invalid, lang } = this.props;
     return (
             <form onSubmit={handleSubmit(this.submitForm)}>
               <CSRFToken/>
@@ -137,6 +137,7 @@ class AddTripForm extends React.Component {
                     /></label>
                   <Field
                     name="departure_location"
+                    label={lang === "en" ? "Select departure location" : "Sélectionnez le lieu de départ"}
                     component="input"
                     type="text"
                     className={"custom-field"}
@@ -150,6 +151,7 @@ class AddTripForm extends React.Component {
                   /></label>
                 <Field
                   name="destination_location"
+                  label={lang === "en" ? "Select destination location" : "Sélectionnez la destination"}
                   component="input"
                   type="text"
                   className={"custom-field"}
@@ -215,6 +217,7 @@ const mapStateToProps = state => {
     error: state.addTrip.error,
     trip_type_check: state.addTrip.trip_type_check,
     token: state.auth.token,
+    lang: state.appConfig.lang,
     userId: state.userInfo.userId,
     userProfileId: state.userInfo.userProfileId,
     username: state.userInfo.username,

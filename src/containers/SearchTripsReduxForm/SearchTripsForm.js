@@ -83,7 +83,7 @@ class SearchTripsForm extends React.Component {
 
 
   render() {
-    const { loading, trips, next_url, count, handleSubmit } = this.props;
+    const { loading, trips, next_url, count, handleSubmit, lang } = this.props;
     return (
       <Segment id="search_trips_section">
           <Header as="h4" textAlign="center">
@@ -106,7 +106,7 @@ class SearchTripsForm extends React.Component {
             <div>
               <Field
                 name="departure_location"
-                component="input"
+                label={lang === "en" ? "Select departure location" : "Sélectionnez le lieu de départ"}
                 type="text"
                 className={"custom-field"}
                 component={renderCitiesList}
@@ -125,7 +125,7 @@ class SearchTripsForm extends React.Component {
               <div>
                 <Field
                   name="destination_location"
-                  component="input"
+                  label={lang === "en" ? "Select destination location" : "Sélectionnez la destination"}
                   type="text"
                   className={"custom-field"}
                   component={renderCitiesList}
@@ -236,6 +236,7 @@ const mapStateToProps = state => {
   return {
     loading: state.searchTrips.loading,
     error: state.searchTrips.error,
+    lang: state.appConfig.lang,
     trips: state.searchTrips.trips,
     next_url: state.searchTrips.next_url,
     count: state.searchTrips.count,

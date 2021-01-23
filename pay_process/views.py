@@ -20,6 +20,7 @@ from rest_auth.registration.app_settings import register_permission_classes
 from django.db.models import Sum
 from django.utils import timezone
 from django.db.models import Q
+from userprofile.models import Discount
 
 # Create your views here.
 
@@ -37,18 +38,27 @@ class PayForBooking(CreateAPIView):
             cardExpirationDate = request.data['cardExpirationDate']
             cardCvx = request.data['cardCvx']
 
+            # user
+            user = User.objects.get(pk=userId)
+            userprofile = user.profile
+
             # get price to pay
             booking_requests = BookingRequest.objects.filter(pk__in=selectedBookingIds)
             booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
             booking_amount = booking_requests_price['product__proposed_price__sum']
+            if Discount.objects.filter(userprofile=userprofile).exists():
+                discount = Discount.objects.filter(userprofile=userprofile).first()
+                percentage_promo = discount.percentage_promo
+                if percentage_promo.usage_count < percentage_promo.max_usage_count:
+                    booking_amount = float(booking_amount) * 0.95
+                    percentage_promo.usage_count = percentage_promo.usage_count + 1
+                    percentage_promo.save()
             fees = booking_amount*0.25
             fees_amount = fees*100
             booking_price = booking_amount + fees
             booking_price = booking_price*100
 
             # Get natural user
-            user = User.objects.get(pk=userId)
-            userprofile = user.profile
             nat_user_id = userprofile.nat_user_id
             natural_user = None
             if nat_user_id is not None:
@@ -179,18 +189,27 @@ class PayForBookingCardId(CreateAPIView):
             selectedBookingIds = request.data['selectedBookingIds']
             cardId = request.data['cardId']
 
+            #users
+            user = User.objects.get(pk=userId)
+            userprofile = user.profile
+
             # get price to pay
             booking_requests = BookingRequest.objects.filter(pk__in=selectedBookingIds)
             booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
             booking_amount = booking_requests_price['product__proposed_price__sum']
+            if Discount.objects.filter(userprofile=userprofile).exists():
+                discount = Discount.objects.filter(userprofile=userprofile).first()
+                percentage_promo = discount.percentage_promo
+                if percentage_promo.usage_count < percentage_promo.max_usage_count:
+                    booking_amount = float(booking_amount) * 0.95
+                    percentage_promo.usage_count = percentage_promo.usage_count + 1
+                    percentage_promo.save()
             fees = booking_amount*0.25
             fees_amount = fees*100
             booking_price = booking_amount + fees
             booking_price = booking_price*100
 
             # Get natural user
-            user = User.objects.get(pk=userId)
-            userprofile = user.profile
             nat_user_id = userprofile.nat_user_id
             natural_user = None
             if nat_user_id is not None:
@@ -388,18 +407,27 @@ class PayForBookingWithWallet(CreateAPIView):
             tripId = request.data['tripId']
             selectedBookingIds = request.data['selectedBookingIds']
 
+            #users
+            user = User.objects.get(pk=userId)
+            userprofile = user.profile
+
             # get price to pay
             booking_requests = BookingRequest.objects.filter(pk__in=selectedBookingIds)
             booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
             booking_amount = booking_requests_price['product__proposed_price__sum']
+            if Discount.objects.filter(userprofile=userprofile).exists():
+                discount = Discount.objects.filter(userprofile=userprofile).first()
+                percentage_promo = discount.percentage_promo
+                if percentage_promo.usage_count < percentage_promo.max_usage_count:
+                    booking_amount = float(booking_amount) * 0.95
+                    percentage_promo.usage_count = percentage_promo.usage_count + 1
+                    percentage_promo.save()
             fees_amount = float(booking_amount)*0.25
             fees = fees_amount*100
             booking_price = booking_amount + fees_amount
             bookings_price = (float(booking_amount) + fees_amount)*100
 
             # Get natural user
-            user = User.objects.get(pk=userId)
-            userprofile = user.profile
             nat_user_id = userprofile.nat_user_id
             natural_user = None
             if nat_user_id is not None:

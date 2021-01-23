@@ -10,6 +10,12 @@ export const openSignupModal = () => {
   };
 };
 
+export const openSignupModalWithDiscount = () => {
+  return {
+    type: actionTypes.SIGNUP_WITH_DISCOUNT_OPEN_MODAL
+  };
+};
+
 export const closeSignupModal = () => {
   return {
     type: actionTypes.SIGNUP_CLOSE_MODAL,

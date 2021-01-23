@@ -35,7 +35,7 @@ class ConfirmBookingPrice extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.open === false && this.props.open === true) {
-      this.props.getBookingTotalPrice(this.props.selectedBookingIds);
+      this.props.getBookingTotalPrice(this.props.selectedBookingIds,this.props.userId);
     }
   }
 
@@ -99,8 +99,8 @@ const mapDispatchToProps = dispatch => {
     openConfirmBookingPrice: () => dispatch(openConfirmBookingPrice()),
     closeConfirmBookingPrice: () => dispatch(closeConfirmBookingPrice()),
     setBookingRequestInfo: (bookingId, tripId, userId, price, paymentAmountConfirmed) => dispatch(setBookingRequestInfo(bookingId, tripId, userId, price, paymentAmountConfirmed)),
-    bookTrip: (tripId, selected, user_id) => dispatch(bookTrip(tripId, selected, user_id)),
-    getBookingTotalPrice: (selected) => dispatch(getBookingTotalPrice(selected)),
+    bookTrip: (tripId, selected, userId) => dispatch(bookTrip(tripId, selected, userId)),
+    getBookingTotalPrice: (selected, userId) => dispatch(getBookingTotalPrice(selected, userId)),
     createWalletUser: (userId) => dispatch(createWalletUser(userId)),
     openPaymentOptions: () => dispatch(openPaymentOptions()),
   };

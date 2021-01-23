@@ -57,7 +57,7 @@ class SearchBookingRequestsForm extends React.Component {
 
 
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, lang } = this.props;
     return (
       <Segment>
           <Header as="h4" textAlign="center">
@@ -85,6 +85,7 @@ class SearchBookingRequestsForm extends React.Component {
             </label>
               <Field
                 name="departure_location"
+                label={lang === "en" ? "Select departure location" : "Sélectionnez le lieu de départ"}
                 component="input"
                 type="text"
                 component={renderCitiesList}
@@ -101,6 +102,7 @@ class SearchBookingRequestsForm extends React.Component {
               </label>
                 <Field
                   name="destination_location"
+                  label={lang === "en" ? "Select destination location" : "Sélectionnez la destination"}
                   component="input"
                   type="text"
                   component={renderCitiesList}
@@ -147,6 +149,7 @@ const mapStateToProps = state => {
     user_id: state.userInfo.userId,
     next_url: state.searchBookings.next_url,
     count: state.searchBookings.count,
+    lang: state.appConfig.lang,
   };
 };
 

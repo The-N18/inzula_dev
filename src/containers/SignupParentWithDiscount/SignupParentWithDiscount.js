@@ -8,7 +8,7 @@ import {
 import { connect } from "react-redux";
 import styles from './signupparentwithdiscount.css';
 import { authSetDiscountText } from "../../store/actions/auth";
-import { openSignupModal } from "../../store/actions/signupModal";
+import { openSignupModalWithDiscount } from "../../store/actions/signupModal";
 import {FormattedMessage} from 'react-intl'
 
 class SignupParentWithDiscount extends React.Component {
@@ -18,7 +18,7 @@ class SignupParentWithDiscount extends React.Component {
   }
 
   handleOnModalOpen = () => {
-    this.props.openSignupModal();
+    this.props.openSignupModalWithDiscount();
   }
 
   render() {
@@ -53,7 +53,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     setDiscountText: (text) => dispatch(authSetDiscountText(text)),
-    openSignupModal: () => dispatch(openSignupModal()),
+    openSignupModalWithDiscount: () => dispatch(openSignupModalWithDiscount()),
   };
 };
 

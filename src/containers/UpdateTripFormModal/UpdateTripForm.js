@@ -86,7 +86,7 @@ class UpdateTripForm extends React.Component {
   };
 
   render() {
-    const { loading, handleSubmit, invalid, open } = this.props;
+    const { loading, handleSubmit, invalid, open, lang } = this.props;
     return (
       <Modal
       closeIcon
@@ -121,18 +121,14 @@ class UpdateTripForm extends React.Component {
                   </div> */}
                 <Field
                   name="departure_location"
-                  placeholder="Departure location"
-                  label="Departure location"
-                  component="input"
+                  label={lang === "en" ? "Select departure location" : "Sélectionnez le lieu de départ"}
                   type="text"
                   className={"custom-field"}
                   component={renderCitiesList}
                 />
                 <Field
                   name="destination_location"
-                  placeholder="Destination location"
-                  label="Destination location"
-                  component="input"
+                  label={lang === "en" ? "Select destination location" : "Sélectionnez la destination"}
                   type="text"
                   className={"custom-field"}
                   component={renderCitiesList}
@@ -202,6 +198,7 @@ const mapStateToProps = state => {
     loading: state.updateTripModal.loading,
     error: state.updateTripModal.error,
     token: state.auth.token,
+    lang: state.appConfig.lang,
     userId: state.userInfo.userId,
     userProfileId: state.userInfo.userProfileId,
     username: state.userInfo.username,

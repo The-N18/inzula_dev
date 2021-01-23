@@ -20,13 +20,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'cx7rnzp$skop_mg6h+xy2o6^$6ltn^_7oi5+p*f@b5cg4d*od#'
+SECRET_KEY = os.environ['INZ_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 MANUAL_DEBUG = False
 
-ALLOWED_HOSTS = ['dkx1b8wlo613w.cloudfront.net', 'inzula.app', 'localhost', '127.0.0.1', 'www.inzula.app', '15.237.97.243']
+ALLOWED_HOSTS = ['dkx1b8wlo613w.cloudfront.net', 'inzula.app', 'www.inzula.app', '15.237.97.243']
 
 
 # Application definition
@@ -130,9 +130,9 @@ WSGI_APPLICATION = 'inzula.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'inzuladb',
-        'USER': 'inzula',
-        'PASSWORD': 'inzula',
+        'NAME': os.environ['INZ_DB_NAME'],
+        'USER': os.environ['INZ_DB_USER'],
+        'PASSWORD': os.environ['INZ_DB_PASSWORD'],
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -223,21 +223,31 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'inzula.app@gmail.com'
-EMAIL_HOST_PASSWORD = 'rnnaupmosyzlfyul'
+EMAIL_HOST_PASSWORD = os.environ['INZ_EMAIL_HOST_PASSWORD']
 
 # SSO parameters
-GOOGLE_CLIENT_ID = "1018467540475-2dsdk3lijubc8ln26ooa63lg83dsa8fm.apps.googleusercontent.com"
-GOOGLE_CLIENT_SECRET = "Z46pZqtOlRb4W3seXrgqjXEi"
-FACEBOOK_APP_ID = "136854898060654"
-FACEBOOK_APP_SECRET = "398ba09e1e2981773d9d7d8370f4ddb0"
+GOOGLE_CLIENT_ID = os.environ['INZ_GOOGLE_CLIENT_ID']
+GOOGLE_CLIENT_SECRET = os.environ['INZ_GOOGLE_CLIENT_SECRET']
+FACEBOOK_APP_ID = os.environ['INZ_FACEBOOK_APP_ID']
+FACEBOOK_APP_SECRET = os.environ['INZ_FACEBOOK_APP_SECRET']
 
 # Twilio config
-TWILIO_ACCOUNT_SID = "AC55c3eef6cb2299201a084d2ba7ccfa1d"
-TWILIO_AUTH_TOKEN = "9041efd0d4e2cdddec4486aab7e360ab"
-PHONE_NUMBER = "+12055462380"
+TWILIO_ACCOUNT_SID = os.environ['INZ_TWILIO_ACCOUNT_SID']
+TWILIO_AUTH_TOKEN = os.environ['INZ_TWILIO_AUTH_TOKEN']
+PHONE_NUMBER = os.environ['INZ_TWILIO_PHONE_NUMBER']
 
 # Delivery code config
 MAX_VALIDATION_ATTEMPTS = 5
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = False if MANUAL_DEBUG else True
+
+INZULA_EMAIL = "inzula.app@gmail.com"
+
+# deployment
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
+
+if DEBUG == False:
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True

@@ -38,11 +38,12 @@ export const closeConfirmBookingPrice = () => {
   };
 };
 
-export const getBookingTotalPrice = (selectedBookings) => {
+export const getBookingTotalPrice = (selectedBookings, userId) => {
   return dispatch => {
     axios
       .post(api_url() + "/bookings/get_total_price", {
         booking_ids: selectedBookings,
+        userId: userId
       })
       .then(res => {
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
