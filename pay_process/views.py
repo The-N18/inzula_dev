@@ -309,7 +309,7 @@ class PayForBookingCardId(CreateAPIView):
         return Response({"error": "Error processing payment."}, status=status.HTTP_400_BAD_REQUEST)
 
 
-def refund_charges(booking):
+def refund_charges(booking, in_decline):
     with transaction.atomic():
         booking_amt = float(booking.product.proposed_price)
         charges_amount = float(booking_amt)*0.25
@@ -320,6 +320,8 @@ def refund_charges(booking):
             amount_to_refund = 0.0
         else:
             amount_to_refund = ( total_amt - amount_to_deduce_from_charges )*100
+        if in_decline:
+            amount_to_refund = total_amt * 100
         userprofile_to_refund = booking.request_by
 
         # Get natural user to refund

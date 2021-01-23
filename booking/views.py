@@ -705,8 +705,7 @@ def renderCodeObsolete(trip, booking_id, in_decline):
             item.status = "obsolete"
             item.save()
     # refund charges
-    if in_decline == False:
-        refund_charges(booking)
+    refund_charges(booking, in_decline)
 
 class ValidateBooking(APIView):
     """
