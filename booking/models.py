@@ -112,7 +112,7 @@ class Product(models.Model):
     description = models.CharField(max_length=250)
     recipient_name = models.CharField(max_length=250)
     recipient_phone_number = models.CharField(max_length=250)
-    proposed_price = models.CharField(max_length=250)
+    proposed_price = models.IntegerField(default=0)
     terms_conditions = models.BooleanField(default=False)
     user_agreement = models.BooleanField(default=False)
 
