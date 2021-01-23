@@ -5,8 +5,8 @@ from mangopay.utils import Address
 
 handler = APIRequest(sandbox=True)
 
-mangopay.client_id='inzulav3'
-mangopay.apikey='fbfq88VgmZcVSiATyPxPSc1UnZLARzLYbMeOo2yUY0CeOp6agJ'
+mangopay.client_id='inzulav4'
+mangopay.apikey='43ZbgrVgJ8AmWdPuCWZ6tfJ4CqYKUjtvPGASHyooD3PSDr3K6K'
 
 def create_or_get_user(*args):
     pass
