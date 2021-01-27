@@ -3,6 +3,7 @@ import * as actionTypes from "./actionTypes";
 import { api_url, AUTH_TIMEOUT } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
+import {getInitialReservations} from "./userBookings";
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -68,6 +69,7 @@ export const submitDeliveryCode = (userId, code) => {
               duration: 30000,
               canDismiss: true,
             }));
+            dispatch(getInitialReservations(userId));
           }
 
         }

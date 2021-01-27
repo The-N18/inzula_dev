@@ -1,3 +1,4 @@
+from django.conf import settings
 import mangopay
 from mangopay.api import APIRequest
 from mangopay.resources import User, NaturalUser, Wallet, CardRegistration
@@ -5,37 +6,12 @@ from mangopay.utils import Address
 
 handler = APIRequest(sandbox=True)
 
-mangopay.client_id='inzulav3'
-mangopay.apikey='fbfq88VgmZcVSiATyPxPSc1UnZLARzLYbMeOo2yUY0CeOp6agJ'
+mangopay.client_id=settings.MANGO_PAY_CLIENT_ID
+mangopay.apikey=settings.MANGO_PAY_API_KEY
 
 def create_or_get_user(*args):
     pass
-    # if len(args) == 3:
-    #     natural_user = NaturalUser(first_name=args[0],
-    #                            last_name=args[1],
-    #                            address=None
-    #                            proof_of_identity=None,
-    #                            proof_of_address=None,
-    #                            person_type='NATURAL',
-    #                            email=args[2])
-    #
-    #                           natural_user = NaturalUser(first_name="John",
-    #                                                  last_name="Doe",
-    #                                                  address=None,
-    #                                                  proof_of_identity=None,
-    #                                                  proof_of_address=None,
-    #                                                  person_type='NATURAL',
-    #                                                  nationality="FR",
-    #                                                  country_of_residence="FR",
-    #                                                  birthday=1300186358,
-    #                                                  email="johndoe@gmail.com")
-    #
-    #     natural_user.save()
-    #     print("user pk")
-    #     print(natural_user.get_pk())
-    #     return natural_user
-    # else:
-    #     return NaturalUser.get(args[0])
+
 
 def get_or_create_user_wallet(natural_user):
     wallet = Wallet(owners=[natural_user],

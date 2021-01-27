@@ -66,13 +66,10 @@ class ContactUsForm extends React.Component {
   };
 
   handleChange = e => {
-    console.log(e.target);
     this.setState({ [e.target.name]: e.target.value });
   };
 
   handleChangeSelect = (e, data) => {
-    console.log(e.target);
-    console.log(data.value);
     this.setState({ [data.name]: data.value });
   };
 

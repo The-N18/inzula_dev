@@ -44,7 +44,6 @@ class ProfileTab extends React.Component {
   }
 
   onFilesChange = (files) => {
-    console.log(files)
     this.setState({
       passport: files,
   });
@@ -97,7 +96,6 @@ class ProfileTab extends React.Component {
                       />}
                   />
               <Segment basic textAlign="left">
-              <Header as='h4' className={"profile-tab-card-title"}>
               <p><FormattedMessage
                 id="profile_tab.username_"
                 defaultMessage="Username:"
@@ -105,7 +103,7 @@ class ProfileTab extends React.Component {
               <p><FormattedMessage
                 id="profile_tab.fullname_"
                 defaultMessage="Name:"
-              />{this.props.first_name} {this.props.last_name}</p></Header>
+              />{this.props.first_name} {this.props.last_name}</p>
               {date_joined ? <p><FormattedMessage
                 id="profile_tab.member_since"
                 defaultMessage="Member since"

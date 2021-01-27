@@ -26,7 +26,7 @@ class CityView(ListAPIView):
 
     def get_queryset(self):
         name = self.request.query_params.get('label', '')
-        queryset = self.model.objects.filter(label__contains=name)
+        queryset = self.model.objects.filter(label__icontains=name)
         return queryset.order_by('-label')
 
 

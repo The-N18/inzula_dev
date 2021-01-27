@@ -26,7 +26,7 @@ SECRET_KEY = os.environ['INZ_SECRET_KEY']
 DEBUG = True
 MANUAL_DEBUG = False
 
-ALLOWED_HOSTS = ['dkx1b8wlo613w.cloudfront.net', 'inzula.app', 'www.inzula.app', '15.237.97.243']
+ALLOWED_HOSTS = ['dkx1b8wlo613w.cloudfront.net', 'inzula.app', 'www.inzula.app', '15.237.97.243', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -247,6 +247,10 @@ INZULA_EMAIL = "inzula.app@gmail.com"
 # deployment
 CSRF_COOKIE_SECURE = False
 SESSION_COOKIE_SECURE = False
+
+# Mangopay
+MANGO_PAY_CLIENT_ID = os.environ['MANGO_PAY_CLIENT_ID']
+MANGO_PAY_API_KEY = os.environ['MANGO_PAY_API_KEY']
 
 if DEBUG == False:
     CSRF_COOKIE_SECURE = True

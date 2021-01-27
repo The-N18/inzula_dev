@@ -135,7 +135,6 @@ class BookingCard extends React.Component {
   productDelivered = () => {
     const {pk, authenticated} = this.props;
     if(authenticated) {
-      console.log("Product delivered");
       this.props.openProductDeliveryModal();
     } else {
       createNotification({

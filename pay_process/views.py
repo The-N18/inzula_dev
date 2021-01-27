@@ -41,6 +41,9 @@ class PayForBooking(CreateAPIView):
             # user
             user = User.objects.get(pk=userId)
             userprofile = user.profile
+            uses_discount = False
+            discount_percentage = 0
+            percentage_promo = None
 
             # get price to pay
             booking_requests = BookingRequest.objects.filter(pk__in=selectedBookingIds)
@@ -50,11 +53,11 @@ class PayForBooking(CreateAPIView):
                 discount = Discount.objects.filter(userprofile=userprofile).first()
                 percentage_promo = discount.percentage_promo
                 if percentage_promo.usage_count < percentage_promo.max_usage_count:
-                    booking_amount = float(booking_amount) * 0.95
+                    booking_amount = booking_amount * 0.95
                     percentage_promo.usage_count = percentage_promo.usage_count + 1
-                    percentage_promo.save()
+                    discount_percentage = 5
+                    uses_discount = True
             fees = booking_amount*0.25
-            fees_amount = fees*100
             booking_price = booking_amount + fees
             booking_price = booking_price*100
 
@@ -119,62 +122,71 @@ class PayForBooking(CreateAPIView):
                                secure_mode_return_url="http://www.localhost:3000")
             direct_payin.save()
 
-            # transfer money from user wallet to inzula wallet
-            admin_simple_user = User.objects.get(pk=1)
-            admin_user = admin_simple_user.profile
-            admin_nat_user_id = admin_user.nat_user_id
-            inzula_user = None
-            if admin_nat_user_id is not None:
-                inzula_user = NaturalUser.get(admin_nat_user_id)
-            else:
-                inzula_user = NaturalUser(first_name=admin_simple_user.first_name,
-                                        last_name=admin_simple_user.last_name,
-                                        address=None,
-                                        proof_of_identity=None,
-                                        proof_of_address=None,
-                                        person_type='NATURAL',
-                                        nationality=admin_user.country,
-                                        country_of_residence=admin_user.country,
-                                        birthday=1300186358,
-                                        email=admin_simple_user.email)
-                inzula_user.save()
-            admin_user.nat_user_id = inzula_user.id
-            admin_user.save()
-            if admin_user.wallet_id is None:
-                wallet = Wallet(owners=[inzula_user],
-                        description='Wallet',
-                        currency='EUR',
-                        tag="Wallet for User-{}".format(inzula_user.id))
-                wallet.save()
-                admin_user.wallet_id = wallet.get_pk()
+            if direct_payin.status == "SUCCEEDED":
+
+                # transfer money from user wallet to inzula wallet
+                admin_simple_user = User.objects.get(pk=1)
+                admin_user = admin_simple_user.profile
+                admin_nat_user_id = admin_user.nat_user_id
+                inzula_user = None
+                if admin_nat_user_id is not None:
+                    inzula_user = NaturalUser.get(admin_nat_user_id)
+                else:
+                    inzula_user = NaturalUser(first_name=admin_simple_user.first_name,
+                                            last_name=admin_simple_user.last_name,
+                                            address=None,
+                                            proof_of_identity=None,
+                                            proof_of_address=None,
+                                            person_type='NATURAL',
+                                            nationality=admin_user.country,
+                                            country_of_residence=admin_user.country,
+                                            birthday=1300186358,
+                                            email=admin_simple_user.email)
+                    inzula_user.save()
+                admin_user.nat_user_id = inzula_user.id
                 admin_user.save()
+                if admin_user.wallet_id is None:
+                    wallet = Wallet(owners=[inzula_user],
+                            description='Wallet',
+                            currency='EUR',
+                            tag="Wallet for User-{}".format(inzula_user.id))
+                    wallet.save()
+                    admin_user.wallet_id = wallet.get_pk()
+                    admin_user.save()
 
-            inzula_wallet = Wallet(id=admin_user.wallet_id)
+                inzula_wallet = Wallet(id=admin_user.wallet_id)
 
-            transfer = Transfer(author=natural_user,
-                        credited_user=inzula_user,
-                        debited_funds=Money(amount=booking_price, currency='EUR'),
-                        fees=Money(amount=0, currency='EUR'),
-                        debited_wallet=user_wallet,
-                        credited_wallet=inzula_wallet)
-            transfer.save()
+                transfer = Transfer(author=natural_user,
+                            credited_user=inzula_user,
+                            debited_funds=Money(amount=booking_price, currency='EUR'),
+                            fees=Money(amount=0, currency='EUR'),
+                            debited_wallet=user_wallet,
+                            credited_wallet=inzula_wallet)
+                transfer.save()
+                if transfer.status == "SUCCEEDED":
+                    if percentage_promo is not None:
+                        percentage_promo.save()
 
-            # change the status of all bookings and create notifications
-            for booking in BookingRequest.objects.filter(pk__in=[int(i) for i in selectedBookingIds]):
-                booking.status = 'boo'
-                booking.trip = Trip.objects.get(pk=tripId)
-                booking.save()
-                # generate notifications
-                Notif.objects.create(trip=booking.trip,
-                booking_request=booking,
-                created_by=booking.request_by,
-                price_proposal=None,
-                created_on=timezone.now(),
-                type='payment_for_booking',
-                status='unseen')
-            result = {
-            }
-            return Response(result, status=status.HTTP_200_OK)
+                    # change the status of all bookings and create notifications
+                    for booking in BookingRequest.objects.filter(pk__in=[int(i) for i in selectedBookingIds]):
+                        booking.status = 'boo'
+                        booking.trip = Trip.objects.get(pk=tripId)
+                        if uses_discount:
+                            booking.product.amount_paid = ((100-discount_percentage) * booking.product.proposed_price)/100
+                            booking.product.charges_paid = ((100-discount_percentage) * booking.product.proposed_price * 0.25)/100
+                            booking.product.save()
+                        booking.save()
+                        # generate notifications
+                        Notif.objects.create(trip=booking.trip,
+                        booking_request=booking,
+                        created_by=booking.request_by,
+                        price_proposal=None,
+                        created_on=timezone.now(),
+                        type='payment_for_booking',
+                        status='unseen')
+                    result = {
+                    }
+                    return Response(result, status=status.HTTP_200_OK)
         return Response({"error": "Error processing payment."}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -192,6 +204,9 @@ class PayForBookingCardId(CreateAPIView):
             #users
             user = User.objects.get(pk=userId)
             userprofile = user.profile
+            uses_discount = False
+            discount_percentage = 0
+            percentage_promo = None
 
             # get price to pay
             booking_requests = BookingRequest.objects.filter(pk__in=selectedBookingIds)
@@ -203,9 +218,9 @@ class PayForBookingCardId(CreateAPIView):
                 if percentage_promo.usage_count < percentage_promo.max_usage_count:
                     booking_amount = float(booking_amount) * 0.95
                     percentage_promo.usage_count = percentage_promo.usage_count + 1
-                    percentage_promo.save()
+                    discount_percentage = 5
+                    uses_discount = True
             fees = booking_amount*0.25
-            fees_amount = fees*100
             booking_price = booking_amount + fees
             booking_price = booking_price*100
 
@@ -249,72 +264,80 @@ class PayForBookingCardId(CreateAPIView):
                                secure_mode="DEFAULT",
                                secure_mode_return_url="http://www.localhost:3000")
             direct_payin.save()
+            if direct_payin.status == "SUCCEEDED":
 
-            # transfer money from user wallet to inzula wallet
-            admin_simple_user = User.objects.get(pk=1)
-            admin_user = admin_simple_user.profile
-            admin_nat_user_id = admin_user.nat_user_id
-            inzula_user = None
-            if admin_nat_user_id is not None:
-                inzula_user = NaturalUser.get(admin_nat_user_id)
-            else:
-                inzula_user = NaturalUser(first_name=admin_simple_user.first_name,
-                                        last_name=admin_simple_user.last_name,
-                                        address=None,
-                                        proof_of_identity=None,
-                                        proof_of_address=None,
-                                        person_type='NATURAL',
-                                        nationality=admin_user.country,
-                                        country_of_residence=admin_user.country,
-                                        birthday=1300186358,
-                                        email=admin_simple_user.email)
-                inzula_user.save()
-            admin_user.nat_user_id = inzula_user.id
-            admin_user.save()
-            if admin_user.wallet_id is None:
-                wallet = Wallet(owners=[inzula_user],
-                        description='Wallet',
-                        currency='EUR',
-                        tag="Wallet for User-{}".format(inzula_user.id))
-                wallet.save()
-                admin_user.wallet_id = wallet.get_pk()
+                # transfer money from user wallet to inzula wallet
+                admin_simple_user = User.objects.get(pk=1)
+                admin_user = admin_simple_user.profile
+                admin_nat_user_id = admin_user.nat_user_id
+                inzula_user = None
+                if admin_nat_user_id is not None:
+                    inzula_user = NaturalUser.get(admin_nat_user_id)
+                else:
+                    inzula_user = NaturalUser(first_name=admin_simple_user.first_name,
+                                            last_name=admin_simple_user.last_name,
+                                            address=None,
+                                            proof_of_identity=None,
+                                            proof_of_address=None,
+                                            person_type='NATURAL',
+                                            nationality=admin_user.country,
+                                            country_of_residence=admin_user.country,
+                                            birthday=1300186358,
+                                            email=admin_simple_user.email)
+                    inzula_user.save()
+                admin_user.nat_user_id = inzula_user.id
                 admin_user.save()
+                if admin_user.wallet_id is None:
+                    wallet = Wallet(owners=[inzula_user],
+                            description='Wallet',
+                            currency='EUR',
+                            tag="Wallet for User-{}".format(inzula_user.id))
+                    wallet.save()
+                    admin_user.wallet_id = wallet.get_pk()
+                    admin_user.save()
 
-            inzula_wallet = Wallet(id=admin_user.wallet_id)
+                inzula_wallet = Wallet(id=admin_user.wallet_id)
 
-            transfer = Transfer(author=natural_user,
-                        credited_user=inzula_user,
-                        debited_funds=Money(amount=booking_price, currency='EUR'),
-                        fees=Money(amount=0, currency='EUR'),
-                        debited_wallet=user_wallet,
-                        credited_wallet=inzula_wallet)
-            transfer.save()
+                transfer = Transfer(author=natural_user,
+                            credited_user=inzula_user,
+                            debited_funds=Money(amount=booking_price, currency='EUR'),
+                            fees=Money(amount=0, currency='EUR'),
+                            debited_wallet=user_wallet,
+                            credited_wallet=inzula_wallet)
+                transfer.save()
 
-            # change the status of all bookings and create notifications
-            for booking in BookingRequest.objects.filter(pk__in=[int(i) for i in selectedBookingIds]):
-                booking.status = 'boo'
-                booking.trip = Trip.objects.get(pk=tripId)
-                booking.save()
-                # generate notifications
-                Notif.objects.create(trip=booking.trip,
-                booking_request=booking,
-                created_by=booking.request_by,
-                price_proposal=None,
-                created_on=timezone.now(),
-                type='payment_for_booking',
-                status='unseen')
-            result = {
-            }
-            return Response(result, status=status.HTTP_200_OK)
+                if transfer.status == "SUCCEEDED":
+                    if percentage_promo is not None:
+                        percentage_promo.save()
+                    # change the status of all bookings and create notifications
+                    for booking in BookingRequest.objects.filter(pk__in=[int(i) for i in selectedBookingIds]):
+                        booking.status = 'boo'
+                        booking.trip = Trip.objects.get(pk=tripId)
+                        if uses_discount:
+                            booking.product.amount_paid = ((100-discount_percentage) * booking.product.proposed_price)/100
+                            booking.product.charges_paid = ((100-discount_percentage) * booking.product.proposed_price * 0.25)/100
+                            booking.product.save()
+                        booking.save()
+                        # generate notifications
+                        Notif.objects.create(trip=booking.trip,
+                        booking_request=booking,
+                        created_by=booking.request_by,
+                        price_proposal=None,
+                        created_on=timezone.now(),
+                        type='payment_for_booking',
+                        status='unseen')
+                    result = {
+                    }
+                    return Response(result, status=status.HTTP_200_OK)
         return Response({"error": "Error processing payment."}, status=status.HTTP_400_BAD_REQUEST)
 
 
 def refund_charges(booking, in_decline):
     with transaction.atomic():
-        booking_amt = float(booking.product.proposed_price)
-        charges_amount = float(booking_amt)*0.25
+        booking_amt = booking.product.amount_paid
+        charges_amount = booking.product.charges_paid
         total_amt = charges_amount + booking_amt
-        amount_to_deduce_from_charges = (float(booking.product.proposed_price)*0.03)+ 1.7
+        amount_to_deduce_from_charges = (booking.product.amount_paid*0.03)+ 1.7
         amount_to_refund = 0.0
         if amount_to_deduce_from_charges >= total_amt:
             amount_to_refund = 0.0
@@ -398,6 +421,10 @@ def refund_charges(booking, in_decline):
                         debited_wallet=inzula_wallet,
                         credited_wallet=user_wallet)
             transfer.save()
+            if transfer.status == "SUCCEEDED":
+                booking.product.amount_paid = 0
+                booking.product.charges_paid = 0
+                booking.product.save()
 
 class PayForBookingWithWallet(CreateAPIView):
     permission_classes = register_permission_classes()
@@ -412,6 +439,9 @@ class PayForBookingWithWallet(CreateAPIView):
             #users
             user = User.objects.get(pk=userId)
             userprofile = user.profile
+            uses_discount = False
+            discount_percentage = 0
+            percentage_promo =None
 
             # get price to pay
             booking_requests = BookingRequest.objects.filter(pk__in=selectedBookingIds)
@@ -421,13 +451,13 @@ class PayForBookingWithWallet(CreateAPIView):
                 discount = Discount.objects.filter(userprofile=userprofile).first()
                 percentage_promo = discount.percentage_promo
                 if percentage_promo.usage_count < percentage_promo.max_usage_count:
-                    booking_amount = float(booking_amount) * 0.95
+                    booking_amount = booking_amount * 0.95
                     percentage_promo.usage_count = percentage_promo.usage_count + 1
-                    percentage_promo.save()
-            fees_amount = float(booking_amount)*0.25
-            fees = fees_amount*100
-            booking_price = booking_amount + fees_amount
-            bookings_price = (float(booking_amount) + fees_amount)*100
+                    discount_percentage = 5
+                    uses_discount = True
+            fees = booking_amount*0.25
+            booking_price = booking_amount + fees
+            booking_price = booking_price*100
 
             # Get natural user
             nat_user_id = userprofile.nat_user_id
@@ -468,7 +498,7 @@ class PayForBookingWithWallet(CreateAPIView):
                 booking_amount = booking_requests_price['product__proposed_price__sum']
                 fees_amount = booking_amount*0.25
                 fees = fees_amount * 100
-                bookings_price = (float(booking_amount) + fees_amount)*100
+                bookings_price = (booking_amount + fees_amount)*100
                 booking_price = booking_amount + fees_amount
                 payable_funds = float(funds[4:].replace(",", "")) / 100
                 if payable_funds < booking_price:
@@ -508,28 +538,35 @@ class PayForBookingWithWallet(CreateAPIView):
 
             transfer = Transfer(author=natural_user,
                         credited_user=inzula_user,
-                        debited_funds=Money(amount=bookings_price, currency='EUR'),
+                        debited_funds=Money(amount=booking_price, currency='EUR'),
                         fees=Money(amount=0, currency='EUR'),
                         debited_wallet=user_wallet,
                         credited_wallet=inzula_wallet)
             transfer.save()
-
-            # change the status of all bookings and create notifications
-            for booking in BookingRequest.objects.filter(pk__in=[int(i) for i in selectedBookingIds]):
-                booking.status = 'boo'
-                booking.trip = Trip.objects.get(pk=tripId)
-                booking.save()
-                # generate notifications
-                Notif.objects.create(trip=booking.trip,
-                booking_request=booking,
-                created_by=booking.request_by,
-                price_proposal=None,
-                created_on=timezone.now(),
-                type='payment_for_booking',
-                status='unseen')
-            result = {
-            }
-            return Response(result, status=status.HTTP_200_OK)
+            if transfer.status == "SUCCEEDED":
+                if percentage_promo is not None:
+                    percentage_promo.save()
+                # change the status of all bookings and create notifications
+                for booking in BookingRequest.objects.filter(pk__in=[int(i) for i in selectedBookingIds]):
+                    booking.status = 'boo'
+                    booking.trip = Trip.objects.get(pk=tripId)
+                    if uses_discount:
+                        booking.product.amount_paid = ((100-discount_percentage) * booking.product.proposed_price)/100
+                        booking.product.charges_paid = ((100-discount_percentage) * booking.product.proposed_price * 0.25)/100
+                        booking.product.save()
+                    booking.save()
+                    # generate notifications
+                    Notif.objects.create(trip=booking.trip,
+                    booking_request=booking,
+                    created_by=booking.request_by,
+                    price_proposal=None,
+                    created_on=timezone.now(),
+                    type='payment_for_booking',
+                    status='unseen')
+                result = {
+                }
+                return Response(result, status=status.HTTP_200_OK)
+        return Response({"error": "Error processing payment."}, status=status.HTTP_400_BAD_REQUEST)
 
 
 
@@ -1083,8 +1120,9 @@ class RefundAmount(APIView):
         }
         if bookingId != 0:
             booking_request = BookingRequest.objects.get(pk=bookingId)
-            br_price = booking_request.product.proposed_price
-            br_price_and_charges = float(br_price) + (float(br_price) * 0.25)
+            br_price = booking_request.product.amount_paid
+            charges = booking_request.product.charges_paid
+            br_price_and_charges = charges + br_price
             amount_to_refund = br_price_and_charges - ((float(br_price) * 0.03) + 1.7)
             if amount_to_refund >= float(br_price_and_charges):
                 amount_to_refund = 0.0

@@ -56,12 +56,10 @@ class SelectCreditCard extends React.Component {
   }
 
   selectCard = (item) => {
-    console.log("Select this card", item);
     this.props.selectSingleCard(item['id'])
   }
 
   payWithNewCard = () => {
-    console.log("add this card");
     this.props.openPaymentFormModal();
     this.props.selectSingleCard(null);
   }

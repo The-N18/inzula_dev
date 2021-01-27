@@ -45,7 +45,6 @@ class SelectableUserReservationsList extends React.Component {
     }
 
   fetchMoreData = () => {
-    console.log("Fetch more items");
     const { user_id, tripId, next_url, count } = this.props;
     this.props.getSelectableUserReservations(user_id, tripId, next_url, count);
   }

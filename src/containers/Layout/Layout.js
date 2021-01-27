@@ -75,7 +75,6 @@ class CustomLayout extends React.Component {
   }
 
   handleScroll = () => {
-    console.log("on scroll");
     $(window).scroll(function() {
         if ($(window).scrollTop() > 10) {
             $('.menuheader').addClass('stickyshadow');

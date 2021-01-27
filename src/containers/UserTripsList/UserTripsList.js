@@ -36,7 +36,6 @@ class UserTripsList extends React.Component {
   }
 
   componentDidMount = () => {
-    console.log("in component did mount");
     const { user_id, next_url, count } = this.props;
     this.props.getInitialUserTrips(user_id, next_url, count);
     window.addEventListener('resize', this.handleScreenSize, false);
@@ -44,7 +43,6 @@ class UserTripsList extends React.Component {
     }
 
   fetchMoreData = () => {
-    console.log("fetch more data")
     const { user_id, next_url, count } = this.props;
     this.props.getUserTrips(user_id, next_url, count);
   }

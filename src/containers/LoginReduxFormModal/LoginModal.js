@@ -24,8 +24,6 @@ import {FormattedMessage} from 'react-intl'
 class LoginForm extends Component {
 
   submitForm = (val) => {
-    console.log("submit");
-    console.log(val);
     this.props.login(val['username'], val['password']);
   }
 

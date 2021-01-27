@@ -62,7 +62,6 @@ class UserReservationsList extends React.Component {
   }
 
   handleOpenSendPackageModal = () => {
-    console.log("open modal");
     this.props.openPackageModal();
   }
 

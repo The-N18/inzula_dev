@@ -57,7 +57,6 @@ class AddTripFormWithText extends React.Component {
   submitForm = (val) => {
     const {userId, authenticated, trip_type_check} = this.props;
     const createdBy = {"user": userId};
-    console.log(val);
     if(authenticated) {
       const departureLocation = val['departure_location'] ? val['departure_location']['pk'] : null;
       const destinationLocation = val['destination_location'] ? val['destination_location']['pk'] : null;

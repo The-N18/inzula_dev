@@ -97,9 +97,6 @@ export const renderSelectList = ({ input, data }) =>
 
 
 export const renderCitiesList = ({ input, data, label, meta: { touched, error, warning }}) => {
-  console.log(input);
-  console.log(data);
-  console.log(label);
   return <div>
             <Async
             clearValue

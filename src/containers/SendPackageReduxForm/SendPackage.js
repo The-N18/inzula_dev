@@ -37,19 +37,14 @@ class SendPackage extends React.Component {
   }
 
   handleButtonClick = (e) => {
-    console.log("handle button click here");
     if(this.state.activeStep === 1) {
       this.setState({ activeStep: 2});
-    } else {
-      console.log("submit request");
     }
   }
 
   handleBackButtonClick = (e) => {
     if(this.state.activeStep === 2) {
       this.setState({ activeStep: 1});
-    } else {
-      console.log("do nothing");
     }
   }
 

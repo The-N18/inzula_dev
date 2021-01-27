@@ -34,14 +34,12 @@ class CompleteProfileForm extends React.Component {
   }
 
   onDrop = (picture) => {
-    console.log(picture);
       this.setState({
           picture: picture,
       });
   }
 
   onFilesChange = (files) => {
-    console.log(files)
     this.setState({
       passport: files,
   });
@@ -53,14 +51,12 @@ class CompleteProfileForm extends React.Component {
   }
 
   submitForm = (val) => {
-    console.log(val['phone_number']);
     const sex = val['sex'] && val['sex']['value']  ? val['sex']['value'] : val['sex'];
     const country = val['country'] && val['country']['value'] ? val['country']['value'] : val['country'];
     this.props.completeProfileInfo(val['first_name'], val['last_name'], val['phone_number'], country, val['passport_number'], sex);
   }
 
   deleteYourAccount = () => {
-    console.log("deleteYourAccount");
     this.props.openDeleteAccount();
   }
 

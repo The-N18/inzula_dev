@@ -61,7 +61,6 @@ class AddTripForm extends React.Component {
   submitForm = (val) => {
     const {userId, authenticated, trip_type_check} = this.props;
     const createdBy = {"user": userId};
-    console.log(val);
     if(authenticated) {
       if(isProfileComplete(localStorage)) {
         const departureLocation = val['departure_location'] ? val['departure_location']['pk'] : null;

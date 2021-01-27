@@ -539,7 +539,6 @@ class BookingRequestDetail(APIView):
             booking_request = self.get_object(pk)
             product = booking_request.product
             pictures = request.FILES.getlist('pictures')
-            print(pictures)
             departure_location = City.objects.get(pk=request.data["departure_location"])
             destination_location = City.objects.get(pk=request.data["destination_location"])
             userprofile = UserProfile.objects.get(pk=request.data["created_by"])
