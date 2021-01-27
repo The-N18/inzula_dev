@@ -26,7 +26,7 @@ SECRET_KEY = os.environ['INZ_SECRET_KEY']
 DEBUG = True
 MANUAL_DEBUG = False
 
-ALLOWED_HOSTS = ['dkx1b8wlo613w.cloudfront.net', 'inzula.app', 'www.inzula.app', '15.237.97.243', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['dkx1b8wlo613w.cloudfront.net', 'inzula.app', 'www.inzula.app', '15.237.97.243', 'localhost', '127.0.0.1', '15.188.61.65', 'd1g0ix8w0r103u.cloudfront.net']
 
 
 # Application definition
