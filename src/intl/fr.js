@@ -22,12 +22,12 @@ export const msg = {
   'add_trip_form.add_trip': "Ajoutez les informations sur votre voyage pour gagner de l’argent.",
   'add_trip_form.please_login': "Veuillez vous connecter pour ajouter un nouveau voyage",
   'add_trip_form.cb_date': "Date de retour",
-  'add_trip_form.dep_date': "Date de depart",
+  'add_trip_form.dep_date': "Date de départ",
   'add_trip_form.one_way': "Aller",
   'add_trip_form.round_trip': "Aller-Retour",
   'add_trip_form.add_your_trip': "Ajoutez votre trajet",
   'add_trip_form.dest_location': "Destination",
-  'add_trip_form.depart_location': "Lieu de depart",
+  'add_trip_form.depart_location': "Lieu de départ",
   'add_trip_form.trip': "Voyage",
   'booking_card.description': "Description:",
   'booking_card.arrival_date': "Date d'arrivée:",
@@ -328,7 +328,6 @@ export const msg = {
   'payment_form.cancel': "Annuler",
   'add_booking.add_request': "Ajouter un colis",
   'my_funds.no_cards': "Vous n'avez pas de cartes de paiement.",
-
   'cashout_form.title': "Entrez vos informations bancaires pour votre retrait",
   'cashout_form.max_amt': "Montant maximum a rétirer",
   'cashout_form.amt': "Montant",
@@ -340,34 +339,27 @@ export const msg = {
   'cashout_form.account_IBAN': "IBAN",
   'cashout_form.cashout': "Rétirer",
   'cashout_form.cancel': "Annuler",
-
   'decline_booking.title': "Décliner la requête",
   'decline_booking.msg': "Etes-vous sur de vouloir décliner cette requête?",
   'decline_booking.no': "Non",
   'decline_booking.yes': "Oui",
-
   'cancel_booking.title': "Annuler la requête",
   'cancel_booking.msg': "Etes-vous sur de vouloir annuler cette requête?",
   'cancel_booking.no': "Non",
   'cancel_booking.yes': "Oui",
-
   'confirm_cancel_modal.msg': "Si vous confirmez l'annulation de cette requete, vous serez  remboursé d'un montant de {amount} EUR",
   'complete_profile_modal.msg': "Voir mon profil",
-
   'verify_email_confirm.title': "Email de verification envoyé",
   'verify_email_confirm.yes': "Ok",
   'verify_email_confirm.msg': "Merci de valider le mail reçu dans votre boite mail afin de confirmer votre inscription (si vous n'avez pas reçu le mail, merci de regarder dans les SPAM).",
-
   'delete_trip.title': "Supprimer le voyage",
   'delete_trip.msg': "Etes-vous sur de vouloir supprimer ce voyage?",
   'delete_trip.no': "Non",
   'delete_trip.yes': "Oui",
-
   'delete_booking.title': "Supprimer la requête",
   'delete_booking.msg': "Etes-vous sur de vouloir supprimer cette requête?",
   'delete_booking.no': "Non",
   'delete_booking.yes': "Oui",
-
   'profile_tab.username_': "Nom d'utilisateur: ",
   'profile_tab.fullname_': "Nom: ",
   'profile_tab.file_size_error': "Fichier trop grand",
