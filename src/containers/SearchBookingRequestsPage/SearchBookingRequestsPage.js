@@ -273,17 +273,17 @@ class SearchBookingRequestsPage extends React.Component {
             overflow: 'auto',
             borderTop: '1px solid #f1f1f1',
             boxShadow: '0px 0 10px #d4d4d5',
-            display: bookings.length > 0 ? "block": "none"
+            display: bookings && bookings.length > 0 ? "block": "none"
           }}
         >
           <InfiniteScroll
-            dataLength={bookings.length}
+            dataLength={bookings ? bookings.length: 0}
             next={this.fetchMoreData}
             hasMore={count !== null && next_url !== null}
             loader={<h4>Loading...</h4>}
             scrollableTarget="scrollableDiv"
           >
-            {bookings.map((item, index) => (
+            {bookings ? bookings.map((item, index) => (
               <div style={{
                 height: this.getDivHeight.bind(this),
                 margin: 6,
@@ -310,7 +310,7 @@ class SearchBookingRequestsPage extends React.Component {
                   selectable={false}
                   can_propose />
               </div>
-            ))}
+            )) : ''}
           </InfiniteScroll>
         </div>
       </Segment>
