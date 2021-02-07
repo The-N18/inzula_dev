@@ -10,7 +10,7 @@ listen 80;
 #listen 443 ssl;
 #ssl_certificate /opt/bitnami/apache/conf/bitnami/certs/server.crt;
 #ssl_certificate_key /opt/bitnami/apache/conf/bitnami/certs/server.key;
-server_name dkx1b8wlo613w.cloudfront.net inzula.app;
+server_name d1g0ix8w0r103u.cloudfront.net inzula.app;
 server_name_in_redirect off;
 client_max_body_size 4G;
 access_log /home/ubuntu/projects/logs/inzula/logs/nginx-access.log;

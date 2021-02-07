@@ -130,7 +130,7 @@ WSGI_APPLICATION = 'inzula.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ['INZ_DB_NAME'],
+        'NAME': os.environ['INZ_TEST_DB_NAME'],
         'USER': os.environ['INZ_DB_USER'],
         'PASSWORD': os.environ['INZ_DB_PASSWORD'],
         'HOST': 'localhost',
