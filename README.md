@@ -213,13 +213,14 @@ After the build, do
 + `git pull`
 + `git merge test`
 +  Run file  
-`./bin/test_to_prod_server.sh`
+`./bin/test_to_prod_build.sh`
 + Then push to prod  
 `git add .`
 + `git commit -am "<COMMIT_MSG>"`
 + `git push origin prod`
 + Switch back to the `test` branch  
 `git checkout test`
++ Login in prod server and restart as mentionned in the steps above.
 
 # Build in prod server
 + Check the branch name. You should be in the `prod` branch  
@@ -250,10 +251,12 @@ After the build, do
 + `git pull`
 + `git merge prod`
 +  Run file  
-`./bin/prod_to_test_server.sh`
+`./bin/prod_to_test_build.sh`
 + Then push to prod  
 `git add .`
 + `git commit -am "<COMMIT_MSG>"`
 + `git push origin test`
 + Switch back to the `prod` branch  
 `git checkout prod`
++ Login in test server and restart as mentionned in the steps above.
+
