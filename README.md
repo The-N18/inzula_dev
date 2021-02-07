@@ -183,3 +183,77 @@ For the build server; run
 + restart the gunicorn deamon  
 `./bin/gunicorn_start.sh`  
 Done!
+
+# To build in test server
++ Check the branch name. You should be in the `test` branch  
+  `git branch` helps you do that
++ Make your changes
++ assuming you are in the directory named `inzula`, run  
+`./bin/build_in_test_server.sh`
++ Then run this command  
+`rm -rf /home/ubuntu/projects/inzula/build/ && rm -rf /home/ubuntu/projects/inzula/staticfiles/ && PUBLIC_URL=https://d1g0ix8w0r103u.cloudfront.net npm run build && python3 /home/ubuntu/projects/inzula/manage.py collectstatic --noinput && ./home/ubuntu/projects/inzula/bin/gunicorn_start.sh`  
+This will delete the build files, rebuild the project and launch the server. You will know that it has run successfully when you see a return of the sort  
+`[2021-02-07 01:58:22 +0000] [86671] [INFO] Starting gunicorn 19.9.0
+[2021-02-07 01:58:22 +0000] [86671] [DEBUG] Arbiter booted
+[2021-02-07 01:58:22 +0000] [86671] [INFO] Listening at: unix:/home/ubuntu/projects/env/run/gunicorn.sock (86671)
+[2021-02-07 01:58:22 +0000] [86671] [INFO] Using worker: sync
+/usr/lib/python3.8/os.py:1023: RuntimeWarning: line buffering (buffering=1) isn't supported in binary mode, the default buffer size will be used
+  return io.open(fd, *args, **kwargs)
+[2021-02-07 01:58:22 +0000] [86675] [INFO] Booting worker with pid: 86675
+[2021-02-07 01:58:22 +0000] [86676] [INFO] Booting worker with pid: 86676
+[2021-02-07 01:58:22 +0000] [86677] [INFO] Booting worker with pid: 86677
+[2021-02-07 01:58:23 +0000] [86671] [DEBUG] 3 workers`
+
+# Push build from test to prod server
+After the build, do
++ `git add .`
++ `git commit -am "<COMMIT_MSG>"`
++ `git push origin test`
++ `git checkout prod`
++ `git pull`
++ `git merge test`
++  Run file  
+`./bin/test_to_prod_server.sh`
++ Then push to prod  
+`git add .`
++ `git commit -am "<COMMIT_MSG>"`
++ `git push origin prod`
++ Switch back to the `test` branch  
+`git checkout test`
+
+# Build in prod server
++ Check the branch name. You should be in the `prod` branch  
+  `git branch` helps you do that
++ Make your changes
++ assuming you are in the directory named `inzula`, run  
+`./bin/build_in_prod_server.sh`
++ Then run this command  
+`rm -rf /home/ubuntu/projects/inzula/build/ && rm -rf /home/ubuntu/projects/inzula/staticfiles/ && PUBLIC_URL=https://dkx1b8wlo613w.cloudfront.net npm run build && python3 /home/ubuntu/projects/inzula/manage.py collectstatic --noinput && ./home/ubuntu/projects/inzula/bin/gunicorn_start.sh`  
+This will delete the build files, rebuild the project and launch the server. You will know that it has run successfully when you see a return of the sort  
+`[2021-02-07 01:58:22 +0000] [86671] [INFO] Starting gunicorn 19.9.0
+[2021-02-07 01:58:22 +0000] [86671] [DEBUG] Arbiter booted
+[2021-02-07 01:58:22 +0000] [86671] [INFO] Listening at: unix:/home/ubuntu/projects/env/run/gunicorn.sock (86671)
+[2021-02-07 01:58:22 +0000] [86671] [INFO] Using worker: sync
+/usr/lib/python3.8/os.py:1023: RuntimeWarning: line buffering (buffering=1) isn't supported in binary mode, the default buffer size will be used
+  return io.open(fd, *args, **kwargs)
+[2021-02-07 01:58:22 +0000] [86675] [INFO] Booting worker with pid: 86675
+[2021-02-07 01:58:22 +0000] [86676] [INFO] Booting worker with pid: 86676
+[2021-02-07 01:58:22 +0000] [86677] [INFO] Booting worker with pid: 86677
+[2021-02-07 01:58:23 +0000] [86671] [DEBUG] 3 workers`
+
+# Push build from prod to test server
+After the build, do
++ `git add .`
++ `git commit -am "<COMMIT_MSG>"`
++ `git push origin prod`
++ `git checkout test`
++ `git pull`
++ `git merge prod`
++  Run file  
+`./bin/prod_to_test_server.sh`
++ Then push to prod  
+`git add .`
++ `git commit -am "<COMMIT_MSG>"`
++ `git push origin test`
++ Switch back to the `prod` branch  
+`git checkout prod`
