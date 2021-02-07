@@ -191,7 +191,7 @@ Done!
 + assuming you are in the directory named `inzula`, run  
 `./bin/build_in_test_server.sh`
 + Then run this command  
-`rm -rf /home/ubuntu/projects/inzula/build/ && rm -rf /home/ubuntu/projects/inzula/staticfiles/ && PUBLIC_URL=https://d1g0ix8w0r103u.cloudfront.net npm run build && python3 /home/ubuntu/projects/inzula/manage.py collectstatic --noinput && ./home/ubuntu/projects/inzula/bin/gunicorn_start.sh`  
+`rm -rf /home/ubuntu/projects/inzula/build/ && rm -rf /home/ubuntu/projects/inzula/staticfiles/ && PUBLIC_URL=https://d1g0ix8w0r103u.cloudfront.net npm run build && python3 /home/ubuntu/projects/inzula/manage.py collectstatic --noinput && ./bin/gunicorn_start.sh`  
 This will delete the build files, rebuild the project and launch the server. You will know that it has run successfully when you see a return of the sort  
 `[2021-02-07 01:58:22 +0000] [86671] [INFO] Starting gunicorn 19.9.0
 [2021-02-07 01:58:22 +0000] [86671] [DEBUG] Arbiter booted
@@ -229,7 +229,7 @@ After the build, do
 + assuming you are in the directory named `inzula`, run  
 `./bin/build_in_prod_server.sh`
 + Then run this command  
-`rm -rf /home/ubuntu/projects/inzula/build/ && rm -rf /home/ubuntu/projects/inzula/staticfiles/ && PUBLIC_URL=https://dkx1b8wlo613w.cloudfront.net npm run build && python3 /home/ubuntu/projects/inzula/manage.py collectstatic --noinput && ./home/ubuntu/projects/inzula/bin/gunicorn_start.sh`  
+`rm -rf /home/ubuntu/projects/inzula/build/ && rm -rf /home/ubuntu/projects/inzula/staticfiles/ && PUBLIC_URL=https://dkx1b8wlo613w.cloudfront.net npm run build && python3 /home/ubuntu/projects/inzula/manage.py collectstatic --noinput && ./bin/gunicorn_start.sh`  
 This will delete the build files, rebuild the project and launch the server. You will know that it has run successfully when you see a return of the sort  
 `[2021-02-07 01:58:22 +0000] [86671] [INFO] Starting gunicorn 19.9.0
 [2021-02-07 01:58:22 +0000] [86671] [DEBUG] Arbiter booted

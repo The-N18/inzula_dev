@@ -167,7 +167,7 @@ class SearchTripsForm extends React.Component {
             </div>
           </form>
           <Divider/>
-          {trips.length === 0 ? <div> <FormattedMessage
+          {trips && trips.length === 0 ? <div> <FormattedMessage
             id="search_trips.no_results"
             defaultMessage="No search results. Please try a more general search."
           /></div> : ''}

@@ -262,7 +262,7 @@ class SearchBookingRequestsPage extends React.Component {
           </div>
           </form>
         <Divider/>
-        {bookings.length === 0 ? <div><FormattedMessage
+        {bookings === undefined || bookings.length === 0 ? <div><FormattedMessage
           id="search_requests.no_results"
           defaultMessage="No search results. Please try a more general search"
         /></div> : ''}
