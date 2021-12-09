@@ -6,7 +6,7 @@ import {
   Card
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './myfunds.css';
+// import styles from './myfunds.css';
 import { getFunds, cashout } from "../../store/actions/myFunds";
 import { getMaxPayoutAmount } from "../../store/actions/bankAccountFormModal";
 import $ from "jquery";

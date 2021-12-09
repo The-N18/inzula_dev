@@ -4,7 +4,7 @@ import {
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './cancelbooking.css';
+// import styles from './cancelbooking.css';
 import { openCancelBooking, closeCancelBooking, cancelBooking, getRefundAmt } from "../../store/actions/cancelBooking";
 import {FormattedMessage} from 'react-intl'
 

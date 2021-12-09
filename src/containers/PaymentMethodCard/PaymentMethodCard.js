@@ -4,7 +4,7 @@ import {
   Card,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './paymentmethodcard.css';
+// import styles from './paymentmethodcard.css';
 import {FormattedMessage} from 'react-intl'
 
 

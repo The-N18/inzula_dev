@@ -8,14 +8,14 @@ import Multiselect from 'react-widgets/lib/Multiselect'
 import DateTimePicker from 'react-widgets/lib/DateTimePicker'
 import moment from 'moment';
 import momentLocalizer from "react-widgets-moment";
-import 'react-widgets/dist/css/react-widgets.css';
-import './fields.css';
+// import 'react-widgets/dist/css/react-widgets.css';
+// import './fields.css';
 // import 'react-select/dist/react-select.css';
 import Async from 'react-select/async';
 import { api_url } from "../../configurations";
 import PhoneInput, { formatPhoneNumber, formatPhoneNumberIntl, isValidPhoneNumber } from 'react-phone-number-input';
 import flags from 'react-phone-number-input/flags';
-import 'react-phone-number-input/style.css';
+// import 'react-phone-number-input/style.css';
 
 
 moment.locale('en');

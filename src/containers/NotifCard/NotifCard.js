@@ -4,7 +4,7 @@ import {
   Card,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './notifcard.css';
+// import styles from './notifcard.css';
 import {FormattedMessage, FormattedDate} from 'react-intl'
 
 

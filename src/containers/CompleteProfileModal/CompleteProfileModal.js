@@ -7,11 +7,11 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import styles from './completeprofilemodal.css';
+// import styles from './completeprofilemodal.css';
 import { openCompleteProfileModal, closeCompleteProfileModal } from "../../store/actions/completeProfileModal";
 import CompleteProfileForm from "../CompleteProfileForm/CompleteProfileForm";
 import {FormattedMessage} from 'react-intl'
-import 'react-widgets/dist/css/react-widgets.css';
+// import 'react-widgets/dist/css/react-widgets.css';
 
 class CompleteProfileModal extends React.Component {
 

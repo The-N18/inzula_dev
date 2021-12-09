@@ -20,11 +20,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['INZ_SECRET_KEY']
+#SECRET_KEY = os.environ['INZ_SECRET_KEY']
+
+SECRET_KEY = 'cx7rnzp$skop_mg6h+xy2o6^$6ltn^_7oi5+p*f@b5cg4d*od#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-MANUAL_DEBUG = False
+MANUAL_DEBUG = True
 
 ALLOWED_HOSTS = ['dkx1b8wlo613w.cloudfront.net', 'inzula.app', 'www.inzula.app', '15.237.97.243', 'localhost', '127.0.0.1', '15.188.61.65', 'd1g0ix8w0r103u.cloudfront.net']
 
@@ -120,23 +122,23 @@ WSGI_APPLICATION = 'inzula.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ['INZ_TEST_DB_NAME'],
-        'USER': os.environ['INZ_DB_USER'],
-        'PASSWORD': os.environ['INZ_DB_PASSWORD'],
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': os.environ['INZ_TEST_DB_NAME'],
+#         'USER': os.environ['INZ_DB_USER'],
+#         'PASSWORD': os.environ['INZ_DB_PASSWORD'],
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 
 
 # Password validation
@@ -209,8 +211,10 @@ REST_USE_JWT = True
 # Account parameters
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
+# ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = False
 
 # CORS parameters
 CORS_ALLOW_ALL_ORIGINS = True
@@ -223,18 +227,27 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'inzula.app@gmail.com'
-EMAIL_HOST_PASSWORD = os.environ['INZ_EMAIL_HOST_PASSWORD']
+# EMAIL_HOST_PASSWORD = os.environ['INZ_EMAIL_HOST_PASSWORD']
+EMAIL_HOST_PASSWORD = 'rnnaupmosyzlfyul'
 
-# SSO parameters
-GOOGLE_CLIENT_ID = os.environ['INZ_GOOGLE_CLIENT_ID']
-GOOGLE_CLIENT_SECRET = os.environ['INZ_GOOGLE_CLIENT_SECRET']
-FACEBOOK_APP_ID = os.environ['INZ_FACEBOOK_APP_ID']
-FACEBOOK_APP_SECRET = os.environ['INZ_FACEBOOK_APP_SECRET']
+# # SSO parameters
+# GOOGLE_CLIENT_ID = os.environ['INZ_GOOGLE_CLIENT_ID']
+# GOOGLE_CLIENT_SECRET = os.environ['INZ_GOOGLE_CLIENT_SECRET']
+# FACEBOOK_APP_ID = os.environ['INZ_FACEBOOK_APP_ID']
+# FACEBOOK_APP_SECRET = os.environ['INZ_FACEBOOK_APP_SECRET']
 
-# Twilio config
-TWILIO_ACCOUNT_SID = os.environ['INZ_TWILIO_ACCOUNT_SID']
-TWILIO_AUTH_TOKEN = os.environ['INZ_TWILIO_AUTH_TOKEN']
-PHONE_NUMBER = os.environ['INZ_TWILIO_PHONE_NUMBER']
+GOOGLE_CLIENT_ID = "1018467540475-2dsdk3lijubc8ln26ooa63lg83dsa8fm.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET = "Z46pZqtOlRb4W3seXrgqjXEi"
+FACEBOOK_APP_ID = "136854898060654"
+FACEBOOK_APP_SECRET = "398ba09e1e2981773d9d7d8370f4ddb0"
+
+# # Twilio config
+# TWILIO_ACCOUNT_SID = os.environ['INZ_TWILIO_ACCOUNT_SID']
+# TWILIO_AUTH_TOKEN = os.environ['INZ_TWILIO_AUTH_TOKEN']
+# PHONE_NUMBER = os.environ['INZ_TWILIO_PHONE_NUMBER']
+TWILIO_ACCOUNT_SID = "AC55c3eef6cb2299201a084d2ba7ccfa1d"
+TWILIO_AUTH_TOKEN = "9041efd0d4e2cdddec4486aab7e360ab"
+PHONE_NUMBER = "+12055462380"
 
 # Delivery code config
 MAX_VALIDATION_ATTEMPTS = 5
@@ -248,9 +261,11 @@ INZULA_EMAIL = "inzula.app@gmail.com"
 CSRF_COOKIE_SECURE = False
 SESSION_COOKIE_SECURE = False
 
-# Mangopay
-MANGO_PAY_CLIENT_ID = os.environ['MANGO_PAY_CLIENT_ID']
-MANGO_PAY_API_KEY = os.environ['MANGO_PAY_API_KEY']
+# # Mangopay
+# MANGO_PAY_CLIENT_ID = os.environ['MANGO_PAY_CLIENT_ID']
+# MANGO_PAY_API_KEY = os.environ['MANGO_PAY_API_KEY']
+MANGO_PAY_CLIENT_ID = 'inzulav3'
+MANGO_PAY_API_KEY = 'fbfq88VgmZcVSiATyPxPSc1UnZLARzLYbMeOo2yUY0CeOp6agJ'
 
 if DEBUG == False:
     CSRF_COOKIE_SECURE = True

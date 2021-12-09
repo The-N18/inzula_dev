@@ -9,7 +9,7 @@ import {
 } from "semantic-ui-react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import styles from './sendpackage.css';
+// import styles from './sendpackage.css';
 import PropTypes from "prop-types";
 import { backend_url, isProfileComplete } from "../../configurations";
 import ImageUploader from 'react-images-upload';

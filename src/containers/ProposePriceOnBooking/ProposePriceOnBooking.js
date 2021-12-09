@@ -4,7 +4,7 @@ import {
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './proposepriceonbooking.css';
+// import styles from './proposepriceonbooking.css';
 import { openProposePriceOnBooking, closeProposePriceOnBooking, proposePriceOnBooking } from "../../store/actions/proposePriceOnBooking";
 import {Field, reset, reduxForm} from 'redux-form';
 import {renderField} from "../../containers/ReduxForm/renderField";

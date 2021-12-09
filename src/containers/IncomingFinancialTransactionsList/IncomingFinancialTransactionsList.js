@@ -4,7 +4,7 @@ import {
   Segment,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './incomingfinancialtransactionslist.css';
+// import styles from './incomingfinancialtransactionslist.css';
 import { getTransactions, getInitialTransactions } from "../../store/actions/incomingFinancialTransactions";
 import TransactionCard from "../../containers/TransactionCard/TransactionCard";
 import $ from "jquery";

@@ -5,7 +5,7 @@ import {
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './selectreservations.css';
+// import styles from './selectreservations.css';
 import { openModal, closeModal } from "../../store/actions/selectReservationsModal";
 import SelectableUserReservationsList from "../../containers/SelectableUserReservationsList/SelectableUserReservationsList";
 import { openModalForTrip } from "../../store/actions/sendPackageModal";

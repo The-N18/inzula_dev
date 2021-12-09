@@ -6,7 +6,7 @@ import {
   Tab
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './homehowinzulaworkssection.css';
+// import styles from './homehowinzulaworkssection.css';
 import HomeTextImgCard from "../../containers/HomeTextImgCard/HomeTextImgCard";
 import {FormattedMessage} from 'react-intl';
 

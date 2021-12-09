@@ -6,7 +6,7 @@ import {
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './loginparentmodal.css';
+// import styles from './loginparentmodal.css';
 import { openLoginParentModal, closeLoginParentModal } from "../../store/actions/loginParentModal";
 import { openLoginModal } from "../../store/actions/loginModal";
 import { googleLogin, facebookLogin } from "../../store/actions/auth";

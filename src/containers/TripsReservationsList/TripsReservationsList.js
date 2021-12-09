@@ -4,7 +4,7 @@ import {
   Segment
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './tripsreservationslist.css';
+// import styles from './tripsreservationslist.css';
 import UserTripsList from "../../containers/UserTripsList/UserTripsList";
 import UserReservationsList from "../../containers/UserReservationsList/UserReservationsList";
 

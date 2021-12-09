@@ -4,7 +4,7 @@ import {
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './confirmbookingprice.css';
+// import styles from './confirmbookingprice.css';
 import { openConfirmBookingPrice,
          closeConfirmBookingPrice,
          setBookingRequestInfo,

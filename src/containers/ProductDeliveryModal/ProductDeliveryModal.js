@@ -4,7 +4,7 @@ import {
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './productdeliverymodal.css';
+// import styles from './productdeliverymodal.css';
 import { openProductDeliveryModal, closeProductDeliveryModal, submitDeliveryCode } from "../../store/actions/productDeliveryModal";
 import {Field, reduxForm} from 'redux-form';
 import {renderField} from "../ReduxForm/renderField";

@@ -8,7 +8,7 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import styles from './addtripform.css';
+// import styles from './addtripform.css';
 import CSRFToken from "../../containers/CSRFToken";
 import {renderDateTimePicker, renderCitiesList} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";

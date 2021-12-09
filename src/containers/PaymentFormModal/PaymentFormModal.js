@@ -4,7 +4,7 @@ import {
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './paymentformmodal.css';
+// import styles from './paymentformmodal.css';
 import { openPaymentFormModal,
          closePaymentFormModal,
          payInInzulaWallet,

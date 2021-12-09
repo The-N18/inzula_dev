@@ -4,7 +4,7 @@ import {
   Segment,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './mypaymentmethods.css';
+// import styles from './mypaymentmethods.css';
 import { getCards, addMethod } from "../../store/actions/myPaymentMethods";
 import $ from "jquery";
 import {FormattedMessage} from 'react-intl'

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Field, reduxForm, reset} from 'redux-form';
-import styles from './signup.css';
+// import styles from './signup.css';
 import {
   Segment,
   Button,

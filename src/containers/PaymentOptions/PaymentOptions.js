@@ -4,7 +4,7 @@ import {
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './paymentoptions.css';
+// import styles from './paymentoptions.css';
 import { openPaymentOptions,
          closePaymentOptions} from "../../store/actions/paymentOptionsModal";
 import { openSelectCreditCard} from "../../store/actions/selectCreditCardModal";

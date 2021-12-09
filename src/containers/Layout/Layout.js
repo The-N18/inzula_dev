@@ -1,14 +1,11 @@
 import React from "react";
-import {
-  Container,
-  Image,
-} from "semantic-ui-react";
+
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { logout } from "../../store/actions/auth";
 import { clearUserInfo } from "../../store/actions/userInfo";
 import { backend_url, get_img_url } from "../../configurations";
-import styles from './layout.css';
+// import styles from './layout.css';
 import $ from "jquery";
 import Footer from "../../containers/Footer/Footer";
 import SignupParentModal from "../../containers/SignupParentModal/SignupParentModal";
@@ -35,8 +32,8 @@ import CompleteProfileModal from "../../containers/CompleteProfileModal/Complete
 import ProductDeliveryModal from "../../containers/ProductDeliveryModal/ProductDeliveryModal";
 import VerifyYourEmailModal from "../../containers/VerifyYourEmailModal/VerifyYourEmailModal";
 import LanguageSwitcherSelector from "../../containers/LanguageSwitcherSelector/LanguageSwitcherSelector";
-import 'react-redux-notify/dist/ReactReduxNotify.css';
-import 'semantic-ui-css/semantic.min.css';
+// import 'react-redux-notify/dist/ReactReduxNotify.css';
+
 import { Notify } from 'react-redux-notify';
 import {FormattedMessage} from 'react-intl'
 import { setActiveIndex } from "../../store/actions/myProfile";
@@ -131,82 +128,10 @@ class CustomLayout extends React.Component {
   render() {
     const { authenticated, profile_pic, profileType } = this.props;
 
-    let mobileMenu = this.state.isMobile ? (
-      <span><li><a onClick={this.handleOnProfileClick.bind(this)}>
-      <FormattedMessage
-        id="layout.profile"
-        defaultMessage="Profile"
-      /></a></li>
-      <li><a onClick={this.handleOnReservationClick.bind(this)}>
-      {profileType === "sender" ? <FormattedMessage
-        id="layout.booking"
-        defaultMessage="Reservation"
-      /> : <FormattedMessage
-        id="layout.trips"
-        defaultMessage="Trips"
-      />}
-      </a></li>
-      <li><a onClick={this.handleOnAlertClick.bind(this)}>
-      <FormattedMessage
-        id="layout.alerts"
-        defaultMessage="Alerts"
-      />
-      </a></li>
-      <li><a onClick={this.handleOnFinanceClick.bind(this)}>
-      <FormattedMessage
-        id="layout.finances"
-        defaultMessage="Finances"
-      />
-      </a></li>
-      <li><a onClick={this.logoutUtil.bind(this)}>
-      <FormattedMessage
-        id="layout.logout"
-        defaultMessage="Logout"
-      />
-      </a></li></span>) : (
-      <li>
-        <a className={"pad-13"}>
-          <Image bordered circular size='small' className={"profile-image"} onClick={this.handleOnProfileClick.bind(this)} src={profile_pic !== null && profile_pic !== "null" ? get_img_url(profile_pic) : backend_url() + '/static/images/user_avatar.png'} />
-        </a>
-        <ul>
-            <li><a onClick={this.handleOnProfileClick.bind(this)}>
-            <FormattedMessage
-              id="layout.profile"
-              defaultMessage="Profile"
-            />
-            </a></li>
-            <li><a onClick={this.handleOnReservationClick.bind(this)}>
-            {profileType === "sender" ? <FormattedMessage
-              id="layout.booking"
-              defaultMessage="Reservation"
-            /> : <FormattedMessage
-              id="layout.trips"
-              defaultMessage="Trips"
-            />}
-            </a></li>
-            <li><a onClick={this.handleOnAlertClick.bind(this)}>
-            <FormattedMessage
-              id="layout.alerts"
-              defaultMessage="Alerts"
-            />
-            </a></li>
-            <li><a onClick={this.handleOnFinanceClick.bind(this)}>
-            <FormattedMessage
-              id="layout.finances"
-              defaultMessage="Finances"
-            />
-            </a></li>
-            <li><a onClick={this.logoutUtil.bind(this)}>
-            <FormattedMessage
-              id="layout.logout"
-              defaultMessage="Logout"
-            /></a></li>
-        </ul>
-        </li>
-    );
+    
 
     return (
-      <Container className="main">
+      <div>
       <SignupParentModal />
       <SignupModal />
       <LoginParentModal />
@@ -232,56 +157,68 @@ class CustomLayout extends React.Component {
       <CancelBooking />
       <VerifyYourEmailModal />
       <Notify position={"BottomLeft"}/>
-        <header className="menuheader">
-          <div>
-            <a className="logo" onClick={this.handleOnClick.bind(this, '/')}>
-              <Image size='small' src={backend_url() + '/static/images/logo.png'} />
-            </a>
-            <input className="menu-btn" type="checkbox" id="menu-btn" />
-            <label className="menu-icon" htmlFor="menu-btn"><span className="navicon"></span></label>
-            <ul className="menu">
-              {!authenticated ? <li><a  className="red" onClick={this.handleOnClick.bind(this, '/signupdiscount')}>
-              <FormattedMessage
-                id="layout.discount"
-                defaultMessage="15% discount"
-              /></a></li> : ''}
-              <li><a onClick={this.handleOnClick.bind(this, '/')}>
-              <FormattedMessage
-                id="layout.dispatch"
-                defaultMessage="Dispatch"
-              /></a></li>
-              <li><a onClick={this.handleOnClick.bind(this, '/transport')}>
-              <FormattedMessage
-                id="layout.transport"
-                defaultMessage="Transport"
-              /></a></li>
-              {authenticated ? (mobileMenu) :
-              (<span>
-                <li><a onClick={this.handleOnModalOpen.bind(this, 'login')}>
-                <FormattedMessage
-                  id="layout.login"
-                  defaultMessage="Login"
-                />
-                </a></li>
-                <li><a onClick={this.handleOnModalOpen.bind(this, 'signup')}>
-                <FormattedMessage
-                  id="layout.signup"
-                  defaultMessage="Sign up"
-                /></a></li>
-              </span>
-            )}
-            <li><LanguageSwitcherSelector
-              lang={this.props.lang}
-              handleChangeLanguage={this.changeLanguageHandler}
-            /></li>
-            </ul>
+        {/* Preloader */}
+       
+        {/* Preloader Ends */}
+        {/* header starts */}
+        <header className="main_header_area headerstye-1">
+          {/* Navigation Bar */}
+          <div className="header_menu" id="header_menu">
+            <nav className="navbar navbar-default">
+              <div className="container">
+                <div className="navbar-flex d-flex align-items-center justify-content-between w-100 pb-2 pt-2">
+                  {/* Brand and toggle get grouped for better mobile display */}
+                  <div className="navbar-header">
+                    <a className="navbar-brand" href="index.html">
+                      <img src="images/inzula_fr.png" alt="image" />
+                      <img src="images/inzula_fr.png" alt="image" />
+                    </a>
+                  </div>
+                  {/* Collect the nav links, forms, and other content for toggling */}
+                  <div className="navbar-collapse1 d-flex align-items-center" id="bs-example-navbar-collapse-1">
+                    <ul className="nav navbar-nav" id="responsive-menu">
+                      <li><a href="index.html">Expediez</a></li>
+                      <li><a href="transporter.html">Transportez</a></li>
+                      <li><a href="#" className="mr-2" data-toggle="modal" data-target="#register"><i className="icon-user mr-1" /> Je m'inscris</a></li>
+                      <li><a href="#" data-toggle="modal" data-target="#login"><i className="icon-login mr-1" /> Je me connecte</a></li>
+                    </ul>
+                    {/*<div class="header_sidemenu">
+                              <div class="mhead">
+                                  <span class="menu-ham">
+                                      <a href="#" class="cart-icon d-flex align-items-center ml-1"><i class="icon-basket-loaded"></i><span class="cart-label">3</span></a>
+                                  </span>
+                              </div>
+                          </div>*/}
+                  </div>{/* /.navbar-collapse */}
+                  <div className="register-login">
+                    <div className="dropdown">
+                      <button className="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i className="fa fa-user-circle" /> Mon compte
+                      </button>
+                      <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a className="dropdown-item" href="#"><i className="sl sl-icon-settings" /> Settings</a>
+                        <a className="dropdown-item" href="#"><i className="sl sl-icon-user" /> Profile</a>
+                        <a className="dropdown-item" href="#"><i className="sl sl-icon-lock" /> Change Password</a>
+                        <a className="dropdown-item" href="#"><i className="sl sl-icon-power" /> Logout</a>
+                      </div>
+                    </div>
+                  </div>
+                  {/* <div class="register-login">
+                            <a href="#" class="mr-2" data-toggle="modal" data-target="#register"><i class="icon-user mr-1"></i> Register</a>
+                            <a href="#" data-toggle="modal" data-target="#login"><i class="icon-login mr-1"></i> Login</a>
+                        </div>*/}
+                  <div id="slicknav-mobile" />
+                </div>
+              </div>{/* /.container-fluid */}
+            </nav>
           </div>
+          {/* Navigation Bar Ends */}
         </header>
-        <Container className={"layoutcontainer"}>
-          {this.props.children}
-        </Container>
+        {/* header ends */}
+
+        {this.props.children}
         <Footer/>
-      </Container>
+      </div>
     );
   }
 }

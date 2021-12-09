@@ -7,9 +7,9 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { searchBookings } from "../../store/actions/searchBookings";
-import styles from './searchbookingrequestsform.css';
-import 'rc-slider/assets/index.css';
-import 'react-widgets/dist/css/react-widgets.css';
+// import styles from './searchbookingrequestsform.css';
+// import 'rc-slider/assets/index.css';
+// import 'react-widgets/dist/css/react-widgets.css';
 import { Field, reduxForm } from 'redux-form'
 import { withRouter } from "react-router-dom";
 import $ from "jquery";

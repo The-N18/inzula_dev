@@ -1,9 +1,7 @@
 import React from "react";
-import {
-  Segment,
-} from "semantic-ui-react";
+
 import { connect } from "react-redux";
-import styles from './transport.css';
+// import styles from './transport.css';
 import AddTripFormWithText from "../../containers/AddTripFormWithText/AddTripFormWithText";
 import TransportHowToMakeMoney from "../../containers/TransportHowToMakeMoney/TransportHowToMakeMoney";
 import SearchBookingRequestsForm from "../../containers/SearchBookingRequestsReduxForm/SearchBookingRequestsForm";
@@ -12,11 +10,12 @@ class Transport extends React.Component {
 
   render() {
     return (
-      <Segment style={{ padding: "4em 0em" }} vertical>
+      <div>
         <AddTripFormWithText/>
         <SearchBookingRequestsForm inNewPage={false}/>
         <TransportHowToMakeMoney/>
-      </Segment>
+      </div>
+        
     );
   }
 }

@@ -8,7 +8,7 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { searchTrips } from "../../store/actions/searchTrips";
-import styles from './searchtripsform.css';
+// import styles from './searchtripsform.css';
 import { withRouter } from "react-router-dom";
 import { openModal, closeModal } from "../../store/actions/sendPackageModal";
 import { createNotif } from "../../store/actions/appConfig";
@@ -18,7 +18,7 @@ import $ from "jquery";
 import {FormattedMessage} from 'react-intl'
 import {NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import { openLoginParentModal } from "../../store/actions/loginParentModal";
-import 'react-widgets/dist/css/react-widgets.css';
+// import 'react-widgets/dist/css/react-widgets.css';
 
 class SearchTripsForm extends React.Component {
 

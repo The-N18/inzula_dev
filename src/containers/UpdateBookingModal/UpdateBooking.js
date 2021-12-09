@@ -9,8 +9,8 @@ import {
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './sendpackage.css';
-import { backend_url } from "../../configurations";
+// import styles from './sendpackage.css';
+// import { backend_url } from "../../configurations";
 import ImageUploader from 'react-images-upload';
 import {createNotification} from 'react-redux-notify';
 import {Field, reset, reduxForm, formValueSelector} from 'redux-form';

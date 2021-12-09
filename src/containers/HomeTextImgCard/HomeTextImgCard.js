@@ -7,7 +7,7 @@ import {
   Image,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './hometextimgcard.css';
+// import styles from './hometextimgcard.css';
 import { backend_url } from "../../configurations";
 
 

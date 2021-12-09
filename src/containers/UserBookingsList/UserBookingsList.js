@@ -4,7 +4,7 @@ import {
   Segment
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './userreservations.css';
+// import styles from './userreservations.css';
 import { buildImagesLinkList } from "../../configurations";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { getReservations, getInitialReservations } from "../../store/actions/userBookings";

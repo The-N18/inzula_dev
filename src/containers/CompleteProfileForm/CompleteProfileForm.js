@@ -8,7 +8,7 @@ import {
   Segment,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './completeprofileform.css';
+// import styles from './completeprofileform.css';
 import { completeProfileInfo } from "../../store/actions/auth";
 import { validate } from "./validation";
 import {countries} from "../../utils/countries";
@@ -18,7 +18,7 @@ import {renderField, renderDropdownList, renderPhoneNumber} from "../ReduxForm/r
 import {FormattedMessage} from 'react-intl'
 import {sexOptions, sexOptionsFr} from "../../utils/options";
 import Files from 'react-files';
-import 'react-phone-number-input/style.css';
+// import 'react-phone-number-input/style.css';
 
 
 

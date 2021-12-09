@@ -7,10 +7,10 @@ import {
   Grid,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './searchbookingrequests.css';
-import 'rc-slider/assets/index.css';
+// import styles from './searchbookingrequests.css';
+// import 'rc-slider/assets/index.css';
 import MultiSelect from "@khanacademy/react-multi-select";
-import 'react-widgets/dist/css/react-widgets.css';
+// import 'react-widgets/dist/css/react-widgets.css';
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { withRouter } from "react-router-dom";
 import $ from "jquery";

@@ -4,7 +4,7 @@ import {
   Header
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './useragreement.css';
+// import styles from './useragreement.css';
 import { withRouter } from "react-router-dom";
 
 class UserAgreement extends React.Component {

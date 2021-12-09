@@ -8,7 +8,7 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import styles from './myprofile.css';
+// import styles from './myprofile.css';
 // import ProfileTab from "../../containers/ProfileTab/ProfileTab";
 import ProfileTab from "../../containers/ProfileTabReduxForm/ProfileTab";
 import TripsReservationsList from "../../containers/TripsReservationsList/TripsReservationsList";

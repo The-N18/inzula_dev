@@ -4,7 +4,7 @@ import {
   Tab
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './userfinance.css';
+// import styles from './userfinance.css';
 import { setActiveIndex } from "../../store/actions/userFinance";
 import IncomingFinancialTransactionsList from "../../containers/IncomingFinancialTransactionsList/IncomingFinancialTransactionsList";
 import OutgoingFinancialTransactionsList from "../../containers/OutgoingFinancialTransactionsList/OutgoingFinancialTransactionsList";

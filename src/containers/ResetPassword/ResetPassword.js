@@ -5,7 +5,7 @@ import {
   Button
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './resetpassword.css';
+// import styles from './resetpassword.css';
 import { withRouter } from "react-router-dom";
 import { resetPassword } from "../../store/actions/auth";
 import {FormattedMessage} from 'react-intl'

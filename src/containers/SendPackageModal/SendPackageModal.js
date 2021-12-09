@@ -5,7 +5,7 @@ import {
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './sendpackagemodal.css';
+// import styles from './sendpackagemodal.css';
 import { openModal, closeModal } from "../../store/actions/sendPackageModal";
 import SendPackage from "../../containers/SendPackageReduxForm/SendPackage";
 import {FormattedMessage} from 'react-intl'

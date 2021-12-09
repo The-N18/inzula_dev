@@ -5,7 +5,7 @@ import {
   Header
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './verifyuser.css';
+// import styles from './verifyuser.css';
 import { withRouter } from "react-router-dom";
 import { verifyUser } from "../../store/actions/verifyUser";
 import {FormattedMessage} from 'react-intl'

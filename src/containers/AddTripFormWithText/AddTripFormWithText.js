@@ -1,14 +1,9 @@
 import React from "react";
-import {
-  Button,
-  Grid,
-  Header,
-  Segment,
-} from "semantic-ui-react";
+
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { tripAddition, toggleCheck } from "../../store/actions/addTrip";
-import styles from './addtripformwithtext.css';
+// import styles from './addtripformwithtext.css';
 import {NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import { createNotif } from "../../store/actions/appConfig";
 import {formValueSelector} from 'redux-form';
@@ -92,7 +87,31 @@ class AddTripFormWithText extends React.Component {
     const { loading, userId, handleSubmit, pristine, reset, submitting, invalid, trip_type_check } = this.props;
     const { departure_location, destination_location, depart_date, comeback_date, trip_type } = this.state;
     return (
-      <Segment style={{ padding: "2em 0em" }} vertical className={"segment-bg-img"}>
+      <section className="about-us p-0">
+        <div className="container">
+          <div className="about-image-box">
+            <div className="row">
+              <br /><br /><br /><br /><br /><br />
+            </div>
+            <div className="row">
+              <div className="col-lg-7 col-sm-12">
+                <div className="about-content pt-9">
+                  <h4 className="mb-1 blue font-weight-normal">Avec Inzula</h4>
+                  <h2>Gagnez de l’argent à chaque fois que vous voyagez</h2>
+                  <p className="mb-0">Identifiez-vous sur la plateforme pour accéder aux <strong>demandes d’expéditions correspondant</strong> à votre voyage.
+                    Vous ne trouvez pas votre bonheur ? alors souscrivez votre voyage et vous serez mis en contact avec un expéditeur rapidement.</p>
+                </div>
+              </div>
+              <div className="col-lg-5 col-sm-12">
+                <AddTripForm />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    
+      /*<Segment style={{ padding: "2em 0em" }} vertical className={"segment-bg-img"}>
         <Segment basic>
         <Grid verticalAlign="middle">
           <Grid.Row verticalAlign="middle" className={"add-trip-grid"}>
@@ -136,7 +155,7 @@ class AddTripFormWithText extends React.Component {
           </Grid.Row>
         </Grid>
         </Segment>
-      </Segment>
+      </Segment>*/
     );
   }
 }

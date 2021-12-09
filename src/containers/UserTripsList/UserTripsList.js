@@ -5,7 +5,7 @@ import {
   Segment
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './usertripslist.css';
+// import styles from './usertripslist.css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { getTrips, getInitialTrips } from "../../store/actions/userTrips";
 import TripCard from "../../containers/TripCard/TripCard";

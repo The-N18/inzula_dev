@@ -4,7 +4,7 @@ import {
   Header
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './insurance.css';
+// import styles from './insurance.css';
 import { withRouter } from "react-router-dom";
 
 class Insurance extends React.Component {

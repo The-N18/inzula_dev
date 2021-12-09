@@ -4,7 +4,7 @@ import {
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './deleteaccount.css';
+// import styles from './deleteaccount.css';
 import { openDeleteAccount, closeDeleteAccount } from "../../store/actions/deleteAccount";
 import { deleteAccount } from "../../store/actions/auth";
 import {FormattedMessage} from 'react-intl'

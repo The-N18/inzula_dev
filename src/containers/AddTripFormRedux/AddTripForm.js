@@ -1,12 +1,12 @@
 import React from "react";
-import {
-  Button,
-  Segment,
-} from "semantic-ui-react";
+// import {
+//   Button,
+//   Segment,
+// } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { tripAddition, toggleCheck } from "../../store/actions/addTrip";
-import styles from './addtripform.css';
+// import styles from './addtripform.css';
 import Recaptcha from 'react-recaptcha';
 import CSRFToken from "../../containers/CSRFToken";
 import DjangoCSRFToken from 'django-react-csrftoken';
@@ -99,109 +99,60 @@ class AddTripForm extends React.Component {
   render() {
     const { loading, handleSubmit, invalid, lang } = this.props;
     return (
-            <form onSubmit={handleSubmit(this.submitForm)}>
-              <CSRFToken/>
-              <Segment basic textAlign="center">
-                  {/*<div>
-                    <label><FormattedMessage
-                      id="add_trip_form.trip"
-                      defaultMessage="Trip"
-                    /></label>
-                    <Field
-                      name="trip_type"
-                      component={renderSelectList}
-                      default='one_way_trip'
-                      data={[ 'round_trip', 'one_way_trip' ]}/>
-                  </div>*/}
-                  {/*<div>
-                    <span className={"radion-btns-span"}><label><FormattedMessage
-                      id="add_trip_form.trip"
-                      defaultMessage="Trip"
-                    /></label></span>
-                    <div>
-                      <span className={"radion-btns-span"}><label><Field name="trip_type" component={'input'} type="radio" value="one_way_trip" checked={trip_type_check === "one_way_trip"} onClick={this.toggleCheck.bind(this, 'one_way_trip')}/> <FormattedMessage
-                        id="add_trip_form.one_way"
-                        defaultMessage="One way Trip"
-                      /></label></span>
-                      <span className={"radion-btns-span"}><label><Field name="trip_type" component={'input'} type="radio" value="round_trip" checked={trip_type_check === "round_trip"} onClick={this.toggleCheck.bind(this, 'round_trip')}/> <FormattedMessage
-                        id="add_trip_form.round_trip"
-                        defaultMessage="Round Trip"
-                      /></label></span>
+          
+          <div className="form-main">
+            <div className="form-content w-100 p-0">
+              <h3 className="form-title text-center m-0 p-3 white">Détails de votre voyage</h3>
+              <div className="form-content-inner p-4">
+                <div className="row">
+                  <div className="col-lg-12">
+                    <div className="form-group">
+                      <div className="input-box">
+                        <i className="fa fa-map-marker" />
+                        <select className="niceSelect">
+                          <option value={1}>Lieu de départ</option>
+                          <option value={2}>Paris</option>
+                          <option value={3}>Berlin</option>
+                          <option value={4}>Bruxelles</option>
+                          <option value={5}>Yaoundé</option>
+                          <option value={5}>Douala</option>
+                        </select>
+                      </div>
                     </div>
-                  </div> */}
-                  <div>
-                    <label><FormattedMessage
-                      id="add_trip_form.depart_location"
-                      defaultMessage="Departure location"
-                    /></label>
-                  <Field
-                    name="departure_location"
-                    label={lang === "en" ? "Select departure location" : "Sélectionnez le lieu de départ"}
-                    component="input"
-                    type="text"
-                    className={"custom-field"}
-                    component={renderCitiesList}
-                  />
+                  </div>
+                  <div className="col-lg-12">
+                    <div className="form-group">
+                      <div className="input-box">
+                        <i className="fa fa-map-marker" />
+                        <select className="niceSelect">
+                          <option value={1}>Lieu d'arivée</option>
+                          <option value={2}>Paris</option>
+                          <option value={3}>Berlin</option>
+                          <option value={4}>Bruxelles</option>
+                          <option value={5}>Yaoundé</option>
+                          <option value={5}>Douala</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-12">
+                    <div className="form-group">
+                      <div className="input-box">
+                        <i className="fa fa-calendar" />
+                        <input id="date-range0" type="text" placeholder="Date de départ" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-12">
+                    <div className="form-group m-0 w-100 text-center">
+                      <a href="#" className="nir-btn"><i className="fa fa-search" />Ajoutez votre voyage</a>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <label><FormattedMessage
-                    id="add_trip_form.dest_location"
-                    defaultMessage="Destination location"
-                  /></label>
-                <Field
-                  name="destination_location"
-                  label={lang === "en" ? "Select destination location" : "Sélectionnez la destination"}
-                  component="input"
-                  type="text"
-                  className={"custom-field"}
-                  component={renderCitiesList}
-                />
               </div>
-                <div>
-                  <label><FormattedMessage
-                    id="add_trip_form.dep_date"
-                    defaultMessage="Departure Date"
-                  /></label>
-                  <Field
-                    name="depart_date"
-                    showTime={false}
-                    component={renderDateTimePicker}
-                    min={new Date()}
-                  />
-                </div>
-                {this.props.trip_type === "round_trip" ? <div>
-                  <label><FormattedMessage
-                    id="add_trip_form.cb_date"
-                    defaultMessage="Return Date"
-                  /></label>
-                  <Field
-                    name="comeback_date"
-                    showTime={false}
-                    component={renderDateTimePicker}
-                    min={new Date(this.props.depart_date)}
-                  />
-                </div> : "" }
-              {/*<Recaptcha
-                sitekey="6LfycNoZAAAAADPAHBVK7JjxT8V6AvayfwhVaHQa"
-                render="explicit"
-                onloadCallback={this.recaptchaLoaded}
-                verifyCallback={this.verifyCallback}
-              />*/}
-              <Button
-                size="large"
-                type="submit"
-                loading={loading}
-                disabled={invalid}
-                className={"buttoncolor transport-add-trip-button"}
-                title={"Please login to add a new trip"}
-              >
-              <FormattedMessage
-                id="add_trip_form.add_your_trip"
-                defaultMessage="Add your trip"
-              />
-              </Button>
-              </Segment>
-            </form>
+            </div>
+          </div>
+         
     );
   }
 }

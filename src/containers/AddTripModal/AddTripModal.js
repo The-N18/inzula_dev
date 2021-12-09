@@ -7,11 +7,11 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import styles from './addtripmodal.css';
+// import styles from './addtripmodal.css';
 import { openAddTripModal, closeAddTripModal } from "../../store/actions/addTripModal";
 import AddTripForm from "../AddTripFormRedux/AddTripForm";
 import {FormattedMessage} from 'react-intl'
-import 'react-widgets/dist/css/react-widgets.css';
+// import 'react-widgets/dist/css/react-widgets.css';
 
 class AddTripModal extends React.Component {
 

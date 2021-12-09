@@ -9,7 +9,7 @@ import {
   Image
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './profiletab.css';
+// import styles from './profiletab.css';
 import { backend_url, get_img_url } from "../../configurations";
 import ImageUploader from 'react-images-upload';
 import { updateUserProfile } from "../../store/actions/auth";
@@ -22,7 +22,7 @@ import {FormattedMessage, FormattedDate} from 'react-intl'
 import { openDeleteAccount } from "../../store/actions/deleteAccount";
 import {userTypeOptions, userTypeOptionsFr, sexOptions, sexOptionsFr} from "../../utils/options";
 import Files from 'react-files';
-import 'react-phone-number-input/style.css';
+// import 'react-phone-number-input/style.css';
 
 
 

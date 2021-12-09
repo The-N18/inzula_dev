@@ -10,7 +10,7 @@ import {
   Button,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './bookingcard.css';
+// import styles from './bookingcard.css';
 import { backend_url, mimic_img } from "../../configurations";
 import { selectBooking } from "../../store/actions/selectReservationsModal";
 import { openDeleteBookingConfirm, setBookingDeleteBookingConfirm } from "../../store/actions/deleteBookingConfirm";
@@ -24,7 +24,7 @@ import { openValidateBooking, setBookingValidateBooking } from "../../store/acti
 import { openCancelBooking, setBookingCancelBooking, getRefundAmt } from "../../store/actions/cancelBooking";
 import { openProductDeliveryModal } from "../../store/actions/productDeliveryModal";
 import { Carousel } from "react-responsive-carousel";
-import 'react-responsive-carousel/lib/styles/carousel.css';
+// import 'react-responsive-carousel/lib/styles/carousel.css';
 
 import $ from "jquery";
 

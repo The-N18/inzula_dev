@@ -7,7 +7,7 @@ import {
   Image
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './transporthowtomakemoney.css';
+// import styles from './transporthowtomakemoney.css';
 import { backend_url } from "../../configurations";
 import {FormattedMessage} from 'react-intl'
 

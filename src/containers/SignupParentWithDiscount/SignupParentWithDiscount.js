@@ -6,7 +6,7 @@ import {
   Header
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './signupparentwithdiscount.css';
+// import styles from './signupparentwithdiscount.css';
 import { authSetDiscountText } from "../../store/actions/auth";
 import { openSignupModalWithDiscount } from "../../store/actions/signupModal";
 import {FormattedMessage} from 'react-intl'

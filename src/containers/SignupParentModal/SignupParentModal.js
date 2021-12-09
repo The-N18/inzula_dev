@@ -6,7 +6,7 @@ import {
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './signupparentmodal.css';
+// import styles from './signupparentmodal.css';
 import { openSignupParentModal, closeSignupParentModal } from "../../store/actions/signupParentModal";
 import { openSignupModal } from "../../store/actions/signupModal";
 import { openLoginParentModal } from "../../store/actions/loginParentModal";

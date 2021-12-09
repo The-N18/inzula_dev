@@ -4,7 +4,7 @@ import {
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './bankaccountformmodal.css';
+// import styles from './bankaccountformmodal.css';
 import { openBankAccountFormModal,
          closeBankAccountFormModal,
          getMaxPayoutAmount,

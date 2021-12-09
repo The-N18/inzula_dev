@@ -4,7 +4,7 @@ import {
   Segment,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './bookingrequestcard.css';
+// import styles from './bookingrequestcard.css';
 
 
 class BookingRequestCard extends React.Component {

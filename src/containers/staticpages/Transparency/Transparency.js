@@ -4,7 +4,7 @@ import {
   Header
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './transparency.css';
+// import styles from './transparency.css';
 import { withRouter } from "react-router-dom";
 
 class Transparency extends React.Component {

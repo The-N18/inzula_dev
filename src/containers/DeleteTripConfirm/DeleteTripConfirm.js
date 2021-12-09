@@ -4,7 +4,7 @@ import {
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './deletetripconfirm.css';
+// import styles from './deletetripconfirm.css';
 import { openDeleteTripConfirm, closeDeleteTripConfirm } from "../../store/actions/deleteTripConfirm";
 import { deleteTrip } from "../../store/actions/addTrip";
 import {FormattedMessage} from 'react-intl';

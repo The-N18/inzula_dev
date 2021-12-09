@@ -4,7 +4,7 @@ import {
   Header
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './faqs.css';
+// import styles from './faqs.css';
 import { withRouter } from "react-router-dom";
 
 class Faqs extends React.Component {

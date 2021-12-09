@@ -4,7 +4,7 @@ import {
   Header
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './terms.css';
+// import styles from './terms.css';
 import { withRouter } from "react-router-dom";
 
 class Terms extends React.Component {

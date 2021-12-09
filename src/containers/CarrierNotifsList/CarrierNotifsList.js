@@ -4,7 +4,7 @@ import {
   Segment,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './usernotifslist.css';
+// import styles from './usernotifslist.css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { getNotifs, getInitialNotifs } from "../../store/actions/carrierNotifs";
 import NotifCard from "../../containers/NotifCard/NotifCard";

@@ -4,7 +4,7 @@ import {
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './declinebooking.css';
+// import styles from './declinebooking.css';
 import {FormattedMessage} from 'react-intl'
 import { openDeclineBooking, closeDeclineBooking, declineBooking } from "../../store/actions/declineBooking";
 

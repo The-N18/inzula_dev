@@ -4,7 +4,7 @@ import {
   Card,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './creditcardcard.css';
+// import styles from './creditcardcard.css';
 import {FormattedMessage, FormattedDate} from 'react-intl'
 
 

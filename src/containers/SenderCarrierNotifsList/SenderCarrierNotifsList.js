@@ -3,7 +3,7 @@ import {
   Segment,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './tripsreservationslist.css';
+// import styles from './tripsreservationslist.css';
 import CarrierNotifsList from "../../containers/CarrierNotifsList/CarrierNotifsList";
 import SenderNotifsList from "../../containers/SenderNotifsList/SenderNotifsList";
 
