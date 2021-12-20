@@ -12,8 +12,8 @@ class Transport extends React.Component {
     return (
       <div>
         <AddTripFormWithText/>
-        <SearchBookingRequestsForm inNewPage={false}/>
-        <TransportHowToMakeMoney/>
+        {/* <SearchBookingRequestsForm inNewPage={false}/>
+        <TransportHowToMakeMoney/> */}
       </div>
         
     );

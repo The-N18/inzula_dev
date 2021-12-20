@@ -82,3 +82,9 @@
   height: 17px !important;
   padding: 1px !important;
 }
+
+
+
+.error-on-input{
+  color: red;
+}

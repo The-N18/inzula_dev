@@ -116,6 +116,8 @@ export const renderCitiesList = ({ input, data, label, meta: { touched, error, w
       <div>
         <label>{label}</label>
         <DateTimePicker
+        placeholder="Date de départ"
+        dropUp={true}
       onChange={onChange}
       format="YYYY-MM-DD"
       time={showTime}

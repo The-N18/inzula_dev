@@ -3334,6 +3334,11 @@ section.top-deals .slider-content {
     border: 1px dashed #f1f1f1;
     border-width: 1px 0 0px;
     padding: 11px 0 0; }
+  section.top-deals .slider-item{
+    position: relative;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
 
 /* ========================================= */
 /*         Top Restro CSS        */
@@ -3550,7 +3555,10 @@ section.about-detail {
   background-size: cover;
   background-attachment: fixed;
   position: relative;
-  z-index: inherit; }
+  z-index: inherit; 
+
+  height: 620px;
+}
   .about-us .about-featured ul li {
     display: inline-block;
     width: 49%;
@@ -6424,7 +6432,7 @@ ul.sidebar-tags li {
   }
 }
 body {
-  background: #eee;
+  background: #eee!important;
   font-family: "Tahoma";
   -moz-user-select: none;
   -webkit-user-select: none;

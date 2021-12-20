@@ -32,8 +32,8 @@ import CompleteProfileModal from "../../containers/CompleteProfileModal/Complete
 import ProductDeliveryModal from "../../containers/ProductDeliveryModal/ProductDeliveryModal";
 import VerifyYourEmailModal from "../../containers/VerifyYourEmailModal/VerifyYourEmailModal";
 import LanguageSwitcherSelector from "../../containers/LanguageSwitcherSelector/LanguageSwitcherSelector";
-// import 'react-redux-notify/dist/ReactReduxNotify.css';
-
+import 'react-redux-notify/dist/ReactReduxNotify.css';
+import 'semantic-ui-css/semantic.min.css';
 import { Notify } from 'react-redux-notify';
 import {FormattedMessage} from 'react-intl'
 import { setActiveIndex } from "../../store/actions/myProfile";
@@ -217,7 +217,8 @@ class CustomLayout extends React.Component {
         {/* header ends */}
 
         {this.props.children}
-        <Footer/>
+
+        {/* <Footer/> */}
       </div>
     );
   }
