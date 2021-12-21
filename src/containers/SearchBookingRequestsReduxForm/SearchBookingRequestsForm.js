@@ -59,87 +59,69 @@ class SearchBookingRequestsForm extends React.Component {
   render() {
     const { handleSubmit, lang } = this.props;
     return (
-      <Segment>
-          <Header as="h4" textAlign="center">
-            <FormattedMessage
-              id="search_requests.title"
-              defaultMessage="Prefer to know what shipping offers are available before committing?"
-            />
-          </Header>
-          <Header as="h4" textAlign="center">
-            <FormattedMessage
-              id="search_requests.head"
-              defaultMessage="No worries, you can add the country of departure and destination of your trip and thus access the requests for available expeditions."
-            />
-          </Header>
-          <form onSubmit={handleSubmit(this.submitForm)}>
-          <Grid>
-            <Grid.Row columns={3}>
-              <Grid.Column mobile={16} tablet={16} computer={6}>
-          <div>
-            <label>
-              <FormattedMessage
-                id="search_requests.departure"
-                defaultMessage="Departure location"
-              />
-            </label>
-              <Field
-                name="departure_location"
-                label={lang === "en" ? "Select departure location" : "Sélectionnez le lieu de départ"}
-                component="input"
-                type="text"
-                component={renderCitiesList}
-              />
-            </div>
-            </Grid.Column>
-            <Grid.Column mobile={16} tablet={16} computer={6}>
-            <div>
-              <label>
-                <FormattedMessage
-                  id="search_requests.destination"
-                  defaultMessage="Destination location"
-                />
-              </label>
-                <Field
-                  name="destination_location"
-                  label={lang === "en" ? "Select destination location" : "Sélectionnez la destination"}
-                  component="input"
-                  type="text"
-                  component={renderCitiesList}
-                />
+      <div className="form-main">
+        <div className="container">
+          <div className="form-content w-100"> 
+            <h3 className="form-title text-center d-inline white">Trouvez un colis à expédier</h3>
+            <div className="d-lg-flex align-items-center justify-content-between">
+              <div className="form-group pr-4 m-0">
+                <div className="input-box">
+                  {/* <i className="fa fa-map-marker" />
+                  <select className="niceSelect">
+                    <option value={1}>Lieu de départ</option>
+                    <option value={2}>Argentina</option>
+                    <option value={3}>Belgium</option>
+                    <option value={4}>Canada</option>
+                    <option value={5}>Denmark</option>
+                  </select> */}
+                  <Field
+                    name="departure_location"
+                    label={lang === "en" ? "Departure location" : "Lieu d'arrivée"}
+                    component="input"
+                    type="text"
+                    className={"custom-field"}
+                    component={renderCitiesList}
+                  />
+                </div>                            
               </div>
-              </Grid.Column>
-              <Grid.Column mobile={16} tablet={16} computer={4}>
-            <div>
-              <label>
-                <FormattedMessage
-                  id="search_requests.travel_date"
-                  defaultMessage="Travel Date"
-                />
-              </label>
-              <Field
-                name="travel_date"
-                showTime={false}
-                component={renderDateTimePicker}
-              />
+              <div className="form-group pr-4 m-0">
+                <div className="input-box">
+                  {/* <i className="fa fa-map-marker" />
+                  <select className="niceSelect">
+                    <option value={1}>Lieu d'arrivée</option>
+                    <option value={2}>Argentina</option>
+                    <option value={3}>Belgium</option>
+                    <option value={4}>Canada</option>
+                    <option value={5}>Denmark</option>
+                  </select> */}
+                  <Field
+                    name="destination_location"
+                    label={lang === "en" ? "Destination location" : "Lieu de départ"}
+                    component="input"
+                    type="text"
+                    className={"custom-field"}
+                    component={renderCitiesList}
+                  />
+                </div>                            
+              </div>
+              <div className="form-group pr-4 m-0">
+                <div className="input-box">
+                  {/* <i className="fa fa-calendar" />
+                  <input id="date-range1" type="text" placeholder="Date du voyage" /> */}
+                  <Field
+                    name="depart_date"
+                    showTime={false}
+                    component={renderDateTimePicker}
+                  />
+                </div>                            
+              </div>
+              <div className="form-group m-0">
+                <a href="#" onClick={handleSubmit(this.submitForm)} className="nir-btn w-100"><i className="fa fa-search" /> Rechercher</a>
+              </div>
             </div>
-              </Grid.Column>
-              </Grid.Row>
-              </Grid>
-              <div className={"search-booking-requests-button"}>
-            <Button
-              size="big"
-              type="submit"
-              className={"buttoncolor search-booking-requests-button"}
-            >
-            <FormattedMessage
-              id="search_requests.search"
-              defaultMessage="Search"
-            />
-            </Button>
-            </div>
-            </form>
-        </Segment>
+          </div>
+        </div>
+      </div>
     );
   }
 }

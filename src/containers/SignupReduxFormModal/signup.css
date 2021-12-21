@@ -7,3 +7,13 @@
     text-decoration: underline;
     cursor: pointer;
   }
+
+  /* .error-on-input{
+    position: relative;
+    left: -218px;
+  } */
+
+  a.disabled {
+    pointer-events: none;
+    color: #ccc;
+}

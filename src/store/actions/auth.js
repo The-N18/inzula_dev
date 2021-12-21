@@ -464,6 +464,7 @@ export const completeProfileInfo = (first_name, last_name, phone_number, country
         dispatch(closeSignupParentModal());
       })
       .catch(err => {
+        console.log("IN AUTH GOOGLE LOGIN CATCH",err);
         dispatch(createNotification({
           message: "Google signup setup failed.",
           type: NOTIFICATION_TYPE_ERROR,

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Field, reduxForm, reset} from 'redux-form';
-// import styles from './signup.css';
+import styles from './signup.css';
 import {
   Segment,
   Button,
@@ -25,8 +25,13 @@ import {userTypeOptions, userTypeOptionsFr} from "../../utils/options";
 class RegistrationForm extends Component {
 
   submitForm = (val) => {
+    console.log('FORM VALUE',val);
+    
     const {with_discount} = this.props;
-    const user_type = val['user_type'] ? val['user_type']['value'] : '';
+
+    console.log('With discount',with_discount)
+
+    const user_type = val['user_type'] 
     this.props.signup(val['first_name'], val['last_name'], val['username'], val['email'], val['password1'], val['password2'], val['terms_conditions'], user_type, with_discount);
   }
 
@@ -47,184 +52,79 @@ class RegistrationForm extends Component {
       return <Redirect to="/" />;
     }
     return (
-      <Modal
-      closeIcon
-        centered={false}
-        open={open}
-        onClose={() => this.props.closeSignupModal()}
-        onOpen={() => this.props.openSignupModal()}
-        size='large'
-      >
-        <Modal.Header>
-          <FormattedMessage
-            id="signup.title"
-            defaultMessage="Signup"
-          />
-        </Modal.Header>
-        <Modal.Content scrolling>
-      <Segment vertical>
-      <Grid
-        textAlign="center"
-        style={{ height: "60vh" }}
-        verticalAlign="middle"
-      >
-        <Grid.Column style={{ maxWidth: 450 }}>
-          {discountText !== null ? <Header as="h4" textAlign="center" color="teal" className={"discountheader"}>
-            {discountText}
-          </Header> : ''}
-          <React.Fragment>
-      <form onSubmit={handleSubmit(this.submitForm)}>
-      <Segment raised className={"signupcard"}>
-      <Grid>
-        <Grid.Row columns={2}>
-          <Grid.Column mobile={16} tablet={16} computer={8}>
-          <div>
-            <label for="first_name">
-              <FormattedMessage
-                id="signup.f_name"
-                defaultMessage="First name"
-              />
-            </label>
-            <Field
-              name="first_name"
-              component="input"
-              type="text"
-              component={renderField}
-            />
-          </div>
-          </Grid.Column>
-        <Grid.Column mobile={16} tablet={16} computer={8}>
-        <div>
-          <label for="last_name">
-            <FormattedMessage
-              id="signup.l_name"
-              defaultMessage="Last name"
-            />
-          </label>
+      <div className="login-form text-center">
+        <form>
           <Field
-            name="last_name"
+            name="first_name"
             component="input"
+            placeholder="Prénom"
             type="text"
             component={renderField}
           />
-          </div>
-        </Grid.Column>
-        </Grid.Row>
-      </Grid>
-      <div>
-      <label for="username">
-        <FormattedMessage
-          id="signup.username"
-          defaultMessage="Username"
-        />
-      </label>
-      <Field
-        name="username"
-        component="input"
-        type="text"
-        component={renderField}
-      />
-      </div>
-      <div>
-      <label for="email">
-        <FormattedMessage
-          id="signup.email"
-          defaultMessage="Email"
-        />
-      </label>
-        <Field
-          name="email"
-          component="input"
-          type="email"
-          component={renderField}
-        />
-        </div>
-        <div>
-        <label for="password">
-          <FormattedMessage
-            id="signup.password"
-            defaultMessage="Password"
+          <Field
+            name="last_name"
+            component="input"
+            placeholder="Nom"
+            type="text"
+            component={renderField}
           />
-        </label>
-        <Field
-          name="password1"
-          component="input"
-          type="password"
-          component={renderField}
-        />
-        </div>
-        <div>
-        <label for="password2">
-          <FormattedMessage
-            id="signup.confirm_password"
-            defaultMessage="Confirm password"
+          <Field
+            name="username"
+            component="input"
+            placeholder="Nom d'utilisateur"
+            type="text"
+            component={renderField}
           />
-        </label>
-        <Field
-          name="password2"
-          component="input"
-          type="password"
-          component={renderField}
-        />
-        <div>
-          <span><FormattedMessage
-            id="signup.default_profile_type"
-            defaultMessage="Default profile type"
-          /></span>
+          <Field
+            name="email"
+            component="input"
+            placeholder="Adresse mail"
+            type="email"
+            component={renderField}
+          />
+          <Field
+            name="password1"
+            component="input"
+            placeholder="Mot de passe"
+            type="password"
+            component={renderField}
+          />
+          <Field
+            name="password2"
+            component="input"
+            placeholder="Confirmation mot de passe"
+            type="password"
+            component={renderField}
+          />
           <Field
             name="user_type"
-            component={renderDropdownList}
-            data={lang === "en" ? userTypeOptions : userTypeOptionsFr}
-            valueField="value"
-            textField="text"/>
-          </div>
+            type="text"
+            component={({ input, data, valueField, textField, meta: { touched, error, warning }}) => 
+            <div className="input-box">
+              <select {...input} className="niceSelect">
+                <option value={""}>Profil par défaut</option>
+                <option value={"sender"}>Expéditeur</option>
+                <option value={"carrier"}>Transporteur</option>
+              </select>
+              {touched && ((error && <span className={"error-on-input"}>{error}</span>) || (warning && <span>{warning}</span>))}
+            </div>
+            }
+          /><br />
+                                      
+        </form>
+        <div className="form-btn">
+          <a href="#" onClick={handleSubmit(this.submitForm)} className={`nir-btn ${invalid?'disabled':''}`}>Inscrivez-vous</a>
         </div>
-        <div className={"push-left"}>
-            <Field name="terms_conditions" id="terms_conditions" component="input" type="checkbox"/>
-            <label className={"anchor-style"} onClick={this.handleOnTermsClick.bind(this)}><FormattedMessage
-              id="signup.agree_terms"
-              defaultMessage="I agree to the Terms and Conditions"
-            />
-          </label>
+        <div className="form-group mb-0 form-checkbox mt-3">
+          <Field 
+            name="terms_conditions" 
+            id="terms_conditions"
+            type="checkbox"
+            component="input"
+          />
+           J'ai lu et je m'engage à respecter les<a onClick={this.handleOnTermsClick.bind(this)} className style={{color: '#a10115'}}> règles de bienveillance</a> du site et j'accepte l'utilisation des cookies
         </div>
-        <Button
-          type="submit"
-          size="large"
-          className={"buttoncolor"}
-          loading={loading}
-          disabled={invalid}
-        >
-        <FormattedMessage
-          id="signup.signup"
-          defaultMessage="Signup"
-        />
-        </Button>
-        </Segment>
-      </form>
-      <Segment raised className={"signupcard"}>
-        <FormattedMessage
-          id="signup.have_account"
-          defaultMessage="Already have an account?"
-        /> <span className={"mimic-anchor"} onClick={this.handleSignin.bind(this)}>
-        <FormattedMessage
-          id="signup.login"
-          defaultMessage="Login"
-        /></span>
-      </Segment>
-    </React.Fragment>
-  </Grid.Column>
-</Grid>
-</Segment>
-</Modal.Content>
-<Modal.Actions>
-  <Button negative onClick={() => this.props.closeSignupModal()} primary>
-    <FormattedMessage
-      id="signup.cancel"
-      defaultMessage="Cancel"
-    /> <Icon name='cancel' />
-  </Button>
-</Modal.Actions>
-</Modal>
+      </div>
     );
   }
 }

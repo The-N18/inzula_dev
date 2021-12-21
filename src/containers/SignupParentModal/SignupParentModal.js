@@ -16,6 +16,8 @@ import GoogleLogin from 'react-google-login';
 import { GOOGLE_CLIENT_ID, FACEBOOK_APP_ID } from "../../configurations";
 import { googleLogin, facebookLogin } from "../../store/actions/auth";
 
+import SignupModal from "../../containers/SignupReduxFormModal/SignupModal";
+
 
 class SignupParentModal extends React.Component {
 
@@ -36,84 +38,53 @@ class SignupParentModal extends React.Component {
     const { open } = this.props;
 
     return (
-      <Modal
-      closeIcon
-        centered={false}
-        open={open}
-        onClose={() => this.props.closeSignupParentModal()}
-        onOpen={() => this.props.openSignupParentModal()}
-        size='large'
-      >
-        <Modal.Header>
-          <FormattedMessage
-            id="signup.title"
-            defaultMessage="Sign up"
-          />
-        </Modal.Header>
-        <Modal.Content scrolling>
-      <Segment basic style={{ padding: "6em 0em" }} textAlign="center">
-        <Segment basic textAlign="center" className={"signupparent-segment"}>
-        <Segment raised className={"signupparentcard"} textAlign="center">
-        <FacebookLogin
-          textButton="Login with facebook"
-          appId={FACEBOOK_APP_ID}
-          fields="name,email,picture"
-          callback={this.useFacebook}
-          isDisabled
-          render={renderProps => (
-            <Button disabled fluid color='facebook' className={"signupparent-button"} onClick={renderProps.onClick}>
-            <Icon name='facebook' />
-              <FormattedMessage
-                id="signup.use_fb"
-                defaultMessage="Sign up with Facebook"
-              />
-          </Button>)}
-        />
-        <GoogleLogin
-          clientId={GOOGLE_CLIENT_ID}
-          buttonText="Login with google"
-          onSuccess={this.useGoogle}
-          onFailure={this.useGoogle}
-          disabled
-          render={renderProps => (
-            <Button disabled fluid color='google plus' className={"signupparent-button"} onClick={renderProps.onClick}>
-            <Icon name='google plus' />
-              <FormattedMessage
-                id="signup.use_gmail"
-                defaultMessage="Sign up with Gmail"
-              />
-          </Button>)}
-        />
-          <Button fluid className={"signupparent-button"} onClick={() => this.props.openSignupModal()}>
-            <Icon name='mail' />
-              <FormattedMessage
-                id="signup.use_email"
-                defaultMessage="Use username"
-              />
-          </Button>
-        </Segment>
-        <Segment raised className={"signupparentcard"} textAlign="center">
-          <FormattedMessage
-            id="signup.have_account"
-            defaultMessage="Already a member?"
-          /> <span className={"mimic-anchor"} onClick={this.handleSignin.bind(this)}>
-          <FormattedMessage
-            id="signup.login"
-            defaultMessage="Sign in"
-          /></span>
-        </Segment>
-      </Segment>
-      </Segment>
-      </Modal.Content>
-      <Modal.Actions>
-        <Button negative onClick={() => this.props.closeSignupParentModal()} primary>
-          <FormattedMessage
-            id="signup.cancel"
-            defaultMessage="Cancel"
-          /> <Icon name='cancel' />
-        </Button>
-      </Modal.Actions>
-    </Modal>
+      <div className="modal fade" id="register" tabIndex={-1} role="dialog" aria-hidden="true">
+        <div className="modal-dialog modal-dialog-centered" role="document">
+          <div className="modal-content">
+            <div className="modal-header bordernone p-0">
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div className="modal-body p-0">
+              <div className="login-content p-4 text-center">
+                <div className="login-title section-border">
+                  <h3 className="pink mb-1">Inscrivez vous sur Inzula</h3>  
+                  <p>Et rejoignez notre communauté</p>                  
+                </div>
+                <SignupModal />
+                <div className="login-social border-t mt-3 pt-2 mb-3">
+                  <p className="mb-2">Ou continuer avec</p>
+                  <FacebookLogin
+                    textButton="Login with facebook"
+                    appId={FACEBOOK_APP_ID}
+                    fields="name,email,picture"
+                    callback={this.useFacebook}
+                    isDisabled
+                    render={renderProps => (
+                      <a href="#" onClick={renderProps.onClick} className="btn-facebook"><i className="fab fa-facebook" aria-hidden="true" /> Facebook</a>
+                    )}
+                  />
+                  <GoogleLogin
+                    clientId={GOOGLE_CLIENT_ID}
+                    buttonText="Login with google"
+                    onSuccess={this.useGoogle}
+                    onFailure={this.useGoogle}
+                    disabled
+                    render={renderProps => (
+                      <a href="#" onClick={renderProps.onClick} className="btn-google"><i className="fab fa-google" aria-hidden="true" /> Google</a>
+                    )}
+                  />
+                </div>
+                <div className="sign-up">
+                  <p className="m-0">Vous avez déjà un compte? <a href="login.html" className="pink">Se connecter</a></p>
+                </div>                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     );
   }
 }

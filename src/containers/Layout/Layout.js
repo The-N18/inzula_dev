@@ -1,5 +1,10 @@
 import React from "react";
 
+import {
+  Container,
+  Image,
+} from "semantic-ui-react";
+
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { logout } from "../../store/actions/auth";
@@ -128,14 +133,86 @@ class CustomLayout extends React.Component {
   render() {
     const { authenticated, profile_pic, profileType } = this.props;
 
-    
+    let mobileMenu = this.state.isMobile ? (
+      <span><li><a onClick={this.handleOnProfileClick.bind(this)}>
+      <FormattedMessage
+        id="layout.profile"
+        defaultMessage="Profile"
+      /></a></li>
+      <li><a onClick={this.handleOnReservationClick.bind(this)}>
+      {profileType === "sender" ? <FormattedMessage
+        id="layout.booking"
+        defaultMessage="Reservation"
+      /> : <FormattedMessage
+        id="layout.trips"
+        defaultMessage="Trips"
+      />}
+      </a></li>
+      <li><a onClick={this.handleOnAlertClick.bind(this)}>
+      <FormattedMessage
+        id="layout.alerts"
+        defaultMessage="Alerts"
+      />
+      </a></li>
+      <li><a onClick={this.handleOnFinanceClick.bind(this)}>
+      <FormattedMessage
+        id="layout.finances"
+        defaultMessage="Finances"
+      />
+      </a></li>
+      <li><a onClick={this.logoutUtil.bind(this)}>
+      <FormattedMessage
+        id="layout.logout"
+        defaultMessage="Logout"
+      />
+      </a></li></span>) : (
+      <li>
+        <a className={"pad-13"}>
+          <Image bordered circular size='small' className={"profile-image"} onClick={this.handleOnProfileClick.bind(this)} src={profile_pic !== null && profile_pic !== "null" ? get_img_url(profile_pic) : backend_url() + '/static/images/user_avatar.png'} />
+        </a>
+        <ul>
+            <li><a onClick={this.handleOnProfileClick.bind(this)}>
+            <FormattedMessage
+              id="layout.profile"
+              defaultMessage="Profile"
+            />
+            </a></li>
+            <li><a onClick={this.handleOnReservationClick.bind(this)}>
+            {profileType === "sender" ? <FormattedMessage
+              id="layout.booking"
+              defaultMessage="Reservation"
+            /> : <FormattedMessage
+              id="layout.trips"
+              defaultMessage="Trips"
+            />}
+            </a></li>
+            <li><a onClick={this.handleOnAlertClick.bind(this)}>
+            <FormattedMessage
+              id="layout.alerts"
+              defaultMessage="Alerts"
+            />
+            </a></li>
+            <li><a onClick={this.handleOnFinanceClick.bind(this)}>
+            <FormattedMessage
+              id="layout.finances"
+              defaultMessage="Finances"
+            />
+            </a></li>
+            <li><a onClick={this.logoutUtil.bind(this)}>
+            <FormattedMessage
+              id="layout.logout"
+              defaultMessage="Logout"
+            /></a></li>
+        </ul>
+        </li>
+    );
 
     return (
       <div>
-      <SignupParentModal />
-      <SignupModal />
-      <LoginParentModal />
-      <LoginModal />
+      {/* <SignupParentModal /> */}
+      {/* <SignupModal /> */}
+      {/* <LoginParentModal /> */}
+      {/* <LoginModal /> */}
       <ForgotPasswordModal />
       <DeleteBookingConfirm />
       <DeleteTripConfirm />
@@ -160,6 +237,7 @@ class CustomLayout extends React.Component {
         {/* Preloader */}
        
         {/* Preloader Ends */}
+
         {/* header starts */}
         <header className="main_header_area headerstye-1">
           {/* Navigation Bar */}
@@ -179,8 +257,13 @@ class CustomLayout extends React.Component {
                     <ul className="nav navbar-nav" id="responsive-menu">
                       <li><a href="index.html">Expediez</a></li>
                       <li><a href="transporter.html">Transportez</a></li>
-                      <li><a href="#" className="mr-2" data-toggle="modal" data-target="#register"><i className="icon-user mr-1" /> Je m'inscris</a></li>
-                      <li><a href="#" data-toggle="modal" data-target="#login"><i className="icon-login mr-1" /> Je me connecte</a></li>
+
+                      {authenticated ? (mobileMenu) :
+                        (<span>
+                          <li><a href="#" className="mr-2" data-toggle="modal" data-target="#register"><i className="icon-user mr-1" /> Je m'inscris</a></li>
+                          <li><a href="#" data-toggle="modal" data-target="#login"><i className="icon-login mr-1" /> Je me connecte</a></li>
+                        </span>
+                      )}
                     </ul>
                     {/*<div class="header_sidemenu">
                               <div class="mhead">
@@ -218,7 +301,23 @@ class CustomLayout extends React.Component {
 
         {this.props.children}
 
-        {/* <Footer/> */}
+        
+
+        {/* footer starts */}
+        <Footer/>
+        {/* footer ends */}
+
+        {/* Back to top start */}
+        <div id="back-to-top">
+          <a href="#" />
+        </div>
+        {/* Back to top ends */}
+
+        {/* Register Modal */}
+        <SignupParentModal />
+
+        {/* login Modal */}
+        <LoginParentModal />
       </div>
     );
   }

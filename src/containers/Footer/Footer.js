@@ -42,121 +42,93 @@ class Footer extends React.Component {
 
   render() {
     return (
-      <div className={"footercontainer"}>
-      <Divider section />
-      <Segment
-        vertical
-        style={{ margin: "1em 0em 0em", padding: "2em 0em" }}
-      >
-        <Container textAlign="center">
-          <Grid>
-            <Grid.Column mobile={16} tablet={8} computer={4}>
-              <List link>
-                <List.Item as="a" href="#" className={"linkstyle"}>
-                  <FormattedMessage
-                    id="footer.who_we_are"
-                    defaultMessage="Who we are"
-                  /></List.Item>
-                <List.Item as="a" href="/" className={"linkstyle"}>
-                  <FormattedMessage
-                    id="footer.how_it_works"
-                    defaultMessage="How it works"
-                  /></List.Item>
-                <List.Item as="a" href="#" className={"linkstyle"}>
-                  <FormattedMessage
-                    id="footer.blog"
-                    defaultMessage="Blog"
-                  /></List.Item>
-                <List.Item as="a" onClick={this.handleOnFaqsClick.bind(this)} className={"linkstyle"}>
-                  <FormattedMessage
-                    id="footer.faqs"
-                    defaultMessage="Frequently asked questions"
-                  /></List.Item>
-              </List>
-            </Grid.Column>
-            <Grid.Column mobile={16} tablet={8} computer={4}>
-              <List link>
-                <List.Item as="a" href="#" className={"linkstyle"}>
-                  <FormattedMessage
-                    id="footer.contact"
-                    defaultMessage="Contact us"
-                  /></List.Item>
-                <List.Item as="a" onClick={this.handleOnInsuranceClick.bind(this)} className={"linkstyle"}>
-                  <FormattedMessage
-                    id="footer.insurance"
-                    defaultMessage="Insurance"
-                  /></List.Item>
-                <List.Item as="a" onClick={this.handleOnLegalInformationClick.bind(this)} className={"linkstyle"}>
-                  <FormattedMessage
-                    id="footer.legal"
-                    defaultMessage="Legal information"
-                  /></List.Item>
-                <List.Item as="a" onClick={this.handleOnTransparencyClick.bind(this)} className={"linkstyle"}>
-                  <FormattedMessage
-                    id="footer.trans"
-                    defaultMessage="Transparency"
-                  /></List.Item>
-              </List>
-            </Grid.Column>
-            <Grid.Column mobile={16} tablet={16} computer={8} textAlign="center">
-              <List>
-                <Image size="tiny" inline centered className={"footer-payment-image"} src= {backend_url() + '/static/images/amex.svg'} />
-                <Image size="tiny" inline centered className={"footer-payment-image"} src= {backend_url() + '/static/images/mastercard.svg'} />
-                <Image size="tiny" inline centered className={"footer-payment-image"} src= {backend_url() + '/static/images/paypal.svg'} />
-                <Image size="tiny" inline centered src= {backend_url() + '/static/images/mtn.jpg'} />
-                <Image size="tiny" inline centered src= {backend_url() + '/static/images/visa.svg'} />
-                <Image size="tiny" inline centered src= {backend_url() + '/static/images/orange.png'} />
-              </List>
-            </Grid.Column>
-          </Grid>
-
-          <Divider section />
-          <Grid>
-            <Grid.Column mobile={16} tablet={8} computer={6} floated="left">
-              <List horizontal divided link size="small">
-                <List.Item as="a" href="#">
-                  <Icon size="big" name='facebook' className={"footer-icons"} />
-                </List.Item>
-                <List.Item as="a" href="#">
-                  <Icon size="big" name='twitter' className={"footer-icons"} />
-                </List.Item>
-                <List.Item as="a" href="#">
-                  <Icon size="big" name='instagram' className={"footer-icons"} />
-                </List.Item>
-                <List.Item as="a" href="#">
-                  <Icon size="big" name='youtube' className={"footer-icons"}/>
-                </List.Item>
-                <List.Item as="a" href="#">
-                  <Icon size="big" name='whatsapp' className={"footer-icons"} />
-                </List.Item>
-              </List>
-            </Grid.Column>
-            <Grid.Column mobile={16} tablet={8} computer={6} floated="right">
-              <List horizontal divided link size="small">
-                <List.Item className={"reserved"}>
-                  <FormattedMessage
-                    id="footer.rights"
-                    defaultMessage="All rights reserved"
-                  />
-                </List.Item>
-                <List.Item as="a" onClick={this.handleOnTermsClick.bind(this)}>
-                  <FormattedMessage
-                    id="footer.terms"
-                    defaultMessage="Terms and Conditions"
-                  />
-                </List.Item>
-                <List.Item as="a" onClick={this.handleOnUserAgreementClick.bind(this)}>
-                  <FormattedMessage
-                    id="footer.privacy_policy"
-                    defaultMessage="Privacy Policy"
-                  />
-                </List.Item>
-              </List>
-            </Grid.Column>
-          </Grid>
-        </Container>
-      </Segment>
-      </div>
+      <footer className="pt-10 bubbles footermain">
+          <div className="footer-upper pb-5">
+            <div className="container">
+              <div className="row">
+                <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-4">
+                  <div className="footer-about bg-white p-4">
+                    <img src="images/inzula_fr.png" alt="" />
+                    <p className="mt-3">
+                      Plate-forme digitale et collaborative mettant en relation des expéditeurs de colis avec des voyageurs souhaitant amortir leurs frais de voyages via leurs kgs disponibles!
+                    </p>
+                    <ul>
+                      <li><strong>Whatsapp:</strong> +33 7 82 29 45 91</li>
+                      <li><strong>Email:</strong> inzula.pro@gmail.com</li>
+                      <li><strong>Website:</strong> www.inzula.app</li>
+                    </ul>
+                  </div>
+                </div>
+                <div className="col-lg-2 col-md-6 col-sm-12 col-xs-12 mb-4">
+                  <div className="footer-links">
+                    <h4 className="white">Entreprise</h4>
+                    <ul>
+                      <li><a href="about-us.html">Qui sommes nous?</a></li>
+                      <li><a href="#">Blog</a></li>
+                      <li><a href="#">Informations legales</a></li>
+                      <li><a href="#">Contactez-nous</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div className="col-lg-2 col-md-6 col-sm-12 col-xs-12 mb-4">
+                  <div className="footer-links">
+                    <h4 className="white">Services</h4>
+                    <ul>
+                      <li><a href="#">Comment ça marche?</a></li>
+                      <li><a href="#">FAQ</a></li>
+                      <li><a href="#">Assurance</a></li>
+                      <li><a href="#">Charte de bonne conduite</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-4">
+                  <div className="footer-links">
+                    <h4 className="white">Newsletter</h4>
+                    <p>Pour rester informé de notre actualité, souscrivez votre email ci-dessous.</p>
+                    <div className="newsletter-form">
+                      <form>
+                        <input type="email" placeholder="Saisissez votre email" />
+                        <input type="submit" className="nir-btn mt-2 w-100" defaultValue="Souscrire" />
+                      </form>
+                    </div> 
+                  </div>     
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="footer-payment">
+            <div className="container">
+              <div className="footer-pay d-md-flex align-items-center justify-content-between pt-2 pb-2">
+                <div className="footer-payment-nav">
+                  <ul className="d-md-flex align-items-center">
+                    <li className="mr-2">Nous acceptons:</li>
+                    <li className="mr-2"><i className="fab fa-cc-mastercard" /></li>
+                    <li className="mr-2"><i className="fab fa-cc-paypal" /></li>
+                    <li className="mr-2"><i className="fab fa-cc-visa" /></li>
+                    <li className="mr-2"><i className="fas fa-wallet" /></li>
+                  </ul>
+                </div>
+              </div>    
+            </div>
+          </div>
+          <div className="footer-copyright pt-2 pb-2">
+            <div className="container">
+              <div className="copyright-inner d-md-flex align-items-center justify-content-between">
+                <div className="copyright-text">
+                  <p className="m-0 white">2021 INZULA. All rights reserved.</p>
+                </div>
+                <div className="social-links">
+                  <ul>  
+                    <li><a href="https://www.facebook.com/Inzula.pro" target="_blank"><i className="fab fa-facebook" aria-hidden="true" /></a></li>
+                    <li><a href="https://wa.me/message/XC3A55H7FC4TL1" target="_blank"><i className="fab fa-whatsapp" aria-hidden="true" /></a></li>
+                    <li><a href="https://www.instagram.com/inzula.pro/" target="_blank"><i className="fab fa-instagram" aria-hidden="true" /></a></li>
+                    <li><a href="https://www.linkedin.com/company/inzula" target="_blank"><i className="fab fa-linkedin" aria-hidden="true" /></a></li>
+                  </ul>
+                </div>
+              </div>    
+            </div>
+          </div>
+        </footer>
     );
   }
 }

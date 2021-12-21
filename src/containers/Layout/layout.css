@@ -1,5 +1,4 @@
-
-/*.main {
+.main {
   width: 100% !important;
   }
 
@@ -34,7 +33,7 @@
 }
 
 .menuitemstyle {
-  /* background: none !important; *
+  /* background: none !important; */
   font-weight: 100 !important;
   height: 60px !important;
 }
@@ -93,7 +92,7 @@ a {
   color: #000;
 }
 
-/* menuheader *
+/* menuheader */
 
 .menuheader {
   background-color: #fff;
@@ -139,7 +138,7 @@ a {
   text-decoration: none;
 }
 
-/* menu *
+/* menu */
 
 .menuheader .menu {
   clear: both;
@@ -147,7 +146,7 @@ a {
   transition: max-height .2s ease-out;
 }
 
-/* menu icon *
+/* menu icon */
 
 .menuheader .menu-icon {
   cursor: pointer;
@@ -186,7 +185,7 @@ a {
   top: -5px;
 }
 
-/* menu btn *
+/* menu btn */
 
 .menuheader .menu-btn {
   display: none;
@@ -214,15 +213,15 @@ a {
   top: 0;
 }
 
-/* Hide Dropdowns by Default *
+/* Hide Dropdowns by Default */
 .menuheader .menu ul {
 	display: none;
 	position: absolute;
-	top: 60px; /* the height of the main nav *
+	top: 60px; /* the height of the main nav */
   box-shadow: 0px 3px 6px 3px rgba(0, 0, 0, 0.06) !important;
 }
 
-/* Display Dropdowns on Hover *
+/* Display Dropdowns on Hover */
 .menuheader .menu li:hover > ul {
 	display:inherit;
 }
@@ -233,7 +232,7 @@ a {
   vertical-align: middle !important;
 }
 
-/* Fisrt Tier Dropdown *
+/* Fisrt Tier Dropdown */
 .menuheader .menu ul li {
 	width:170px;
 	float:none;
@@ -241,7 +240,7 @@ a {
 	position: relative;
 }
 
-/* Second, Third and more Tiers	*
+/* Second, Third and more Tiers	*/
 .menuheader .menu ul ul li {
 	position: relative;
 	top:-60px;
@@ -249,11 +248,11 @@ a {
 }
 
 
-/* Change this in order to change the Dropdown symbol *
+/* Change this in order to change the Dropdown symbol */
 li > a:after { content:  ' '; }
 li > a:only-child:after { content: ''; }
 
-/* 48em = 768px *
+/* 48em = 768px */
 
 @media (min-width: 48em) {
   .menuheader li {
@@ -319,7 +318,7 @@ li > a:only-child:after { content: ''; }
   }
 }
 
-/*** From deleted components***
+/*** From deleted components***/
 .headercolor {
   color: #F63854 !important;
   margin-top: 30px !important;
@@ -387,4 +386,3 @@ li > a:only-child:after { content: ''; }
 .gmail {
   color: #D44638 !important;
 }
-*/

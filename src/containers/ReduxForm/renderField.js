@@ -32,13 +32,11 @@ export const renderPhoneNumber = ({ input: { value, onChange }, meta: { touched,
 }
 
 
-export const renderField = ({ input, label, type, disabled, meta: { touched, error, warning } }) => (
-  <div>
-    {/*<label>{label}</label>*/}
-    <div>
-      <input {...input} placeholder={label} type={type} className={"custom-field"} disabled={disabled}/>
-      {touched && ((error && <span className={"error-on-input"}>{error}</span>) || (warning && <span>{warning}</span>))}
-    </div>
+export const renderField = ({ input, placeholder, type, disabled, meta: { touched, error, warning } }) => (
+
+  <div className="form-group">
+    <input {...input} type={type} placeholder={placeholder} disabled={disabled} />
+    {touched && ((error && <span className={"error-on-input"}>{error}</span>) || (warning && <span>{warning}</span>))}
   </div>
 );
 
