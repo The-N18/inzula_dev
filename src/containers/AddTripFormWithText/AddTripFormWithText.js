@@ -5,6 +5,8 @@ import Slider from "react-slick";
 import { withRouter } from "react-router-dom";
 // import styles from './addtripformwithtext.css';
 
+// import "../../bootstrap.min.css";
+
 import {FormattedMessage} from 'react-intl'
 import AddTripForm from "../../containers/AddTripFormRedux/AddTripForm";
 
@@ -92,7 +94,7 @@ class AddTripFormWithText extends React.Component {
                       <div class="about-image-desti mt-5">
                           <img src="images/howitworks/transporteur1.png" alt="">
                       </div>*/}
-            </div>
+            </div> 
           </div>
         </div>
         <div className="overlay" />

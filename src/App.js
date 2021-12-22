@@ -9,6 +9,10 @@ import {IntlProvider} from 'react-intl'
 import * as messagesInEnglish from "./intl/en";
 import * as messagesInFrench from "./intl/fr";
 
+// import $ from 'jquery';
+// window.jQuery = $;
+
+
 
 class App extends Component {
 

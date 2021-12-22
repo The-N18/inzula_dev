@@ -6,7 +6,7 @@ import {
   Segment,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-// import styles from './hometextvideo.css';
+import styles from './hometextvideo.css';
 import ReactPlayer from 'react-player'
 import { withRouter } from "react-router-dom";
 import {FormattedMessage} from 'react-intl'

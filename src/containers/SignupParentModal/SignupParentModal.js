@@ -18,6 +18,10 @@ import { googleLogin, facebookLogin } from "../../store/actions/auth";
 
 import SignupModal from "../../containers/SignupReduxFormModal/SignupModal";
 
+import $ from 'jquery';
+window.jQuery = $;
+require('bootstrap');
+
 
 class SignupParentModal extends React.Component {
 
@@ -32,6 +36,16 @@ class SignupParentModal extends React.Component {
 
   useGoogle = (response) => {
     this.props.googleLogin(response);
+  }
+
+  switchModals = () => {
+    console.log("IN SWITCHMODALS1");
+    $("#register").modal("hide");
+    $("#register").on('hidden.bs.modal', function (e) {
+      console.log("IN SWITCHMODALS2");
+      $('#login').modal('show');
+      $("#register").off('hidden.bs.modal');
+    })
   }
 
   render() {
@@ -77,7 +91,7 @@ class SignupParentModal extends React.Component {
                   />
                 </div>
                 <div className="sign-up">
-                  <p className="m-0">Vous avez déjà un compte? <a href="login.html" className="pink">Se connecter</a></p>
+                  <p className="m-0">Vous avez déjà un compte? <a href="#" onClick={this.switchModals} className="pink">Se connecter</a></p>
                 </div>                
               </div>
             </div>

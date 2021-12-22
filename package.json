@@ -7,6 +7,7 @@
     "@stripe/react-stripe-js": "^1.1.2",
     "@stripe/stripe-js": "^1.11.0",
     "axios": "^0.24.0",
+    "bootstrap": "^4.6.0",
     "django-react-csrftoken": "^1.0.4",
     "js-cookie": "^2.2.1",
     "luxon": "^1.25.0",

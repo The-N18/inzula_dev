@@ -17,7 +17,8 @@
       $("#preloader").delay(200).fadeOut("slow");
       $("body").delay(200).css({ "overflow": "visible" });
 
-      
+      console.log("IN MAIIIIIIIIIIIIIN",$);
+
       /* Init Wow Js */
       new WOW().init();
 

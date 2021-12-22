@@ -20,6 +20,9 @@ import {FormattedMessage} from 'react-intl'
 // const  { DOM: { input, select, textarea } } = React
 import { isProfileComplete } from "../../configurations";
 import {openCompleteProfileModal} from "../../store/actions/completeProfileModal";
+import $ from 'jquery';
+window.jQuery = $;
+require('bootstrap');
 
 class AddTripForm extends React.Component {
 
@@ -73,7 +76,9 @@ class AddTripForm extends React.Component {
       }
     } else {
       this.props.createNotif("add_trip.login_msg", "Please login to add a new trip", NOTIFICATION_TYPE_WARNING);
-      this.props.openLoginModal();
+      $("#login").modal("show");
+ 
+      // this.props.openLoginModal();
     }
   }
 
@@ -167,7 +172,7 @@ class AddTripForm extends React.Component {
                   </div>
                   <div className="col-lg-12">
                     <div className="form-group m-0 w-100 text-center">
-                      <a href="#" className="nir-btn" onClick={handleSubmit(this.submitForm)}><i className="fa fa-search" />Ajoutez votre voyage</a>
+                      <a href="#" className={`nir-btn ${invalid?'disabled':''}`} onClick={handleSubmit(this.submitForm)}><i className="fa fa-search" />Ajoutez votre voyage</a>
                     </div>
                   </div>
                 </div>

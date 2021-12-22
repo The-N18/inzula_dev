@@ -19,9 +19,14 @@ import { GOOGLE_CLIENT_ID, FACEBOOK_APP_ID } from "../../configurations";
 
 import LoginModal from "../../containers/LoginReduxFormModal/LoginModal";
 
-// import jQuery from 'jquery';
-// window.jQuery = jQuery;
-// require('bootstrap')
+import $ from 'jquery';
+window.jQuery = $;
+// window.$ = $;
+// global.jQuery = $;
+require('bootstrap');
+
+
+
 
 class LoginParentModal extends React.Component {
 
@@ -38,16 +43,22 @@ class LoginParentModal extends React.Component {
     // this.props.googleLogin(response);
   }
 
-  // switchModals = () => {
-  //   jQuery('#login').modal('hide');
-  //   jQuery('#register').modal('show');
-  // }
+  switchModals = () => {
+    console.log("IN SWITCHMODALS1");
+    $("#login").modal("hide");
+    $("#login").on('hidden.bs.modal', function (e) {
+      console.log("IN SWITCHMODALS2");
+      $('#register').modal('show');
+      $("#login").off('hidden.bs.modal');
+    })
+    
+  }
 
   render() {
     const { open } = this.props;
     return (
 
-      <div className="modal fade" id="login" tabIndex={-1} role="dialog" aria-hidden="true">
+      <div className="modal fade"  id="login" tabIndex={-1} role="dialog" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content">
             <div className="modal-header bordernone p-0">
@@ -85,7 +96,7 @@ class LoginParentModal extends React.Component {
                   />  
                 </div>
                 <div className="sign-up">
-                  <p className="m-0">Vous n'avez pas de compte? <a href="#" className="pink" >S'inscrire</a></p>
+                  <p className="m-0">Vous n'avez pas de compte? <a href="#" onClick={this.switchModals}  className="pink">S'inscrire</a></p>
                 </div>                
               </div>
             </div>

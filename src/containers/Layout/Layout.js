@@ -10,14 +10,12 @@ import { connect } from "react-redux";
 import { logout } from "../../store/actions/auth";
 import { clearUserInfo } from "../../store/actions/userInfo";
 import { backend_url, get_img_url } from "../../configurations";
-// import styles from './layout.css';
-import $ from "jquery";
+import styles from './layout.css';
 import Footer from "../../containers/Footer/Footer";
 import SignupParentModal from "../../containers/SignupParentModal/SignupParentModal";
 import PaymentOptions from "../../containers/PaymentOptions/PaymentOptions";
 import SelectCreditCard from "../../containers/SelectCreditCard/SelectCreditCard";
 import SignupModal from "../../containers/SignupReduxFormModal/SignupModal";
-
 import LoginParentModal from "../../containers/LoginParentModal/LoginParentModal";
 import LoginModal from "../../containers/LoginReduxFormModal/LoginModal";
 import ForgotPasswordModal from "../../containers/ForgotPasswordForm/ForgotPasswordForm";
@@ -46,6 +44,9 @@ import { openSignupParentModal } from "../../store/actions/signupParentModal";
 import { openLoginParentModal } from "../../store/actions/loginParentModal";
 import SendPackageModal from "../../containers/SendPackageModal/SendPackageModal";
 import AddTripModal from "../../containers/AddTripModal/AddTripModal";
+
+import $ from "jquery";
+window.jQuery = $;
 
 
 class CustomLayout extends React.Component {
@@ -96,6 +97,42 @@ class CustomLayout extends React.Component {
     window.addEventListener('scroll', this.handleScroll, false);
     window.addEventListener('resize', this.handleScreenSize, false);
     this.handleScreenSize();
+
+    // BACK TO TOP -------------
+    $(document).on('click', '#back-to-top, .back-to-top', () => {
+      $('html, body').animate({
+          scrollTop: 0
+      }, '500');
+      return false;
+      });
+    $(window).on('scroll', () => {
+        if ($(window).scrollTop() > 500) {
+            $('#back-to-top').fadeIn(200);
+        } else {
+            $('#back-to-top').fadeOut(200);
+        }
+    });
+
+    // bubbles ----------------- 
+    var bArray = [];
+    var sArray = [2, 4, 6, 8];
+    for (var i = 0; i < $('.bubbles').width(); i++) {
+        bArray.push(i);
+    }
+    function randomValue(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+    }
+    setInterval(function () {
+        var size = randomValue(sArray);
+        $('.bubbles').append('<div class="individual-bubble" style="left: ' + randomValue(bArray) + 'px; width: ' + size + 'px; height:' + size + 'px;"></div>');
+        $('.individual-bubble').animate({
+            'bottom': '100%',
+            'opacity': '-=0.7'
+        }, 4000, function () {
+            $(this).remove()
+        });
+    }, 350);
+
   }
 
   componentWillUnmount() {
@@ -166,45 +203,45 @@ class CustomLayout extends React.Component {
         defaultMessage="Logout"
       />
       </a></li></span>) : (
-      <li>
-        <a className={"pad-13"}>
+      <ul className="nav navbar-nav" id="responsive-menu">
+        <li><a onClick={this.handleOnClick.bind(this, '/')} >Expediez</a></li>
+        <li><a onClick={this.handleOnClick.bind(this, '/transport')}>Transportez</a></li>
+        <li><a className={"pad-13"}>
           <Image bordered circular size='small' className={"profile-image"} onClick={this.handleOnProfileClick.bind(this)} src={profile_pic !== null && profile_pic !== "null" ? get_img_url(profile_pic) : backend_url() + '/static/images/user_avatar.png'} />
-        </a>
-        <ul>
-            <li><a onClick={this.handleOnProfileClick.bind(this)}>
-            <FormattedMessage
-              id="layout.profile"
-              defaultMessage="Profile"
-            />
-            </a></li>
-            <li><a onClick={this.handleOnReservationClick.bind(this)}>
-            {profileType === "sender" ? <FormattedMessage
-              id="layout.booking"
-              defaultMessage="Reservation"
-            /> : <FormattedMessage
-              id="layout.trips"
-              defaultMessage="Trips"
-            />}
-            </a></li>
-            <li><a onClick={this.handleOnAlertClick.bind(this)}>
-            <FormattedMessage
-              id="layout.alerts"
-              defaultMessage="Alerts"
-            />
-            </a></li>
-            <li><a onClick={this.handleOnFinanceClick.bind(this)}>
-            <FormattedMessage
-              id="layout.finances"
-              defaultMessage="Finances"
-            />
-            </a></li>
-            <li><a onClick={this.logoutUtil.bind(this)}>
-            <FormattedMessage
-              id="layout.logout"
-              defaultMessage="Logout"
-            /></a></li>
-        </ul>
-        </li>
+        </a></li>
+        <li><a onClick={this.handleOnProfileClick.bind(this)}>
+        <FormattedMessage
+          id="layout.profile"
+          defaultMessage="Profile"
+        />
+        </a></li>
+        <li><a onClick={this.handleOnReservationClick.bind(this)}>
+        {profileType === "sender" ? <FormattedMessage
+          id="layout.booking"
+          defaultMessage="Reservation"
+        /> : <FormattedMessage
+          id="layout.trips"
+          defaultMessage="Trips"
+        />}
+        </a></li>
+        <li><a onClick={this.handleOnAlertClick.bind(this)}>
+        <FormattedMessage
+          id="layout.alerts"
+          defaultMessage="Alerts"
+        />
+        </a></li>
+        <li><a onClick={this.handleOnFinanceClick.bind(this)}>
+        <FormattedMessage
+          id="layout.finances"
+          defaultMessage="Finances"
+        />
+        </a></li>
+        <li><a onClick={this.logoutUtil.bind(this)}>
+        <FormattedMessage
+          id="layout.logout"
+          defaultMessage="Logout"
+        /></a></li>
+      </ul>
     );
 
     return (
@@ -254,17 +291,18 @@ class CustomLayout extends React.Component {
                   </div>
                   {/* Collect the nav links, forms, and other content for toggling */}
                   <div className="navbar-collapse1 d-flex align-items-center" id="bs-example-navbar-collapse-1">
-                    <ul className="nav navbar-nav" id="responsive-menu">
-                      <li><a href="index.html">Expediez</a></li>
-                      <li><a href="transporter.html">Transportez</a></li>
-
                       {authenticated ? (mobileMenu) :
-                        (<span>
-                          <li><a href="#" className="mr-2" data-toggle="modal" data-target="#register"><i className="icon-user mr-1" /> Je m'inscris</a></li>
-                          <li><a href="#" data-toggle="modal" data-target="#login"><i className="icon-login mr-1" /> Je me connecte</a></li>
-                        </span>
+                        (
+                        <ul className="nav navbar-nav" id="responsive-menu">
+                          <li><a href="" onClick={this.handleOnClick.bind(this, '/')}>Expediez</a></li>
+                          <li><a href="" onClick={this.handleOnClick.bind(this, '/transport')}>Transportez</a></li>
+                          <span>
+                            <li><a href="#" className="mr-2" data-toggle="modal" data-target="#register"><i className="icon-user mr-1" /> Je m'inscris</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#login"><i className="icon-login mr-1" /> Je me connecte</a></li>
+                          </span>
+                        </ul>
                       )}
-                    </ul>
+                    
                     {/*<div class="header_sidemenu">
                               <div class="mhead">
                                   <span class="menu-ham">

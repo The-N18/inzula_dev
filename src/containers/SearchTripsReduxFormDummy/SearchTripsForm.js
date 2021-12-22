@@ -8,7 +8,7 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { searchTrips } from "../../store/actions/searchTrips";
-// import styles from './searchtripsform.css';
+import styles from './searchtripsform.css';
 import { withRouter } from "react-router-dom";
 import { openModal, closeModal } from "../../store/actions/sendPackageModal";
 import { createNotif } from "../../store/actions/appConfig";
