@@ -7,7 +7,7 @@ import {
   Grid,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './searchbookingrequests.css';
+// import styles from './searchbookingrequests.css';
 // import 'rc-slider/assets/index.css';
 import MultiSelect from "@khanacademy/react-multi-select";
 // import 'react-widgets/dist/css/react-widgets.css';

@@ -77,13 +77,12 @@ class SearchBookingRequestsForm extends React.Component {
                   <Field
                     name="departure_location"
                     label={lang === "en" ? "Departure location" : "Lieu d'arrivée"}
-                    component="input"
                     type="text"
-                    className={"custom-field"}
+                    className={"custom-field-search"}
                     component={renderCitiesList}
                   />
                 </div>                            
-              </div>
+              </div> 
               <div className="form-group pr-4 m-0">
                 <div className="input-box">
                   {/* <i className="fa fa-map-marker" />
@@ -97,9 +96,8 @@ class SearchBookingRequestsForm extends React.Component {
                   <Field
                     name="destination_location"
                     label={lang === "en" ? "Destination location" : "Lieu de départ"}
-                    component="input"
                     type="text"
-                    className={"custom-field"}
+                    className={"custom-field-search"}
                     component={renderCitiesList}
                   />
                 </div>                            
@@ -109,7 +107,7 @@ class SearchBookingRequestsForm extends React.Component {
                   {/* <i className="fa fa-calendar" />
                   <input id="date-range1" type="text" placeholder="Date du voyage" /> */}
                   <Field
-                    name="depart_date"
+                    name="travel_date"
                     showTime={false}
                     component={renderDateTimePicker}
                   />

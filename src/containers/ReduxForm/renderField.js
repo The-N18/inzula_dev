@@ -94,12 +94,15 @@ export const renderSelectList = ({ input, data }) =>
   };
 
 
-export const renderCitiesList = ({ input, data, label, meta: { touched, error, warning }}) => {
+export const renderCitiesList = ({ input, className, data, label, meta: { touched, error, warning }}) => {
+  console.log("IN RENDERCITIESLIST",input['name'],className)
   return <div>
             <Async
             clearValue
             name={input['name']}
             value={input['value']}
+            className={className}
+            classNamePrefix = "react-select"
             placeholder={label}
             onBlur={() => input.onBlur()}
             onChange={input.onChange}
