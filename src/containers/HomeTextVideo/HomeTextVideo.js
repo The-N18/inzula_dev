@@ -6,7 +6,7 @@ import {
   Segment,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import styles from './hometextvideo.css';
+// import styles from './hometextvideo.css';
 import ReactPlayer from 'react-player'
 import { withRouter } from "react-router-dom";
 import {FormattedMessage} from 'react-intl'
@@ -19,65 +19,42 @@ class HomeTextVideo extends React.Component {
   render() {
     const {lang} = this.props;
     return (
-      <Segment style={{ padding: "2em 0em" }} vertical>
-        <Segment basic className={"home-text-video-section"}>
-        <Grid verticalAlign="middle">
-          <Grid.Row verticalAlign="middle" className={"add-trip-grid"}>
-            <Grid.Column  mobile={16} tablet={16} computer={8} textAlign="center" verticalAlign="middle" className={"add-trip-grid-column"}>
-              <Segment basic>
-              <Header as="h1" textAlign="center">
-              <FormattedMessage
-                id="home_text_video.send_parcels"
-                defaultMessage="Send parcels to your loved ones, via contacts in your network"
-              />
 
-              </Header>
-              <Header textAlign="center">
-              <FormattedMessage
-                id="home_text_video.inzula_use"
-                defaultMessage="INZULA connects travelers with kgs available and people in their network wanting to ship at low cost"
-              />
-              </Header>
-              <Button
-                size="small"
-                className={"buttoncolor homevideo-button"}
-                onClick={this.handleOnClick.bind(this, '/transport')}
-              >
-              <FormattedMessage
-                id="home_text_video.earn_money"
-                defaultMessage="Earn money while travelling"
-              />
-              </Button>
-              <Button
-                size="small"
-                className={"buttoncolor homevideo-button"}
-                >
-              <Link to="search_trips_section" spy={true} smooth={true}>
-              <FormattedMessage
-                id="home_text_video.ship_now"
-                defaultMessage="Ship items now"
-              />
-              </Link>
-              </Button>
-              </Segment>
-            </Grid.Column>
-            <Grid.Column  mobile={16} tablet={16} computer={8}>
-              <div className={"player-wrapper"}>
-                <ReactPlayer
-                  url={lang === 'fr' ? 'https://www.youtube.com/watch?v=Ul5v0NPsfa0' : 'https://www.youtube.com/watch?v=gubjwSynppo'}
-                  loop={true}
-                  playing={false}
-                  pip={true}
-                  controls={true}
-                  width='100%'
-                  height='100%'
-                  className={"react-player"} />
+      <section className=" call-to-action call-to-action1 pb-6 pt-10" style={{backgroundImage: 'url(images/slider/12.jpg)'}}>
+        <div className="call-main">
+          <div className="container">
+            <div className="row d-flex align-items-center justify-content-between">
+              <div className="col-lg-6 mb-4 col-sm-12">
+                <div className="action-content"><br /><br /><br /><br />
+                  <h4 className="mb-1 blue font-weight-normal">Avec Inzula</h4>
+                  <h2>Votre covalisage collaboratif sécurisé et à prix abordable dans le monde!</h2>
+                  <p className="mb-3">Expédiez des colis à des proches  <strong>à bas coût! Faites-vous de l’argent en voyageant !</strong>
+                    <br />INZULA connecte des voyageurs voulant amortir leurs frais de voyages via leur kgs disponibles et des personnes souhaitant expédier à bas coût</p>
+                  <Link to="search_trips_section" spy={true} smooth={true}>
+                    <a href="#" className="nir-btn" style={{margin: '0.5rem'}}>Expédiez avec INZULA</a>
+                  </Link>
+                  <a href="#" onClick={this.handleOnClick.bind(this, '/transport')} className="nir-btn" style={{margin: '0.5rem'}}>Voyagez avec INZULA</a>
+                </div> 
               </div>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-        </Segment>
-      </Segment>
+              <div className="col-lg-6 mb-4">
+                <div className="video-button"><br /><br /><br /> 
+                  {/*<img src="images/slider/10.jpg" alt=""> */}
+                  <iframe width={720} height={405} src="https://www.youtube.com/embed/Ul5v0NPsfa0" title="YouTube video player" frameBorder={0} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+                  {/* <div class="call-button text-center"><br><br><br>
+                              <button type="button" class="play-btn js-video-button" data-video-id="Ul5v0NPsfa0" data-channel="youtube">
+                                  <i class="fa fa-play"></i>
+                              </button>
+
+                          </div>*/}
+                  <div className="video-figure" />
+                </div> 
+              </div>
+            </div>   
+          </div>
+        </div>
+        {/*<div class="dot-overlay"></div>*/}
+      </section>
+
     );
   }
 }

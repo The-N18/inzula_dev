@@ -22,6 +22,8 @@ import {FormattedMessage} from 'react-intl';
 
 
 
+
+
 class MyProfile extends React.Component {
 
   state = {
@@ -60,70 +62,9 @@ class MyProfile extends React.Component {
   };
 
   render() {
-    const { token, activeIndex, profileType, lang } = this.props;
-    const {isMobile} = this.state;
-    if (token === null || token === "") {
-      return <Redirect to="/" />;
-    }
-    const panes = [
-      {
-        menuItem: { key: 'profile', icon: 'user', content: isMobile ? '' : lang === 'en' ? 'Profile' : 'Profil' },
-        render: () => <Tab.Pane attached={false}><ProfileTab/></Tab.Pane>,
-      },
-      {
-        menuItem: { key: 'reservation', icon: profileType === "sender" ? 'archive' : 'arrows alternate horizontal', content: isMobile ? '' : profileType === "sender" ? (lang === 'en' ? 'My Parcels' : 'Mes colis') : lang === 'en' ? 'My Trips' : 'Mes voyages' },
-        render: () => <Tab.Pane attached={false}><TripsReservationsList/></Tab.Pane>,
-      },
-      {
-        menuItem: { key: 'alerts', icon: 'bell', content: isMobile ? '' : lang === 'en' ? 'Alerts' : 'Alertes' },
-        render: () => <Tab.Pane attached={false}><SenderCarrierNotifsList/></Tab.Pane>,
-      },
-      {
-        menuItem: { key: 'finances', icon: 'money bill alternate outline', content: isMobile ? '' : 'Finances' },
-        render: () => <Tab.Pane attached={false}><UserFinance/></Tab.Pane>,
-      },
-    ];
-
-    const tabs = profileType === "sender" ? panes : [...panes, {
-      menuItem: { key: 'booking', icon: 'shipping fast', content: isMobile ? '' : lang === 'en' ? 'Reservations on my trips' : 'Reservations sur mes voyages'},
-      render: () => <Tab.Pane attached={false}><UserBookingsList/></Tab.Pane>,
-    },]
-
+    
     return (
-      <Segment style={{ padding: "7em 0em" }} vertical>
-        <Grid verticalAlign="middle">
-          <Grid.Row verticalAlign="middle" columns={3}>
-            <Grid.Column mobile={16} tablet={16} computer={6}>
-            </Grid.Column>
-            <Grid.Column mobile={16} tablet={16} computer={6}>
-            </Grid.Column>
-            <Grid.Column mobile={16} tablet={16} computer={4} textAlign={"right"} float={"right"}>
-              <div>
-                <Message floating compact info>
-                {profileType === "carrier" ? <FormattedMessage
-                  id="my_profile.sender"
-                  defaultMessage="Passez en mode expediteur."
-                /> : <FormattedMessage
-                id="my_profile.carrier"
-                defaultMessage="Passez en mode voyageur."
-              />}
-                    <Radio
-                      toggle
-                      checked={profileType === "sender"}
-                      onChange={this.handleRadioChange}
-                      />
-                </Message>
-              </div>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-        <Tab
-          activeIndex={activeIndex}
-          menu={{ borderless: true, attached: false, tabular: false }}
-          panes={tabs}
-          onTabChange={this.handleTabChange}
-        />
-      </Segment>
+      <h2>Here he Just sets the tabs</h2>
     );
   }
 }

@@ -11,6 +11,10 @@ import { openVerifyYourEmail } from "./verifyYourEmail";
 
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
 
+import $ from 'jquery';
+window.jQuery = $;
+require('bootstrap');
+
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
 
@@ -162,6 +166,16 @@ export const checkAuthTimeout = expirationTime => {
            duration: 10000,
            canDismiss: true,
          }));
+
+         $("#login").modal("hide");
+         $("#login").on('hidden.bs.modal', function (e) {
+          console.log("HIDDEN");
+          window.location.reload();
+          $("#login").off('hidden.bs.modal');
+          return false;
+          
+        })
+
          dispatch(closeLoginModal());
          dispatch(closeLoginParentModal());
        })
@@ -465,12 +479,14 @@ export const completeProfileInfo = (first_name, last_name, phone_number, country
       })
       .catch(err => {
         console.log("IN AUTH GOOGLE LOGIN CATCH",err);
-        dispatch(createNotification({
-          message: "Google signup setup failed.",
-          type: NOTIFICATION_TYPE_ERROR,
-          duration: 10000,
-          canDismiss: true,
-        }));
+
+        /*NELSON COMMENTED THIS*/
+        // dispatch(createNotification({
+        //   message: "Google signup setup failed.",
+        //   type: NOTIFICATION_TYPE_ERROR,
+        //   duration: 10000,
+        //   canDismiss: true,
+        // }));
       });
   };
  };

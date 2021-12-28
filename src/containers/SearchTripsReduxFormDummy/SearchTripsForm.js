@@ -8,7 +8,7 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { searchTrips } from "../../store/actions/searchTrips";
-import styles from './searchtripsform.css';
+// import styles from './searchtripsform.css';
 import { withRouter } from "react-router-dom";
 import { openModal, closeModal } from "../../store/actions/sendPackageModal";
 import { createNotif } from "../../store/actions/appConfig";
@@ -86,103 +86,101 @@ class SearchTripsForm extends React.Component {
   render() {
     const { loading, handleSubmit, lang } = this.props;
     return (
-      <Segment id="search_trips_section">
-          <Header as="h4" textAlign="center">
-            <FormattedMessage
-              id="search_trips.title"
-              defaultMessage="Prefer to know what shipping offers are available before committing?"
-            />
-          </Header>
-          <form onSubmit={handleSubmit(this.submitForm)}>
-          <Grid>
-            <Grid.Row columns={3}>
-              <Grid.Column mobile={16} tablet={16} computer={6}>
-          <div>
-          <label htmlFor="departure_location">
-              <FormattedMessage
-                id="search_trips.departure_location"
-                defaultMessage="departure location"
-              />
-            </label>
-            <div>
-              <Field
-                name="departure_location"
-                label={lang === "en" ? "Select departure location" : "Sélectionnez le lieu de départ"}
-                type="text"
-                className={"custom-field"}
-                component={renderCitiesList}
-              />
-              </div>
-            </div>
-            </Grid.Column>
-            <Grid.Column mobile={16} tablet={16} computer={6}>
-            <div>
-            <label htmlFor="destination_location">
-              <FormattedMessage
-                id="search_trips.destination_location"
-                defaultMessage="destination location"
-              />
-            </label>
-              <div>
-                <Field
-                  name="destination_location"
-                  label={lang === "en" ? "Select destination location" : "Sélectionnez la destination"}
-                  type="text"
-                  className={"custom-field"}
-                  component={renderCitiesList}
-                />
+      <div>
+          {/* form main starts */}
+          <div className="form-main">
+            <div className="container-fluid">
+              <div className="form-content"> 
+                <h3 className="form-title text-center d-inline white">Trouvez un voyage</h3>
+                <div className="row d-flex align-items-center justify-content-between">
+                  <div className="col-lg">
+                    <div className="form-group pr-4 m-0">
+                      <div className="input-box">
+                        {/* <i className="fa fa-map-marker" />
+                        <select className="niceSelect">
+                          <option value={1}>Lieu de départ souhaité</option>
+                          <option value={2}>Yaoundé</option>
+                          <option value={3}>Douala</option>
+                          <option value={4}>Paris</option>
+                          <option value={5}>Berlin</option>
+                        </select> */}
+                        <Field
+                          name="departure_location"
+                          label={lang === "en" ? "Departure location" : "Lieu de départ"}
+                          component="input"
+                          type="text"
+                          className={"custom-field"}
+                          component={renderCitiesList}
+                        />
+                      </div>                            
+                    </div>
+                  </div>
+                  <div className="col-lg">
+                    <div className="form-group pr-4 m-0">
+                      <Field
+                        name="destination_location"
+                        label={lang === "en" ? "Destination location" : "Lieu d'arrivée"}
+                        component="input"
+                        type="text"
+                        className={"custom-field"}
+                        component={renderCitiesList}
+                      />                           
+                    </div>
+                  </div>
+                  {/* <div class="form-group pr-4 m-0">
+                          <div class="input-box">
+                              <i class="fa fa-calendar"></i>
+                              <input id="date-range1" type="text" placeholder="Travelling date">
+                          </div>                            
+                      </div>*/}
+                  <div className="col-lg">
+                    <div className="form-group pr-4 m-0">
+                      <div className="input-box">
+                        {/* <i className="fa fa-calendar" />
+                        <input id="date-range0" type="text" placeholder="Date du voyage" /> */}
+                        <Field
+                          name="depart_date"
+                          showTime={false}
+                          component={renderDateTimePicker}
+                        />
+                      </div>   
+                    </div>
+                  </div>
+                  {/* <div class="form-group pr-4 m-0">
+                          <div class="input-box">
+                              <i class="fa fa-clock"></i>
+                              <select class="niceSelect">
+                                  <option value="1">Total Duration</option>
+                                  <option value="2">2</option>
+                                  <option value="3">3</option>
+                                  <option value="4">4</option>
+                                  <option value="5">5</option>
+                              </select>
+                          </div> */}      
+                  <div className="col-lg">
+                    <div className="form-group m-0 w-100">
+                      <a href="#" className="nir-btn"><i className="fa fa-search" /> Rechercher</a>
+                    </div>
+                  </div>                      
                 </div>
               </div>
-              </Grid.Column>
-              <Grid.Column mobile={16} tablet={16} computer={4}>
-              <div>
-              <label htmlFor="travel_date">
-              <FormattedMessage
-                id="search_trips.travel_date"
-                defaultMessage="travel date"
-              />
-            </label>
-                <div>
-              <Field
-                name="travel_date"
-                showTime={false}
-                component={renderDateTimePicker}
-              />
-              </div>
             </div>
-              </Grid.Column>
-              </Grid.Row>
-              </Grid>
-              <div className={"search-trips-button"}>
-            <Button
-              size="big"
-              loading={loading}
-              disabled={loading}
-              className={"buttoncolor search-trips-button"}
-            >
-            <FormattedMessage
-              id="search_trips.search_btn"
-              defaultMessage="Search"
-            />
-            </Button>
+          </div>
+          {/* form main ends */}
+          {/* section 2 ends */}
+          {/*find travel start */}
+          <div className="cta-horizon bg-white pt-4 pb-2">
+          </div>
+          <div className="cta-horizon bg-white pt-4 pb-2">
+          </div>
+          <div className="cta-horizon pt-4 pb-2" style={{backgroundColor: '#a10115'}}>
+            <div className="container d-md-flex align-items-center justify-content-between">
+              <h4 className="mb-2 white">Impossible de trouver le bon voyageur ? Enregistrez votre colis pour être contacté rapidement.</h4>
+              <a href="#" className="nir-btn-black">Expédier</a>
             </div>
-          </form>
-          <Divider/>
-            <Header as="h4" textAlign="center">
-            <FormattedMessage
-              id="search_trips.cant_find_trip"
-              defaultMessage="Can't find a trip? Click "
-            />
-            <Button inverted color='green' onClick={this.handleOpenSendPackageModal.bind(this)}>
-            <FormattedMessage
-              id="search_trips.click_book_request"
-              defaultMessage=" here "
-            /></Button> <FormattedMessage
-              id="search_trips.get_contacted"
-              defaultMessage=" to save a booking request so you can be later contacted by travellers."
-            />
-          </Header>
-        </Segment>
+          </div>
+          {/*find travel end */}
+      </div>
     );
   }
 }

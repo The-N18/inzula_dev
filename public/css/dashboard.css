@@ -3076,6 +3076,32 @@ a.close-list-item {
 /* My Profile Page
 ------------------------------------- */
 
+.dashboard-list .dashboard-list-static .upload-file {
+    width: 100%;
+    background: #fbfbfb;
+    border: 2px dashed #f1f1f1;
+    border-radius: 0px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    padding: 50px 0; }
+    .dashboard-list .dashboard-list-static .upload-file input {
+        display: none; }
+    .dashboard-list .dashboard-list-static .upload-file i {
+        font-size: 3.6rem; }
+    .dashboard-list .dashboard-list-static .listing-btn a {
+        padding: 8px 15px 6px; }
+
+
+
+
 .edit-profile-photo img {
     border-radius: 4px;
     max-width: 180px;
@@ -3350,7 +3376,7 @@ a.close-list-item {
         text-align: left;
     }
     .dashboard-list-box .button.gray {
-        margin-top: 6px:
+        margin-top: 6px;
     }
 }
 /* ------------------------------------------------------------------- */

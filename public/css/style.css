@@ -1526,7 +1526,7 @@ header #navbar {
       .main_header_area.headerstye-1 .header_menu .navbar.navbar-default .navbar-header .navbar-brand img + img {
         display: none; }
   .main_header_area.headerstye-1 .header_menu .navbar.navbar-default .nav.navbar-nav li a {
-    color: #777; }
+    color: #fff; }
   .main_header_area.headerstye-1 .header_menu .navbar.navbar-default .nav.navbar-nav li:hover > a {
     color: #a10115; }
   .main_header_area.headerstye-1 .header_menu .navbar.navbar-default .nav.navbar-nav li.active > a {

@@ -124,7 +124,7 @@ class AddTripForm extends React.Component {
                         </select> */}
                         <Field
                         name="departure_location"
-                        label={lang === "en" ? "Departure location" : "Lieu d'arrivée"}
+                        label={lang === "en" ? "Departure location" : "Lieu de départ"}
                         component="input"
                         type="text"
                         className={"custom-field"}
@@ -147,7 +147,7 @@ class AddTripForm extends React.Component {
                         </select> */}
                         <Field
                           name="destination_location"
-                          label={lang === "en" ? "Destination location" : "Lieu de départ"}
+                          label={lang === "en" ? "Destination location" : "Lieu d'arrivée"}
                           component="input"
                           type="text"
                           className={"custom-field"}

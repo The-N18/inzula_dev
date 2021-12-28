@@ -141,6 +141,7 @@ class CustomLayout extends React.Component {
   }
 
   logoutUtil = () => {
+    console.log(" IN LOGOUT")
     this.props.logout();
     this.props.clearUserInfo();
     this.props.history.push('/');
@@ -206,9 +207,9 @@ class CustomLayout extends React.Component {
       <ul className="nav navbar-nav" id="responsive-menu">
         <li><a onClick={this.handleOnClick.bind(this, '/')} >Expediez</a></li>
         <li><a onClick={this.handleOnClick.bind(this, '/transport')}>Transportez</a></li>
-        <li><a className={"pad-13"}>
+        {/* <li><a className={"pad-13"}>
           <Image bordered circular size='small' className={"profile-image"} onClick={this.handleOnProfileClick.bind(this)} src={profile_pic !== null && profile_pic !== "null" ? get_img_url(profile_pic) : backend_url() + '/static/images/user_avatar.png'} />
-        </a></li>
+        </a></li> */}
         <li><a onClick={this.handleOnProfileClick.bind(this)}>
         <FormattedMessage
           id="layout.profile"
@@ -254,7 +255,7 @@ class CustomLayout extends React.Component {
       <DeleteBookingConfirm />
       <DeleteTripConfirm />
       <UpdateTripForm />
-      <UpdateBooking />
+      {/* <UpdateBooking /> */}
       <ProposePriceOnBooking />
       <ConfirmBookingPrice />
       <PaymentOptions />
@@ -285,8 +286,8 @@ class CustomLayout extends React.Component {
                   {/* Brand and toggle get grouped for better mobile display */}
                   <div className="navbar-header">
                     <a className="navbar-brand" href="index.html">
-                      <img src="images/inzula_fr.png" alt="image" />
-                      <img src="images/inzula_fr.png" alt="image" />
+                      <img src="/images/inzula_fr.png" alt="image" />
+                      <img src="/images/inzula_fr.png" alt="image" />
                     </a>
                   </div>
                   {/* Collect the nav links, forms, and other content for toggling */}
@@ -311,19 +312,24 @@ class CustomLayout extends React.Component {
                               </div>
                           </div>*/}
                   </div>{/* /.navbar-collapse */}
-                  <div className="register-login">
-                    <div className="dropdown">
-                      <button className="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i className="fa fa-user-circle" /> Mon compte
-                      </button>
-                      <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a className="dropdown-item" href="#"><i className="sl sl-icon-settings" /> Settings</a>
-                        <a className="dropdown-item" href="#"><i className="sl sl-icon-user" /> Profile</a>
-                        <a className="dropdown-item" href="#"><i className="sl sl-icon-lock" /> Change Password</a>
-                        <a className="dropdown-item" href="#"><i className="sl sl-icon-power" /> Logout</a>
+
+                  {authenticated ? (
+                    <div className="register-login">
+                      <div className="dropdown">
+                        <button className="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          {/* <i className="fa fa-user-circle" /> Mon compte */}
+                          <img className={"profile-image"} src={profile_pic !== null && profile_pic !== "null" ? get_img_url(profile_pic) : backend_url() + '/static/images/user_avatar.png'}  alt="" /> Mon compte
+                        </button>
+                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a className="dropdown-item" href="#"><i className="sl sl-icon-settings" /> Settings</a>
+                          <a className="dropdown-item" onClick={this.handleOnClick.bind(this, '/dashboard/profile')}><i className="sl sl-icon-user" /> Profile</a>
+                          <a className="dropdown-item" href="#"><i className="sl sl-icon-lock" /> Change Password</a>
+                          <a className="dropdown-item" ><i className="sl sl-icon-power" onClick={this.logoutUtil.bind(this)} /> Logout</a>
+                        </div>
                       </div>
-                    </div>
-                  </div>
+                    </div>) : ""
+                    }
+                  
                   {/* <div class="register-login">
                             <a href="#" class="mr-2" data-toggle="modal" data-target="#register"><i class="icon-user mr-1"></i> Register</a>
                             <a href="#" data-toggle="modal" data-target="#login"><i class="icon-login mr-1"></i> Login</a>

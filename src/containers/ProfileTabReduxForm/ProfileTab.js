@@ -30,17 +30,39 @@ class ProfileTab extends React.Component {
   constructor(props) {
     super(props)
     this.onDrop = this.onDrop.bind(this);
+
+    this.state = {
+      picture: [],
+      passport: [],
+    }
+
+    this.imgUploadButtonRef = React.createRef();
+    this.imgUploadPreviewRef = React.createRef();
   }
 
-  state = {
-    picture: [],
-    passport: [],
-  }
 
-  onDrop = (picture) => {
+
+  // onDrop = (picture) => {
+  //   console.log("PICTURE",picture);
+
+  //     this.setState({
+  //         picture: picture,
+  //     });
+  // }
+
+  onDrop = () => {
+    const curFiles = this.imgUploadButtonRef.current.files;
+    console.log("PICTURE",curFiles);
+    
+    if(curFiles.length!=0){
+      this.imgUploadPreviewRef.current.src = URL.createObjectURL(curFiles[0]);
+
       this.setState({
-          picture: picture,
-      });
+        picture: curFiles,
+    });
+    }
+
+    
   }
 
   onFilesChange = (files) => {
@@ -69,286 +91,166 @@ class ProfileTab extends React.Component {
     const {handleSubmit, loading, deleteLoading, username, invalid, date_joined, profile_pic, passport_number, phone_number, email, lang, id_document} = this.props;
     const {passport} = this.state;
     return (
-      <Segment basic className={"profile-tab-section"}>
-      <Grid className={"profile-tab-section-grid"}>
-        <Grid.Row columns={2}>
-          <Grid.Column mobile={16} tablet={16} computer={6}>
-            <Segment className={"profile-tab-card"}>
-              <Image centered bordered circular src= {profile_pic !== null && profile_pic !== "null" ? get_img_url(profile_pic) : backend_url() + '/static/images/user_avatar.png'} />
-              <ImageUploader
-                      withIcon={false}
-                      buttonText={<FormattedMessage
-                        id="profile_tab.choose_profile_image"
-                        defaultMessage="Choose profile image"
-                      />}
-                      onChange={this.onDrop}
-                      maxFileSize={5242880}
-                      singleImage={true}
-                      withPreview={true}
-                      label={""}
-                      fileTypeError={<FormattedMessage
-                        id="profile_tab.file_type_error"
-                        defaultMessage="File type not accepted"
-                      />}
-                      fileSizeError={<FormattedMessage
-                        id="profile_tab.file_size_error"
-                        defaultMessage="File is too big"
-                      />}
-                  />
-              <Segment basic textAlign="left">
-              <p><FormattedMessage
-                id="profile_tab.username_"
-                defaultMessage="Username:"
-              />{username}</p>
-              <p><FormattedMessage
-                id="profile_tab.fullname_"
-                defaultMessage="Name:"
-              />{this.props.first_name} {this.props.last_name}</p>
-              {date_joined ? <p><FormattedMessage
-                id="profile_tab.member_since"
-                defaultMessage="Member since"
-              /><FormattedDate
-                                  value={date_joined}
-                                  year="numeric"
-                                  month="short"
-                                  day="numeric"
-                                  weekday="short"
-                                /></p> : ''}
-              {phone_number ? <p><FormattedMessage
-                id="profile_tab.phone_number_disp"
-                defaultMessage="Phone number:"
-              />{phone_number}</p> : ''}
-              {email ? <p><FormattedMessage
-                id="profile_tab.email_disp"
-                defaultMessage="Email:"
-              /> {email}</p> : ''}
-              {passport_number ? <p><FormattedMessage
-                id="profile_tab.passport_number_disp"
-                defaultMessage="Passport number: "
-              />{passport_number}</p> : ''}
-              </Segment>
-            </Segment>
-            <Segment className={"profile-tab-card"}>
-              <Button
-                className={"buttoncolor"}
-                size="large"
-                loading={deleteLoading}
-                onClick={this.deleteYourAccount.bind(this)}
-              >
-              <FormattedMessage
-                id="profile_tab.delete_account"
-                defaultMessage="Delete account"
-              />
-              </Button>
-            </Segment>
-          </Grid.Column>
-          <Grid.Column mobile={16} tablet={16} computer={10} className={"profile-tab-card bordered-column"}>
-          <Grid className={"profile-tab-section-grid"}>
-            <Grid.Row columns={2}>
-              <Grid.Column mobile={16} tablet={16} computer={16}>
-                <Segment basic textAlign="center">
-                <Header as='h4' className={"profile-tab-card-title"}>
-                  <FormattedMessage
-                    id="profile_tab.personal_information"
-                    defaultMessage="Personal information"
-                  />
-                </Header>
-                <form onSubmit={handleSubmit(this.submitForm)}>
-                  <CSRFToken/>
-                  <DjangoCSRFToken/>
-                  <Segment basic>
-                  <div>
-                    <label htmlFor="first_name">
-                      <FormattedMessage
-                        id="profile_tab.first_name"
-                        defaultMessage="First name"
-                      /></label>
-                    <div>
-                      <Field
-                        name="first_name"
-                        component="input"
-                        type="text"
-                        placeholder="First name"
-                        label="First name"
-                        className={"custom-field"}
-                        component={renderField}
-                      />
-                      </div>
-                    </div>
-                    <div>
-                      <label htmlFor="last_name">
-                        <FormattedMessage
-                          id="profile_tab.last_name"
-                          defaultMessage="Last name"
-                        />
-                      </label>
-                      <div>
-                      <Field
-                        name="last_name"
-                        component="input"
-                        type="text"
-                        placeholder="Last name"
-                        label="Last name"
-                        className={"custom-field"}
-                        component={renderField}
-                      />
-                      </div>
-                    </div>
-                    <div>
-                      <span><FormattedMessage
-                        id="signup.default_profile_type"
-                        defaultMessage="Default profile type"
-                      /></span>
-                      <Field
-                        name="user_type"
-                        component={renderDropdownList}
-                        data={lang === "en" ? userTypeOptions : userTypeOptionsFr}
-                        valueField="value"
-                        textField="text"/>
-                      </div>
-                    <div>
-                    <span><FormattedMessage
-                      id="profile_tab.sex"
-                      defaultMessage="Sex"
-                    /></span>
-                    <Field
-                      name="sex"
-                      component={renderDropdownList}
-                      data={lang === "en" ? sexOptions : sexOptionsFr}
-                      valueField="value"
-                      textField="text"/>
-                    </div>
-                    <div>
-                      <label htmlFor="phone_number">
-                        <FormattedMessage
-                          id="profile_tab.phone_number"
-                          defaultMessage="Phone number"
-                        />
-                      </label>
-                    <div>
-                    {/* <Field
-                      name="phone_number"
-                      component="input"
-                      type="text"
-                      placeholder="Phone number"
-                      label="Phone number"
-                      className={"custom-field"}
-                      component={renderField}
-                    /> */}
-                    <Field
-                      type="text"
-                      name="phone_number"
-                      component={renderPhoneNumber}
-                    />
-                    </div>
-                  </div>
-                  <div>
-                    <label htmlFor="email">
-                      <FormattedMessage
-                        id="profile_tab.email"
-                        defaultMessage="Email"
-                      />
-                    </label>
-                    <div>
-                      <Field
-                        name="email"
-                        component="input"
-                        type="email"
-                        placeholder="Email address"
-                        label="Email address"
-                        className={"custom-field"}
-                        component={renderField}
-                        disabled
-                      />
-                      </div>
-                    </div>
-                    <div>
-                      <label htmlFor="country">
-                        <FormattedMessage
-                          id="profile_tab.country"
-                          defaultMessage="Country"
-                        />
-                      </label>
-                      <div>
-                        <Field
-                          name="country"
-                          component={renderDropdownList}
-                          data={countries}
-                          valueField="value"
-                          textField="text" />
+      <React.Fragment>
+        <div className="dashboard-content">
+          <div className="dashboard-form mb-4">
+            <div className="row">
+              {/* Profile */}
+              <div className="col-lg-6 col-md-6 col-xs-12 padding-right-30">
+                <div className="dashboard-list">
+                  <h4 className="gray"> Details du profil</h4>
+                  <div className="dashboard-list-static">
+                    {/* Avatar */}
+                    <div className="edit-profile-photo">
+                      {/* <img src="/images/user-avatar.jpg" alt="" /> */}
+                      <img ref={this.imgUploadPreviewRef} src="/images/user-avatar.jpg"  alt="Preview" />
+                      <div className="change-photo-btn">
+                        <div className="photoUpload">
+                          <span><i className="fa fa-upload" /> Importer Photo</span>
+                          <input type="file" onChange={this.onDrop} ref={this.imgUploadButtonRef} className="upload" />
                         </div>
                       </div>
-                      <div>
-                      <label htmlFor="country">
-                        <FormattedMessage
-                          id="profile_tab.passport_number"
-                          defaultMessage="Passport number"
-                        />
-                      </label>
-                      <div>
-                      <Field
-                        name="passport_number"
-                        component="input"
-                        type="text"
-                        className={"custom-field"}
-                        component={renderField}
-                      />
-                      </div>
                     </div>
-                    <div>
-                      <label htmlFor="country">
-                        <FormattedMessage
-                          id="profile_tab.passport_proof"
-                          defaultMessage="Passport proof"
+                    {/* Details */}
+                    <div className="my-profile">
+                      <div className="form-group">
+                        <label>Prénom *</label>
+                        <Field
+                          name="first_name"
+                          component="input"
+                          type="text"
+                          placeholder="First name"
+                          label="First name"
+                          className={"custom-field"}
+                          component={renderField}
                         />
-                      </label>
-                      <div>
-                      <Files
-                        className='files-dropzone'
-                        onChange={this.onFilesChange}
-                        onError={this.onFilesError}
-                        accepts={['.pdf', '.doc', '.docx']}
-                        maxFiles={1}
-                        maxFileSize={10000000}
-                        minFileSize={0}
-                        clickable
-                      >
-                        <Button
-                          className={"buttoncolor-passport"}
-                          size="small"
-                        >
-                        <FormattedMessage
-                          id="profile_tab.passport_upload_btn"
-                          defaultMessage="Save"
+                        {/* <input defaultValue="Hermann" type="text" /> */}
+                      </div> 
+                      <div className="form-group">
+                        <label>Nom *</label>
+                        <Field
+                          name="last_name"
+                          component="input"
+                          type="text"
+                          placeholder="Last name"
+                          label="Last name"
+                          className={"custom-field"}
+                          component={renderField}
                         />
-                        </Button>
-                        <p className={"passport-file-name"}>{passport.length > 0 ? passport[0]['name'] : ''}</p>
-                        <p className={"passport-file-name"}>{id_document !== null ? id_document : ''}</p>
-                      </Files>
+                        {/* <input defaultValue="TEST" type="text" /> */}
                       </div>
+                      <div className="input-box">
+                        <select className="niceSelect">
+                          <option value={1}>Sexe *</option>
+                          <option value={2}>Masculin</option>
+                          <option value={3}>Feminin</option>
+                        </select>
+                      </div><br />
+                      <div className="form-group">
+                        <label>Adresse Mail *</label>
+                        <Field
+                          name="email"
+                          component="input"
+                          type="email"
+                          placeholder="Email address"
+                          label="Email address"
+                          className={"custom-field"}
+                          component={renderField}
+                          disabled
+                        />
+                        {/* <input defaultValue="hermann@test.com" type="text" /> */}
+                      </div> 													
+                      <div className="form-group">
+                        <label>Numéro de téléphone *</label>
+                        <input defaultValue="(00237) 642758594" type="text" />
+                      </div>
+                      {/* <div class="form-group">
+                                                        <label>Adresse Mail *</label>
+                                                        <input value="hermann@test.com" type="text">
+                                                    </div>  */}
                     </div>
-                    <Button
-                      className={"buttoncolor"}
-                      size="large"
-                      loading={loading}
-                      disabled={invalid}
-                      type="submit"
-                    >
-                    <FormattedMessage
-                      id="profile_tab.save"
-                      defaultMessage="Save"
-                    />
-                    </Button>
-                  </Segment>
-                </form>
-                </Segment>
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-      </Segment>
+                    <div className="form-btn">
+                      <a href="#" className="nir-btn">Sauvegarder</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* Change Password */}
+              <div className="col-lg-6 col-md-6 col-xs-12 padding-left-30">
+                <div className="dashboard-list margin-top-0">
+                  {/* <h4 class="gray">Autres informations</h4> */}
+                  <div className="dashboard-list-static">
+                    {/* <div class="input-box">
+														<select class="niceSelect">
+															<option value="1">Type de profil par défaut</option>
+															<option value="2">Expéditeur</option>
+															<option value="3">Transporteur</option>
+														</select>
+													</div> <br>
+
+													<div class="input-box">
+														<select class="niceSelect">
+															<option value="1">Pays de résidence</option>
+															<option value="2">Argentina</option>
+															<option value="3">Belgium</option>
+															<option value="4">Canada</option>
+															<option value="5">Denmark</option>
+														</select>
+													</div> <br> */}
+                    
+                    <div className="form-group">
+                      <label className="fb-input"><i className="fab fa-facebook" /> Facebook</label>
+                      <input placeholder="https://www.facebook.com/" type="text" />
+                    </div>
+                    <div className="form-group mb-0">
+                      <label>Passeport</label>
+                      <div className="input-box">
+                        <label className="upload-file mb-0">
+                          <input type="file" />
+                          <i className="far fa-image" />
+                          <span>Cliquez ici pour uploader votre passeport</span>
+                        </label>
+                      </div>                             
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="dashboard-form mb-4">
+          <div className="dashboard-password">
+            <h4>Modifier le mot de passe</h4>
+            <form>
+              <div className="row">
+                <div className="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+                  <div className="form-group">
+                    <label>Mot de passe actuel</label>
+                    <input type="password" placeholder="*********" />
+                  </div>
+                </div>
+                <div className="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+                  <div className="form-group">
+                    <label>Nouveau mot de passe</label>
+                    <input type="password" />
+                  </div>
+                </div>
+                <div className="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+                  <div className="form-group">
+                    <label>Re-Saisir le nouveau mot de passe</label>
+                    <input type="password" />
+                  </div>
+                </div>
+                <div className="col-lg-12">
+                  <div className="form-btn mar-top-15">
+                    <a href="#" className="nir-btn">Sauvegarder</a>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </React.Fragment>
     );
   }
 }
