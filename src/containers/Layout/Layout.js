@@ -5,6 +5,10 @@ import {
   Image,
 } from "semantic-ui-react";
 
+
+// import Button from 'react-bootstrap/Button';
+// import Modal from "react-bootstrap/Modal";
+
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { logout } from "../../store/actions/auth";
@@ -133,6 +137,8 @@ class CustomLayout extends React.Component {
         });
     }, 350);
 
+
+
   }
 
   componentWillUnmount() {
@@ -171,39 +177,7 @@ class CustomLayout extends React.Component {
   render() {
     const { authenticated, profile_pic, profileType } = this.props;
 
-    let mobileMenu = this.state.isMobile ? (
-      <span><li><a onClick={this.handleOnProfileClick.bind(this)}>
-      <FormattedMessage
-        id="layout.profile"
-        defaultMessage="Profile"
-      /></a></li>
-      <li><a onClick={this.handleOnReservationClick.bind(this)}>
-      {profileType === "sender" ? <FormattedMessage
-        id="layout.booking"
-        defaultMessage="Reservation"
-      /> : <FormattedMessage
-        id="layout.trips"
-        defaultMessage="Trips"
-      />}
-      </a></li>
-      <li><a onClick={this.handleOnAlertClick.bind(this)}>
-      <FormattedMessage
-        id="layout.alerts"
-        defaultMessage="Alerts"
-      />
-      </a></li>
-      <li><a onClick={this.handleOnFinanceClick.bind(this)}>
-      <FormattedMessage
-        id="layout.finances"
-        defaultMessage="Finances"
-      />
-      </a></li>
-      <li><a onClick={this.logoutUtil.bind(this)}>
-      <FormattedMessage
-        id="layout.logout"
-        defaultMessage="Logout"
-      />
-      </a></li></span>) : (
+    let mobileMenu = (
       <ul className="nav navbar-nav" id="responsive-menu">
         <li><a onClick={this.handleOnClick.bind(this, '/')} >Expediez</a></li>
         <li><a onClick={this.handleOnClick.bind(this, '/transport')}>Transportez</a></li>
@@ -237,11 +211,6 @@ class CustomLayout extends React.Component {
           defaultMessage="Finances"
         />
         </a></li>
-        <li><a onClick={this.logoutUtil.bind(this)}>
-        <FormattedMessage
-          id="layout.logout"
-          defaultMessage="Logout"
-        /></a></li>
       </ul>
     );
 
@@ -297,10 +266,8 @@ class CustomLayout extends React.Component {
                         <ul className="nav navbar-nav" id="responsive-menu">
                           <li><a href="" onClick={this.handleOnClick.bind(this, '/')}>Expediez</a></li>
                           <li><a href="" onClick={this.handleOnClick.bind(this, '/transport')}>Transportez</a></li>
-                          <span>
-                            <li><a href="#" className="mr-2" data-toggle="modal" data-target="#register"><i className="icon-user mr-1" /> Je m'inscris</a></li>
-                            <li><a href="#" data-toggle="modal" data-target="#login"><i className="icon-login mr-1" /> Je me connecte</a></li>
-                          </span>
+                          <li><a href="#" className="mr-2" data-toggle="modal" data-target="#register"><i className="icon-user mr-1" /> Je m'inscris</a></li>
+                          <li><a href="#" data-toggle="modal" data-target="#login"><i className="icon-login mr-1" /> Je me connecte</a></li>
                         </ul>
                       )}
                     
@@ -321,10 +288,9 @@ class CustomLayout extends React.Component {
                           <img className={"profile-image"} src={profile_pic !== null && profile_pic !== "null" ? get_img_url(profile_pic) : backend_url() + '/static/images/user_avatar.png'}  alt="" /> Mon compte
                         </button>
                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          <a className="dropdown-item" href="#"><i className="sl sl-icon-settings" /> Settings</a>
-                          <a className="dropdown-item" onClick={this.handleOnClick.bind(this, '/dashboard/profile')}><i className="sl sl-icon-user" /> Profile</a>
-                          <a className="dropdown-item" href="#"><i className="sl sl-icon-lock" /> Change Password</a>
-                          <a className="dropdown-item" ><i className="sl sl-icon-power" onClick={this.logoutUtil.bind(this)} /> Logout</a>
+                          <a className="dropdown-item" href="#"><i className="sl sl-icon-settings" /> Paramètres</a>
+                          <a className="dropdown-item" onClick={this.handleOnClick.bind(this, '/dashboard/profile')}><i className="sl sl-icon-user" /> Profil</a>
+                          <a className="dropdown-item" onClick={this.logoutUtil.bind(this)} ><i className="sl sl-icon-power"/> Déconnexion</a>
                         </div>
                       </div>
                     </div>) : ""
@@ -362,6 +328,57 @@ class CustomLayout extends React.Component {
 
         {/* login Modal */}
         <LoginParentModal />
+
+
+
+
+
+
+        <div className="modal fade"  id="updateBooking" tabIndex={-1} role="dialog" aria-hidden="true">
+          <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
+            <div className="modal-content">
+              <div className="modal-header p-4">
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div className="modal-body p-0">
+                <div className="login-content p-4 text-center">
+                  <UpdateBooking />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+        {/* <Modal
+          show={true}
+          size="lg"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="contained-modal-title-vcenter">
+              Modal heading
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h4>Centered Modal</h4>
+            <p>
+              Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+              dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+              consectetur ac, vestibulum at eros.
+            </p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button >Close</Button>
+          </Modal.Footer>
+        </Modal> */}
       </div>
     );
   }

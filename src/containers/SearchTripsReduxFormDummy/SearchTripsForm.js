@@ -14,11 +14,13 @@ import { openModal, closeModal } from "../../store/actions/sendPackageModal";
 import { createNotif } from "../../store/actions/appConfig";
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { renderDateTimePicker, renderCitiesList} from "../ReduxForm/renderField";
-import $ from "jquery";
 import {FormattedMessage} from 'react-intl'
 import {NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import { openLoginParentModal } from "../../store/actions/loginParentModal";
 // import 'react-widgets/dist/css/react-widgets.css';
+import $ from 'jquery';
+window.jQuery = $;
+require('bootstrap');
 
 class SearchTripsForm extends React.Component {
 
@@ -74,11 +76,15 @@ class SearchTripsForm extends React.Component {
   }
 
   handleOpenSendPackageModal = () => {
+    console.log("IN handleOpenSendPackageModal ")
+    
     if(this.props.authenticated) {
-      this.props.openPackageModal();
+      // this.props.openPackageModal();
+      $("#updateBooking").modal("show");
     } else {
       this.props.createNotif("send_package.login_msg", "Please login to create a booking request.", NOTIFICATION_TYPE_WARNING);
-      this.props.openLoginModal();
+      $("#login").modal("show");
+      // this.props.openLoginModal();
     }
   }
 
@@ -139,7 +145,7 @@ class SearchTripsForm extends React.Component {
                         {/* <i className="fa fa-calendar" />
                         <input id="date-range0" type="text" placeholder="Date du voyage" /> */}
                         <Field
-                          name="depart_date"
+                          name="travel_date"
                           showTime={false}
                           component={renderDateTimePicker}
                         />
@@ -159,7 +165,7 @@ class SearchTripsForm extends React.Component {
                           </div> */}      
                   <div className="col-lg">
                     <div className="form-group m-0 w-100">
-                      <a href="#" className="nir-btn"><i className="fa fa-search" /> Rechercher</a>
+                      <a  className={`nir-btn ${loading?'disabled':''}`} onClick={handleSubmit(this.submitForm)} ><i className="fa fa-search" /> Rechercher</a>
                     </div>
                   </div>                      
                 </div>
@@ -176,7 +182,7 @@ class SearchTripsForm extends React.Component {
           <div className="cta-horizon pt-4 pb-2" style={{backgroundColor: '#a10115'}}>
             <div className="container d-md-flex align-items-center justify-content-between">
               <h4 className="mb-2 white">Impossible de trouver le bon voyageur ? Enregistrez votre colis pour être contacté rapidement.</h4>
-              <a href="#" className="nir-btn-black">Expédier</a>
+              <a className="nir-btn-black" onClick={this.handleOpenSendPackageModal.bind(this)} >Expédier</a>
             </div>
           </div>
           {/*find travel end */}

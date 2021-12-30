@@ -7,9 +7,9 @@ import SelectList from 'react-widgets/lib/SelectList'
 import Multiselect from 'react-widgets/lib/Multiselect'
 import DateTimePicker from 'react-widgets/lib/DateTimePicker'
 import moment from 'moment';
-import momentLocalizer from "react-widgets-moment";
+import momentLocalizer from "react-widgets-moment"; 
 // import 'react-widgets/dist/css/react-widgets.css';
-// import './fields.css';
+import './fields.css';
 // import 'react-select/dist/react-select.css';
 import Async from 'react-select/async';
 import { api_url } from "../../configurations";

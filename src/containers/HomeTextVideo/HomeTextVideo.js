@@ -31,9 +31,9 @@ class HomeTextVideo extends React.Component {
                   <p className="mb-3">Expédiez des colis à des proches  <strong>à bas coût! Faites-vous de l’argent en voyageant !</strong>
                     <br />INZULA connecte des voyageurs voulant amortir leurs frais de voyages via leur kgs disponibles et des personnes souhaitant expédier à bas coût</p>
                   <Link to="search_trips_section" spy={true} smooth={true}>
-                    <a href="#" className="nir-btn" style={{margin: '0.5rem'}}>Expédiez avec INZULA</a>
+                    <a  className="nir-btn" style={{margin: '0.5rem'}}>Expédiez avec INZULA</a>
                   </Link>
-                  <a href="#" onClick={this.handleOnClick.bind(this, '/transport')} className="nir-btn" style={{margin: '0.5rem'}}>Voyagez avec INZULA</a>
+                  <a  onClick={this.handleOnClick.bind(this, '/transport')} className="nir-btn" style={{margin: '0.5rem'}}>Voyagez avec INZULA</a>
                 </div> 
               </div>
               <div className="col-lg-6 mb-4">

@@ -383,3 +383,11 @@ li > a:only-child:after { content: ''; }
 .gmail {
   color: #D44638 !important;
 }
+
+
+
+
+
+/* #updateBooking .modal-dialog-scrollable .modal-content {
+  width: 90%;
+} */

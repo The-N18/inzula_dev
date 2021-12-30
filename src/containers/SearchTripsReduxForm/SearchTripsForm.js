@@ -1,14 +1,15 @@
 import React from "react";
 import {
+  Container,
   Button,
   Header,
   Segment,
   Divider,
-  Grid
+  Grid 
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { searchTrips } from "../../store/actions/searchTrips";
-// import styles from './searchtripsform.css';
+import styles from './searchtripsform.css';
 import TripCard from "../../containers/TripCard/TripCard";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { openModal, closeModal } from "../../store/actions/sendPackageModal";
@@ -85,7 +86,8 @@ class SearchTripsForm extends React.Component {
   render() {
     const { loading, trips, next_url, count, handleSubmit, lang } = this.props;
     return (
-      <Segment id="search_trips_section">
+      <Container className={"layoutcontainer"}>
+          <Segment id="search_trips_section">
           <Header as="h4" textAlign="center">
             <FormattedMessage
               id="search_trips.title"
@@ -223,6 +225,8 @@ class SearchTripsForm extends React.Component {
           </Header>
           </div>
         </Segment>
+      </Container>
+      
     );
   }
 }

@@ -168,11 +168,13 @@ export const checkAuthTimeout = expirationTime => {
          }));
 
          $("#login").modal("hide");
+         $("#login").modal("hide");
          $("#login").on('hidden.bs.modal', function (e) {
           console.log("HIDDEN");
-          window.location.reload();
           $("#login").off('hidden.bs.modal');
-          return false;
+          $('.modal-backdrop').remove()
+
+         
           
         })
 
@@ -474,7 +476,7 @@ export const completeProfileInfo = (first_name, last_name, phone_number, country
           duration: 10000,
           canDismiss: true,
         }));
-        dispatch(closeLoginParentModal());
+        dispatch(closeLoginParentModal()); 
         dispatch(closeSignupParentModal());
       })
       .catch(err => {

@@ -9,6 +9,11 @@ function DashboardLayout(props) {
     const {handleSubmit, loading, deleteLoading, username, invalid, date_joined, profile_pic, passport_number, phone_number, email, lang, id_document} = props;
     const {url} = useRouteMatch();
     const location = useLocation();
+    const financeDropdown = React.createRef();
+
+    // toggleActiveClass = ()=>{
+        
+    // }
 
     console.log("URLLLL",url);
 
@@ -73,7 +78,7 @@ function DashboardLayout(props) {
                                 <li className={location.pathname=='/dashboard/my-trip'&& "active"}><a href="dashboard-trip-list.html"><i className="sl sl-icon-plane" /> Mes voyages</a></li>
                                 <li className={location.pathname=='/dashboard/alerts'&& "active"}><a href="dashboard-reviews.html"><i className="sl sl-icon-star" /> Alertes</a></li>
                                 {/* <li><a href="dashboard-history.html"><i class="fa fa-list-ul"></i>Finances</a></li> */}
-                                <li className={location.pathname=='/dashboard/my-transactions'&& "active"}><a><i className="fa fa-list-ul" />Finances</a>
+                                <li  className={location.pathname=='/dashboard/my-transactions'&& "active"}><a><i className="fa fa-list-ul" />Finances</a>
                                     <ul><li><a href="dashboard-add-new.html"><i className="sl sl-icon-plus" /> Mes transactions</a></li></ul>
                                     <ul><li><a href="dashboard-add-new.html"><i className="sl sl-icon-directions" /> Transfert de fonds</a></li></ul>
                                     <ul><li><a href="dashboard-add-new.html"><i className="sl sl-icon-credit-card" /> Mes moyens de paiement</a></li></ul>

@@ -6,7 +6,7 @@
   margin-bottom: 15px;
 }
 
-.custom-field {
+/* .custom-field {
   font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
     margin: 0;
     outline: 0;
@@ -30,4 +30,24 @@
     width: 100%;
     margin-top: 5px;
     margin-bottom: 5px;
+  } */
+
+
+  .react-select__value-container{
+    max-height: 50px;
+  }
+
+  .react-select__single-value{
+    position: relative!important;
+    top: 9px!important;
+  }
+
+  .react-select__control .react-select__placeholder,.react-select__control--menu-is-open .react-select__placeholder{
+    position: relative!important;
+    top: 9px!important;
+  }
+
+  .rw-datetime-picker{
+    position: relative;
+    top: -9px;
   }

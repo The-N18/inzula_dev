@@ -2530,8 +2530,8 @@ a.dashboard-responsive-nav-trigger {
     padding-right: 8px;
     width: 20px;
 }
-
-a:not([href]):not([tabindex]){color: #444;}
+ 
+/* a:not([tabindex]){color: #444;} */
 
 /* Nav Tag */
 

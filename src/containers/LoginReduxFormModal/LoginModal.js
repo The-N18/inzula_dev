@@ -61,7 +61,7 @@ class LoginForm extends Component {
           />
         </form>
         <div className="form-btn">
-          <a href="#" onClick={handleSubmit(this.submitForm)} className={`nir-btn ${invalid?'disabled':''}`}>CONNEXION</a>
+          <a href="" onClick={handleSubmit(this.submitForm)} className={`nir-btn ${invalid?'disabled':''}`}>CONNEXION</a>
         </div>
         <div className="form-group mb-0 form-checkbox mt-3">
           <input type="checkbox" /> Se souvenir de moi | <a href="#" className>Mot de passe oublié ?</a>

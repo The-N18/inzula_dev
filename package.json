@@ -18,6 +18,7 @@
     "prop-types": "^15.7.2",
     "rc-slider": "^9.6.1",
     "react": "^16.14.0",
+    "react-bootstrap": "^2.0.4",
     "react-countup": "^6.1.0",
     "react-datetime-picker": "^3.0.4",
     "react-dom": "^16.8.6",
@@ -58,6 +59,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
+  "homepage": "https://d1g0ix8w0r103u.cloudfront.net",
   "browserslist": {
     "production": [
       ">0.2%",

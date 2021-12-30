@@ -109,12 +109,12 @@ a {
     transition: all ease-in-out 0.5s;
     outline: none; }
 
-a:not([href]):not([tabindex]):focus, a:not([href]):not([tabindex]):hover {
+a:not([tabindex]):focus, a:not([tabindex]):hover {
   color: #162241 !important; }
 
 ::-webkit-input-placeholder {
   /* Edge */
-  color: #777 !important; }
+  color: #777 !important; } 
 
 :-ms-input-placeholder {
   /* Internet Explorer 10-11 */
@@ -1527,10 +1527,10 @@ header #navbar {
         display: none; }
   .main_header_area.headerstye-1 .header_menu .navbar.navbar-default .nav.navbar-nav li a {
     color: #fff; }
-  .main_header_area.headerstye-1 .header_menu .navbar.navbar-default .nav.navbar-nav li:hover > a {
-    color: #a10115; }
+  .main_header_area.headerstye-1 .header_menu .navbar.navbar-default #responsive-menu li:hover > a {
+    color: #a10115!important; }
   .main_header_area.headerstye-1 .header_menu .navbar.navbar-default .nav.navbar-nav li.active > a {
-    color: #a10115; }
+    color: #a10115!important; }
   .main_header_area.headerstye-1 .header_menu .register-login a {
     color: #fff; }
   .main_header_area.headerstye-1 .header_menu.fixed-top .navbar-default {
@@ -2057,6 +2057,9 @@ nav.navbar.navbar-default.navbar-sticky-in .logo-black {
     .modal-open .modal .modal-dialog {
       max-width: 550px;
       top: 5%; }
+    .modal-open .modal#updateBooking .modal-dialog {
+      max-width: 1140px;
+      top: 0%; }
       .modal-open .modal .modal-dialog .modal-content {
         border: none;
         position: relative;
@@ -2069,6 +2072,22 @@ nav.navbar.navbar-default.navbar-sticky-in .logo-black {
           position: absolute;
           top: 0;
           right: 0;
+          height: 40px;
+          width: 40px;
+          border-radius: 50%;
+          opacity: 1;
+          text-align: center;
+          line-height: 0.4;
+          font-size: 20px;
+          padding: 0;
+          z-index: 9;
+          transition: all ease-in-out 0.5s; }
+        .modal-open .modal#updateBooking .modal-dialog .modal-content button.close {
+          background: #A10115;
+          color: #fff;
+          position: absolute;
+          top: 15px;
+          right: 15px;
           height: 40px;
           width: 40px;
           border-radius: 50%;
@@ -2757,7 +2776,13 @@ nav.navbar.navbar-default.navbar-sticky-in .logo-black {
     border: none; }
     .trending.destination .trend-box ul.nav.nav-tabs li {
       margin: 0;
-      border: none; }
+      border: none;
+      margin-bottom: 0px;
+      line-height: 1.5;
+      position: relative;
+      display: inline-block;
+      padding: 0;
+     }
       .trending.destination .trend-box ul.nav.nav-tabs li a {
         border-radius: 0px;
         display: inline-block;

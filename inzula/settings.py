@@ -26,9 +26,9 @@ SECRET_KEY = 'cx7rnzp$skop_mg6h+xy2o6^$6ltn^_7oi5+p*f@b5cg4d*od#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-MANUAL_DEBUG = True
+MANUAL_DEBUG = False
 
-ALLOWED_HOSTS = ['dkx1b8wlo613w.cloudfront.net', 'inzula.app', 'www.inzula.app', '15.237.97.243', 'localhost', '127.0.0.1', '15.188.61.65', 'd1g0ix8w0r103u.cloudfront.net']
+ALLOWED_HOSTS = ['dkx1b8wlo613w.cloudfront.net', 'inzula.app', 'www.inzula.app', '13.37.205.134', 'localhost', '127.0.0.1', '15.188.61.65', 'd1g0ix8w0r103u.cloudfront.net']
 
 
 # Application definition
@@ -122,23 +122,23 @@ WSGI_APPLICATION = 'inzula.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': os.environ['INZ_TEST_DB_NAME'],
-#         'USER': os.environ['INZ_DB_USER'],
-#         'PASSWORD': os.environ['INZ_DB_PASSWORD'],
-#         'HOST': 'localhost',
-#         'PORT': '5432',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'inzuladb',
+        'USER': 'inzula',
+        'PASSWORD': 'inzula',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
 
 
 # Password validation
