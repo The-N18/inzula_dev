@@ -1,8 +1,11 @@
 import React from "react";
-import {
-  Button,
-  Modal
-} from "semantic-ui-react";
+// import {
+//   Button,
+//   Modal
+// } from "semantic-ui-react";
+
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+
 import { connect } from "react-redux";
 // import styles from './cancelbooking.css';
 import { openVerifyYourEmail, closeVerifyYourEmail } from "../../store/actions/verifyYourEmail";
@@ -16,37 +19,29 @@ class VerifyYourEmailModal extends React.Component {
 
   render() {
     const { open } = this.props;
+    const toggle = () => this.props.closeVerifyYourEmail();
+
     return (
-      <Modal
-      closeIcon
-        centered={false}
-        open={open}
-        onClose={() => this.props.closeVerifyYourEmail()}
-        onOpen={() => this.props.openVerifyYourEmail()}
-        size='tiny'
-      >
-      <Modal.Header>
-      <FormattedMessage
-              id="verify_email_confirm.title"
-              defaultMessage="Cancel booking"
-            />
-            </Modal.Header>
-      <Modal.Content>
-        <span>
-        <FormattedMessage
+
+      <Modal isOpen={open} >
+        <ModalHeader toggle={toggle.bind(this)}>
+          <FormattedMessage
+            id="verify_email_confirm.title"
+            defaultMessage="Cancel booking"
+          />
+        </ModalHeader>
+        <ModalBody>
+          <span>
+            <FormattedMessage
               id="verify_email_confirm.msg"
               defaultMessage="Are you sure you want to cancel this booking?"
-            /></span>
-      </Modal.Content>
-      <Modal.Actions>
-        <Button positive onClick={this.handleCancel.bind(this)}>
-        <FormattedMessage
-              id="verify_email_confirm.yes"
-              defaultMessage="Yes"
             />
-        </Button>
-      </Modal.Actions>
-    </Modal>
+          </span>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="success" onClick={toggle.bind(this)}>ok</Button>
+        </ModalFooter>
+      </Modal>
     );
   }
 }

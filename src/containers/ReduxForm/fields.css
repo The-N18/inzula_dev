@@ -51,3 +51,8 @@
     position: relative;
     top: -9px;
   }
+
+  .PhoneInput .PhoneInputCountry .PhoneInputCountryIcon svg{
+    position: relative;
+    top:-4;
+  }

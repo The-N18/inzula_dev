@@ -226,6 +226,7 @@ a {
 .profile-image {
   height: 35px !important;
   width: 35px !important;
+  border-radius: 20px;
   vertical-align: middle !important;
 }
 

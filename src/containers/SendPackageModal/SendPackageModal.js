@@ -23,30 +23,26 @@ class SendPackageModal extends React.Component {
     const { open, tripId } = this.props;
 
     return (
-      <Modal
-      closeIcon
-      centered={false}
-      open={open}
-      onClose={() => this.props.closePackageModal()}
-      onOpen={() => this.props.openPackageModal()}
-      size='large'
-    >
-      <Modal.Header><FormattedMessage
-        id="add_booking.add_request"
-        defaultMessage="Add a booking request"
-      /></Modal.Header>
-      <Modal.Content scrolling>
-          <SendPackage tripId={tripId}/>
-      </Modal.Content>
-      <Modal.Actions>
-        <Button negative onClick={() => this.props.closePackageModal()} primary>
-          <FormattedMessage
-            id="add_booking.cancel"
-            defaultMessage="Cancel"
-          /><Icon name='cancel' />
-        </Button>
-      </Modal.Actions>
-    </Modal>
+      <div className="modal fade"  id="sendPackage" tabIndex={-1} role="dialog" aria-hidden="true">
+        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
+          <div className="modal-content">
+            <div className="modal-header p-4">
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div className="modal-body p-0">
+              <div className="login-content p-4">
+                <SendPackage tripId={tripId}/>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-dismiss="modal" onClick={() => this.props.closePackageModal()} >Annuler</button>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
     );
   }
 }

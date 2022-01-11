@@ -76,7 +76,7 @@ class SearchBookingRequestsForm extends React.Component {
                   </select> */}
                   <Field
                     name="departure_location"
-                    label={lang === "en" ? "Departure location" : "Lieu d'arrivée"}
+                    label={lang === "en" ? "Departure location" : "Lieu de départ"}
                     type="text"
                     className={"custom-field-search"}
                     component={renderCitiesList}
@@ -95,7 +95,7 @@ class SearchBookingRequestsForm extends React.Component {
                   </select> */}
                   <Field
                     name="destination_location"
-                    label={lang === "en" ? "Destination location" : "Lieu de départ"}
+                    label={lang === "en" ? "Destination location" : "Lieu de d'arrivée"}
                     type="text"
                     className={"custom-field-search"}
                     component={renderCitiesList}
@@ -114,7 +114,7 @@ class SearchBookingRequestsForm extends React.Component {
                 </div>                            
               </div>
               <div className="form-group m-0">
-                <a href="#" onClick={handleSubmit(this.submitForm)} className="nir-btn w-100"><i className="fa fa-search" /> Rechercher</a>
+                <a  onClick={handleSubmit(this.submitForm)} className="nir-btn w-100"><i className="fa fa-search" /> Rechercher</a>
               </div>
             </div>
           </div>

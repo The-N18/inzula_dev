@@ -7,8 +7,15 @@ import { updateBookingCloseModal } from "./updateBookingModal";
 import {closeModal} from "./sendPackageModal";
 import {getInitialSelectableReservations} from "./selectableUserReservations";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
+
+import $ from 'jquery';
+window.jQuery = $;
+require('bootstrap')
+
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
+
+;
 
 export const addBookingStart = () => {
   return {
@@ -73,7 +80,15 @@ recipient_phone_number, terms_conditions, user_agreement) => {
       .then(res => {
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(addBookingSuccess(res.data));
-        dispatch(closeModal());
+
+        // dispatch(closeModal());
+        $("#sendPackage").modal("hide");
+        $("#sendPackage").on('hidden.bs.modal', function (e) {
+         console.log("HIDDEN");
+         $("#sendPackage").off('hidden.bs.modal');
+         $('.modal-backdrop').remove()  
+       })
+
         dispatch(getInitialReservations(userProfileId));
         dispatch(getInitialSelectableReservations(userId, tripId));
         dispatch(createNotification({

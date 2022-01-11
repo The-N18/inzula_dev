@@ -18,7 +18,7 @@ import {renderField, renderDropdownList, renderPhoneNumber} from "../ReduxForm/r
 import {FormattedMessage} from 'react-intl'
 import {sexOptions, sexOptionsFr} from "../../utils/options";
 import Files from 'react-files';
-// import 'react-phone-number-input/style.css';
+import 'react-phone-number-input/style.css';
 
 
 

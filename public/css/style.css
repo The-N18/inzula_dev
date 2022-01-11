@@ -1526,13 +1526,15 @@ header #navbar {
       .main_header_area.headerstye-1 .header_menu .navbar.navbar-default .navbar-header .navbar-brand img + img {
         display: none; }
   .main_header_area.headerstye-1 .header_menu .navbar.navbar-default .nav.navbar-nav li a {
-    color: #fff; }
+    color: #0791be; }
   .main_header_area.headerstye-1 .header_menu .navbar.navbar-default #responsive-menu li:hover > a {
     color: #a10115!important; }
   .main_header_area.headerstye-1 .header_menu .navbar.navbar-default .nav.navbar-nav li.active > a {
     color: #a10115!important; }
   .main_header_area.headerstye-1 .header_menu .register-login a {
     color: #fff; }
+  .main_header_area.headerstye-1 .header_menu .register-login .btn-info {
+    color: #0791be; }
   .main_header_area.headerstye-1 .header_menu.fixed-top .navbar-default {
     background: #fff; }
     .main_header_area.headerstye-1 .header_menu.fixed-top .navbar-default .navbar-header .navbar-brand {
@@ -2056,8 +2058,8 @@ nav.navbar.navbar-default.navbar-sticky-in .logo-black {
     overflow: hidden; }
     .modal-open .modal .modal-dialog {
       max-width: 550px;
-      top: 5%; }
-    .modal-open .modal#updateBooking .modal-dialog {
+      top: 0%; }
+    .modal-open .modal#updateBooking .modal-dialog, .modal-open .modal#sendPackage .modal-dialog {
       max-width: 1140px;
       top: 0%; }
       .modal-open .modal .modal-dialog .modal-content {
@@ -2082,7 +2084,7 @@ nav.navbar.navbar-default.navbar-sticky-in .logo-black {
           padding: 0;
           z-index: 9;
           transition: all ease-in-out 0.5s; }
-        .modal-open .modal#updateBooking .modal-dialog .modal-content button.close {
+        .modal-open .modal#updateBooking .modal-dialog .modal-content button.close, .modal-open .modal#sendPackage .modal-dialog .modal-content button.close {
           background: #A10115;
           color: #fff;
           position: absolute;

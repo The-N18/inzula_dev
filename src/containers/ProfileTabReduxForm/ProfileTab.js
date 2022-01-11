@@ -22,7 +22,7 @@ import {FormattedMessage, FormattedDate} from 'react-intl'
 import { openDeleteAccount } from "../../store/actions/deleteAccount";
 import {userTypeOptions, userTypeOptionsFr, sexOptions, sexOptionsFr} from "../../utils/options";
 import Files from 'react-files';
-// import 'react-phone-number-input/style.css';
+import 'react-phone-number-input/style.css';
 
 
 
@@ -139,13 +139,19 @@ class ProfileTab extends React.Component {
                         />
                         {/* <input defaultValue="TEST" type="text" /> */}
                       </div>
-                      <div className="input-box">
+                      <Field
+                        name="user_type"
+                        component={renderDropdownList}
+                        data={lang === "en" ? userTypeOptions : userTypeOptionsFr}
+                        valueField="value"
+                        textField="text"/><br/>
+                      {/* <div className="input-box">
                         <select className="niceSelect">
                           <option value={1}>Sexe *</option>
                           <option value={2}>Masculin</option>
                           <option value={3}>Feminin</option>
                         </select>
-                      </div><br />
+                      </div><br /> */}
                       <div className="form-group">
                         <label>Adresse Mail *</label>
                         <Field
@@ -162,15 +168,16 @@ class ProfileTab extends React.Component {
                       </div> 													
                       <div className="form-group">
                         <label>Numéro de téléphone *</label>
-                        <input defaultValue="(00237) 642758594" type="text" />
+                        {/* <input defaultValue="(00237) 642758594" type="text" /> */}
+                        <Field
+                          type="text"
+                          name="phone_number"
+                          component={renderPhoneNumber}
+                        />
                       </div>
-                      {/* <div class="form-group">
-                                                        <label>Adresse Mail *</label>
-                                                        <input value="hermann@test.com" type="text">
-                                                    </div>  */}
                     </div>
                     <div className="form-btn">
-                      <a href="#" className="nir-btn">Sauvegarder</a>
+                      <a onClick={handleSubmit(this.submitForm)} className="nir-btn">Sauvegarder</a>
                     </div>
                   </div>
                 </div>
@@ -206,9 +213,23 @@ class ProfileTab extends React.Component {
                       <label>Passeport</label>
                       <div className="input-box">
                         <label className="upload-file mb-0">
-                          <input type="file" />
-                          <i className="far fa-image" />
-                          <span>Cliquez ici pour uploader votre passeport</span>
+                          {/* <input type="file" /> */}
+                          {/* <i className="far fa-image" /> */}
+                          <i class="fas fa-file-alt"></i>
+                          <Files
+                            className='files-dropzone'
+                            onChange={this.onFilesChange}
+                            onError={this.onFilesError}
+                            accepts={['.pdf', '.doc', '.docx']}
+                            maxFiles={1}
+                            maxFileSize={10000000}
+                            minFileSize={0}
+                            clickable
+                          >
+                            <span>Cliquez ici pour uploader votre passeport</span>
+                            <p className={"passport-file-name"}>{passport.length > 0 ? passport[0]['name'] : ''}</p>
+                            <p className={"passport-file-name"}>{id_document !== null ? id_document : ''}</p>
+                          </Files>
                         </label>
                       </div>                             
                     </div>

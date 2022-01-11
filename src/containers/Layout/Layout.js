@@ -6,9 +6,6 @@ import {
 } from "semantic-ui-react";
 
 
-// import Button from 'react-bootstrap/Button';
-// import Modal from "react-bootstrap/Modal";
-
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { logout } from "../../store/actions/auth";
@@ -254,7 +251,7 @@ class CustomLayout extends React.Component {
                 <div className="navbar-flex d-flex align-items-center justify-content-between w-100 pb-2 pt-2">
                   {/* Brand and toggle get grouped for better mobile display */}
                   <div className="navbar-header">
-                    <a className="navbar-brand" href="index.html">
+                    <a className="navbar-brand">
                       <img src="/images/inzula_fr.png" alt="image" />
                       <img src="/images/inzula_fr.png" alt="image" />
                     </a>
@@ -309,9 +306,7 @@ class CustomLayout extends React.Component {
         </header>
         {/* header ends */}
 
-        {this.props.children}
-
-        
+        {this.props.children}   
 
         {/* footer starts */}
         <Footer/>
@@ -333,7 +328,7 @@ class CustomLayout extends React.Component {
 
 
 
-
+        {/*UpdateBooking Modal */}
         <div className="modal fade"  id="updateBooking" tabIndex={-1} role="dialog" aria-hidden="true">
           <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
             <div className="modal-content">
@@ -343,7 +338,7 @@ class CustomLayout extends React.Component {
                 </button>
               </div>
               <div className="modal-body p-0">
-                <div className="login-content p-4 text-center">
+                <div className="login-content p-4">
                   <UpdateBooking />
                 </div>
               </div>
@@ -356,29 +351,6 @@ class CustomLayout extends React.Component {
 
 
 
-        {/* <Modal
-          show={true}
-          size="lg"
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
-        >
-          <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title-vcenter">
-              Modal heading
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <h4>Centered Modal</h4>
-            <p>
-              Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-              dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-              consectetur ac, vestibulum at eros.
-            </p>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button >Close</Button>
-          </Modal.Footer>
-        </Modal> */}
       </div>
     );
   }

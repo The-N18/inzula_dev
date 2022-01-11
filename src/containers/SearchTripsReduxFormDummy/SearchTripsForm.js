@@ -80,7 +80,7 @@ class SearchTripsForm extends React.Component {
     
     if(this.props.authenticated) {
       // this.props.openPackageModal();
-      $("#updateBooking").modal("show");
+      $("#sendPackage").modal("show");
     } else {
       this.props.createNotif("send_package.login_msg", "Please login to create a booking request.", NOTIFICATION_TYPE_WARNING);
       $("#login").modal("show");

@@ -168,7 +168,6 @@ export const checkAuthTimeout = expirationTime => {
          }));
 
          $("#login").modal("hide");
-         $("#login").modal("hide");
          $("#login").on('hidden.bs.modal', function (e) {
           console.log("HIDDEN");
           $("#login").off('hidden.bs.modal');
@@ -219,9 +218,18 @@ export const checkAuthTimeout = expirationTime => {
            duration: 10000,
            canDismiss: true,
          }));
-         dispatch(closeSignupModal());
-         dispatch(closeSignupParentModal());
-         dispatch(openVerifyYourEmail());
+
+         $("#register").modal("hide");
+         $("#register").on('hidden.bs.modal', function (e) {
+          console.log("HIDDEN");
+          $("#register").off('hidden.bs.modal');
+          $('.modal-backdrop').remove()
+          dispatch(openVerifyYourEmail());   
+        })
+
+        //  dispatch(closeSignupModal());
+        //  dispatch(closeSignupParentModal());
+        //  dispatch(openVerifyYourEmail());
        })
        .catch(err => {
          dispatch(authFail(err));

@@ -16,7 +16,7 @@ import ImageUploader from 'react-images-upload';
 import {createNotification, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import { bookingAddition } from "../../store/actions/addBooking";
 import {Field, reduxForm, formValueSelector} from 'redux-form';
-import {renderField, renderDateTimePicker, renderPhoneNumber, renderDropdownList, renderCitiesList} from "../../containers/ReduxForm/renderField";
+import {renderField, renderDateTimePickerDown, renderPhoneNumber, renderDropdownList, renderCitiesList} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
 import { sizeOptions, sizeOptionsFr, categoryOptions, categoryOptionsFr, weightOptions, weightOptionsFr, valueOptions, valueOptionsFr, calculateMinPrice } from "../../utils/options";
 import {FormattedMessage} from 'react-intl'
@@ -218,10 +218,6 @@ class SendPackage extends React.Component {
                         id="add_booking._rec_name"
                         defaultMessage="Recipient name:"
                       /></b> {recipient_name}</span>
-                      <span className={"form-details-display"}><b><FormattedMessage
-                        id="add_booking.rec_phone_number"
-                        defaultMessage="Recipient phone number:"
-                      /></b> {recipient_phone_number}</span>
                     </Grid.Column>
                     <Grid.Column mobile={16} tablet={8} computer={8}>
                       <span className={"form-details-display"} title={product_description}><b><FormattedMessage
@@ -280,7 +276,7 @@ class SendPackage extends React.Component {
                        <Field
                          name="delivery_date"
                          showTime={false}
-                         component={renderDateTimePicker}
+                         component={renderDateTimePickerDown}
                          min={new Date()}
                        />
                    </div>

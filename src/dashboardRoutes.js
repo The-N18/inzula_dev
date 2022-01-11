@@ -1,7 +1,8 @@
 import React from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import ProfileTab from "./containers/ProfileTabReduxForm/ProfileTab";
-import UpdateBooking from "./containers/UpdateBookingModal/UpdateBooking";
+import SendPackage from "./containers/SendPackageReduxForm/SendPackage";
+import TripsReservationsList from "./containers/TripsReservationsList/TripsReservationsList";
 
 const DashboardRouter = () => {
 
@@ -12,7 +13,8 @@ const DashboardRouter = () => {
     return (
         <Switch> 
             <Route path={`${path}/profile`} component={ProfileTab} />
-            <Route path={`${path}/add-booking`} component={UpdateBooking} />
+            <Route path={`${path}/add-booking`} component={SendPackage} />
+            <Route path={`${path}/reservation-list`} component={TripsReservationsList} />
         </Switch>
          
 

@@ -15,7 +15,7 @@ import Async from 'react-select/async';
 import { api_url } from "../../configurations";
 import PhoneInput, { formatPhoneNumber, formatPhoneNumberIntl, isValidPhoneNumber } from 'react-phone-number-input';
 import flags from 'react-phone-number-input/flags';
-// import 'react-phone-number-input/style.css';
+import 'react-phone-number-input/style.css';
 
 
 moment.locale('en');
@@ -119,6 +119,23 @@ export const renderCitiesList = ({ input, className, data, label, meta: { touche
         <DateTimePicker
         placeholder="Date de départ"
         dropUp={true}
+      onChange={onChange}
+      format="YYYY-MM-DD"
+      time={showTime}
+      min={min}
+      value={!value ? null : value}
+    />
+  {touched && ((error && <span className={"error-on-input"}>{error}</span>) || (warning && <span>{warning}</span>))}
+</div></div>);
+  }
+
+  export const renderDateTimePickerDown = ({ input: { onChange, value }, label, showTime, min, meta: { touched, error, warning } }) => {
+    return (<div>
+      <div>
+        <label>{label}</label>
+        <DateTimePicker
+        placeholder="Date de départ"
+        dropDown={true}
       onChange={onChange}
       format="YYYY-MM-DD"
       time={showTime}

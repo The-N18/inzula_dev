@@ -51,9 +51,9 @@ function DashboardLayout(props) {
                                     weekday="short"
                                     /></div> : ''}
                                 </p>
-                                <p className="detail"><i className="fa fa-phone" />
-                                    {phone_number ? ` ${phone_number}` : ''}
-                                </p>
+                                {phone_number ? <p className="detail">
+                                    <i className="fa fa-phone" />
+                                    {` ${phone_number}`}</p> : ''}
                                 <div className="header-social mt-2">
                                 <ul>
                                     <li><a href="#"><i className="fab fa-facebook-f" /></a></li>
@@ -73,7 +73,7 @@ function DashboardLayout(props) {
                                 <ul>
                                 <Link to={`${url}/profile`}><li className={location.pathname=='/dashboard/profile'&& "active"}><a ><i className="sl sl-icon-user" /> Profil</a></li></Link>
                                 <Link to={`${url}/add-booking`}><li className={location.pathname=='/dashboard/add-booking'&& "active"} ><a ><i className="sl sl-icon-plus" /> Ajouter colis</a></li></Link>
-                                <li className={location.pathname=='/dashboard/my-packages'&& "active"}><a href="dashboard-package-list.html"><i className="sl sl-icon-layers" /> Mes colis</a></li>
+                                <Link to={`${url}/reservation-list`}><li className={location.pathname=='/dashboard/reservation-list'&& "active"}><a ><i className="sl sl-icon-layers" /> Mes colis</a></li></Link>
                                 <li className={location.pathname=='/dashboard/add-trip'&& "active"}><a href="dashboard-add-new-trip.html"><i className="sl sl-icon-plus" /> Ajouter voyage</a></li>
                                 <li className={location.pathname=='/dashboard/my-trip'&& "active"}><a href="dashboard-trip-list.html"><i className="sl sl-icon-plane" /> Mes voyages</a></li>
                                 <li className={location.pathname=='/dashboard/alerts'&& "active"}><a href="dashboard-reviews.html"><i className="sl sl-icon-star" /> Alertes</a></li>
