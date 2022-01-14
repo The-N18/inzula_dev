@@ -29,6 +29,7 @@ export const msg = {
   'add_trip_form.dest_location': "Destination",
   'add_trip_form.depart_location': "Lieu de départ",
   'add_trip_form.trip': "Voyage",
+  'add_trip_modal.title': "Ajouter Trajet",
   'booking_card.description': "Description:",
   'booking_card.arrival_date': "Date d'arrivée:",
   'booking_card.departure_loc': "Ville de départ:",

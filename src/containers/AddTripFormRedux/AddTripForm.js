@@ -12,7 +12,7 @@ import CSRFToken from "../../containers/CSRFToken";
 import DjangoCSRFToken from 'django-react-csrftoken';
 import {NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import { createNotif } from "../../store/actions/appConfig";
-import { renderDateTimePicker, renderCitiesList} from "../../containers/ReduxForm/renderField";
+import { renderDateTimePicker, renderCitiesList, renderDateTimePickerDown} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
 import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
 import { openLoginParentModal } from "../../store/actions/loginParentModal";
@@ -102,7 +102,7 @@ class AddTripForm extends React.Component {
 
 
   render() {
-    const { loading, handleSubmit, invalid, lang } = this.props;
+    const { loading, handleSubmit, invalid, lang, isModal } = this.props;
     return (
           
           <div className="form-main">
@@ -164,7 +164,7 @@ class AddTripForm extends React.Component {
                         <Field
                           name="depart_date"
                           showTime={false}
-                          component={renderDateTimePicker}
+                          component={isModal?renderDateTimePickerDown:renderDateTimePicker}
                           min={new Date()}
                         />
                       </div>

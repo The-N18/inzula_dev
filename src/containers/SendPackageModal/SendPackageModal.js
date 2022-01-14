@@ -57,7 +57,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     openPackageModal: () => dispatch(openModal()),
-    closePackageModal: () => dispatch(closeModal()),
+    closePackageModal: () => {console.log("CLOOOOOSE MODAL"); dispatch(closeModal())},
   };
 };
 

@@ -17,6 +17,7 @@ import { updateTripOpenModal, updateTripCloseModal } from "../../store/actions/u
 import { updateTrip } from "../../store/actions/addTrip";
 import {FormattedMessage} from 'react-intl'
 import 'react-widgets/dist/css/react-widgets.css';
+import $ from "jquery";
 
 class UpdateTripForm extends React.Component {
 
@@ -73,6 +74,7 @@ class UpdateTripForm extends React.Component {
     };
     this.props.updateTrip(dta);
     this.props.updateTripCloseModal();
+    $("#updateTrip").modal("hide");
   }
 
   handleDateTimeChange = (event, {name, value}) => {
@@ -88,103 +90,106 @@ class UpdateTripForm extends React.Component {
   render() {
     const { loading, handleSubmit, invalid, open, lang } = this.props;
     return (
-      <Modal
-      closeIcon
-        centered={false}
-        open={open}
-        onClose={() => this.props.updateTripCloseModal()}
-        onOpen={() => this.props.updateTripOpenModal()}
-        size='tiny'
-      >
-        <Modal.Header>
-        <FormattedMessage
-          id="update_trip.title"
-          defaultMessage="Update Trip"
-        />
-        </Modal.Header>
-        <Modal.Content scrolling>
-      <Segment style={{ padding: "1em 0em" }} vertical>
-        <Grid verticalAlign="middle">
-          <Grid.Row verticalAlign="middle" className={"add-trip-grid"}>
-            <form onSubmit={handleSubmit(this.submitForm)} className={"update-trip-form"}>
-              <CSRFToken/>
-              <Segment>
-                  {/* <div>
-                    <label><FormattedMessage
-                      id="update_trip.trip"
-                      defaultMessage="Trip"
-                    /></label>
-                    <Field
-                      name="trip_type"
-                      component={renderSelectList}
-                      data={[ 'round_trip', 'one_way_trip' ]}/>
-                  </div> */}
-                <Field
-                  name="departure_location"
-                  label={lang === "en" ? "Select departure location" : "Sélectionnez le lieu de départ"}
-                  type="text"
-                  className={"custom-field"}
-                  component={renderCitiesList}
+
+      <div className="modal fade"  id="updateTrip" tabIndex={-1} role="dialog" aria-hidden="true">
+        <div className="modal-dialog modal-dialog-centered  modal-xl" role="document">
+          <div className="modal-content" style={{height:"55%"}}>
+              <div className="modal-header p-4">
+                <FormattedMessage
+                  id="add_trip_modal.title"
+                  defaultMessage="Add Trip"
                 />
-                <Field
-                  name="destination_location"
-                  label={lang === "en" ? "Select destination location" : "Sélectionnez la destination"}
-                  type="text"
-                  className={"custom-field"}
-                  component={renderCitiesList}
-                />
-                <div>
-                  <label><FormattedMessage
-                    id="update_trip.departure_date"
-                    defaultMessage="Departure Date"
-                  /></label>
-                  <Field
-                    name="depart_date"
-                    showTime={false}
-                    component={renderDateTimePicker}
-                    min={new Date()}
-                  />
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div className="modal-body p-0">
+                <div className="login-content p-4">
+                {/* <Segment style={{ padding: "1em 0em" }} vertical> */}
+                  {/* <Grid verticalAlign="middle">
+                    <Grid.Row verticalAlign="middle" className={"add-trip-grid"}> */}
+                      <form onSubmit={handleSubmit(this.submitForm)} className={"update-trip-form"}>
+                        <CSRFToken/>
+                        <Segment>
+                            {/* <div>
+                              <label><FormattedMessage
+                                id="update_trip.trip"
+                                defaultMessage="Trip"
+                              /></label>
+                              <Field
+                                name="trip_type"
+                                component={renderSelectList}
+                                data={[ 'round_trip', 'one_way_trip' ]}/>
+                            </div> */}
+                          <Field
+                            name="departure_location"
+                            label={lang === "en" ? "Select departure location" : "Sélectionnez le lieu de départ"}
+                            type="text"
+                            className={"custom-field"}
+                            component={renderCitiesList}
+                          />
+                          <Field
+                            name="destination_location"
+                            label={lang === "en" ? "Select destination location" : "Sélectionnez la destination"}
+                            type="text"
+                            className={"custom-field"}
+                            component={renderCitiesList}
+                          />
+                          <div>
+                            <label><FormattedMessage
+                              id="update_trip.departure_date"
+                              defaultMessage="Departure Date"
+                            /></label>
+                            <Field
+                              name="depart_date"
+                              showTime={false}
+                              component={renderDateTimePicker}
+                              min={new Date()}
+                            />
+                          </div>
+                          {this.props.trip_type === "round_trip" ? <div>
+                            <label><FormattedMessage
+                              id="update_trip.return_date"
+                              defaultMessage="Return Date"
+                            /></label>
+                            <Field
+                              name="comeback_date"
+                              showTime={false}
+                              component={renderDateTimePicker}
+                              min={new Date(this.props.depart_date)}
+                            />
+                          </div> : "" }
+                        <Button
+                          size="large"
+                          type="submit"
+                          loading={loading}
+                          disabled={invalid}
+                          className={"buttoncolor transport-add-trip-button"}
+                          title={"Please login to add a new trip"}
+                        >
+                        <FormattedMessage
+                          id="update_trip.btn_title"
+                          defaultMessage="Update your trip"
+                        />
+                        </Button>
+                        </Segment>
+                      </form>
+                    {/* </Grid.Row>
+                  </Grid> */}
+                {/* </Segment> */}
                 </div>
-                {this.props.trip_type === "round_trip" ? <div>
-                  <label><FormattedMessage
-                    id="update_trip.return_date"
-                    defaultMessage="Return Date"
-                  /></label>
-                  <Field
-                    name="comeback_date"
-                    showTime={false}
-                    component={renderDateTimePicker}
-                    min={new Date(this.props.depart_date)}
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onClick={() => this.props.updateTripCloseModal()} >
+                  <FormattedMessage
+                    id="update_trip.cancel"
+                    defaultMessage="Cancel"
                   />
-                </div> : "" }
-              <Button
-                size="large"
-                type="submit"
-                loading={loading}
-                disabled={invalid}
-                className={"buttoncolor transport-add-trip-button"}
-                title={"Please login to add a new trip"}
-              >
-              <FormattedMessage
-                id="update_trip.btn_title"
-                defaultMessage="Update your trip"
-              />
-              </Button>
-              </Segment>
-            </form>
-          </Grid.Row>
-        </Grid>
-      </Segment>
-      </Modal.Content>
-      <Modal.Actions>
-        <Button negative onClick={() => this.props.updateTripCloseModal()} primary>
-        <FormattedMessage
-          id="update_trip.cancel"
-          defaultMessage="Cancel"
-        /><Icon name='cancel' />
-        </Button>
-      </Modal.Actions>
-      </Modal>
+                </button>
+              </div>
+          </div>
+        </div>
+      </div>
     );
   }
 }

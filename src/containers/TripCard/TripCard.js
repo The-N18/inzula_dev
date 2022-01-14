@@ -17,6 +17,10 @@ import { updateTripOpenModal } from "../../store/actions/updateTripModal";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
 import {openCompleteProfileModal} from "../../store/actions/completeProfileModal";
 
+import $ from 'jquery';
+window.jQuery = $;
+require('bootstrap');
+
 class TripCard extends React.Component {
 
   handleViewDetails = () => {
@@ -59,6 +63,7 @@ class TripCard extends React.Component {
       "comeback_date": comeback_date !== null ? new Date(comeback_date) : '',
     };
     this.props.updateTripOpenModal(data, pk);
+    $("#updateTrip").modal("show");
   }
 
   tripTypeToName = (type, options) => {
@@ -76,52 +81,28 @@ class TripCard extends React.Component {
     const {depart_date, img, comeback_date, departure_location, destination_location, creator_user_name, no_book} = this.props;
 
     return (
-      <Card raised fluid centered className={"home-text-img-card-grid  trip-card-max-h"}>
-      <Grid>
-        <Grid.Row>
-          <Grid.Column mobile={16} tablet={6} computer={3}>
-            <Image centered src={!no_book || img ? get_img_url(img) : backend_url() + '/static/images/default_trips_image.jpg'} verticalAlign="middle" size="massive" className={"trip-card-img"}/>
-          </Grid.Column>
-          <Grid.Column mobile={16} tablet={10} computer={11}>
-            <Segment basic textAlign="left">
-              {/* <Header as='h4' className={"booking-card-title"}>{this.tripTypeToName(trip_type, tripTypeOptions)}</Header> */}
-              <p className={"trip-card-item-style"}><FormattedMessage
-                id="trip_card.username"
-                defaultMessage="User name"
-              /> {creator_user_name}</p>
-              {comeback_date ? <p className={"trip-card-item-style"}><FormattedMessage
-                id="trip_card.comeback_date"
-                defaultMessage="Comeback date"
-              /> <FormattedDate
-                  value={comeback_date}
-                  year="numeric"
-                  month="short"
-                  day="numeric"
-                  weekday="short"
-                /></p> : ''}
-              {depart_date ? <p className={"trip-card-item-style"}><FormattedMessage
-                id="trip_card.depart_date"
-                defaultMessage="Depart date"
-              /> <FormattedDate
-                  value={depart_date}
-                  year="numeric"
-                  month="short"
-                  day="numeric"
-                  weekday="short"
-                /></p> : ''}
-              <p className={"trip-card-item-style"}><FormattedMessage
-                id="trip_card.departure"
-                defaultMessage="Departure"
-              /> {departure_location && departure_location['label'] ? departure_location['label'] : ''}</p>
-              <p className={"trip-card-item-style"}><FormattedMessage
-                id="trip_card.destination"
-                defaultMessage="Destination"
-              /> {destination_location && destination_location['label'] ? destination_location['label'] : ''}</p>
-            </Segment>
-          </Grid.Column>
-          <Grid.Column mobile={16} tablet={16} computer={2}>
-            <Segment textAlign={"center"} basic>
-            {no_book ? '' : <Button
+      
+      <tr>
+          <td>
+            <span class="list-img">
+              {/* <img src={!no_book || img ? get_img_url(img) : backend_url() + '/static/images/default_trips_image.jpg'} alt="" class="w-50"/> */}
+              <Image centered src={!no_book || img ? get_img_url(img) : backend_url() + '/static/images/default_trips_image.jpg'} verticalAlign="middle" size="tiny" className={"trip-card-img"}/>
+            </span>
+          </td>
+          <td>{creator_user_name}</td>
+          <td>
+            {depart_date ? <FormattedDate
+                value={depart_date}
+                year="numeric"
+                month="short"
+                day="numeric"
+                weekday="short"
+              /> : ''}
+          </td>
+          <td>{departure_location && departure_location['label'] ? departure_location['label'] : ''}</td>
+          <td>{destination_location && destination_location['label'] ? destination_location['label'] : ''}</td>
+
+          {no_book ? '' : <Button
               size="large"
               className={"buttoncolor trip-card-button"}
               onClick={this.handleBook.bind(this)}
@@ -130,15 +111,19 @@ class TripCard extends React.Component {
                 defaultMessage="Book"
               />
             </Button>}
-            {!no_book ? '' : <Segment compact basic>
-              <Button color='blue' icon='edit' className={"trip-card-delete-button"} onClick={this.updateTrip.bind(this)}/>
-              <Button color='orange' icon='trash' className={"white-trash"} onClick={this.deleteTrip.bind(this)}/>
-            </Segment>}
-            </Segment>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-      </Card>
+
+          {!no_book ? '' : <React.Fragment>
+            <td>
+              <a onClick={this.updateTrip.bind(this)}><i class="fa fa-pencil-square-o text-success" aria-hidden="true"></i></a>
+            </td>
+            <td>
+                <a onClick={this.deleteTrip.bind(this)}><i class="fa fa-trash-alt text-danger" aria-hidden="true"></i></a>
+            </td>
+          </React.Fragment>}       
+
+              
+        
+      </tr>
     );
   }
 }

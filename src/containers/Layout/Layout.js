@@ -47,6 +47,8 @@ import SendPackageModal from "../../containers/SendPackageModal/SendPackageModal
 import AddTripModal from "../../containers/AddTripModal/AddTripModal";
 
 import $ from "jquery";
+import BookingDetailsModal from "../BookingDetailsModal/BookingDetailsModal";
+
 window.jQuery = $;
 
 
@@ -221,7 +223,7 @@ class CustomLayout extends React.Component {
       <DeleteBookingConfirm />
       <DeleteTripConfirm />
       <UpdateTripForm />
-      {/* <UpdateBooking /> */}
+      <UpdateBooking />
       <ProposePriceOnBooking />
       <ConfirmBookingPrice />
       <PaymentOptions />
@@ -324,11 +326,13 @@ class CustomLayout extends React.Component {
         {/* login Modal */}
         <LoginParentModal />
 
+        
+        <BookingDetailsModal/>
 
 
 
 
-        {/*UpdateBooking Modal */}
+        {/*
         <div className="modal fade"  id="updateBooking" tabIndex={-1} role="dialog" aria-hidden="true">
           <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
             <div className="modal-content">
@@ -347,7 +351,7 @@ class CustomLayout extends React.Component {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
 
 

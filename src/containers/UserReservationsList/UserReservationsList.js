@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Redirect } from "react-router-dom";
 import {
   Button,
   Segment,
@@ -13,6 +14,8 @@ import BookingCard from "../../containers/BookingCard/BookingCard";
 import $ from "jquery";
 import {FormattedMessage} from 'react-intl'
 import { openModal } from "../../store/actions/sendPackageModal";
+
+
 
 class UserReservationsList extends React.Component {
   constructor(props) {
@@ -63,39 +66,20 @@ class UserReservationsList extends React.Component {
 
   handleOpenSendPackageModal = () => {
     this.props.openPackageModal();
+    $("#sendPackage").modal("show");
   }
-
-/***************************************** */
-
-  COLUMNS=[
-    {
-      Header: 'Image',
-    },
-    {
-      Header: 'Nom',
-    },
-    {
-      Header: 'Description',
-    },
-    {
-      Header: "Date d'arrivée",
-    },
-    {
-      Header: 'Ville de départ',
-    },
-    {
-      Header: "Ville d'arrivée",
-    },
-    {
-      Header: 'Prix',
-    }
-  ]
+  
 
 
   render() {
-    const { reservations, next_url, count, selectable, editable } = this.props;
+    const {profileType, reservations, next_url, count, selectable, editable } = this.props;
     const dataLength = reservations ? reservations.length : 0;
     console.log("IN USERRESERVATIONSLIST", reservations);
+
+    // if (profileType=="carrier") {
+    //   return <Redirect to="/dashboard/profile" />;
+    // }
+
     return (
       <React.Fragment>
         {reservations.length === 0 ? <div><FormattedMessage
@@ -107,191 +91,65 @@ class UserReservationsList extends React.Component {
                 id="user_reservations.add_booking"
                 defaultMessage="Add a booking"
             /></Button>
-            </div> : <div className="dashboard-list-box with-icons">
-        <div className="dashboard-title">
-          <h4 className="mb-0">Liste de mes colis</h4>
-          <p className="mb-0">Vous retrouvez ici la liste des colis que </p>
-        </div>
-        <div className="table-responsive table-desi">
-          <table className="basic-table table table-hover">
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Description</th>
-                <th>Date d'arrivée</th>
-                <th>Ville de départ</th>
-                <th>Ville d'arrivée</th>
-                <th>Prix</th>
-                <th>Modifier</th>
-                <th>Supprimer</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><span className="list-img"><img src="images/reviewer/1.jpg" alt="" className="w-50" /></span>
-                </td>
-                <td><a href="#"><span>Un petit smartphone de marque samsung.</span></a></td>
-                <td>25 Juin 2021</td>
-                <td>Paris</td>
-                <td>Yaoundé</td>
-                <td>
-                  <a href="listing-edit.html"><i className="fa fa-eye text-primary" aria-hidden="true" /></a>
-                </td>
-                <td>
-                  <a href="listing-edit.html"><i className="fa fa-pencil-square-o text-success" aria-hidden="true" /></a>
-                </td>
-                <td>
-                  <a href="#"><i className="fa fa-trash-alt text-danger" aria-hidden="true" /></a>
-                </td>
-              </tr>
+            </div> : <React.Fragment>
+            <Button color='green' onClick={this.handleOpenSendPackageModal.bind(this)}>
+              <FormattedMessage
+                id="user_reservations.add_booking"
+                defaultMessage="Add a booking"
+              />
+            </Button><br/><br/>
+            <div className="dashboard-list-box with-icons">
+              <div className="dashboard-title">
+                <h4 className="mb-0">Liste de mes colis</h4>
+                <p className="mb-0">Vous retrouvez ici la liste des colis que vous avez ajouté </p>
+              </div>
+              <div className="table-responsive table-desi">
+                <table className="basic-table table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Image</th>
+                      <th>Nom</th>
+                      <th>Date d'arrivée</th>
+                      <th>Ville de départ</th>
+                      <th>Ville d'arrivée</th>
+                      <th>Détail</th>
+                      <th>Modifier</th>
+                      <th>Supprimer</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {reservations.map((item, index) => (
+                      <BookingCard
+                        key={index}
+                        selectable={selectable}
+                        title={item["product"]["name"]}
+                        pk={item["pk"]}
+                        recipient_name={item["product"]["recipient_name"]}
+                        recipient_phone_number={item["product"]["recipient_phone_number"]}
+                        request_by_username={item["request_by_username"]}
+                        status={item["status"]}
+                        arrival_date={item["product"]["arrival_date"]}
+                        description={item["product"]["description"]}
+                        departure_location={item["product"]["departure_location"]}
+                        destination_location={item["product"]["destination_location"]}
+                        weight={item["product"]["weight"]}
+                        space={item["product"]["space"]}
+                        price={item["product"]["price"]}
+                        product_category={item["product"]["product_category"]}
+                        proposed_price={item["product"]["proposed_price"]}
+                        product_details={item["product"]}
+                        img={item["product"]["images"].length === 0 ? '' : item["product"]["images"][0]['image']}
+                        images={buildImagesLinkList(item["product"]["images"])}
+                        editable={editable}/>
+                ))}
 
 
-
-
-
-              <tr>
-                <td><span className="list-img"><img src="images/reviewer/2.jpg" alt="" className="w-50" /></span>
-                </td>
-                <td><a href="#"><span>Un petit smartphone</span></a></td>
-                <td>25 Juin 2021</td>
-                <td>Paris</td>
-                <td>Yaoundé</td>
-                <td>
-                  <a href="listing-edit.html"><i className="fa fa-eye text-primary" aria-hidden="true" /></a>
-                </td>
-                <td>
-                  <a href="listing-edit.html"><i className="fa fa-pencil-square-o text-success" aria-hidden="true" /></a>
-                </td>
-                <td>
-                  <a href="#"><i className="fa fa-trash-alt text-danger" aria-hidden="true" /></a>
-                </td>
-              </tr>
-              <tr>
-                <td><span className="list-img"><img src="images/reviewer/3.jpg" alt="" className="w-50" /></span>
-                </td>
-                <td><a href="#"><span>Un petit smartphone</span></a></td>
-                <td>25 Juin 2021</td>
-                <td>Paris</td>
-                <td>Yaoundé</td>
-                <td>
-                  <a href="listing-edit.html"><i className="fa fa-eye text-primary" aria-hidden="true" /></a>
-                </td>
-                <td>
-                  <a href="listing-edit.html"><i className="fa fa-pencil-square-o text-success" aria-hidden="true" /></a>
-                </td>
-                <td>
-                  <a href="#"><i className="fa fa-trash-alt text-danger" aria-hidden="true" /></a>
-                </td>
-              </tr>
-              <tr>
-                <td><span className="list-img"><img src="images/reviewer/4.jpg" alt="" className="w-50" /></span>
-                </td>
-                <td><a href="#"><span>Un petit smartphone</span></a></td>
-                <td>25 Juin 2021</td>
-                <td>Paris</td>
-                <td>Yaoundé</td>
-                <td>
-                  <a href="listing-edit.html"><i className="fa fa-eye text-primary" aria-hidden="true" /></a>
-                </td>
-                <td>
-                  <a href="listing-edit.html"><i className="fa fa-pencil-square-o text-success" aria-hidden="true" /></a>
-                </td>
-                <td>
-                  <a href="#"><i className="fa fa-trash-alt text-danger" aria-hidden="true" /></a>
-                </td>
-              </tr>
-              <tr>
-                <td><span className="list-img"><img src="images/reviewer/5.jpg" alt="" className="w-50" /></span>
-                </td>
-                <td><a href="#"><span>Un petit smartphone</span></a></td>
-                <td>25 Juin 2021</td>
-                <td>Paris</td>
-                <td>Yaoundé</td>
-                <td>
-                  <a href="listing-edit.html"><i className="fa fa-eye text-primary" aria-hidden="true" /></a>
-                </td>
-                <td>
-                  <a href="listing-edit.html"><i className="fa fa-pencil-square-o text-success" aria-hidden="true" /></a>
-                </td>
-                <td>
-                  <a href="#"><i className="fa fa-trash-alt text-danger" aria-hidden="true" /></a>
-                </td>
-              </tr>
-              <tr>
-                <td><span className="list-img"><img src="images/reviewer/1.jpg" alt="" className="w-50" /></span>
-                </td>
-                <td><a href="#"><span>Un petit smartphone</span></a></td>
-                <td>25 Juin 2021</td>
-                <td>Paris</td>
-                <td>Yaoundé</td>
-                <td>
-                  <a href="listing-edit.html"><i className="fa fa-eye text-primary" aria-hidden="true" /></a>
-                </td>
-                <td>
-                  <a href="listing-edit.html"><i className="fa fa-pencil-square-o text-success" aria-hidden="true" /></a>
-                </td>
-                <td>
-                  <a href="#"><i className="fa fa-trash-alt text-danger" aria-hidden="true" /></a>
-                </td>
-              </tr>
-              <tr>
-                <td><span className="list-img"><img src="images/reviewer/2.jpg" alt="" className="w-50" /></span>
-                </td>
-                <td><a href="#"><span>Un petit smartphone</span></a></td>
-                <td>25 Juin 2021</td>
-                <td>Paris</td>
-                <td>Yaoundé</td>
-                <td>
-                  <a href="listing-edit.html"><i className="fa fa-eye text-primary" aria-hidden="true" /></a>
-                </td>
-                <td>
-                  <a href="listing-edit.html"><i className="fa fa-pencil-square-o text-success" aria-hidden="true" /></a>
-                </td>
-                <td>
-                  <a href="#"><i className="fa fa-trash-alt text-danger" aria-hidden="true" /></a>
-                </td>
-              </tr>
-              <tr>
-                <td><span className="list-img"><img src="images/reviewer/3.jpg" alt="" className="w-50" /></span>
-                </td>
-                <td><a href="#"><span>Un petit smartphone</span></a></td>
-                <td>25 Juin 2021</td>
-                <td>Paris</td>
-                <td>Yaoundé</td>
-                <td>
-                  <a href="listing-edit.html"><i className="fa fa-eye text-primary" aria-hidden="true" /></a>
-                </td>
-                <td>
-                  <a href="listing-edit.html"><i className="fa fa-pencil-square-o text-success" aria-hidden="true" /></a>
-                </td>
-                <td>
-                  <a href="#"><i className="fa fa-trash-alt text-danger" aria-hidden="true" /></a>
-                </td>
-              </tr>
-              <tr>
-                <td><span className="list-img"><img src="images/reviewer/4.jpg" alt="" className="w-50" /></span>
-                </td>
-                <td><a href="#"><span>Un dernier smartphone</span></a></td>
-                <td>25 Juin 2021</td>
-                <td>Paris</td>
-                <td>Yaoundé</td>
-                <td>
-                  <a href="listing-edit.html"><i className="fa fa-eye text-primary" aria-hidden="true" /></a>
-                </td>
-                <td>
-                  <a href="listing-edit.html"><i className="fa fa-pencil-square-o text-success" aria-hidden="true" /></a>
-                </td>
-                <td>
-                  <a href="#"><i className="fa fa-trash-alt text-danger" aria-hidden="true" /></a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-            
-            
-            }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+      </React.Fragment>
+      }
 
       </React.Fragment>
     );
@@ -306,6 +164,7 @@ const mapStateToProps = state => {
     reservations: state.userReservations.reservations,
     next_url: state.userReservations.next_url,
     count: state.userReservations.count,
+    profileType: state.userInfo.profileType,
   };
 };
 

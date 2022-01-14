@@ -5,6 +5,7 @@ import {checkAuthTimeout} from "./auth";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
 import {getInitialTrips} from "./userTrips";
 import {closeAddTripModal} from "./addTripModal";
+import $ from 'jquery';
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -54,6 +55,7 @@ export const tripAddition = (created_by, departure_location, destination_locatio
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(addTripSuccess(res.data));
         dispatch(closeAddTripModal());
+        $("#addTrip").modal("hide");
         dispatch(getInitialTrips(userProfileId));
         dispatch(createNotification({
           message: 'Your trip has been added',

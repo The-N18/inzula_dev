@@ -135,6 +135,7 @@ export const updateBooking = (dta) => {
         }));
         dispatch(getInitialReservations(userProfileId));
         dispatch(updateBookingCloseModal());
+        $("#updateBooking").modal("hide");
       })
       .catch(err => {
         dispatch(createNotification({

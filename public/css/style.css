@@ -2059,7 +2059,9 @@ nav.navbar.navbar-default.navbar-sticky-in .logo-black {
     .modal-open .modal .modal-dialog {
       max-width: 550px;
       top: 0%; }
-    .modal-open .modal#updateBooking .modal-dialog, .modal-open .modal#sendPackage .modal-dialog {
+    .modal-open .modal#updateBooking .modal-dialog,
+    .modal-open .modal#sendPackage .modal-dialog,
+    .modal-open .modal#bookingDetails .modal-dialog{
       max-width: 1140px;
       top: 0%; }
       .modal-open .modal .modal-dialog .modal-content {
@@ -2084,7 +2086,10 @@ nav.navbar.navbar-default.navbar-sticky-in .logo-black {
           padding: 0;
           z-index: 9;
           transition: all ease-in-out 0.5s; }
-        .modal-open .modal#updateBooking .modal-dialog .modal-content button.close, .modal-open .modal#sendPackage .modal-dialog .modal-content button.close {
+        .modal-open .modal#updateBooking .modal-dialog .modal-content button.close, 
+        .modal-open .modal#sendPackage .modal-dialog .modal-content button.close,
+        .modal-open .modal#bookingDetails .modal-dialog .modal-content button.close,
+        .modal-open .modal#addTrip .modal-dialog .modal-content button.close {
           background: #A10115;
           color: #fff;
           position: absolute;

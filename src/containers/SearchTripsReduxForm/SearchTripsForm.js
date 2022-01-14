@@ -15,7 +15,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { openModal, closeModal } from "../../store/actions/sendPackageModal";
 import { createNotif } from "../../store/actions/appConfig";
 import { Field, reduxForm, formValueSelector } from 'redux-form'
-import {renderDateTimePicker, renderCitiesList} from "../../containers/ReduxForm/renderField";
+import {renderDateTimePicker, renderCitiesList, renderDateTimePickerDown} from "../../containers/ReduxForm/renderField";
 import $ from "jquery";
 import {FormattedMessage} from 'react-intl'
 import {NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
@@ -147,7 +147,7 @@ class SearchTripsForm extends React.Component {
               <Field
                 name="travel_date"
                 showTime={false}
-                component={renderDateTimePicker}
+                component={renderDateTimePickerDown}
               />
               </div>
             </div>
@@ -170,45 +170,45 @@ class SearchTripsForm extends React.Component {
           </form>
           <Divider/>
           {trips && trips.length === 0 ? <div> <FormattedMessage
-            id="search_trips.no_results"
-            defaultMessage="No search results. Please try a more general search."
-          /></div> : ''}
-          <div
-            id="scrollableDiv"
-            style={{
-              height: 800,
-              overflow: 'auto',
-              borderTop: '1px solid #f1f1f1',
-              boxShadow: '0px 0 10px #d4d4d5',
-              display: trips && trips.length > 0 ? "block": "none"
-            }}
-          >
-            <InfiniteScroll
-              dataLength={trips ? trips.length : 0}
-              next={this.fetchMoreData}
-              hasMore={count !== null && next_url !== null}
-              loader={<h4>Loading...</h4>}
-              scrollableTarget="scrollableDiv"
-            >
-              {trips && trips.length > 0 ? trips.map((item, index) => (
-                <div style={{
-                  height: this.getDivHeight.bind(this),
-                  margin: 6,
-                  padding: 8
-                }} key={index}>
-                  <TripCard
-                    trip_type={item["trip_type"]}
-                    comeback_date={item["comeback_date"]}
-                    depart_date={item["depart_date"]}
-                    departure_location={item["departure_location"]}
-                    destination_location={item["destination_location"]}
-                    img={item["created_by"]["profile_pic"] === null ? '' : item["created_by"]["profile_pic"]}
-                    creator_user_name={item["creator_user_name"]}
-                    trip_id={item["pk"]}
-                    no_book={false} />
-                </div>
-              )) : ''}
-            </InfiniteScroll>
+              id="search_trips.no_results"
+              defaultMessage="No search results. Please try a more general search."
+            /></div> : <React.Fragment>
+            <div className="dashboard-list-box with-icons">
+              <div className="dashboard-title">
+                <h4 className="mb-0">Liste de voyageurs disponibles</h4>
+                {/* <p className="mb-0">Vous retrouvez ici la liste des voyages ajoutés par d'autres utilisateurs</p> */}
+              </div>
+              <div className="table-responsive table-desi">
+                <table className="basic-table table table-hover">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Nom</th>
+                      <th>Date de départ</th>
+                      <th>Ville de départ</th>
+                      <th>Ville d'arrivée</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {trips.map((item, index) => (
+                      <TripCard
+                      trip_type={item["trip_type"]}
+                      comeback_date={item["comeback_date"]}
+                      depart_date={item["depart_date"]}
+                      departure_location={item["departure_location"]}
+                      destination_location={item["destination_location"]}
+                      img={item["created_by"]["profile_pic"] === null ? '' : item["created_by"]["profile_pic"]}
+                      creator_user_name={item["creator_user_name"]}
+                      trip_id={item["pk"]}
+                      no_book={false} />
+                ))}
+
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
             <Header as="h4" textAlign="center">
             <FormattedMessage
               id="search_trips.cant_find_trip"
@@ -223,7 +223,8 @@ class SearchTripsForm extends React.Component {
               defaultMessage=" to save a booking request so you can be later contacted by travellers."
             />
           </Header>
-          </div>
+        </React.Fragment>
+          }
         </Segment>
       </Container>
       

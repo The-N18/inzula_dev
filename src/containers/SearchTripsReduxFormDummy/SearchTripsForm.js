@@ -79,12 +79,12 @@ class SearchTripsForm extends React.Component {
     console.log("IN handleOpenSendPackageModal ")
     
     if(this.props.authenticated) {
-      // this.props.openPackageModal();
+      this.props.openPackageModal();
       $("#sendPackage").modal("show");
     } else {
       this.props.createNotif("send_package.login_msg", "Please login to create a booking request.", NOTIFICATION_TYPE_WARNING);
+      this.props.openLoginModal();
       $("#login").modal("show");
-      // this.props.openLoginModal();
     }
   }
 

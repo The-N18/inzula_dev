@@ -61,7 +61,10 @@ class UserTripsList extends React.Component {
 
   handleOpenAddTripModal = () => {
     this.props.openAddTripModal();
+    $("#addTrip").modal("show");
   }
+
+
 
 
   render() {
@@ -77,36 +80,34 @@ class UserTripsList extends React.Component {
               id="user_trips.add_trip"
               defaultMessage="Add a trip"
           /></Button>
-          </div> : <div
-        id="scrollableDiv"
-        style={{
-          height: 400,
-          overflow: 'auto',
-        }}
-      >
-        {/*Put the scroll bar always on the bottom*/}
-        <InfiniteScroll
-          dataLength={trips.length}
-          next={this.fetchMoreData}
-          hasMore={count !== null && next_url !== null}
-          loader={<h4><FormattedMessage
-            id="user_trips.loading"
-            defaultMessage="Loading..."
-          /></h4>}
-          scrollableTarget="scrollableDiv"
-        >
+          </div> : <React.Fragment>
           <Button color='green' onClick={this.handleOpenAddTripModal.bind(this)}>
             <FormattedMessage
               id="user_trips.add_trip"
               defaultMessage="Add a trip"
-          /></Button>
-          {trips.map((item, index) => (
-            <div style={{
-              height: this.getDivHeight.bind(this),
-              margin: 6,
-              padding: 8
-            }} key={index}>
-              <TripCard
+          /></Button><br/><br/>
+          <div className="dashboard-list-box with-icons">
+        <div className="dashboard-title">
+          <h4 className="mb-0">Liste de mes voyages</h4>
+          <p className="mb-0">Vous retrouvez ici la liste des voyages que vous avez ajouté</p>
+        </div>
+        <div className="table-responsive table-desi">
+          <table className="basic-table table table-hover">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Nom</th>
+                <th>Date de départ</th>
+                <th>Ville de départ</th>
+                <th>Ville d'arrivée</th>
+                <th>Modifier</th>
+                <th>Supprimer</th>
+              </tr>
+            </thead>
+            <tbody>
+            {trips.map((item, index) => (
+                <TripCard
+                key={index}
                 trip_type={item["trip_type"]}
                 pk={item["pk"]}
                 comeback_date={item["comeback_date"]}
@@ -117,10 +118,15 @@ class UserTripsList extends React.Component {
                 creator_user_name={item["creator_user_name"]}
                 no_book={true}
                 editable={true}/>
-            </div>
           ))}
-        </InfiniteScroll>
-      </div>}
+
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+      </React.Fragment>
+    }
 
       </Segment>
     );

@@ -13,40 +13,59 @@ import AddTripForm from "../AddTripFormRedux/AddTripForm";
 import {FormattedMessage} from 'react-intl'
 // import 'react-widgets/dist/css/react-widgets.css';
 
+import $ from 'jquery';
+window.jQuery = $;
+require('bootstrap');
+
+
 class AddTripModal extends React.Component {
 
+ closeAddTripModal = () => {
+    $("#addTrip").modal("hide");
+}
 
 render() {
   const { open } = this.props;
   return (
-    <Modal
-    closeIcon
-      centered={false}
-      open={open}
-      onClose={() => this.props.closeAddTripModal()}
-      onOpen={() => this.props.openAddTripModal()}
-      size='tiny'
-    >
-      <Modal.Header>
-      <FormattedMessage
-        id="add_trip_modal.title"
-        defaultMessage="Add Trip"
-      />
-      </Modal.Header>
-      <Modal.Content scrolling>
-    <Segment vertical>
-      <AddTripForm />
-    </Segment>
-    </Modal.Content>
-    <Modal.Actions>
-      <Button negative onClick={() => this.props.openAddTripModal()} primary>
-      <FormattedMessage
-        id="add_trip_modal.cancel"
-        defaultMessage="Cancel"
-      /><Icon name='cancel' />
-      </Button>
-    </Modal.Actions>
-    </Modal>
+        <div className="modal fade"  id="addTrip" tabIndex={-1} role="dialog" aria-hidden="true">
+            <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
+              <div className="modal-content" style={{height:"55%"}}>
+                  <div className="modal-header p-4">
+                    <FormattedMessage
+                      id="add_trip_modal.title"
+                      defaultMessage="Add Trip"
+                    />
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+                  <div className="modal-body p-0">
+                    <div className="login-content p-4">
+                        {/* <div className="dashboard-content">
+                            <div className="add-listing">   
+                            <div className="listing-main">
+                                <div className="addlist-inner mb-3">
+                                <div className="addlist-title">
+                                    <h4 className="m-0"><i className="fa fa-cube pr-2" />Détails du colis</h4>
+                                </div>
+                                <div className="addlist-content bg-white">
+                                <p>PAPEUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU</p>
+                     
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div> */}
+                        <AddTripForm isModal={true} /> 
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-dismiss="modal" onClick={closeAddTripModal} >Annuler</button>
+                  </div>
+              </div>
+            </div>
+        </div>
+  
   );
 }
 }

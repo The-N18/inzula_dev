@@ -1,13 +1,15 @@
 import React from "react";
-import {
-  Button,
-  Modal
-} from "semantic-ui-react";
+// import {
+//   Button,
+//   Modal
+// } from "semantic-ui-react";
 import { connect } from "react-redux";
 // import styles from './deletetripconfirm.css';
 import { openDeleteTripConfirm, closeDeleteTripConfirm } from "../../store/actions/deleteTripConfirm";
 import { deleteTrip } from "../../store/actions/addTrip";
 import {FormattedMessage} from 'react-intl';
+
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 class DeleteTripConfirm extends React.Component {
 
@@ -19,38 +21,43 @@ class DeleteTripConfirm extends React.Component {
   render() {
     const { open } = this.props;
     return (
-      <Modal
-      closeIcon
-        centered={false}
-        open={open}
-        onClose={() => this.props.closeDeleteTripConfirm()}
-        onOpen={() => this.props.openDeleteTripConfirm()}
-        size='tiny'
-      >
-      <Modal.Header><FormattedMessage
-                id="delete_trip.title"
-                defaultMessage="Delete trip"
-              /></Modal.Header>
-      <Modal.Content>
-        <p><FormattedMessage
-                id="delete_trip.msg"
-                defaultMessage="Are you sure you want to delete this trip?"
-              /></p>
-      </Modal.Content>
-      <Modal.Actions>
-        <Button negative onClick={() => this.props.closeDeleteTripConfirm()}>
+
+    <Modal 
+      isOpen={open} 
+      onOpened={() => this.props.openDeleteTripConfirm()}
+      onClosed={() => this.props.closeDeleteTripConfirm()}
+      size="sm"
+      scrollable
+
+    >
+      <ModalHeader toggle={() => this.props.closeCompleteProfileModal()}>
         <FormattedMessage
-                id="delete_trip.no"
-                defaultMessage="No"
-              />
+          id="delete_trip.title"
+          defaultMessage="Delete trip"
+        />
+      </ModalHeader>
+      <ModalBody>
+        <p>
+          <FormattedMessage
+            id="delete_trip.msg"
+            defaultMessage="Are you sure you want to delete this trip?"
+          />
+        </p>
+      </ModalBody>
+      <ModalFooter>
+        <Button variant="contained" color="success" onClick={this.handleDelete.bind(this)}>
+          <FormattedMessage
+            id="delete_trip.yes"
+            defaultMessage="Yes"
+          />
         </Button>
-        <Button positive onClick={this.handleDelete.bind(this)}>
-        <FormattedMessage
-                id="delete_trip.yes"
-                defaultMessage="Yes"
-              />
+        <Button variant="contained" color="danger" onClick={() => this.props.closeDeleteTripConfirm()}>
+          <FormattedMessage
+            id="delete_trip.no"
+            defaultMessage="No"
+          />
         </Button>
-      </Modal.Actions>
+      </ModalFooter>
     </Modal>
     );
   }

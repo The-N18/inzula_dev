@@ -24,9 +24,11 @@ import { openValidateBooking, setBookingValidateBooking } from "../../store/acti
 import { openCancelBooking, setBookingCancelBooking, getRefundAmt } from "../../store/actions/cancelBooking";
 import { openProductDeliveryModal } from "../../store/actions/productDeliveryModal";
 import { Carousel } from "react-responsive-carousel";
-// import 'react-responsive-carousel/lib/styles/carousel.css';
+import 'react-responsive-carousel/lib/styles/carousel.css';
 
-import $ from "jquery";
+import $ from 'jquery';
+window.jQuery = $;
+require('bootstrap');
 
 class BookingCard extends React.Component {
 
@@ -97,6 +99,8 @@ class BookingCard extends React.Component {
   }
 
   updateBooking = () => {
+    console.log("In update booking");
+
     const {title, pk, product_details} = this.props;
     const data = {
       "product_name": title,
@@ -113,7 +117,11 @@ class BookingCard extends React.Component {
       "product_description": product_details['description'],
       "images": mimic_img(product_details['images']),
     };
+    
     this.props.updateBookingOpenModal(data, pk);
+
+    $("#updateBooking").modal("show");
+    
   }
 
   proposePriceOnBooking = () => {
@@ -160,6 +168,29 @@ class BookingCard extends React.Component {
     return 260;
   }
 
+  openBookingDetailsModal(){
+    const {title, pk, product_details} = this.props;
+    const data = {
+      "product_name": title,
+      "departure_location": product_details['departure_location'],
+      "destination_location": product_details['destination_location'],
+      "delivery_date": new Date(product_details['arrival_date']),
+      "recipient_phone_number": product_details['recipient_phone_number'],
+      "recipient_name": product_details['recipient_name'],
+      "product_value": product_details['price'],
+      "product_category": product_details['product_category'],
+      "product_size": product_details['space'],
+      "product_weight": product_details['weight'],
+      "proposed_price": product_details['proposed_price'],
+      "product_description": product_details['description'],
+      "images": mimic_img(product_details['images']),
+    };
+
+    this.props.updateBookingOpenModal(data, pk);
+    $("#bookingDetails").modal("show");
+  }
+
+
   render() {
 
     const {pk, title, description, images,
@@ -169,159 +200,154 @@ class BookingCard extends React.Component {
     const colored = validate_decline ? confirmed_by_sender ? 'green' : 'orange' : '';
 
     return (
-      <Card raised fluid centered className={"home-text-img-card-grid booking-card-max-h"} color={colored}>
-        <Grid>
-          <Grid.Row>
-          {selectable ? <Grid.Column mobile={1} tablet={1} computer={1}>
-            <Segment compact basic>
-              <Checkbox onChange={this.handleToggleCheckbox.bind(this, pk)}/>
-            </Segment>
-          </Grid.Column> : ''}
-          <Grid.Column mobile={16} tablet={16} computer={4}>
-            <Segment basic textAlign="right">
-              {images && images.length === 0 && <Image centered src={backend_url() + '/static/images/default_booking_image.png'} verticalAlign="middle" size="massive" className={"booking-card-img"}/>}
-            {images && images.length > 0 ? <Carousel autoPlay>
-              {images.map((item, index) => {
-                return (
-                  <Image centered alt="" src={item.url} verticalAlign="middle" size="massive" className={"booking-card-img"}/>
-                );
-              })}
-            </Carousel> : ''}
-            </Segment>
-          </Grid.Column>
-          <Grid.Column mobile={16} tablet={8} computer={selectable && editable ? 5 : 6}>
-            <Segment basic textAlign="left">
-              <Header as='h4' className={"booking-card-title"}>{title}</Header>
-              <p className={"booking-card-items-style"}><FormattedMessage
-                id="booking_card.description"
-                defaultMessage="Description:"
-              /> {description}</p>
-              <p className={"booking-card-items-style"}><FormattedMessage
-                id="booking_card.username"
-                defaultMessage="Username:"
-              /> {request_by_username}</p>
-              <p className={"booking-card-items-style"}><FormattedMessage
-                id="booking_card.arrival_date"
-                defaultMessage="Arrival date:"
-              /> <FormattedDate
-                  value={arrival_date}
-                  year="numeric"
-                  month="short"
-                  day="numeric"
-                  weekday="short"
-                /></p>
-              <p className={"booking-card-items-style"}><FormattedMessage
-                id="booking_card.departure_loc"
-                defaultMessage="Departure:"
-              /> {departure_location && departure_location["label"] ? departure_location["label"] : ""}</p>
-              <p className={"booking-card-items-style"}><FormattedMessage
-                id="booking_card.pickup_loc"
-                defaultMessage="Pickup location:"
-              /> {destination_location && destination_location["label"] ? destination_location["label"] : ""}</p>
-              <p className={"booking-card-items-style"}><FormattedMessage
-                id="booking_card.recipient_name"
-                defaultMessage="Recipient:"
-              /> {recipient_name}</p>
-            </Segment>
-          </Grid.Column>
-          <Grid.Column mobile={16} tablet={8} computer={4}>
-            <Segment basic textAlign="left">
-              <p className={"booking-card-items-style"}><FormattedMessage
-                id="booking_card.weight"
-                defaultMessage="Weight:"
-              /> {optionToText(weight, lang === "fr" ? weightOptionsFr : weightOptions)}</p>
-              <p className={"booking-card-items-style"}><FormattedMessage
-                id="booking_card.size"
-                defaultMessage="Size:"
-              /> {optionToText(space, lang === "fr" ? sizeOptionsFr : sizeOptions)}</p>
-              <p className={"booking-card-items-style"}><FormattedMessage
-                id="booking_card.category"
-                defaultMessage="Category:"
-              /> {optionToText(product_category, lang === "fr" ? categoryOptionsFr : categoryOptions)}</p>
-              <p className={"booking-card-items-style"}><FormattedMessage
-                id="booking_card.value"
-                defaultMessage="Value:"
-              /> {optionToText(price, lang === "fr" ? valueOptionsFr : valueOptions)}</p>
-              <p className={"booking-card-items-style"}><FormattedMessage
-                id="booking_card.price"
-                defaultMessage="Price:"
-              /> {proposed_price} euros</p>
-              <p className={"booking-card-items-style"}><FormattedMessage
-                id="booking_card.recipient_phone_number"
-                defaultMessage="Recipient Phone:"
-              /> {recipient_phone_number}</p>
-            </Segment>
-          </Grid.Column>
-            {can_propose ? <Segment compact basic className={"sub-btn-style"}>
-              <Button color='blue' icon='money' className={"white-trash"} onClick={this.proposePriceOnBooking.bind(this)}/>
+      <React.Fragment>
+        
+
+        <tr>
+          <td>
+            <span class="list-img">
+              {/* <img src="/images/reviewer/1.jpg" alt="" class="w-50"/> */}
+              {images && images.length === 0 && <img src={backend_url() + '/static/images/default_booking_image.png'} alt="" class="w-50"/>}
+              {/* {images && images.length > 0 ? <Carousel autoPlay>
+                {images.map((item, index) => {
+                  return (
+                    // <Image centered alt="" src={item.url} verticalAlign="middle" size="massive" className={"booking-card-img"}/>
+                    <img src={item.url} alt="" class="w-50"/>
+                  );
+                })}
+              </Carousel> : ''} */}
+              {images && images.length > 0 ? 
+                images.map((item, index) => {
+                  return (
+                    // <Image centered alt="" src={item.url} verticalAlign="middle" size="massive" className={"booking-card-img"}/>
+                    <img src={item.url} alt="" class="w-50"/>
+                  );
+                })
+          : ''}
+            </span>
+          </td>
+          <td>{title}</td>
+          <td>
+            <FormattedDate
+              value={arrival_date}
+              year="numeric"
+              month="short"
+              day="numeric"
+              weekday="short"
+            />
+          </td>
+          <td>{departure_location && departure_location["label"] ? departure_location["label"] : ""}</td>
+          <td>{destination_location && destination_location["label"] ? destination_location["label"] : ""}</td>
+          <td>
+              <a onClick={this.openBookingDetailsModal.bind(this)}><i class="fa fa-eye text-primary" aria-hidden="true"></i></a>
+          </td>
+
+
+          {can_propose ? <Segment compact basic className={"sub-btn-style"}>
+            <Button color='blue' icon='money' className={"white-trash"} onClick={this.proposePriceOnBooking.bind(this)}/>
             </Segment> : ''}
-            {editable && status !== "boo" && status !== "awa" && status !== "col" && status !== "del" ? <Grid.Column mobile={2} tablet={2} computer={2}>
-              <Segment compact basic className={"sub-btn-style"}>
-                <Button color='blue' icon='edit' className={"booking-card-delete-button"}  onClick={this.updateBooking.bind(this)}/>
-                <Button color='orange' icon='trash' className={"white-trash"} onClick={this.deleteBooking.bind(this)}/>
-                {status === "boo" || status === "awa" ? <Button size="mini"
-                  color='orange'
-                  className={"white-trash"}
-                  onClick={this.cancelBooking.bind(this)}
-                ><FormattedMessage
-                  id="booking_card.cancel_booking"
-                  defaultMessage="Cancel"
-                />
-                </Button> : ''}
-              </Segment>
-            </Grid.Column> : ''}
-            {editable && status !== "del" && status !== "cre" ? <Grid.Column mobile={2} tablet={2} computer={2}>
-              <Segment compact basic className={"sub-btn-style"}>
-                {status === "boo" || status === "awa" ? <Button size="mini"
-                  color='orange'
-                  className={"white-trash"}
-                  onClick={this.cancelBooking.bind(this)}
-                ><FormattedMessage
-                  id="booking_card.cancel_booking"
-                  defaultMessage="Cancel"
-                />
-                </Button> : ''}
-              </Segment>
-            </Grid.Column> : ''}
-            {validate_decline ? <Grid.Column mobile={2} tablet={2} computer={2}>
-              <Segment compact basic className={"sub-btn-style"}>
-                <Button size="mini"
-                  color='blue'
-                  className={"booking-card-delete-button"}
-                  onClick={this.validateBooking.bind(this)}
-                  disabled={confirmed_by_sender || status === "awa" || status === "del"}
-                ><FormattedMessage
-                  id="booking_card.validate"
-                  defaultMessage="Validate"
-                />
-                </Button>
+            {editable && status !== "boo" && status !== "awa" && status !== "col" && status !== "del" ? <React.Fragment>
+                <td>
+                  <a onClick={this.updateBooking.bind(this)}><i class="fa fa-pencil-square-o text-success" aria-hidden="true"></i></a>
+                </td>
+                <td>
+                    <a onClick={this.deleteBooking.bind(this)}><i class="fa fa-trash-alt text-danger" aria-hidden="true"></i></a>
+                </td>
 
-                {confirmed_by_sender ? <Button size="mini"
-                  color='blue'
-                  className={"booking-card-delete-button"}
-                  onClick={this.productDelivered.bind(this)}
-                  disabled={status === "del"}
-                ><FormattedMessage
-                  id="booking_card.product_delivered"
-                  defaultMessage="Product delivered"
-                />
-                </Button> : ""}
+                {status === "boo" || status === "awa" ? <td>
+                      <Button size="mini"
+                        color='orange'
+                        className={"white-trash"}
+                        onClick={this.cancelBooking.bind(this)}
+                      ><FormattedMessage
+                        id="booking_card.cancel_booking"
+                        defaultMessage="Cancel"
+                      />
+                      </Button>
+                    </td> : ''}
+            </React.Fragment> : ''}
 
-                <Button size="mini"
-                  color='orange'
-                  className={"white-trash"}
-                  onClick={this.declineBooking.bind(this)}
-                  disabled={status === "del"}
-                ><FormattedMessage
-                  id="booking_card.decline"
-                  defaultMessage="Decline"
-                />
-                </Button>
-              </Segment>
-            </Grid.Column> : ''}
-          </Grid.Row>
-        </Grid>
-      </Card>
+            {editable && status !== "del" && status !== "cre" ? <React.Fragment>
+                  {status === "boo" || status === "awa" ? <td>
+                      <Button size="mini"
+                        color='orange'
+                        className={"white-trash"}
+                        onClick={this.cancelBooking.bind(this)}
+                      ><FormattedMessage
+                        id="booking_card.cancel_booking"
+                        defaultMessage="Cancel"
+                      />
+                      </Button>
+                    </td> : ''}
+        
+              </React.Fragment> : ''}
+
+            {validate_decline ? <React.Fragment mobile={2} tablet={2} computer={2}>
+                <td>
+                  <Button size="mini"
+                    color='blue'
+                    className={"booking-card-delete-button"}
+                    onClick={this.validateBooking.bind(this)}
+                    disabled={confirmed_by_sender || status === "awa" || status === "del"}
+                  ><FormattedMessage
+                    id="booking_card.validate"
+                    defaultMessage="Validate"
+                  />
+                  </Button>
+                </td>
+                
+
+                {confirmed_by_sender ? <td>
+                    <Button size="mini"
+                      color='blue'
+                      className={"booking-card-delete-button"}
+                      onClick={this.productDelivered.bind(this)}
+                      disabled={status === "del"}
+                      ><FormattedMessage
+                        id="booking_card.product_delivered"
+                        defaultMessage="Product delivered"
+                      />
+                    </Button>
+                  </td> : ""}
+
+                <td>
+                  <Button size="mini"
+                    color='orange'
+                    className={"white-trash"}
+                    onClick={this.declineBooking.bind(this)}
+                    disabled={status === "del"}
+                  ><FormattedMessage
+                    id="booking_card.decline"
+                    defaultMessage="Decline"
+                  />
+                  </Button>
+                </td>
+                
+            </React.Fragment> : ''}   
+        
+      </tr>
+
+
+      {/* <BookingDetailsModal
+          title= {title}
+          pk={pk}
+          recipient_name={recipient_name}
+          recipient_phone_number={recipient_phone_number}
+          request_by_username={request_by_username}
+          status={status}
+          arrival_date={arrival_date}
+          description={description}
+          departure_location={departure_location}
+          destination_location={destination_location}
+          weight={weight}
+          space={space}
+          price={price}
+          product_category={product_category}
+          proposed_price={proposed_price}
+          images = {images}
+        /> */}
+      </React.Fragment>
+     
     );
   }
 }
