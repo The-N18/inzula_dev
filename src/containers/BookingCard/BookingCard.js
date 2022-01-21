@@ -10,7 +10,7 @@ import {
   Button,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-// import styles from './bookingcard.css';
+import styles from './bookingcard.module.css';
 import { backend_url, mimic_img } from "../../configurations";
 import { selectBooking } from "../../store/actions/selectReservationsModal";
 import { openDeleteBookingConfirm, setBookingDeleteBookingConfirm } from "../../store/actions/deleteBookingConfirm";
@@ -39,16 +39,18 @@ class BookingCard extends React.Component {
   state = {
     isMobile: false,
     isTablet: false,
-    width: 0
+    width: 0,
+    isBoxChecked: false
   };
 
+
   handleScreenSize = () => {
-    this.setState({width: $(window).width()});
+    // this.setState({width: $(window).width()});
     if($(window).width() < 768) {
-      this.setState({ isMobile: true, isTablet: false });
+      // this.setState({ isMobile: true, isTablet: false });
     }
     if($(window).width() >= 768) {
-      this.setState({ isTablet: true, isMobile: false });
+      // this.setState({ isTablet: true, isMobile: false });
     }
   }
   componentWillUnmount() {
@@ -70,6 +72,10 @@ class BookingCard extends React.Component {
       selectedBookings.splice(index, 1);
     }
     this.props.selectBooking(selectedBookings);
+
+    this.setState({
+      isBoxChecked : !this.state.isBoxChecked
+    })
   }
 
   deleteBooking = () => {
@@ -129,6 +135,7 @@ class BookingCard extends React.Component {
     if(authenticated) {
       this.props.setBookingRequestId(pk);
       this.props.openProposePriceOnBooking();
+      $("#proposePriceOnBooking").modal("show");
     } else {
       createNotification({
         message: 'Please login to propose a price on this request.',
@@ -169,7 +176,7 @@ class BookingCard extends React.Component {
   }
 
   openBookingDetailsModal(){
-    const {title, pk, product_details} = this.props;
+    const {title, pk, product_details, selectable} = this.props;
     const data = {
       "product_name": title,
       "departure_location": product_details['departure_location'],
@@ -187,7 +194,21 @@ class BookingCard extends React.Component {
     };
 
     this.props.updateBookingOpenModal(data, pk);
-    $("#bookingDetails").modal("show");
+
+    if(selectable){
+      $('#selectReservations').off('hidden.bs.modal')
+      $('#selectReservations').on('hidden.bs.modal', function () {
+        $('#bookingDetails').modal("show");
+      });
+      $('#bookingDetails').on('hidden.bs.modal', function () {
+        $('#selectReservations').modal("show");
+      });
+
+      $("#selectReservations").modal("hide");
+    }else{
+      $("#bookingDetails").modal("show");
+    }
+    
   }
 
 
@@ -196,9 +217,9 @@ class BookingCard extends React.Component {
     const {pk, title, description, images,
       arrival_date, departure_location, selectable, editable, recipient_phone_number, recipient_name,
       destination_location, weight, space, price, product_category, request_by_username,
-      proposed_price, validate_decline, can_propose, lang, status, confirmed_by_sender} = this.props;
+      proposed_price, validate_decline, can_propose, lang, status, confirmed_by_sender, isCancleClicked} = this.props;
     const colored = validate_decline ? confirmed_by_sender ? 'green' : 'orange' : '';
-
+      console.log("BOOOOOOOOOOX3",isCancleClicked)
     return (
       <React.Fragment>
         
@@ -242,10 +263,16 @@ class BookingCard extends React.Component {
               <a onClick={this.openBookingDetailsModal.bind(this)}><i class="fa fa-eye text-primary" aria-hidden="true"></i></a>
           </td>
 
+          {selectable ? <td mobile={1} tablet={1} computer={1}>
+            <Segment compact basic>
+              <Checkbox checked={isCancleClicked? this.state.isBoxChecked=false : this.state.isBoxChecked} onClick={this.handleToggleCheckbox.bind(this, pk)}/>
+            </Segment>
+          </td> : ''}
 
-          {can_propose ? <Segment compact basic className={"sub-btn-style"}>
-            <Button color='blue' icon='money' className={"white-trash"} onClick={this.proposePriceOnBooking.bind(this)}/>
-            </Segment> : ''}
+
+          {can_propose ? <td><Segment compact basic className={"sub-btn-style"}>
+          <Button color='blue' icon='money' className={"white-trash"} onClick={this.proposePriceOnBooking.bind(this)}/>
+            </Segment></td> : ''}
             {editable && status !== "boo" && status !== "awa" && status !== "col" && status !== "del" ? <React.Fragment>
                 <td>
                   <a onClick={this.updateBooking.bind(this)}><i class="fa fa-pencil-square-o text-success" aria-hidden="true"></i></a>
@@ -327,25 +354,6 @@ class BookingCard extends React.Component {
         
       </tr>
 
-
-      {/* <BookingDetailsModal
-          title= {title}
-          pk={pk}
-          recipient_name={recipient_name}
-          recipient_phone_number={recipient_phone_number}
-          request_by_username={request_by_username}
-          status={status}
-          arrival_date={arrival_date}
-          description={description}
-          departure_location={departure_location}
-          destination_location={destination_location}
-          weight={weight}
-          space={space}
-          price={price}
-          product_category={product_category}
-          proposed_price={proposed_price}
-          images = {images}
-        /> */}
       </React.Fragment>
      
     );
@@ -355,6 +363,7 @@ class BookingCard extends React.Component {
 const mapStateToProps = state => {
   return {
     selected: state.selectReservationsModal.selected,
+    isCancleClicked: state.selectReservationsModal.isCancleClicked,
     authenticated: state.auth.token !== null,
     lang: state.appConfig.lang
   };

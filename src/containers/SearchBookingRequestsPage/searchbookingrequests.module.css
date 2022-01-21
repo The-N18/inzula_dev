@@ -1,0 +1,54 @@
+/* .transportpge {
+  width: auto !important;
+}
+
+.search-button {
+  margin: 0px auto !important;
+  display: block !important;
+  margin-top: 10px !important;
+} */
+
+.form-content{
+  box-shadow: 0px 0px 30px #cccccc57;
+    width: 74%;
+    position: relative;
+    top: 22px;
+    right: 0;
+    z-index: 9;
+    background: #fff;
+    padding: 30px;
+    border-radius: 0px;
+    z-index: 2; 
+}
+
+.form-title{
+  background: #A10115;
+  padding: 10px 20px;
+  position: relative;
+  top: -40px;
+  left: 0; 
+}
+
+.nir-btn{
+  position: relative;
+  /* z-index: 1; */
+  font-size: 14px;
+  max-width: 12em ;
+  text-align: center;
+  padding: 12px 24px;
+  text-transform: capitalize;
+  transition: all ease-in-out 0.5s;
+  background: #0791be;
+  color: #fff;
+  display: inline-block;
+  border-radius: 0px;
+  box-shadow: 0px 0px 0px 4px rgba(255, 255, 255, 0.1); }
+  .nir-btn:hover{
+    background: #A10115;
+    transition: all ease-in-out 0.5s;
+    color: #fff; }
+
+.date-picker{
+  position: relative;
+  top: -20px;
+}

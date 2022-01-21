@@ -164,7 +164,7 @@ class AddTripForm extends React.Component {
                         <Field
                           name="depart_date"
                           showTime={false}
-                          component={isModal?renderDateTimePickerDown:renderDateTimePicker}
+                          component={isModal?renderDateTimePickerDown:renderDateTimePickerDown}
                           min={new Date()}
                         />
                       </div>

@@ -1,7 +1,8 @@
 import React from "react";
 import {
   Button,
-  Modal
+  Modal,
+  Container
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 // import styles from './paymentformmodal.css';
@@ -15,6 +16,7 @@ import {renderField} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
 import CSRFToken from "../../containers/CSRFToken";
 import {FormattedMessage} from 'react-intl'
+import $ from "jquery";
 
 class PaymentFormModal extends React.Component {
 
@@ -32,118 +34,135 @@ class PaymentFormModal extends React.Component {
     // this.props.getInitialCardData(values);
   }
 
+  handleClosePaymentFormModal = () => {
+
+    $('#paymentForm').off('hidden.bs.modal')
+    $('#paymentForm').on('hidden.bs.modal', function () {
+      $('#selectCreditCard').modal("show");
+    });
+    $('#paymentForm').modal('hide');
+    this.props.closePaymentFormModal();
+  }
+
   render() {
     const { open, handleSubmit, price, invalid, loading } = this.props;
     return (
-      <Modal
-      closeIcon
-        centered={false}
-        open={open}
-        onClose={() => this.props.closePaymentFormModal()}
-        onOpen={() => this.props.openPaymentFormModal()}
-        size='tiny'
-      >
-      <Modal.Header><FormattedMessage
-              id="payment_form.title"
-              defaultMessage="Payment"
-            /></Modal.Header>
-      <Modal.Content>
-        <p><FormattedMessage
+
+      <div className="modal fade"  id="paymentForm" tabIndex={-1} role="dialog" aria-hidden="true">
+      <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
+        <div className="modal-content">
+          <div className="modal-header p-4">
+            <Modal.Header>
+              <FormattedMessage
+                id="payment_form.title"
+                defaultMessage="Payment"
+              />
+            </Modal.Header>
+          </div>
+          <div className="modal-body p-0">
+            <Container>
+
+            <p><FormattedMessage
               id="payment_form.price_msg"
               values={{ price: `${price+(price*0.25)}`}}
             /></p>
 
-        <form onSubmit={handleSubmit(this.submitForm)}>
-          <CSRFToken/>
-          <div>
-            <label htmlFor="card_f_name"><FormattedMessage
-              id="payment_form.card_f_name"
-              defaultMessage="Card holder first name(s)"
-            /></label>
-          <Field
-            name="card_f_name"
-            component="input"
-            type="text"
-            component={renderField}
-          />
+            <form onSubmit={handleSubmit(this.submitForm)}>
+              <CSRFToken/>
+              <div>
+                <label htmlFor="card_f_name"><FormattedMessage
+                  id="payment_form.card_f_name"
+                  defaultMessage="Card holder first name(s)"
+                /></label>
+              <Field
+                name="card_f_name"
+                component="input"
+                type="text"
+                component={renderField}
+              />
+              </div>
+              <div>
+                <label htmlFor="card_l_name"><FormattedMessage
+                  id="payment_form.card_l_name"
+                  defaultMessage="Card holder last name(s)"
+                /></label>
+              <Field
+                name="card_l_name"
+                component="input"
+                type="text"
+                component={renderField}
+              />
+              </div>
+              <div>
+                <label htmlFor="card_number"><FormattedMessage
+                  id="payment_form.card_number"
+                  defaultMessage="Card number"
+                /></label>
+              <Field
+                name="card_number"
+                component="input"
+                type="number"
+                component={renderField}
+              />
+              </div>
+              <div>
+                <label htmlFor="exp_date_mm"><FormattedMessage
+                  id="payment_form.exp_date_mm"
+                  defaultMessage="MM(expiration)"
+                /></label>
+              <Field
+                name="exp_date_mm"
+                component="input"
+                type="number"
+                component={renderField}
+              />
+              </div>
+              <div>
+                <label htmlFor="exp_date_yy"><FormattedMessage
+                  id="payment_form.exp_date_yy"
+                  defaultMessage="YY"
+                /></label>
+              <Field
+                name="exp_date_yy"
+                component="input"
+                type="number"
+                component={renderField}
+              />
+              </div>
+              <div>
+                <label htmlFor="cvc"><FormattedMessage
+                  id="payment_form.cvc"
+                  defaultMessage="CVC"
+                /></label>
+              <Field
+                name="cvc"
+                component="input"
+                type="number"
+                component={renderField}
+              />
+              </div>
+              <Button positive type="submit" disabled={invalid || loading}>
+                <FormattedMessage
+                  id="payment_form.pay"
+                  defaultMessage="Pay"
+                />
+              </Button>
+            </form>
+                    
+            </Container>
           </div>
-          <div>
-            <label htmlFor="card_l_name"><FormattedMessage
-              id="payment_form.card_l_name"
-              defaultMessage="Card holder last name(s)"
-            /></label>
-          <Field
-            name="card_l_name"
-            component="input"
-            type="text"
-            component={renderField}
-          />
+          <div class="modal-footer">
+            <Button negative onClick={this.handleClosePaymentFormModal.bind(this)}>
+              <FormattedMessage
+                id="payment_form.cancel"
+                defaultMessage="Cancel"
+              />
+            </Button>
           </div>
-          <div>
-            <label htmlFor="card_number"><FormattedMessage
-              id="payment_form.card_number"
-              defaultMessage="Card number"
-            /></label>
-          <Field
-            name="card_number"
-            component="input"
-            type="number"
-            component={renderField}
-          />
-          </div>
-          <div>
-            <label htmlFor="exp_date_mm"><FormattedMessage
-              id="payment_form.exp_date_mm"
-              defaultMessage="MM(expiration)"
-            /></label>
-          <Field
-            name="exp_date_mm"
-            component="input"
-            type="number"
-            component={renderField}
-          />
-          </div>
-          <div>
-            <label htmlFor="exp_date_yy"><FormattedMessage
-              id="payment_form.exp_date_yy"
-              defaultMessage="YY"
-            /></label>
-          <Field
-            name="exp_date_yy"
-            component="input"
-            type="number"
-            component={renderField}
-          />
-          </div>
-          <div>
-            <label htmlFor="cvc"><FormattedMessage
-              id="payment_form.cvc"
-              defaultMessage="CVC"
-            /></label>
-          <Field
-            name="cvc"
-            component="input"
-            type="number"
-            component={renderField}
-          />
-          </div>
-          <Button positive type="submit" disabled={invalid || loading}>
-            <FormattedMessage
-              id="payment_form.pay"
-              defaultMessage="Pay"
-            />
-          </Button>
-        </form>
-      </Modal.Content>
-      <Modal.Actions>
-        <Button negative onClick={() => this.props.closePaymentFormModal()}>
-          <FormattedMessage
-              id="payment_form.cancel"
-              defaultMessage="Cancel"
-            />
-        </Button>
-      </Modal.Actions>
-    </Modal>
+        </div>
+      </div>
+    </div>
+
     );
   }
 }

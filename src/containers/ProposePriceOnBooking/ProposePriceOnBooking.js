@@ -1,6 +1,7 @@
 import React from "react";
 import {
   Button,
+  Container,
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
@@ -10,6 +11,8 @@ import {Field, reset, reduxForm} from 'redux-form';
 import {renderField} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
 import {FormattedMessage} from 'react-intl'
+
+import $ from "jquery";
 
 class ProposePriceOnBooking extends React.Component {
 
@@ -21,53 +24,57 @@ class ProposePriceOnBooking extends React.Component {
   render() {
     const { open, handleSubmit } = this.props;
     return (
-      <Modal
-      closeIcon
-        centered={false}
-        open={open}
-        onClose={() => this.props.closeProposePriceOnBooking()}
-        onOpen={() => this.props.openProposePriceOnBooking()}
-        size='tiny'
-      >
-      <Modal.Header>
-      <FormattedMessage
-            id="propose_price.title"
-            defaultMessage="Propose price on booking"
-          />
-          </Modal.Header>
-      <Modal.Content>
-        <p>
-        <FormattedMessage
-            id="propose_price.sub_title"
-            defaultMessage="Enter the amount you propose to carry this product"
-          />
-          </p>
-        <form onSubmit={handleSubmit(this.submitForm)}>
-          <Field
-            name="price"
-            component="input"
-            type="number"
-            placeholder="000"
-            label="Price"
-            component={renderField}
-          />
-          <Button positive type="submit">
-          <FormattedMessage
-            id="propose_price.propose_price"
-            defaultMessage="Propose price (euros)"
-          />
-          </Button>
-        </form>
-      </Modal.Content>
-      <Modal.Actions>
-        <Button negative onClick={() => this.props.closeProposePriceOnBooking()}>
-        <FormattedMessage
-            id="propose_price.cancel"
-            defaultMessage="Cancel"
-          />
-        </Button>
-      </Modal.Actions>
-    </Modal>
+
+      <div className="modal fade"  id="proposePriceOnBooking" tabIndex={-1} role="dialog" aria-hidden="true">
+        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
+          <div className="modal-content">
+            <div className="modal-header p-4">
+              <Modal.Header>
+                <FormattedMessage
+                  id="propose_price.title"
+                  defaultMessage="Propose price on booking"
+                />
+              </Modal.Header>
+            </div>
+            <div className="modal-body p-0">
+              <Container>
+                <p>
+                  <FormattedMessage
+                    id="propose_price.sub_title"
+                    defaultMessage="Enter the amount you propose to carry this product"
+                  />
+                </p>
+                <form onSubmit={handleSubmit(this.submitForm)}>
+                  <Field
+                    name="price"
+                    component="input"
+                    type="number"
+                    placeholder="000"
+                    label="Price"
+                    component={renderField}
+                  />
+                  <Button positive type="submit">
+                  <FormattedMessage
+                    id="propose_price.propose_price"
+                    defaultMessage="Propose price (euros)"
+                  />
+                  </Button>
+                </form>
+              </Container>
+              
+            </div>
+            <div class="modal-footer">
+            <Button negative onClick={() => {$("#proposePriceOnBooking").modal("hide"); this.props.closeProposePriceOnBooking()}}>
+              <FormattedMessage
+                id="propose_price.cancel"
+                defaultMessage="Cancel"
+              />
+            </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     );
   }
 }

@@ -653,7 +653,7 @@ button {
 
 .nir-btn, .nir-btn-black {
   position: relative;
-  z-index: 1;
+  /* z-index: 1; */
   font-size: 14px;
   text-align: center;
   padding: 12px 24px;
@@ -2061,7 +2061,8 @@ nav.navbar.navbar-default.navbar-sticky-in .logo-black {
       top: 0%; }
     .modal-open .modal#updateBooking .modal-dialog,
     .modal-open .modal#sendPackage .modal-dialog,
-    .modal-open .modal#bookingDetails .modal-dialog{
+    .modal-open .modal#bookingDetails .modal-dialog,
+    .modal-open .modal#selectReservations .modal-dialog{
       max-width: 1140px;
       top: 0%; }
       .modal-open .modal .modal-dialog .modal-content {

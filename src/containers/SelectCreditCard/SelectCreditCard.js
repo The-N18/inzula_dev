@@ -60,6 +60,12 @@ class SelectCreditCard extends React.Component {
   }
 
   payWithNewCard = () => {
+
+    $('#selectCreditCard').off('hidden.bs.modal')
+    $('#selectCreditCard').on('hidden.bs.modal', function () {
+      $('#paymentForm').modal("show");
+    });
+    $('#selectCreditCard').modal('hide');
     this.props.openPaymentFormModal();
     this.props.selectSingleCard(null);
   }
@@ -81,85 +87,94 @@ class SelectCreditCard extends React.Component {
       return val;
     }
 
+  handleCloseSelectCreditCard = () => {
+    $('#selectCreditCard').off('hidden.bs.modal')
+    $('#selectCreditCard').on('hidden.bs.modal', function () {
+      $('#paymentOptions').modal("show");
+    });
+    $('#selectCreditCard').modal('hide');
+    this.props.closeSelectCreditCard();
+  }
+
   render() {
     const { open, loading, cards, cardId } = this.props;
     return (
-      <Modal
-      closeIcon
-        centered={false}
-        open={open}
-        onClose={() => this.props.closeSelectCreditCard()}
-        onOpen={() => this.props.openSelectCreditCard()}
-        size='tiny'
-      >
-      <Modal.Header>
-        <p><FormattedMessage
-        id="select_credit_card.title"
-        defaultMessage="Select credit card"
-      /></p>
-      <Button
-        size="large"
-        className={"buttoncolor select-trip-top-button"}
-        onClick={this.payWithNewCard.bind(this)}
-      ><FormattedMessage
-          id="select_credit_card.pay_with_new"
-          defaultMessage="Pay with new card"
-        />
-      </Button>
-      </Modal.Header>
-      <Modal.Content>
-      <Segment basic>
-      {cards.length === 0 ? <div><FormattedMessage
-        id="my_funds.no_cards"
-        defaultMessage="You do not have any cards."
-      /></div> : <div
-        id="scrollableDiv"
-        style={{
-          height: 400,
-          overflow: 'auto',
-        }}
-      >
-      {cards.map((item, index) => (
-        <div style={{
-          height: this.getDivHeight.bind(this),
-          margin: 6,
-          padding: 8
-        }} key={index}>
-          <CreditCardCard
-            pk={item["id"]}
-            creation_date={item["creation_date"]}
-            expiration_date={item["expiration_date"]}
-            card_type={item["card_type"]}
-            alias={item["alias"]}
-            country={item["country"]}
-            product={item["product"]}
-            bank_code={item["bank_code"]}
-            active={item["active"]}
-            currency={item["currency"]}
-            validity={item["validity"]}
-            user={item["user"]}
-            fingerprint={item["fingerprint"]}
-            onclick={this.selectCard.bind(this, item)}/>
-            </div>
-          ))}
-      </div>}
-      </Segment>
-      </Modal.Content>
-      <Modal.Actions>
-      <Button color='green' onClick={this.payWithCreditCard.bind(this)} disabled={cardId === null || loading}>
-      <FormattedMessage
-        id="select_credit_card.pay"
-        defaultMessage="Pay"
-      />
-      </Button>
-      <Button negative onClick={() => this.props.closeSelectCreditCard()}>
-      <FormattedMessage
-        id="select_credit_card.cancel"
-        defaultMessage="Cancel"
-      />
-      </Button>
-      </Modal.Actions>
-    </Modal>
+
+    <div className="modal fade"  id="selectCreditCard" tabIndex={-1} role="dialog" aria-hidden="true">
+      <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
+        <div className="modal-content">
+          <div className="modal-header p-4">
+            <Modal.Header>
+              <p><FormattedMessage
+                id="select_credit_card.title"
+                defaultMessage="Select credit card"
+              /></p>
+              <Button
+                size="large"
+                className={"buttoncolor select-trip-top-button"}
+                onClick={this.payWithNewCard.bind(this)}
+              ><FormattedMessage
+                  id="select_credit_card.pay_with_new"
+                  defaultMessage="Pay with new card"
+                />
+              </Button>
+            </Modal.Header>
+          </div>
+          <div className="modal-body p-0">
+            <Segment basic>
+              {cards.length === 0 ? <div><FormattedMessage
+                id="my_funds.no_cards"
+                defaultMessage="You do not have any cards."
+              /></div> : <div
+                id="scrollableDiv"
+                style={{
+                  height: 400,
+                  overflow: 'auto',
+                }}
+              >
+              {cards.map((item, index) => (
+                <div style={{
+                  height: this.getDivHeight.bind(this),
+                  margin: 6,
+                  padding: 8
+                }} key={index}>
+                  <CreditCardCard
+                    pk={item["id"]}
+                    creation_date={item["creation_date"]}
+                    expiration_date={item["expiration_date"]}
+                    card_type={item["card_type"]}
+                    alias={item["alias"]}
+                    country={item["country"]}
+                    product={item["product"]}
+                    bank_code={item["bank_code"]}
+                    active={item["active"]}
+                    currency={item["currency"]}
+                    validity={item["validity"]}
+                    user={item["user"]}
+                    fingerprint={item["fingerprint"]}
+                    onclick={this.selectCard.bind(this, item)}/>
+                    </div>
+                  ))}
+              </div>}
+            </Segment>
+          </div>
+          <div class="modal-footer">
+            <Button color='green' onClick={this.payWithCreditCard.bind(this)} disabled={cardId === null || loading}>
+              <FormattedMessage
+                id="select_credit_card.pay"
+                defaultMessage="Pay"
+              />
+            </Button>
+            <Button negative onClick={this.handleCloseSelectCreditCard.bind(this)}>
+              <FormattedMessage
+                id="select_credit_card.cancel"
+                defaultMessage="Cancel"
+              />
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
     );
   }
 }

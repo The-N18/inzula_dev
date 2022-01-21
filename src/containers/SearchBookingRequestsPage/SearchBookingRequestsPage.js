@@ -8,14 +8,14 @@ import {
   Grid,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-// import styles from './searchbookingrequests.css';
+import styles from './searchbookingrequests.module.css';
 // import 'rc-slider/assets/index.css';
 import MultiSelect from "@khanacademy/react-multi-select";
 // import 'react-widgets/dist/css/react-widgets.css';
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { withRouter } from "react-router-dom";
 import $ from "jquery";
-import {renderDateTimePicker, renderCitiesList} from "../../containers/ReduxForm/renderField";
+import {renderDateTimePicker, renderCitiesList, renderDateTimePickerDown} from "../../containers/ReduxForm/renderField";
 import { searchBookings, filterBookings, searchSuccessOverride } from "../../store/actions/searchBookings";
 import BookingCard from "../../containers/BookingCard/BookingCard";
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -96,8 +96,11 @@ class SearchBookingRequestsPage extends React.Component {
     const { loading, bookings, next_url, count, api_been_called, handleSubmit, lang } = this.props;
     const { product_category, product_size, weight, proposed_price } = this.state;
     return (
-      <Container className={"layoutcontainer"}>
-        <Segment basic style={{ padding: "8em 0em" }} textAlign="center">
+      <Container className={"layoutcontainer"} style={{ padding: "8em 0em"}}>
+        <Segment basic id="search_trips_section" style={{background:"#fff"}} >
+
+ 
+        <React.Fragment>
           <Header as="h4" textAlign="center">
             <FormattedMessage
               id="search_requests.title"
@@ -110,213 +113,248 @@ class SearchBookingRequestsPage extends React.Component {
             defaultMessage="No worries, you can add the country of departure and destination of your trip and thus access the requests for available expeditions."
           />
           </Header>
-          <form onSubmit={handleSubmit(this.submitForm)}>
-          <Grid>
-            <Grid.Row columns={3}>
-              <Grid.Column mobile={16} tablet={16} computer={5}>
-          <div>
-            <div>
-            <label>
-            <FormattedMessage
-              id="search_requests.departure"
-              defaultMessage="Departure"
-            />
-            </label>
-              <Field
-                name="departure_location"
-                label={lang === "en" ? "Select departure location" : "Sélectionnez le lieu de départ"}
-                type="text"
-                className={"custom-field"}
-                component={renderCitiesList}
-              />
+
+          <div className="form-main">
+            <div className="container">
+              <div className={`${styles["form-content"]}  w-100`}> 
+                <h3 className={`${styles["form-title"]} ${"text-center"} ${"d-inline"} ${"white"}`}>Trouvez un colis à expédier</h3>
+              {/* <div className="form-content w-100">  */}
+                {/* <h3 className="form-title text-center d-inline white">Trouvez un colis à expédier</h3> */}
+                {/* <div className="d-lg-flex align-items-center justify-content-between"> */}
+                  
+                {/* <form onSubmit={handleSubmit(this.submitForm)}> */}
+                  <Grid>
+                    <Grid.Row columns={3}>
+                      <Grid.Column mobile={16} tablet={16} computer={5}>
+                        <div>
+                          <div>
+                            <label>
+                            <FormattedMessage
+                              id="search_requests.departure"
+                              defaultMessage="Departure"
+                            />
+                            </label>
+                              <Field
+                                name="departure_location"
+                                label={lang === "en" ? "Select departure location" : "Sélectionnez le lieu de départ"}
+                                type="text"
+                                className={"custom-field"}
+                                component={renderCitiesList}
+                              />
+                          </div>
+                        </div>
+                    </Grid.Column>
+                    <Grid.Column mobile={16} tablet={16} computer={5}>
+                    <div>
+                      <div>
+                      <label>
+                      <FormattedMessage
+                        id="search_requests.destination"
+                        defaultMessage="Destination"
+                      />
+                      </label>
+                        <Field
+                          name="destination_location"
+                          label={lang === "en" ? "Select destination location" : "Sélectionnez la destination"}
+                          type="text"
+                          className={"custom-field"}
+                          component={renderCitiesList}
+                        />
+                        </div>
+                      </div>
+                      </Grid.Column>
+                      <Grid.Column mobile={16} tablet={16} computer={6}>
+                    <div>
+                    <label>
+                    <FormattedMessage
+                      id="search_requests.travel_date"
+                      defaultMessage="Travel date"
+                    />
+                    </label>
+                      <Field
+                        name="travel_date"
+                        className={`${styles["date-picker"]}`}
+                        showTime={false}
+                        component={renderDateTimePickerDown}
+                      />
+                    </div>
+                      </Grid.Column>
+                      </Grid.Row>
+                      </Grid>
+                      {api_been_called === true ? <Divider/> : ''}
+                      {api_been_called === true ? <Grid>
+                        <Grid.Row columns={2}>
+                          <Grid.Column mobile={16} tablet={8} computer={4}>
+                          <div className={"range-div"}>
+                            <p><FormattedMessage
+                              id="search_requests.price"
+                              defaultMessage="Price"
+                            /></p>
+                              <MultiSelect
+                                overrideStrings={{
+                                  selectSomeItems: lang === "en" ? "Filter by value...": "Filtrez par valeur...",
+                                  allItemsAreSelected: lang === "en" ? "All Items are Selected" : "Tous les éléments sont sélectionnés",
+                                  selectAll: lang === "en" ? "Select All": "Tout sélectionner",
+                                  search: lang === "en" ? "Search" : "Rechercher",
+                              }}
+                                options={lang === "en" ? valueMultiOptions: valueMultiOptionsFr}
+                                selected={proposed_price}
+                                onSelectedChanged={proposed_price => this.setState({proposed_price})}
+                              />
+                          </div>
+                          </Grid.Column>
+                          <Grid.Column mobile={16} tablet={8} computer={4}>
+                          <div className={"range-div"}>
+                            <p><FormattedMessage
+                              id="search_requests.weight"
+                              defaultMessage="Weight"
+                            /></p>
+                              <MultiSelect
+                              overrideStrings={{
+                                selectSomeItems: lang === "en" ? "Filter by weight...": "Filtrez par le poids...",
+                                allItemsAreSelected: lang === "en" ? "All Items are Selected" : "Tous les éléments sont sélectionnés",
+                                selectAll: lang === "en" ? "Select All": "Tout sélectionner",
+                                search: lang === "en" ? "Search" : "Rechercher",
+                            }}
+                                options={lang === "en" ? weightMultiOptions: weightMultiOptionsFr}
+                                selected={weight}
+                                onSelectedChanged={weight => this.setState({weight})}
+                              />
+                          </div>
+                          </Grid.Column>
+                          <Grid.Column mobile={16} tablet={8} computer={4}>
+                          <div className={"range-div"}>
+                          <p><FormattedMessage
+                            id="search_requests.p_size"
+                            defaultMessage="Product size"
+                          /></p>
+                            <MultiSelect
+                            overrideStrings={{
+                              selectSomeItems: lang === "en" ? "Filter by size...": "Filtrez par la taille...",
+                              allItemsAreSelected: lang === "en" ? "All Items are Selected" : "Tous les éléments sont sélectionnés",
+                              selectAll: lang === "en" ? "Select All": "Tout sélectionner",
+                              search: lang === "en" ? "Search" : "Rechercher",
+                          }}
+                              options={lang === "en" ? sizeMultiOptions: sizeMultiOptionsFr}
+                              selected={product_size}
+                              onSelectedChanged={product_size => this.setState({product_size})}
+                            />
+                            </div>
+                          </Grid.Column>
+                          <Grid.Column mobile={16} tablet={8} computer={4}>
+                          <div className={"range-div"}>
+                          <p><FormattedMessage
+                            id="search_requests.p_category"
+                            defaultMessage="Product category"
+                          /></p>
+                            <MultiSelect
+                            overrideStrings={{
+                              selectSomeItems: lang === "en" ? "Filter by category...": "Filtrez par la categorie...",
+                              allItemsAreSelected: lang === "en" ? "All Items are Selected" : "Tous les éléments sont sélectionnés",
+                              selectAll: lang === "en" ? "Select All": "Tout sélectionner",
+                              search: lang === "en" ? "Search" : "Rechercher",
+                          }}
+                              options={lang === "en" ? categoryMultiOptions: categoryMultiOptionsFr}
+                              selected={product_category}
+                              onSelectedChanged={product_category => this.setState({product_category})}
+                            />
+                            </div>
+                          </Grid.Column>
+                          </Grid.Row>
+                        </Grid> : ''}
+                    {/* <div className={"search-button"}>
+                      <Button
+                        size="big"
+                        loading={loading}
+                        disabled={loading}
+                        className={"buttoncolor search-button"}
+                      >
+                      <FormattedMessage
+                        id="search_requests.search"
+                        defaultMessage="Search"
+                      />
+                      </Button>   
+                    </div> */}
+                    <br/><br/>
+                    <div className="d-flex align-items-center justify-content-center">
+                        <a  onClick={handleSubmit(this.submitForm)} className={`${styles["nir-btn"]} w-100`}><i className="fa fa-search" /> Rechercher</a>
+                    </div>
+                    
+              
+                  {/* </form> */}
+
+
+                  
+                {/* </div> */}
               </div>
             </div>
-            </Grid.Column>
-            <Grid.Column mobile={16} tablet={16} computer={5}>
-            <div>
-              <div>
-              <label>
-              <FormattedMessage
-                id="search_requests.destination"
-                defaultMessage="Destination"
-              />
-              </label>
-                <Field
-                  name="destination_location"
-                  label={lang === "en" ? "Select destination location" : "Sélectionnez la destination"}
-                  type="text"
-                  className={"custom-field"}
-                  component={renderCitiesList}
-                />
-                </div>
-              </div>
-              </Grid.Column>
-              <Grid.Column mobile={16} tablet={16} computer={6}>
-            <div>
-            <label>
-            <FormattedMessage
-              id="search_requests.travel_date"
-              defaultMessage="Travel date"
-            />
-            </label>
-              <Field
-                name="travel_date"
-                showTime={false}
-                component={renderDateTimePicker}
-              />
-            </div>
-              </Grid.Column>
-              </Grid.Row>
-              </Grid>
-              {api_been_called === true ? <Divider/> : ''}
-              {api_been_called === true ? <Grid>
-                <Grid.Row columns={2}>
-                  <Grid.Column mobile={16} tablet={8} computer={4}>
-                  <div className={"range-div"}>
-                    <p><FormattedMessage
-                      id="search_requests.price"
-                      defaultMessage="Price"
-                    /></p>
-                      <MultiSelect
-                        overrideStrings={{
-                          selectSomeItems: lang === "en" ? "Filter by value...": "Filtrez par valeur...",
-                          allItemsAreSelected: lang === "en" ? "All Items are Selected" : "Tous les éléments sont sélectionnés",
-                          selectAll: lang === "en" ? "Select All": "Tout sélectionner",
-                          search: lang === "en" ? "Search" : "Rechercher",
-                      }}
-                        options={lang === "en" ? valueMultiOptions: valueMultiOptionsFr}
-                        selected={proposed_price}
-                        onSelectedChanged={proposed_price => this.setState({proposed_price})}
-                      />
-                  </div>
-                  </Grid.Column>
-                  <Grid.Column mobile={16} tablet={8} computer={4}>
-                  <div className={"range-div"}>
-                    <p><FormattedMessage
-                      id="search_requests.weight"
-                      defaultMessage="Weight"
-                    /></p>
-                      <MultiSelect
-                      overrideStrings={{
-                        selectSomeItems: lang === "en" ? "Filter by weight...": "Filtrez par le poids...",
-                        allItemsAreSelected: lang === "en" ? "All Items are Selected" : "Tous les éléments sont sélectionnés",
-                        selectAll: lang === "en" ? "Select All": "Tout sélectionner",
-                        search: lang === "en" ? "Search" : "Rechercher",
-                    }}
-                        options={lang === "en" ? weightMultiOptions: weightMultiOptionsFr}
-                        selected={weight}
-                        onSelectedChanged={weight => this.setState({weight})}
-                      />
-                  </div>
-                  </Grid.Column>
-                  <Grid.Column mobile={16} tablet={8} computer={4}>
-                  <div className={"range-div"}>
-                  <p><FormattedMessage
-                    id="search_requests.p_size"
-                    defaultMessage="Product size"
-                  /></p>
-                    <MultiSelect
-                    overrideStrings={{
-                      selectSomeItems: lang === "en" ? "Filter by size...": "Filtrez par la taille...",
-                      allItemsAreSelected: lang === "en" ? "All Items are Selected" : "Tous les éléments sont sélectionnés",
-                      selectAll: lang === "en" ? "Select All": "Tout sélectionner",
-                      search: lang === "en" ? "Search" : "Rechercher",
-                  }}
-                      options={lang === "en" ? sizeMultiOptions: sizeMultiOptionsFr}
-                      selected={product_size}
-                      onSelectedChanged={product_size => this.setState({product_size})}
-                    />
-                    </div>
-                  </Grid.Column>
-                  <Grid.Column mobile={16} tablet={8} computer={4}>
-                  <div className={"range-div"}>
-                  <p><FormattedMessage
-                    id="search_requests.p_category"
-                    defaultMessage="Product category"
-                  /></p>
-                    <MultiSelect
-                    overrideStrings={{
-                      selectSomeItems: lang === "en" ? "Filter by category...": "Filtrez par la categorie...",
-                      allItemsAreSelected: lang === "en" ? "All Items are Selected" : "Tous les éléments sont sélectionnés",
-                      selectAll: lang === "en" ? "Select All": "Tout sélectionner",
-                      search: lang === "en" ? "Search" : "Rechercher",
-                  }}
-                      options={lang === "en" ? categoryMultiOptions: categoryMultiOptionsFr}
-                      selected={product_category}
-                      onSelectedChanged={product_category => this.setState({product_category})}
-                    />
-                    </div>
-                  </Grid.Column>
-                  </Grid.Row>
-                </Grid> : ''}
-            <div className={"search-button"}>
-            <Button
-              size="big"
-              loading={loading}
-              disabled={loading}
-              className={"buttoncolor search-button"}
-            >
-            <FormattedMessage
-              id="search_requests.search"
-              defaultMessage="Search"
-            />
-            </Button>
-            </div>
-            </form>
-          <Divider/>
-          {bookings === undefined || bookings.length === 0 ? <div><FormattedMessage
-            id="search_requests.no_results"
-            defaultMessage="No search results. Please try a more general search"
-          /></div> : ''}
-          <div
-            id="scrollableDiv"
-            style={{
-              height: 800,
-              overflow: 'auto',
-              borderTop: '1px solid #f1f1f1',
-              boxShadow: '0px 0 10px #d4d4d5',
-              display: bookings && bookings.length > 0 ? "block": "none"
-            }}
-          >
-            <InfiniteScroll
-              dataLength={bookings ? bookings.length: 0}
-              next={this.fetchMoreData}
-              hasMore={count !== null && next_url !== null}
-              loader={<h4>Loading...</h4>}
-              scrollableTarget="scrollableDiv"
-            >
-              {bookings ? bookings.map((item, index) => (
-                <div style={{
-                  height: this.getDivHeight.bind(this),
-                  margin: 6,
-                  padding: 8
-                }} key={index}>
-                  <BookingCard
-                    title={item["product"]["name"]}
-                    pk={item["pk"]}
-                    recipient_name={item["product"]["recipient_name"]}
-                    recipient_phone_number={item["product"]["recipient_phone_number"]}
-                    request_by_username={item["request_by_username"]}
-                    arrival_date={item["product"]["arrival_date"]}
-                    description={item["product"]["description"]}
-                    departure_location={item["product"]["departure_location"]}
-                    destination_location={item["product"]["destination_location"]}
-                    weight={item["product"]["weight"]}
-                    space={item["product"]["space"]}
-                    price={item["product"]["price"]}
-                    product_category={item["product"]["product_category"]}
-                    proposed_price={item["product"]["proposed_price"]}
-                    img={item["product"]["images"].length === 0 ? '' : item["product"]["images"][0]['image']}
-                    images={buildImagesLinkList(item["product"]["images"])}
-                    editable={false}
-                    selectable={false}
-                    can_propose />
-                </div>
-              )) : ''}
-            </InfiniteScroll>
           </div>
+          <div className="cta-horizon bg-white pt-4 pb-2">
+          </div>
+
+
+          <Divider/>
+          {bookings.length === 0 ? <div><FormattedMessage
+          id="search_requests.no_results"
+          defaultMessage="No search results. Please try a more general search"
+        /></div>: <React.Fragment>
+              <div className="dashboard-list-box with-icons">
+                <div className="dashboard-title">
+                  <h4 className="mb-0">Liste de colis disponibles</h4>
+                  {/* <p className="mb-0">Vous retrouvez ici la liste des colis que vous avez ajouté </p> */}
+                </div>
+                <div className="table-responsive table-desi">
+                  <table className="basic-table table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Image</th>
+                        <th>Nom</th>
+                        <th>Date d'arrivée</th>
+                        <th>Ville de départ</th>
+                        <th>Ville d'arrivée</th>
+                        <th>Détail</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {bookings.map((item, index) => (
+                        <BookingCard
+                          key={index}
+                          title={item["product"]["name"]}
+                          pk={item["pk"]}
+                          recipient_name={item["product"]["recipient_name"]}
+                          recipient_phone_number={item["product"]["recipient_phone_number"]}
+                          request_by_username={item["request_by_username"]}
+                          arrival_date={item["product"]["arrival_date"]}
+                          description={item["product"]["description"]}
+                          departure_location={item["product"]["departure_location"]}
+                          destination_location={item["product"]["destination_location"]}
+                          weight={item["product"]["weight"]}
+                          space={item["product"]["space"]}
+                          price={item["product"]["price"]}
+                          product_category={item["product"]["product_category"]}
+                          proposed_price={item["product"]["proposed_price"]}
+                          product_details={item["product"]}
+                          img={item["product"]["images"].length === 0 ? '' : item["product"]["images"][0]['image']}
+                          images={buildImagesLinkList(item["product"]["images"])}
+                          editable={false}
+                          selectable={false}
+                          can_propose />
+
+                    ))}
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+        </React.Fragment>
+        }
+
+        </React.Fragment>
+
         </Segment>
       </Container>
+      // <div>On search</div>
       
     );
   }

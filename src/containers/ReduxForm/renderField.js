@@ -112,36 +112,38 @@ export const renderCitiesList = ({ input, className, data, label, meta: { touche
 }
 
 
-  export const renderDateTimePicker = ({ input: { onChange, value }, label, showTime, min, meta: { touched, error, warning } }) => {
+  export const renderDateTimePicker = ({ input: { onChange, value }, className, label, showTime, min, meta: { touched, error, warning } }) => {
     return (<div>
       <div>
         <label>{label}</label>
         <DateTimePicker
-        placeholder="Date de départ"
-        dropUp={true}
-      onChange={onChange}
-      format="YYYY-MM-DD"
-      time={showTime}
-      min={min}
-      value={!value ? null : value}
-    />
-  {touched && ((error && <span className={"error-on-input"}>{error}</span>) || (warning && <span>{warning}</span>))}
-</div></div>);
-  }
+          placeholder="Date de départ"
+          dropUp={true}
+          className={className}
+          onChange={onChange}
+          format="YYYY-MM-DD"
+          time={showTime}
+          min={min}
+          value={!value ? null : value}
+        />
+        {touched && ((error && <span className={"error-on-input"}>{error}</span>) || (warning && <span>{warning}</span>))}
+      </div></div>);
+    }
 
-  export const renderDateTimePickerDown = ({ input: { onChange, value }, label, showTime, min, meta: { touched, error, warning } }) => {
+  export const renderDateTimePickerDown = ({ input: { onChange, value }, className, label, showTime, min, meta: { touched, error, warning } }) => {
     return (<div>
       <div>
         <label>{label}</label>
         <DateTimePicker
-        placeholder="Date de départ"
-        dropDown={true}
-      onChange={onChange}
-      format="YYYY-MM-DD"
-      time={showTime}
-      min={min}
-      value={!value ? null : value}
-    />
-  {touched && ((error && <span className={"error-on-input"}>{error}</span>) || (warning && <span>{warning}</span>))}
-</div></div>);
-  }
+          placeholder="Date de départ"
+          dropDown={true}
+          className={className}
+          onChange={onChange}
+          format="YYYY-MM-DD"
+          time={showTime}
+          min={min}
+          value={!value ? null : value}
+        />
+        {touched && ((error && <span className={"error-on-input"}>{error}</span>) || (warning && <span>{warning}</span>))}
+      </div></div>);
+    }

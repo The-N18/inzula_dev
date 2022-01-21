@@ -1,0 +1,31 @@
+.transportpge {
+  width: auto !important;
+}
+
+.search-trips-button {
+  margin: 0px auto !important;
+  display: block !important;
+  margin-top: 10px !important;
+}
+
+.form-content{
+  box-shadow: 0px 0px 30px #cccccc57;
+    width: 74%;
+    position: relative;
+    top: 22px;
+    right: 0;
+    z-index: 9;
+    background: #fff;
+    padding: 30px;
+    border-radius: 0px;
+    z-index: 2; 
+}
+
+.form-title{
+  background: #A10115;
+  padding: 10px 20px;
+  position: relative;
+  top: -40px;
+  left: 0; 
+}
+

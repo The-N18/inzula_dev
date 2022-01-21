@@ -3,6 +3,7 @@ import * as actionTypes from "./actionTypes";
 import { api_url, AUTH_TIMEOUT } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
+import $ from "jquery";
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -87,6 +88,7 @@ export const proposePriceOnBooking = (bookingId, userId, price) => {
           }));
         }
         dispatch(closeProposePriceOnBooking());
+        $("#proposePriceOnBooking").modal("hide")
       })
       .catch(err => {
         dispatch(createNotification({

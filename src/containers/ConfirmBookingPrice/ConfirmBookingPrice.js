@@ -1,6 +1,7 @@
 import React from "react";
 import {
   Button,
+  Container,
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
@@ -15,7 +16,8 @@ import { validate } from "./validation";
 import { bookTrip } from "../../store/actions/selectReservationsModal";
 import { openPaymentOptions } from "../../store/actions/paymentOptionsModal";
 import { openPaymentFormModal } from "../../store/actions/paymentFormModal";
-import {FormattedMessage} from 'react-intl'
+import {FormattedMessage} from 'react-intl';
+import $ from 'jquery';
 
 class ConfirmBookingPrice extends React.Component {
 
@@ -31,6 +33,12 @@ class ConfirmBookingPrice extends React.Component {
     // this.props.openPaymentFormModal();
     this.props.createWalletUser(userId);
     this.props.openPaymentOptions();
+
+    $('#confirmReservationPrice').off('hidden.bs.modal');
+    $('#confirmReservationPrice').on('hidden.bs.modal', function () {
+      $('#paymentOptions').modal("show");
+    });
+    $('#confirmReservationPrice').modal('hide');
   }
 
   componentDidUpdate(prevProps) {
@@ -39,44 +47,55 @@ class ConfirmBookingPrice extends React.Component {
     }
   }
 
+  handleDeclineReservation = () => {
+    $('#confirmReservationPrice').off('hidden.bs.modal');
+    $('#confirmReservationPrice').on('hidden.bs.modal', function () {
+      $('#selectReservations').modal("show");
+    });
+    $('#confirmReservationPrice').modal('hide');
+    this.props.closeConfirmBookingPrice();
+  }
+
   render() {
     const { open, handleSubmit, price } = this.props;
     return (
-      <Modal
-      closeIcon
-        centered={false}
-        open={open}
-        onClose={() => this.props.closeConfirmBookingPrice()}
-        onOpen={() => this.props.openConfirmBookingPrice()}
-        size='tiny'
-      >
-      <Modal.Header>
-      <FormattedMessage
+
+      <div className="modal fade"  id="confirmReservationPrice" tabIndex={-1} role="dialog" aria-hidden="true">
+        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
+          <div className="modal-content">
+            <div className="modal-header p-4">
+              <Modal.Header>
+                <FormattedMessage
                   id="confirm_booking.title"
                   defaultMessage="Confirm price"
                 />
-                </Modal.Header>
-      <Modal.Content>
-        <span><FormattedMessage
+              </Modal.Header>
+            </div>
+            <div className="modal-body p-0">
+              <Container>
+                <span><FormattedMessage
                   id="confirm_booking.msg"
                   values={{ price: `${price}`, fees: `${0.25*price}` }}
-                                  /></span>
-      </Modal.Content>
-      <Modal.Actions>
-        <Button positive onClick={this.confirmPaymentPrice.bind(this)}>
-        <FormattedMessage
-                  id="confirm_booking.confirm"
-                  defaultMessage="Confirm"
-                />
-        </Button>
-        <Button negative onClick={() => this.props.closeConfirmBookingPrice()}>
-        <FormattedMessage
-                  id="confirm_booking.decline"
-                  defaultMessage="Decline"
-                />
-        </Button>
-      </Modal.Actions>
-    </Modal>
+                /></span>
+              </Container>
+            </div>
+            <div class="modal-footer">
+            <Button positive onClick={this.confirmPaymentPrice.bind(this)}>
+              <FormattedMessage
+                id="confirm_booking.confirm"
+                defaultMessage="Confirm"
+              />
+            </Button>
+            <Button negative onClick={this.handleDeclineReservation.bind(this)}>
+              <FormattedMessage
+                id="confirm_booking.decline"
+                defaultMessage="Decline"
+              />
+            </Button>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 }

@@ -447,6 +447,8 @@ class BookingRequestView(CreateAPIView):
     serializer_class = BookingRequestSerializer
     permission_classes = register_permission_classes()
 
+    print("IN BOOKINGREQUESTVIEW1")
+
     def dispatch(self, *args, **kwargs):
         return super(BookingRequestView, self).dispatch(*args, **kwargs)
 
@@ -461,6 +463,7 @@ class BookingRequestView(CreateAPIView):
             return TokenSerializer(user.auth_token).data
 
     def create(self, request, *args, **kwargs):
+        print("IN BOOKINGREQUESTVIEW2")
         with transaction.atomic():
             pictures = request.FILES.getlist('pictures')
             data = request.data
@@ -514,6 +517,7 @@ class BookingRequestView(CreateAPIView):
                     img.save()
             serializer = self.get_serializer(booking_request)
             headers = self.get_success_headers(serializer.data)
+            print("IN BOOKINGREQUESTVIEW3")
             return Response(serializer.data,
                             status=status.HTTP_201_CREATED,
                             headers=headers)

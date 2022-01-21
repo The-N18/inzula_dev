@@ -8,6 +8,7 @@ import {
   Button
 } from "semantic-ui-react";
 import { connect } from "react-redux";
+import styles from './tripcard.module.css';
 import { backend_url, get_img_url, isProfileComplete } from "../../configurations";
 import { openModalForTrip } from "../../store/actions/sendPackageModal";
 import { openModalSelectReservations } from "../../store/actions/selectReservationsModal";
@@ -28,10 +29,12 @@ class TripCard extends React.Component {
   }
 
   handleBook = () => {
+    console.log("in handle book")
     const {trip_id, authenticated} = this.props;
     if(authenticated) {
       if(isProfileComplete(localStorage)) {
         this.props.openReservationsList(trip_id);
+        $("#selectReservations").modal("show");
       } else {
         this.props.openCompleteProfileModal();
       }
@@ -95,22 +98,22 @@ class TripCard extends React.Component {
                 value={depart_date}
                 year="numeric"
                 month="short"
-                day="numeric"
-                weekday="short"
+                day="numeric" 
+                weekday="short" 
               /> : ''}
           </td>
           <td>{departure_location && departure_location['label'] ? departure_location['label'] : ''}</td>
           <td>{destination_location && destination_location['label'] ? destination_location['label'] : ''}</td>
 
-          {no_book ? '' : <Button
+          {no_book ? '' : <td><Button
               size="large"
-              className={"buttoncolor trip-card-button"}
+              className={`${styles.bookButtonColor} trip-card-button`}
               onClick={this.handleBook.bind(this)}
             ><FormattedMessage
                 id="trip_card.book"
                 defaultMessage="Book"
               />
-            </Button>}
+            </Button></td>}
 
           {!no_book ? '' : <React.Fragment>
             <td>

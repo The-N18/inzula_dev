@@ -36,6 +36,15 @@ class SendPackage extends React.Component {
     isNextValid: true
   }
 
+  handleResetModal = ()=>{
+    const {reset}=this.props;
+    if(this.state.activeStep === 2) {
+      this.setState({ activeStep: 1});
+    }
+    reset()
+
+  }
+
   handleButtonClick = (e) => {
     if(this.state.activeStep === 1) {
       this.setState({ activeStep: 2});
@@ -91,6 +100,8 @@ class SendPackage extends React.Component {
           val['recipient_phone_number'],
           val['terms_conditions'],
           val['user_agreement']);
+
+          this.handleResetModal()
       } else {
         this.props.openCompleteProfileModal();
       }
@@ -111,7 +122,7 @@ class SendPackage extends React.Component {
 
 
   render() {
-    const { handleSubmit,
+    const { handleSubmit, reset,
       invalid, change, product_name,
       departure_location, destination_location, proposed_price,
       product_category, product_weight, product_size, product_value,
@@ -593,6 +604,9 @@ SendPackage.propTypes = {
 // }) (SendPackageConnected);
 //
 // export default SendPackageConnected;
+
+
+// const afterSubmit = (result, dispatch) => dispatch(reset('send_package'));
 
 export default withRouter(connect(
     mapStateToProps,

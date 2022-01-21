@@ -1,6 +1,7 @@
 import React from "react";
 import {
   Button,
+  Container,
   Modal
 } from "semantic-ui-react";
 import { connect } from "react-redux";
@@ -11,11 +12,16 @@ import { openSelectCreditCard} from "../../store/actions/selectCreditCardModal";
 import PaymentMethodCard from "../../containers/PaymentMethodCard/PaymentMethodCard";
 import { payForBookingWithPaypal , payForBookingWithWalletFunds} from "../../store/actions/paymentFormModal";
 import {FormattedMessage} from 'react-intl'
-
+import $ from 'jquery';
 
 class PaymentOptions extends React.Component {
 
   payWithCreditCard = () => {
+    $('#paymentOptions').off('hidden.bs.modal')
+    $('#paymentOptions').on('hidden.bs.modal', function () {
+      $('#selectCreditCard').modal("show");
+    });
+    $('#paymentOptions').modal('hide');
     this.props.openSelectCreditCard();
   }
 
@@ -31,41 +37,53 @@ class PaymentOptions extends React.Component {
     }
   }
 
+  handleCanclePayment(){
+
+    $('#paymentOptions').off('hidden.bs.modal')
+    $('#paymentOptions').on('hidden.bs.modal', function () {
+      $('#confirmReservationPrice').modal("show");
+    });
+    $('#paymentOptions').modal('hide');
+    this.props.closePaymentOptions()
+  }
+
   render() {
     const { open } = this.props;
     return (
-      <Modal
-      closeIcon
-        centered={false}
-        open={open}
-        onClose={() => this.props.closePaymentOptions()}
-        onOpen={() => this.props.openPaymentOptions()}
-        size='tiny'
-      >
-      <Modal.Header>
-      <FormattedMessage
-                id="pay_choices.title"
-                defaultMessage="Choice of Payment method"
-              /></Modal.Header>
-      <Modal.Content>
-        <p><FormattedMessage
-                id="pay_choices.select"
-                defaultMessage="Select your method of payment."
-              /></p>
-        <PaymentMethodCard type="credit_card" onclick={this.payWithCreditCard.bind(this)} />
-        {/* <PaymentMethodCard type="paypal" onclick={this.payWithPaypal.bind(this)} /> */}
-        <PaymentMethodCard type="wallet" onclick={this.payWithWalletFunds.bind(this)} />
 
-      </Modal.Content>
-      <Modal.Actions>
-        <Button negative onClick={() => this.props.closePaymentOptions()}>
-        <FormattedMessage
+      <div className="modal fade"  id="paymentOptions" tabIndex={-1} role="dialog" aria-hidden="true">
+        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
+          <div className="modal-content">
+            <div className="modal-header p-4">
+              <Modal.Header>
+                <FormattedMessage
+                  id="pay_choices.title"
+                  defaultMessage="Choice of Payment method"
+                />
+              </Modal.Header>
+            </div>
+            <div className="modal-body p-0">
+              <Container>
+                <p><FormattedMessage
+                  id="pay_choices.select"
+                  defaultMessage="Select your method of payment."
+                /></p>
+                <PaymentMethodCard type="credit_card" onclick={this.payWithCreditCard.bind(this)} />
+                {/* <PaymentMethodCard type="paypal" onclick={this.payWithPaypal.bind(this)} /> */}
+                <PaymentMethodCard type="wallet" onclick={this.payWithWalletFunds.bind(this)} />
+              </Container>
+            </div>
+            <div class="modal-footer">
+            <Button negative onClick={this.handleCanclePayment.bind(this)}>
+              <FormattedMessage
                 id="pay_choices.cancel"
                 defaultMessage="Cancel"
               />
-        </Button>
-      </Modal.Actions>
-    </Modal>
+            </Button>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 }

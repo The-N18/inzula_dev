@@ -21,6 +21,9 @@ from django.http import Http404
 import datetime
 from django.db.models import Q
 from django.contrib.auth.models import User
+import logging
+
+logger = logging.getLogger('django')
 
 class TripsListView(generics.ListAPIView):
     """
@@ -31,12 +34,15 @@ class TripsListView(generics.ListAPIView):
     serializer_class = TripSerializer
     model = serializer_class.Meta.model
     permission_classes = [permissions.AllowAny]
+    print('IN TRIP LIST VIEW PRINT1')
 
     def get_queryset(self):
         user_id = self.request.query_params.get('user_id', None)
         queryset = self.model.objects.all()
         if user_id is not None:
             queryset = queryset.filter(created_by=user_id)
+            print('IN TRIP LIST VIEW PRINT2')
+            logger.info('IN TRIP LIST VIEW PRINT'+ str(queryset))
         return queryset.order_by('-depart_date')
 
 

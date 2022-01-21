@@ -22,7 +22,8 @@ const selectBooking = (state, action) => {
 const openModalSelectReservations = (state, action) => {
   return updateObject(state, {
     open: true,
-    tripId: action.tripId
+    tripId: action.tripId,
+    isCancleClicked:false
   });
 };
 
@@ -31,6 +32,8 @@ const closeModal = (state, action) => {
   return updateObject(state, {
     open: false,
     tripId: null,
+    selected: [],
+    isCancleClicked:true
   });
 };
 

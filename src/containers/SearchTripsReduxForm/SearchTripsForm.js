@@ -9,7 +9,7 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { searchTrips } from "../../store/actions/searchTrips";
-import styles from './searchtripsform.css';
+import styles from './searchtripsform.module.css';
 import TripCard from "../../containers/TripCard/TripCard";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { openModal, closeModal } from "../../store/actions/sendPackageModal";
@@ -45,6 +45,7 @@ class SearchTripsForm extends React.Component {
     window.addEventListener('scroll', this.handleScroll, false);
     window.addEventListener('resize', this.handleScreenSize, false);
     this.handleScreenSize();
+    
   }
 
   componentWillUnmount() {
@@ -76,9 +77,11 @@ class SearchTripsForm extends React.Component {
   handleOpenSendPackageModal = () => {
     if(this.props.authenticated) {
       this.props.openPackageModal();
+      $("#sendPackage").modal("show");
     } else {
       this.props.createNotif("send_package.login_msg", "Please login to create a booking request.", NOTIFICATION_TYPE_WARNING);
       this.props.openLoginModal();
+      $("#login").modal("show");
     }
   }
 
@@ -88,86 +91,70 @@ class SearchTripsForm extends React.Component {
     return (
       <Container className={"layoutcontainer"}>
           <Segment id="search_trips_section">
-          <Header as="h4" textAlign="center">
+          {/* <Header as="h4" textAlign="center">
             <FormattedMessage
               id="search_trips.title"
               defaultMessage="Prefer to know what shipping offers are available before committing?"
             />
-          </Header>
-          <form onSubmit={handleSubmit(this.submitForm)}>
-          <Grid>
-            <Grid.Row columns={3}>
-              <Grid.Column mobile={16} tablet={16} computer={6}>
-          <div>
-          <label htmlFor="departure_location">
-              <FormattedMessage
-                id="search_trips.departure_location"
-                defaultMessage="departure location"
-              />
-            </label>
-            <div>
-              <Field
-                name="departure_location"
-                label={lang === "en" ? "Select departure location" : "Sélectionnez le lieu de départ"}
-                type="text"
-                className={"custom-field"}
-                component={renderCitiesList}
-              />
-              </div>
-            </div>
-            </Grid.Column>
-            <Grid.Column mobile={16} tablet={16} computer={6}>
-            <div>
-            <label htmlFor="destination_location">
-              <FormattedMessage
-                id="search_trips.destination_location"
-                defaultMessage="destination location"
-              />
-            </label>
-              <div>
-                <Field
-                  name="destination_location"
-                  label={lang === "en" ? "Select destination location" : "Sélectionnez la destination"}
-                  type="text"
-                  className={"custom-field"}
-                  component={renderCitiesList}
-                />
+          </Header> */}
+          <div className="form-main">
+            <div className="container-fluid">
+              <div className={`${styles["form-content"]}`}> 
+                <h3 className={`${styles["form-title"]} ${"text-center"} ${"d-inline"} ${"white"}`}>Trouvez des voyageurs disponibles</h3>
+                <div className="row d-flex align-items-center justify-content-between">
+                  <div className="col-lg">
+                    <div className="form-group pr-4 m-0">
+                      <div className="input-box">
+                        <Field
+                          name="departure_location"
+                          label={lang === "en" ? "Departure location" : "Lieu de départ"}
+                          component="input"
+                          type="text"
+                          className={"custom-field"}
+                          component={renderCitiesList}
+                        />
+                      </div>                            
+                    </div>
+                  </div>
+                  <div className="col-lg">
+                    <div className="form-group pr-4 m-0">
+                      <Field
+                        name="destination_location"
+                        label={lang === "en" ? "Destination location" : "Lieu d'arrivée"}
+                        component="input"
+                        type="text"
+                        className={"custom-field"}
+                        component={renderCitiesList}
+                      />                           
+                    </div>
+                  </div>
+                  <div className="col-lg">
+                    <div className="form-group pr-4 m-0">
+                      <div className="input-box">
+                        <Field
+                          name="travel_date"
+                          showTime={false}
+                          component={renderDateTimePickerDown}
+                        />
+                      </div>   
+                    </div>
+                  </div>     
+                  <div className="col-lg">
+                    <div className="form-group m-0 w-100">
+                      <a  className={`nir-btn ${loading?'disabled':''}`} onClick={handleSubmit(this.submitForm)} ><i className="fa fa-search" /> Rechercher</a>
+                    </div>
+                  </div>                      
                 </div>
               </div>
-              </Grid.Column>
-              <Grid.Column mobile={16} tablet={16} computer={4}>
-              <div>
-              <label htmlFor="travel_date">
-              <FormattedMessage
-                id="search_trips.travel_date"
-                defaultMessage="travel date"
-              />
-            </label>
-                <div>
-              <Field
-                name="travel_date"
-                showTime={false}
-                component={renderDateTimePickerDown}
-              />
-              </div>
             </div>
-              </Grid.Column>
-              </Grid.Row>
-              </Grid>
-              <div className={"search-trips-button"}>
-            <Button
-              size="big"
-              loading={loading}
-              disabled={loading}
-              className={"buttoncolor search-trips-button"}
-            >
-            <FormattedMessage
-              id="search_trips.search_btn"
-              defaultMessage="Search"
-            />
-            </Button>
-            </div>
-          </form>
+          </div>
+          {/* form main ends */}
+          {/* section 2 ends */}
+          {/*find travel start */}
+          <div className="cta-horizon bg-white pt-4 pb-2">
+          </div>
+          {/* <div className="cta-horizon bg-white pt-4 pb-2">
+          </div> */}
           <Divider/>
           {trips && trips.length === 0 ? <div> <FormattedMessage
               id="search_trips.no_results"
@@ -202,7 +189,7 @@ class SearchTripsForm extends React.Component {
                       creator_user_name={item["creator_user_name"]}
                       trip_id={item["pk"]}
                       no_book={false} />
-                ))}
+                  ))}
 
 
                   </tbody>
@@ -210,18 +197,12 @@ class SearchTripsForm extends React.Component {
               </div>
             </div>
             <Header as="h4" textAlign="center">
-            <FormattedMessage
-              id="search_trips.cant_find_trip"
-              defaultMessage="Can't find a trip? Click "
-            />
-            <Button inverted color='green' onClick={this.handleOpenSendPackageModal.bind(this)}>
-            <FormattedMessage
-              id="search_trips.click_book_request"
-              defaultMessage=" here "
-            /></Button> <FormattedMessage
-              id="search_trips.get_contacted"
-              defaultMessage=" to save a booking request so you can be later contacted by travellers."
-            />
+            <div className="cta-horizon pt-4 pb-2" style={{backgroundColor: '#a10115'}}>
+            <div className="container d-md-flex align-items-center justify-content-between">
+              <h4 className="mb-2 white">Impossible de trouver le bon voyageur ? Enregistrez votre colis pour être contacté rapidement.</h4>
+              <a className="nir-btn-black" onClick={this.handleOpenSendPackageModal.bind(this)} >Expédier</a>
+            </div>
+          </div>
           </Header>
         </React.Fragment>
           }
