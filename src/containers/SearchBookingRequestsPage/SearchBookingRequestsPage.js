@@ -99,21 +99,8 @@ class SearchBookingRequestsPage extends React.Component {
       <Container className={"layoutcontainer"} style={{ padding: "8em 0em"}}>
         <Segment basic id="search_trips_section" style={{background:"#fff"}} >
 
- 
         <React.Fragment>
-          <Header as="h4" textAlign="center">
-            <FormattedMessage
-              id="search_requests.title"
-              defaultMessage="Prefer to know what shipping offers are available before committing?"
-            />
-          </Header>
-          <Header as="h4" textAlign="center">
-          <FormattedMessage
-            id="search_requests.head"
-            defaultMessage="No worries, you can add the country of departure and destination of your trip and thus access the requests for available expeditions."
-          />
-          </Header>
-
+     
           <div className="form-main">
             <div className="container">
               <div className={`${styles["form-content"]}  w-100`}> 

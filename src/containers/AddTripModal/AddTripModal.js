@@ -21,13 +21,15 @@ require('bootstrap');
 class AddTripModal extends React.Component {
 
  closeAddTripModal = () => {
-    $("#addTrip").modal("hide");
+   console.log("In CLOSEADDTRIP")
+  $("#addTrip").modal("hide");
+  this.child.handleResetModal();
 }
 
 render() {
   const { open } = this.props;
   return (
-        <div className="modal fade"  id="addTrip" tabIndex={-1} role="dialog" aria-hidden="true">
+        <div className="modal fade"  id="addTrip" tabIndex={-1} role="dialog" aria-hidden="true" data-backdrop="static"  data-keyboard="false">
             <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
               <div className="modal-content" style={{height:"55%"}}>
                   <div className="modal-header p-4">
@@ -35,7 +37,7 @@ render() {
                       id="add_trip_modal.title"
                       defaultMessage="Add Trip"
                     />
-                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" className="close" data-dismiss="modal" onClick={this.closeAddTripModal} aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                   </div>
@@ -56,11 +58,11 @@ render() {
                             </div>
                             </div>
                         </div> */}
-                        <AddTripForm isModal={true} /> 
+                        <AddTripForm isModal={true} onRef={ref => (this.child = ref)} /> 
                     </div>
                   </div>
                   <div class="modal-footer">
-                  <button type="button" class="btn btn-danger" data-dismiss="modal" onClick={closeAddTripModal} >Annuler</button>
+                  <button type="button" class="btn btn-danger"  onClick={this.closeAddTripModal} >Annuler</button>
                   </div>
               </div>
             </div>

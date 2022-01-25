@@ -9,35 +9,44 @@ import { connect } from "react-redux";
 import { openModal, closeModal } from "../../store/actions/sendPackageModal";
 import SendPackage from "../../containers/SendPackageReduxForm/SendPackage";
 import {FormattedMessage} from 'react-intl'
+import $ from "jquery"
 
 class SendPackageModal extends React.Component {
 
   constructor(props) {
     super(props)
+
   }
 
   state = {
+  }
+
+  handleclosePackageModal = () => {
+
+    $("#sendPackage").modal("hide");
+    this.props.closePackageModal()
+    this.child.handleResetModal();
   }
 
   render() {
     const { open, tripId } = this.props;
 
     return (
-      <div className="modal fade"  id="sendPackage" tabIndex={-1} role="dialog" aria-hidden="true">
+      <div className="modal fade"  id="sendPackage" tabIndex={-1} role="dialog" aria-hidden="true" data-backdrop="static"  data-keyboard="false">
         <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
           <div className="modal-content">
             <div className="modal-header p-4">
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+              <button type="button" className="close" data-dismiss="modal" onClick={this.handleclosePackageModal.bind(this)} aria-label="Close">
                 <span aria-hidden="true">×</span>
               </button>
             </div>
             <div className="modal-body p-0">
               <div className="login-content p-4">
-                <SendPackage tripId={tripId}/>
+                <SendPackage onRef={ref => (this.child = ref)} tripId={tripId}/>
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-danger" data-dismiss="modal" onClick={() => this.props.closePackageModal()} >Annuler</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal" onClick={this.handleclosePackageModal.bind(this)} >Annuler</button>
             </div>
           </div>
         </div>

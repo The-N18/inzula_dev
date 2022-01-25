@@ -91,7 +91,7 @@ class UpdateTripForm extends React.Component {
     const { loading, handleSubmit, invalid, open, lang } = this.props;
     return (
 
-      <div className="modal fade"  id="updateTrip" tabIndex={-1} role="dialog" aria-hidden="true">
+      <div className="modal fade"  id="updateTrip" tabIndex={-1} role="dialog" aria-hidden="true" data-backdrop="static"  data-keyboard="false">
         <div className="modal-dialog modal-dialog-centered  modal-xl" role="document">
           <div className="modal-content" style={{height:"55%"}}>
               <div className="modal-header p-4">
@@ -99,7 +99,7 @@ class UpdateTripForm extends React.Component {
                   id="add_trip_modal.title"
                   defaultMessage="Add Trip"
                 />
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" className="close" data-dismiss="modal" onClick={() => this.props.updateTripCloseModal()} aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
               </div>
@@ -128,6 +128,7 @@ class UpdateTripForm extends React.Component {
                             className={"custom-field"}
                             component={renderCitiesList}
                           />
+                          <br/>
                           <Field
                             name="destination_location"
                             label={lang === "en" ? "Select destination location" : "Sélectionnez la destination"}
@@ -135,6 +136,7 @@ class UpdateTripForm extends React.Component {
                             className={"custom-field"}
                             component={renderCitiesList}
                           />
+                          <br/>
                           <div>
                             <label><FormattedMessage
                               id="update_trip.departure_date"

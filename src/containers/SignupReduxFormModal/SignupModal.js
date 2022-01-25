@@ -46,6 +46,18 @@ class RegistrationForm extends Component {
     win.focus();
   }
 
+  componentDidMount() {
+    this.props.onRef(this)
+  }
+  componentWillUnmount() {
+    this.props.onRef(undefined)
+  }
+
+  handleResetModal = ()=>{
+    const {reset}=this.props;
+    reset();
+  }
+
   render () {
     const {handleSubmit, token, loading, invalid, discountText, open, lang} = this.props;
     if (token) {

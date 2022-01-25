@@ -16,9 +16,7 @@ import Footer from "../../containers/Footer/Footer";
 import SignupParentModal from "../../containers/SignupParentModal/SignupParentModal";
 import PaymentOptions from "../../containers/PaymentOptions/PaymentOptions";
 import SelectCreditCard from "../../containers/SelectCreditCard/SelectCreditCard";
-import SignupModal from "../../containers/SignupReduxFormModal/SignupModal";
 import LoginParentModal from "../../containers/LoginParentModal/LoginParentModal";
-import LoginModal from "../../containers/LoginReduxFormModal/LoginModal";
 import ForgotPasswordModal from "../../containers/ForgotPasswordForm/ForgotPasswordForm";
 import DeleteBookingConfirm from "../../containers/DeleteBookingConfirm/DeleteBookingConfirm";
 import DeleteTripConfirm from "../../containers/DeleteTripConfirm/DeleteTripConfirm";
@@ -102,19 +100,19 @@ class CustomLayout extends React.Component {
     this.handleScreenSize();
 
     // BACK TO TOP -------------
-    $(document).on('click', '#back-to-top, .back-to-top', () => {
-      $('html, body').animate({
-          scrollTop: 0
-      }, '500');
-      return false;
-      });
-    $(window).on('scroll', () => {
-        if ($(window).scrollTop() > 500) {
-            $('#back-to-top').fadeIn(200);
-        } else {
-            $('#back-to-top').fadeOut(200);
-        }
-    });
+    // $(document).on('click', '#back-to-top, .back-to-top', () => {
+    //   $('html, body').animate({
+    //       scrollTop: 0
+    //   }, '500');
+    //   return false;
+    //   });
+    // $(window).on('scroll', () => {
+    //     if ($(window).scrollTop() > 500) {
+    //         $('#back-to-top').fadeIn(200);
+    //     } else {
+    //         $('#back-to-top').fadeOut(200);
+    //     }
+    // });
 
     // bubbles ----------------- 
     var bArray = [];
@@ -215,10 +213,9 @@ class CustomLayout extends React.Component {
 
     return (
       <div>
-      {/* <SignupParentModal /> */}
-      {/* <SignupModal /> */}
-      {/* <LoginParentModal /> */}
-      {/* <LoginModal /> */}
+      <SignupParentModal />
+      <LoginParentModal />
+      <BookingDetailsModal/>
       <ForgotPasswordModal />
       <DeleteBookingConfirm />
       <DeleteTripConfirm />
@@ -319,39 +316,6 @@ class CustomLayout extends React.Component {
           <a href="#" />
         </div>
         {/* Back to top ends */}
-
-        {/* Register Modal */}
-        <SignupParentModal />
-
-        {/* login Modal */}
-        <LoginParentModal />
-
-        
-        <BookingDetailsModal/>
-
-
-
-
-        {/*
-        <div className="modal fade"  id="updateBooking" tabIndex={-1} role="dialog" aria-hidden="true">
-          <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
-            <div className="modal-content">
-              <div className="modal-header p-4">
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">×</span>
-                </button>
-              </div>
-              <div className="modal-body p-0">
-                <div className="login-content p-4">
-                  <UpdateBooking />
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
-              </div>
-            </div>
-          </div>
-        </div> */}
 
 
 

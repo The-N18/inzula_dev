@@ -67,7 +67,7 @@ class AddTripFormWithText extends React.Component {
                   </div>
                 </div>
                 <div className="col-lg-5 col-sm-12">
-                  <AddTripForm isModal={false}/>
+                  <AddTripForm isModal={false} onRef={ref => (this.child = ref)} />
                 </div>
               </div>
             </div>

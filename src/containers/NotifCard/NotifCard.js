@@ -18,97 +18,53 @@ class NotifCard extends React.Component {
 
     const {creator_username, created_on, type, trip_dep_date, product_name, trip_dep_loc, trip_des_loc, offer_price} = this.props;
     return (
-      <Card raised fluid centered className={"notif-card"}>
-        <Card.Content>
-          <Card.Header>
-          {created_on !== "" ? <span><FormattedMessage
-            id="notif_card.created_on"
-            defaultMessage="On: "
-          />
-          <FormattedDate
-            value={created_on}
-            year="numeric"
-            month="long"
-            day="numeric"
-            weekday="long"
-            hour="numeric"
-            minute="numeric"
-            second="numeric"
-          /> | </span> : ''}
-          {creator_username !== "" && type !== "request_declined" ? <span><FormattedMessage
-            id="notif_card.created_by"
-            defaultMessage="By: "
-          /> {creator_username} | </span> : ''}
-          {type === "trip_booked" ?
-            <FormattedMessage
-              id="notif_card.trip_booked"
-              defaultMessage="Your trip has been booked"
-            /> : ''}
-            {type === "payment_for_booking" ?
-            <FormattedMessage
-              id="notif_card.payment_for_booking"
-              defaultMessage="Paid for booking"
-            /> : ''}
-            {type === "offer_rec" ?
-            <FormattedMessage
-              id="notif_card.offer_rec"
-              defaultMessage="You have recieved an offer for this request"
-            /> : ''}
-            {type === "request_validated" ?
-            <FormattedMessage
-              id="notif_card.request_validated"
-              defaultMessage="Your booking request has been validated by sender."
-            /> : ''}
-            {type === "request_declined" ?
-            <FormattedMessage
-              id="notif_card.request_declined"
-              values={{ username: `${creator_username}`}}
-              defaultMessage="Your booking request has been declined by the sender"
-            /> : ''}
-            {type === "request_cancelled" ?
-            <FormattedMessage
-              id="notif_card.request_cancelled"
-              defaultMessage="You have cancelled your booking request."
-            /> : ''}
-            {type === "payment_for_delivery" ?
-            <FormattedMessage
-              id="notif_card.payment_for_delivery"
-              defaultMessage="You have received a payment for the delivery you made."
-            /> : ''}
-            {type === "product_delivered" ?
-            <FormattedMessage
-              id="notif_card.product_delivered"
-              defaultMessage="Your product has been delivered."
-            /> : ''}
-            {/*<div className={"notif_card_btns"}>
-              <Button color='blue' icon='eye' onClick={this.markAsSeen.bind(this)} title={"mark as seen"}/>
-            </div>*/}
-          </Card.Header>
-          <Card.Description>
-            {trip_dep_date !== "" ? <span><FormattedMessage
-              id="notif_card.date"
-              defaultMessage="Date: "
-            />
+      <div className="comment-box d-flex align-items-center justify-content-between">
+        <div className="comment-image">
+          <img src="/images/team/img1.jpg" alt="image" />
+        </div>
+        <div className="comment-content">
+          {creator_username !== "" && type !== "request_declined" ?
+            <h5 className="m-0">{creator_username}</h5>: ''}
+          {created_on !== "" ?
+          <p className="comment-date mb-2">
             <FormattedDate
-              value={trip_dep_date}
+              value={created_on}
               year="numeric"
               month="long"
               day="numeric"
               weekday="long"
-            /> | </span> : ''}<FormattedMessage
-              id="notif_card.product"
-              defaultMessage="Product: "
-            /> {product_name} {trip_dep_loc !== "" && trip_des_loc !== "" ? <span> | <FormattedMessage
-              id="notif_card.trip"
-              defaultMessage="Trip: "
-            />{trip_dep_loc} - {trip_des_loc}</span> : ''}
-            {offer_price !== "" ? <span> | <FormattedMessage
-              id="notif_card.offer_price"
-              defaultMessage="Price: "
-            />{offer_price} euros</span> : ''}
-          </Card.Description>
-        </Card.Content>
-      </Card>
+              hour="numeric"
+              minute="numeric"
+              second="numeric"
+            />
+          </p>: ''}
+          {/* <span className="num-rating white">4.6/5</span>
+          <span className="comment-title"><i>"Was too noisy and not suitable for business meetings"</i></span> */}
+          <p className="comment mt-2">
+            {trip_dep_date !== "" ? <span><FormattedMessage
+                id="notif_card.date"
+                defaultMessage="Date: "
+              />
+              <FormattedDate
+                value={trip_dep_date}
+                year="numeric"
+                month="long"
+                day="numeric"
+                weekday="long"
+              /> | </span> : ''}<FormattedMessage
+                id="notif_card.product"
+                defaultMessage="Product: "
+              /> {product_name} {trip_dep_loc !== "" && trip_des_loc !== "" ? <span> | <FormattedMessage
+                id="notif_card.trip"
+                defaultMessage="Trip: "
+              />{trip_dep_loc} - {trip_des_loc}</span> : ''}
+              {offer_price !== "" ? <span> | <FormattedMessage
+                id="notif_card.offer_price"
+                defaultMessage="Price: "
+              />{offer_price} euros</span> : ''}
+          </p>
+        </div>
+      </div>
     );
   }
 }

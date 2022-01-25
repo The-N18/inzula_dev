@@ -19,10 +19,10 @@ class SenderCarrierNotifsList extends React.Component {
   render() {
     const { profileType } = this.props;
     return (
-      <Segment basic className={"profile-tab-section"}>
+      <React.Fragment>
         {profileType === "sender" ? <SenderNotifsList/> : <CarrierNotifsList/>}
 
-      </Segment>
+      </React.Fragment>
     );
   }
 }

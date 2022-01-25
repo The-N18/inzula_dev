@@ -52,11 +52,11 @@ class SignupParentModal extends React.Component {
     const { open } = this.props;
 
     return (
-      <div className="modal fade" id="register" tabIndex={-1} role="dialog" aria-hidden="true">
+      <div className="modal fade" id="register" tabIndex={-1} role="dialog" aria-hidden="true" data-backdrop="static"  data-keyboard="false">
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content">
             <div className="modal-header bordernone p-0">
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+              <button type="button" className="close" data-dismiss="modal" onClick={()=>{this.child.handleResetModal();}} aria-label="Close">
                 <span aria-hidden="true">×</span>
               </button>
             </div>
@@ -66,7 +66,7 @@ class SignupParentModal extends React.Component {
                   <h3 className="pink mb-1">Inscrivez vous sur Inzula</h3>  
                   <p>Et rejoignez notre communauté</p>                  
                 </div>
-                <SignupModal />
+                <SignupModal onRef={ref => (this.child = ref)} />
                 <div className="login-social border-t mt-3 pt-2 mb-3">
                   <p className="mb-2">Ou continuer avec</p>
                   <FacebookLogin

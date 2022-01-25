@@ -25,7 +25,7 @@ class ProposePriceOnBooking extends React.Component {
     const { open, handleSubmit } = this.props;
     return (
 
-      <div className="modal fade"  id="proposePriceOnBooking" tabIndex={-1} role="dialog" aria-hidden="true">
+      <div className="modal fade"  id="proposePriceOnBooking" tabIndex={-1} role="dialog" aria-hidden="true" data-backdrop="static"  data-keyboard="false">
         <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
           <div className="modal-content">
             <div className="modal-header p-4">

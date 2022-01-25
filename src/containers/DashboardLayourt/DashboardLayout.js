@@ -13,6 +13,8 @@ import { toggleProfileType } from "../../store/actions/userInfo";
 import { setActiveIndex } from "../../store/actions/myProfile";
 import { backend_url, get_img_url } from "../../configurations";
 import DashboardRouter from '../../dashboardRoutes';
+import { logout } from "../../store/actions/auth";
+import { clearUserInfo } from "../../store/actions/userInfo";
 import $ from "jquery";
 
 function DashboardLayout(props) {
@@ -38,16 +40,34 @@ function DashboardLayout(props) {
         }
         props.toggleProfileType(profileType === "sender" ? "carrier" : "sender");
       };
+    
+    const logoutUtil = () => {
+        console.log(" IN DASHBOARD LOGOUT")
+        logout();
+        props.clearUserInfo();
+        props.history.push('/');
+        window.location.href = '/'
+      }
+
+    const toggleFinanceDropdown = () => {
+        if(location.pathname=='/dashboard/my-transactions'){
+            $('#financeDropdown').addClass('active');
+        }else{
+            $('#financeDropdown').toggleClass('active');
+        }
+        
+    }
 
     return (
         <div>
             {/* BreadCrumb Starts */}  
-            <section className="breadcrumb-main pb-2" style={{backgroundImage: 'url(/images/bg/bg8.jpg)'}}>
+            {/* <section className="breadcrumb-main pb-2" style={{backgroundImage: 'url(/images/bg/bg8.jpg)'}}>
             <div className="dot-overlay" />
-            </section>
+            </section> */}
             {/* BreadCrumb Ends */} 
+         
             {/* Dashboard */}
-            <div id="dashboard" className="pt-10 pb-10">
+            <div id="dashboard" className="pt-14 pb-10">
             <div className="container">
                 <div className="dashboard-main">
                 <div className="row">
@@ -111,14 +131,14 @@ function DashboardLayout(props) {
                                 <ul>
                                     <Link to={`${url}/profile`}><li className={location.pathname=='/dashboard/profile'&& "active"}><a ><i className="sl sl-icon-user" /> Profil</a></li></Link>
                                     <Link to={`${url}/my-bookings`}><li className={location.pathname=='/dashboard/my-bookings'&& "active"}><a ><i className="sl sl-icon-layers" /> {profileType === "sender"?"Mes colis":"Mes voyages"}</a></li></Link>
-                                    <Link to={`${url}/alerts`}><li className={location.pathname=='/dashboard/alerts'&& "active"}><a ><i class="fas fa-exclamation-circle"></i>Alertes</a></li></Link>
-                                    {/* <li><a href="dashboard-history.html"><i class="fa fa-list-ul"></i>Finances</a></li> */}
-                                    <li  className={location.pathname=='/dashboard/my-transactions'&& "active"}><a><i className="fa fa-list-ul" />Finances</a>
-                                        <ul><li><a href="dashboard-add-new.html"><i className="sl sl-icon-plus" /> Mes transactions</a></li></ul>
+                                    <Link to={`${url}/alerts`}><li className={location.pathname=='/dashboard/alerts'&& "active"}><a ><i class="sl sl-icon-star"></i>Alertes</a></li></Link>
+                                    {/* <li><a href="dashboard-history.html"><i class="fa fa-list-ul"></i>Finances</a></li>  fas fa-exclamation-circle*/}
+                                    <li  id="financeDropdown" onClick={toggleFinanceDropdown}><a><i className="fa fa-list-ul" />Finances</a>
+                                        <ul><li><a href="/dashboard/my-transactions"><i className="sl sl-icon-plus" /> Mes transactions</a></li></ul>
                                         <ul><li><a href="dashboard-add-new.html"><i className="sl sl-icon-directions" /> Transfert de fonds</a></li></ul>
                                         <ul><li><a href="dashboard-add-new.html"><i className="sl sl-icon-credit-card" /> Mes moyens de paiement</a></li></ul>
                                     </li>
-                                    <li><a href="login.html"><i className="sl sl-icon-power" /> Deconnexion</a></li>
+                                    <li><a onClick={logoutUtil}><i className="sl sl-icon-power" /> Deconnexion</a></li>
 
 
                                     {/* <Link to={`${url}/add-booking`}><li className={location.pathname=='/dashboard/add-booking'&& "active"} ><a ><i className="sl sl-icon-plus" /> Ajouter colis</a></li></Link> */}
@@ -167,6 +187,8 @@ function DashboardLayout(props) {
 
   const mapDispatchToProps = dispatch => {
     return {
+        logout: () => dispatch(logout()),
+        clearUserInfo: () => dispatch(clearUserInfo()),
         setActiveIndex: (activeIndex) => dispatch(setActiveIndex(activeIndex)),
       toggleProfileType: (profileType) => dispatch(toggleProfileType(profileType)),
     };

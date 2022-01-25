@@ -115,7 +115,7 @@ class SelectReservationsModal extends React.Component {
       //   </ModalFooter>
       // </Modal>
 
-      <div className="modal fade"  id="selectReservations" tabIndex={-1} role="dialog" aria-hidden="true">
+      <div className="modal fade"  id="selectReservations" tabIndex={-1} role="dialog" aria-hidden="true" data-backdrop="static"  data-keyboard="false">
         <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
           <div className="modal-content">
             <div className="modal-header p-4">

@@ -35,10 +35,12 @@ class PaymentFormModal extends React.Component {
   }
 
   handleClosePaymentFormModal = () => {
+    const {reset}=this.props;
 
     $('#paymentForm').off('hidden.bs.modal')
     $('#paymentForm').on('hidden.bs.modal', function () {
       $('#selectCreditCard').modal("show");
+      reset();
     });
     $('#paymentForm').modal('hide');
     this.props.closePaymentFormModal();
@@ -48,7 +50,7 @@ class PaymentFormModal extends React.Component {
     const { open, handleSubmit, price, invalid, loading } = this.props;
     return (
 
-      <div className="modal fade"  id="paymentForm" tabIndex={-1} role="dialog" aria-hidden="true">
+      <div className="modal fade"  id="paymentForm" tabIndex={-1} role="dialog" aria-hidden="true" data-backdrop="static"  data-keyboard="false">
       <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
         <div className="modal-content">
           <div className="modal-header p-4">

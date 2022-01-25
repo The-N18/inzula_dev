@@ -54,15 +54,16 @@ class LoginParentModal extends React.Component {
     
   }
 
+
   render() {
     const { open } = this.props;
     return (
 
-      <div className="modal fade"  id="login" tabIndex={-1} role="dialog" aria-hidden="true">
+      <div className="modal fade"  id="login" tabIndex={-1} role="dialog" aria-hidden="true" data-backdrop="static"  data-keyboard="false">
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content">
             <div className="modal-header bordernone p-0">
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+              <button type="button" className="close" data-dismiss="modal" onClick={()=>{this.child.handleResetModal();}} onaria-label="Close">
                 <span aria-hidden="true">×</span>
               </button>
             </div>
@@ -71,7 +72,7 @@ class LoginParentModal extends React.Component {
                 <div className="login-title section-border">
                   <h3 className="pink">Se connecter</h3>                    
                 </div>
-                <LoginModal />
+                <LoginModal onRef={ref => (this.child = ref)} />
                 <div className="login-social border-t mt-3 pt-2 mb-3">
                   <p className="mb-2">Ou continuer avec</p>
                   <FacebookLogin

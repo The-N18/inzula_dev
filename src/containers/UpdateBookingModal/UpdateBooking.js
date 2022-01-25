@@ -145,7 +145,7 @@ class UpdateBooking extends React.Component {
     }
 
     return (
-      <div className="modal fade"  id="updateBooking" tabIndex={-1} role="dialog" aria-hidden="true">
+      <div className="modal fade"  id="updateBooking" tabIndex={-1} role="dialog" aria-hidden="true" data-backdrop="static"  data-keyboard="false">
         <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
           <div className="modal-content">
             <div className="modal-header p-4">
@@ -153,7 +153,7 @@ class UpdateBooking extends React.Component {
                 id="update_booking.title"
                 defaultMessage="Update Booking"
               />
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+              <button type="button" className="close" data-dismiss="modal" onClick={() => this.props.updateBookingCloseModal()} aria-label="Close">
                 <span aria-hidden="true">×</span>
               </button>
             </div>

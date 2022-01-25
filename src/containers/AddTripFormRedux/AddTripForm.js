@@ -98,6 +98,15 @@ class AddTripForm extends React.Component {
 
   componentDidMount() {
     this.props.toggleCheck("round_trip");
+    this.props.onRef(this)
+  }
+  componentWillUnmount() {
+    this.props.onRef(undefined)
+  }
+
+  handleResetModal = ()=>{
+    const {reset}=this.props;
+    reset();
   }
 
 

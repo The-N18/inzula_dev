@@ -36,13 +36,20 @@ class SendPackage extends React.Component {
     isNextValid: true
   }
 
+  componentDidMount() {
+    this.props.onRef(this)
+  }
+  componentWillUnmount() {
+    this.props.onRef(undefined)
+  }
+
   handleResetModal = ()=>{
     const {reset}=this.props;
+    reset()
     if(this.state.activeStep === 2) {
       this.setState({ activeStep: 1});
     }
-    reset()
-
+    
   }
 
   handleButtonClick = (e) => {
