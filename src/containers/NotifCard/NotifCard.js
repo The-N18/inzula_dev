@@ -4,7 +4,8 @@ import {
   Card,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-// import styles from './notifcard.css';
+import styles from './notifcard.css';
+import { backend_url, get_img_url} from "../../configurations";
 import {FormattedMessage, FormattedDate} from 'react-intl'
 
 
@@ -16,13 +17,13 @@ class NotifCard extends React.Component {
 
   render() {
 
-    const {creator_username, created_on, type, trip_dep_date, product_name, trip_dep_loc, trip_des_loc, offer_price} = this.props;
+    const {creator_username, created_on, img, type, trip_dep_date, product_name, trip_dep_loc, trip_des_loc, offer_price} = this.props;
     return (
-      <div className="comment-box d-flex align-items-center justify-content-between">
+      <div className="comment-box d-flex align-items-center ">
         <div className="comment-image">
-          <img src="/images/team/img1.jpg" alt="image" />
+          <img src={img ? get_img_url(img) : backend_url() + '/static/images/user_avatar.png'} alt="image" />
         </div>
-        <div className="comment-content">
+        <div className="comment-content" style={{width: "45rem"}}>
           {creator_username !== "" && type !== "request_declined" ?
             <h5 className="m-0">{creator_username}</h5>: ''}
           {created_on !== "" ?
@@ -38,8 +39,53 @@ class NotifCard extends React.Component {
               second="numeric"
             />
           </p>: ''}
-          {/* <span className="num-rating white">4.6/5</span>
-          <span className="comment-title"><i>"Was too noisy and not suitable for business meetings"</i></span> */}
+          {/* <span className="num-rating white">4.6/5</span> */}
+          {/* <span className="comment-title"><i>"Was too noisy and not suitable for business meetings"</i></span> */}
+          <span className="comment-title">
+            <i>
+              {type === "trip_booked" ?
+              <FormattedMessage
+                id="notif_card.trip_booked"
+                defaultMessage="Your trip has been booked"
+              /> : ''}
+              {type === "payment_for_booking" ?
+              <FormattedMessage
+                id="notif_card.payment_for_booking"
+                defaultMessage="Paid for booking"
+              /> : ''}
+              {type === "offer_rec" ?
+              <FormattedMessage
+                id="notif_card.offer_rec"
+                defaultMessage="You have recieved an offer for this request"
+              /> : ''}
+              {type === "request_validated" ?
+              <FormattedMessage
+                id="notif_card.request_validated"
+                defaultMessage="Your booking request has been validated by sender."
+              /> : ''}
+              {type === "request_declined" ?
+              <FormattedMessage
+                id="notif_card.request_declined"
+                values={{ username: `${creator_username}`}}
+                defaultMessage="Your booking request has been declined by the sender"
+              /> : ''}
+              {type === "request_cancelled" ?
+              <FormattedMessage
+                id="notif_card.request_cancelled"
+                defaultMessage="You have cancelled your booking request."
+              /> : ''}
+              {type === "payment_for_delivery" ?
+              <FormattedMessage
+                id="notif_card.payment_for_delivery"
+                defaultMessage="You have received a payment for the delivery you made."
+              /> : ''}
+              {type === "product_delivered" ?
+              <FormattedMessage
+                id="notif_card.product_delivered"
+                defaultMessage="Your product has been delivered."
+              /> : ''}
+            </i>
+          </span>
           <p className="comment mt-2">
             {trip_dep_date !== "" ? <span><FormattedMessage
                 id="notif_card.date"

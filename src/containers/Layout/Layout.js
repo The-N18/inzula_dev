@@ -100,19 +100,19 @@ class CustomLayout extends React.Component {
     this.handleScreenSize();
 
     // BACK TO TOP -------------
-    // $(document).on('click', '#back-to-top, .back-to-top', () => {
-    //   $('html, body').animate({
-    //       scrollTop: 0
-    //   }, '500');
-    //   return false;
-    //   });
-    // $(window).on('scroll', () => {
-    //     if ($(window).scrollTop() > 500) {
-    //         $('#back-to-top').fadeIn(200);
-    //     } else {
-    //         $('#back-to-top').fadeOut(200);
-    //     }
-    // });
+    $(document).on('click', '#back-to-top, .back-to-top', () => {
+      $('html, body').animate({
+          scrollTop: 0
+      }, '500');
+      return false;
+      });
+    $(window).on('scroll', () => {
+        if ($(window).scrollTop() > 500) {
+            $('#back-to-top').fadeIn(200);
+        } else {
+            $('#back-to-top').fadeOut(200);
+        }
+    });
 
     // bubbles ----------------- 
     var bArray = [];

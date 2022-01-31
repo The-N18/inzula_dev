@@ -5,7 +5,7 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 // import styles from './usernotifslist.css';
-import InfiniteScroll from 'react-infinite-scroll-component';
+// import InfiniteScroll from 'react-infinite-scroll-component';
 import { getNotifs, getInitialNotifs } from "../../store/actions/carrierNotifs";
 import NotifCard from "../../containers/NotifCard/NotifCard";
 import $ from "jquery";
@@ -83,6 +83,7 @@ class CarrierNotifsList extends React.Component {
                 trip_des_loc={item["trip"]["des_loc"] || ''}
                 trip_dep_date={item["trip"]["dep_date"] || ''}
                 offer_price={item["proposal"]["price"] || ''}
+                img={item["created_by"]["profile_pic"] === null ? '' : item["created_by"]["profile_pic"]}
               />
             ))}
           </div>

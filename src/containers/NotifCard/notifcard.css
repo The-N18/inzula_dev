@@ -27,3 +27,12 @@
     height: 170px !important;
   }
 }
+
+ul.pagination li{
+  margin-bottom: 0px;
+  line-height: 1.5;
+  color: #777;
+  position: relative;
+  display: inline-block!important;
+  padding: 0;
+}

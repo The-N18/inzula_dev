@@ -61,54 +61,44 @@ class SenderNotifsList extends React.Component {
   render() {
     const { notifs, next_url, count } = this.props;
     return (
-      <Segment basic className={"profile-tab-section"}>
-      {notifs && notifs !== undefined && notifs.length === 0 ? <div>
+      <div className="dashboard-content">
+        {notifs && notifs !== undefined && notifs.length === 0 ? <div>
         <FormattedMessage
           id="sender_notifs.no_notifs"
           defaultMessage="You have no notifications"
-        /></div> : <div
-        id="scrollableDiv"
-        style={{
-          height: 600,
-          overflow: 'auto',
-        }}
-      >
-        <InfiniteScroll
-          dataLength={notifs ? notifs.length : 0}
-          next={this.fetchMoreData}
-          hasMore={count !== null && next_url !== null}
-          loader={<h4><FormattedMessage
-            id="sender_notifs.loading"
-            defaultMessage="Loading"
-          /></h4>}
-          scrollableTarget="scrollableDiv"
-        >
+        /></div> : <div className="dashboard-review single-comments">
+          <div className="comments">
           {notifs && notifs.map((item, index) => (
-            <div style={{
-              height: this.getDivHeight.bind(this),
-              margin: 6,
-              padding: 8
-            }} key={index}>
-              <NotifCard
-                pk={item["pk"]}
-                type={item["type"]}
-                status={item["status"]}
-                created_on={item["created_on"]}
-                creator_username={item["creator_username"]}
-                booking_request_id={item["booking_request"]["pk"] || ''}
-                product_name={item["booking_request"]["product_name"] || ''}
-                trip_id={item["trip"]["pk"] || ''}
-                trip_dep_loc={item["trip"]["dep_loc"] || ''}
-                trip_des_loc={item["trip"]["des_loc"] || ''}
-                trip_dep_date={item["trip"]["dep_date"] || ''}
-                offer_price={item["proposal"]["price"] || ''}
-                />
-            </div>
-          ))}
-        </InfiniteScroll>
-      </div>}
-
-      </Segment>
+            <NotifCard
+              key={index}
+              pk={item["pk"]}
+              type={item["type"]}
+              status={item["status"]}
+              created_on={item["created_on"]}
+              creator_username={item["creator_username"]}
+              booking_request_id={item["booking_request"]["pk"] || ''}
+              product_name={item["booking_request"]["product_name"] || ''}
+              trip_id={item["trip"]["pk"] || ''}
+              trip_dep_loc={item["trip"]["dep_loc"] || ''}
+              trip_des_loc={item["trip"]["des_loc"] || ''}
+              trip_dep_date={item["trip"]["dep_date"] || ''}
+              offer_price={item["proposal"]["price"] || ''}
+              img={item["created_by"]["profile_pic"] === null ? '' : item["created_by"]["profile_pic"]}
+            />
+            ))}
+          </div>
+          <div className="pagination-main text-center">
+            <ul className="pagination">
+              <li><a href="#"><i className="fa fa-angle-double-left" aria-hidden="true" /></a></li>
+              <li className="active"><a href="#">1</a></li>
+              <li><a href="#">2</a></li>
+              <li><a href="#">3</a></li>
+              <li><a href="#">4</a></li>
+              <li><a href="#"><i className="fa fa-angle-double-right" aria-hidden="true" /></a></li>
+            </ul>
+          </div>
+        </div>}
+      </div>
     );
   }
 }
