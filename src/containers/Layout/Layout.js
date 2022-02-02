@@ -56,6 +56,7 @@ class CustomLayout extends React.Component {
     isMobile: false
   }
 
+
   handleOnClick = (item) => this.props.history.push(item);
 
   handleOnProfileClick = () => {
@@ -173,15 +174,18 @@ class CustomLayout extends React.Component {
 
   render() {
     const { authenticated, profile_pic, profileType } = this.props;
+    const location =this.props.history.location.pathname;
+    console.log("Props HISTORY",this.props.history)
 
     let mobileMenu = (
       <ul className="nav navbar-nav" id="responsive-menu">
-        <li><a onClick={this.handleOnClick.bind(this, '/')} >Expediez</a></li>
-        <li><a onClick={this.handleOnClick.bind(this, '/transport')}>Transportez</a></li>
+        <li className={location=='/'&& "active"}><a onClick={this.handleOnClick.bind(this, '/')} >Expediez</a></li>
+        <li className={location=='/transport'&& "active"}><a onClick={this.handleOnClick.bind(this, '/transport')}>Transportez</a></li>
         {/* <li><a className={"pad-13"}>
           <Image bordered circular size='small' className={"profile-image"} onClick={this.handleOnProfileClick.bind(this)} src={profile_pic !== null && profile_pic !== "null" ? get_img_url(profile_pic) : backend_url() + '/static/images/user_avatar.png'} />
         </a></li> */}
-        <li><a onClick={this.handleOnProfileClick.bind(this)}>
+
+        {/* <li><a onClick={this.handleOnProfileClick.bind(this)}>
         <FormattedMessage
           id="layout.profile"
           defaultMessage="Profile"
@@ -207,7 +211,7 @@ class CustomLayout extends React.Component {
           id="layout.finances"
           defaultMessage="Finances"
         />
-        </a></li>
+        </a></li> */}
       </ul>
     );
 
@@ -260,10 +264,10 @@ class CustomLayout extends React.Component {
                       {authenticated ? (mobileMenu) :
                         (
                         <ul className="nav navbar-nav" id="responsive-menu">
-                          <li><a href="" onClick={this.handleOnClick.bind(this, '/')}>Expediez</a></li>
-                          <li><a href="" onClick={this.handleOnClick.bind(this, '/transport')}>Transportez</a></li>
-                          <li><a href="#" className="mr-2" data-toggle="modal" data-target="#register"><i className="icon-user mr-1" /> Je m'inscris</a></li>
-                          <li><a href="#" data-toggle="modal" data-target="#login"><i className="icon-login mr-1" /> Je me connecte</a></li>
+                          <li className={location=='/'&& "active"}><a  onClick={this.handleOnClick.bind(this, '/')}>Expediez</a></li>
+                          <li className={location=='/transport'&& "active"}><a  onClick={this.handleOnClick.bind(this, '/transport')}>Transportez</a></li>
+                          <li><a  className="mr-2" data-toggle="modal" data-target="#register"><i className="icon-user mr-1" /> Je m'inscris</a></li>
+                          <li><a  data-toggle="modal" data-target="#login"><i className="icon-login mr-1" /> Je me connecte</a></li>
                         </ul>
                       )}
                     

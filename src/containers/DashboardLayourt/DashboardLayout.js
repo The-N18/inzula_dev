@@ -138,6 +138,7 @@ function DashboardLayout(props) {
                                         <ul><li><a href="dashboard-add-new.html"><i className="sl sl-icon-directions" /> Transfert de fonds</a></li></ul>
                                         <ul><li><a href="dashboard-add-new.html"><i className="sl sl-icon-credit-card" /> Mes moyens de paiement</a></li></ul>
                                     </li>
+                                    {profileType === "carrier"?<Link to={`${url}/my-reservations`}><li className={location.pathname=='/dashboard/my-reservations'&& "active"}><a ><i className="sl sl-icon-notebook" /> Réservations sur mes voyages</a></li></Link>:""}
                                     <li><a onClick={logoutUtil}><i className="sl sl-icon-power" /> Deconnexion</a></li>
 
 

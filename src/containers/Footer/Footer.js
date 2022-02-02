@@ -74,8 +74,8 @@ class Footer extends React.Component {
                   <div className="footer-links">
                     <h4 className="white">Services</h4>
                     <ul>
-                      <li><a href="#">Comment ça marche?</a></li>
-                      <li><a href="#">FAQ</a></li>
+                      <li><a onClick={()=>{this.props.history.push('/how-does-it-work')}}>Comment ça marche?</a></li>
+                      <li><a onClick={()=>{this.props.history.push('/faqs')}}>FAQ</a></li>
                       <li><a href="#">Assurance</a></li>
                       <li><a href="#">Charte de bonne conduite</a></li>
                     </ul>

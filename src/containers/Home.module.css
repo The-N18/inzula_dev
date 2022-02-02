@@ -1,0 +1,9 @@
+.how-it-works-ul{
+    list-style-type: '-';
+    list-style-position: outside;
+    padding: 0 20px;
+}
+
+.how-it-works-text{
+    height: 250px;
+}

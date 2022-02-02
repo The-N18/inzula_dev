@@ -62,64 +62,66 @@ class UserBookingsList extends React.Component {
   render() {
     const { reservations, next_url, count } = this.props;
     return (
-      <Segment basic className={"profile-tab-section"}>
+      <React.Fragment>
       {reservations.length === 0 ? <div><FormattedMessage
         id="user_bookings.no_bookings"
         defaultMessage="You have not recieved any bookings on your trips."
-      />
-    </div> : <div
-        id="scrollableDiv"
-        style={{
-          height: 400,
-          overflow: 'auto',
-        }}
-      >
-        {/*Put the scroll bar always on the bottom*/}
-        <InfiniteScroll
-          dataLength={reservations.length}
-          next={this.fetchMoreData}
-          hasMore={count !== null && next_url !== null}
-          loader={<h4><FormattedMessage
-            id="user_bookings.loading"
-            defaultMessage="Loading..."
-          /></h4>}
-          scrollableTarget="scrollableDiv"
-        >
-          {reservations.map((item, index) => (
-            <div style={{
-              height: this.getDivHeight.bind(this),
-              margin: 6,
-              padding: 8
-            }} key={index}>
-              <BookingCard
-                title={item["product"]["name"]}
-                pk={item["pk"]}
-                recipient_name={item["product"]["recipient_name"]}
-                recipient_phone_number={item["product"]["recipient_phone_number"]}
-                request_by_username={item["request_by_username"]}
-                arrival_date={item["product"]["arrival_date"]}
-                description={item["product"]["description"]}
-                departure_location={item["product"]["departure_location"]}
-                destination_location={item["product"]["destination_location"]}
-                weight={item["product"]["weight"]}
-                space={item["product"]["space"]}
-                price={item["product"]["price"]}
-                product_category={item["product"]["product_category"]}
-                proposed_price={item["product"]["proposed_price"]}
-                product_details={item["product"]}
-                confirmed_by_sender={item["confirmed_by_sender"]}
-                status={item["status"]}
-                img={item["product"]["images"].length === 0 ? '' : item["product"]["images"][0]['image']}
-                images={buildImagesLinkList(item["product"]["images"])}
-                editable={false}
-                selectable={false}
-                validate_decline/>
+      /></div> : <React.Fragment>
+          <div className="dashboard-list-box with-icons">
+            <div className="dashboard-title">
+              <h4 className="mb-0">Liste de réservations</h4>
+              <p className="mb-0">Vous retrouvez ici la liste des réservations faites sur vos voyages </p>
             </div>
-          ))}
-        </InfiniteScroll>
-      </div>}
+            <div className="table-responsive table-desi">
+              <table className="basic-table table table-hover">
+                <thead>
+                  <tr>
+                    <th>Image</th>
+                    <th>Nom</th>
+                    <th>Date d'arrivée</th>
+                    <th>Ville de départ</th>
+                    <th>Ville d'arrivée</th>
+                    <th>Détail</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                {reservations.map((item, index) => (
+                    <BookingCard
+                    title={item["product"]["name"]}
+                    pk={item["pk"]}
+                    recipient_name={item["product"]["recipient_name"]}
+                    recipient_phone_number={item["product"]["recipient_phone_number"]}
+                    request_by_username={item["request_by_username"]}
+                    arrival_date={item["product"]["arrival_date"]}
+                    description={item["product"]["description"]}
+                    departure_location={item["product"]["departure_location"]}
+                    destination_location={item["product"]["destination_location"]}
+                    weight={item["product"]["weight"]}
+                    space={item["product"]["space"]}
+                    price={item["product"]["price"]} 
+                    product_category={item["product"]["product_category"]}
+                    proposed_price={item["product"]["proposed_price"]}
+                    product_details={item["product"]}
+                    confirmed_by_sender={item["confirmed_by_sender"]}
+                    status={item["status"]}
+                    img={item["product"]["images"].length === 0 ? '' : item["product"]["images"][0]['image']}
+                    images={buildImagesLinkList(item["product"]["images"])}
+                    editable={false}
+                    selectable={false}
+                    validate_decline/>
+              ))}
 
-      </Segment>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+    </React.Fragment>
+    }
+
+    </React.Fragment>
     );
   }
 }

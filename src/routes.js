@@ -17,6 +17,7 @@ import UserAgreement from "./containers/staticpages/UserAgreement/UserAgreement"
 import SearchBookingRequestsPage from "./containers/SearchBookingRequestsPage/SearchBookingRequestsPage";
 import SignupParentWithDiscount from "./containers/SignupParentWithDiscount/SignupParentWithDiscount";
 import DashboardLayout from "./containers/DashboardLayourt/DashboardLayout";
+import HowDoesItWork from "./containers/staticpages/HowDoesItWork/HowDoesItWork";
 
 const BaseRouter = () => (
   <Hoc>
@@ -35,6 +36,7 @@ const BaseRouter = () => (
       <Route path="/verify/:verificationKey" component={VerifyUser} />
       <Route path="/reset/:uid/:token" component={ResetPassword} />
       <Route path="/dashboard" component={DashboardLayout} />
+      <Route path="/how-does-it-work" component={HowDoesItWork} />
       <Route exact path="/" component={HomepageLayout} />
     </Switch>
   </Hoc>
