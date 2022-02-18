@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Container,
-  Button,
   Header,
   Segment,
   Divider,
@@ -22,6 +21,8 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { sizeMultiOptions, sizeMultiOptionsFr, categoryMultiOptions, categoryMultiOptionsFr, weightMultiOptions, weightMultiOptionsFr, valueMultiOptions, valueMultiOptionsFr } from "../../utils/options";
 import { buildImagesLinkList } from "../../configurations";
 import {FormattedMessage} from 'react-intl'
+
+import { Button} from 'reactstrap';
 
 
 class SearchBookingRequestsPage extends React.Component {
@@ -65,6 +66,7 @@ class SearchBookingRequestsPage extends React.Component {
 
   submitForm = (val) => {
     const { user_id, next_url, count } = this.props;
+    console.log("SearchBookingRequestsPage submitForm",next_url)
     const { product_category, product_size, proposed_price, weight } = this.state;
     const departureLocation = val['departure_location'] ? val['departure_location']['pk'] : null;
     const destinationLocation = val['destination_location'] ? val['destination_location']['pk'] : null;
@@ -90,6 +92,21 @@ class SearchBookingRequestsPage extends React.Component {
       val = 445;
     }
     return val;
+  }
+
+  handleResetFields = ()=>{
+    const {reset,initialize}=this.props;
+    initialize();
+    this.setState({
+      departure_location: "",
+      destination_location: "",
+      travel_date: "",
+      weight: [],
+      proposed_price: [],
+      product_category: [],
+      product_size: [],
+    })
+    
   }
 
   render() {
@@ -265,6 +282,9 @@ class SearchBookingRequestsPage extends React.Component {
                     <br/><br/>
                     <div className="d-flex align-items-center justify-content-center">
                         <a  onClick={handleSubmit(this.submitForm)} className={`${styles["nir-btn"]} w-100`}><i className="fa fa-search" /> Rechercher</a>
+                        <Button variant="contained" color="success" className={`${styles['reset-button']}`} onClick={this.handleResetFields}>
+                          Réinitialiser
+                        </Button>
                     </div>
                     
               
@@ -381,4 +401,4 @@ const mapDispatchToProps = dispatch => {
 export default withRouter(connect(
     mapStateToProps,
     mapDispatchToProps
-)(reduxForm({ form: "search_bookings_page", enableReinitialize: true })(SearchBookingRequestsPage)));
+)(reduxForm({ form: "search_bookings_page", destroyOnUnmount:false, enableReinitialize: true })(SearchBookingRequestsPage)));

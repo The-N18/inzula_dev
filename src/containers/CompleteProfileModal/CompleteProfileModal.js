@@ -1,7 +1,7 @@
 import React from "react";
 import {
   Segment,
-  Icon
+  Icon,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -11,7 +11,7 @@ import CompleteProfileForm from "../CompleteProfileForm/CompleteProfileForm";
 import {FormattedMessage} from 'react-intl'
 import 'react-widgets/dist/css/react-widgets.css';
 
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import {  Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
 
 class CompleteProfileModal extends React.Component {
 
@@ -40,21 +40,19 @@ render() {
         </ModalHeader>
         <ModalBody>
           <Segment vertical>
-            <span className={"profile-link"} onClick={this.goToProfile.bind(this)}>
+            {/* <span className={"profile-link"} onClick={this.goToProfile.bind(this)}>
               <FormattedMessage
                 id="complete_profile_modal.msg"
                 defaultMessage="see my profile"
               />
-            </span>
-            <CompleteProfileForm />
+            </span> */}
+            {/* <CompleteProfileForm /> */}
+            Veuillez compléter les informations de votre profile
           </Segment>
         </ModalBody>
         <ModalFooter>
-          <Button negative onClick={() => this.props.closeCompleteProfileModal()} primary>
-            <FormattedMessage
-              id="complete_profile_modal.cancel"
-              defaultMessage="Cancel"
-            /><Icon name='cancel' />
+          <Button variant="contained" color="success" onClick={() => {localStorage.setItem("completeProfile","false");this.props.closeCompleteProfileModal()}}>
+            Ok
           </Button>
         </ModalFooter>
       </Modal>

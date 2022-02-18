@@ -19,6 +19,7 @@ import SignupParentWithDiscount from "./containers/SignupParentWithDiscount/Sign
 import DashboardLayout from "./containers/DashboardLayourt/DashboardLayout";
 import HowDoesItWork from "./containers/staticpages/HowDoesItWork/HowDoesItWork";
 
+
 const BaseRouter = () => (
   <Hoc>
     <Switch>
@@ -38,6 +39,7 @@ const BaseRouter = () => (
       <Route path="/dashboard" component={DashboardLayout} />
       <Route path="/how-does-it-work" component={HowDoesItWork} />
       <Route exact path="/" component={HomepageLayout} />
+      <Route path="*" component={() => "404 NOT FOUND"} />
     </Switch>
   </Hoc>
 );

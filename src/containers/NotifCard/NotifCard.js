@@ -17,7 +17,10 @@ class NotifCard extends React.Component {
 
   render() {
 
-    const {creator_username, created_on, img, type, trip_dep_date, product_name, trip_dep_loc, trip_des_loc, offer_price} = this.props;
+    const {item,created_by,creator_username, created_on, img, type, trip_dep_date, product_name, trip_dep_loc, trip_des_loc, offer_price} = this.props;
+    const connectedUserId = localStorage.getItem('userProfileId');
+
+    console.log("CREATED BY",created_by,img,item)
     return (
       <div className="comment-box d-flex align-items-center ">
         <div className="comment-image">
@@ -25,7 +28,7 @@ class NotifCard extends React.Component {
         </div>
         <div className="comment-content" style={{width: "45rem"}}>
           {creator_username !== "" && type !== "request_declined" ?
-            <h5 className="m-0">{creator_username}</h5>: ''}
+            <h5 className="m-0">{connectedUserId==created_by?"Vous":creator_username}</h5>: ''}
           {created_on !== "" ?
           <p className="comment-date mb-2">
             <FormattedDate
@@ -48,11 +51,11 @@ class NotifCard extends React.Component {
                 id="notif_card.trip_booked"
                 defaultMessage="Your trip has been booked"
               /> : ''}
-              {type === "payment_for_booking" ?
+              {type === "payment_for_booking" ? connectedUserId==created_by?
               <FormattedMessage
                 id="notif_card.payment_for_booking"
                 defaultMessage="Paid for booking"
-              /> : ''}
+              /> : 'A payé pour une réservation' :''}
               {type === "offer_rec" ?
               <FormattedMessage
                 id="notif_card.offer_rec"
@@ -69,11 +72,11 @@ class NotifCard extends React.Component {
                 values={{ username: `${creator_username}`}}
                 defaultMessage="Your booking request has been declined by the sender"
               /> : ''}
-              {type === "request_cancelled" ?
+              {type === "request_cancelled" ? connectedUserId==created_by?
               <FormattedMessage
                 id="notif_card.request_cancelled"
                 defaultMessage="You have cancelled your booking request."
-              /> : ''}
+              /> : 'A annulé sa requête de requete':''}
               {type === "payment_for_delivery" ?
               <FormattedMessage
                 id="notif_card.payment_for_delivery"

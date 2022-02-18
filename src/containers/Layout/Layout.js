@@ -330,7 +330,8 @@ class CustomLayout extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    authenticated: state.auth.token !== null,
+    // authenticated: state.auth.token !== null,
+    authenticated: localStorage.getItem("token") !== null,
     profile_pic: state.userInfo.profile_pic,
     lang: state.appConfig.lang,
     profileType: state.userInfo.profileType

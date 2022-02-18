@@ -21,15 +21,23 @@ import 'react-phone-number-input/style.css';
 moment.locale('en');
 momentLocalizer();
 
-export const renderPhoneNumber = ({ input: { value, onChange }, meta: { touched, error, warning } }) => {
+export const renderPhoneNumber = ({ input, meta: { touched, error, warning } }) => {
+  console.log("in renderPhoneNumber",input.value);
+  {console.log(typeof(input.value))}
   return (
-    <PhoneInput
+    
+    <div>
+      <PhoneInput {...input}
       flags={flags}
-      value={value.toString()}
-      onChange={onChange}
-      error={value ? (isValidPhoneNumber(value) ? undefined : 'Invalid phone number') : 'Phone number required'} />
+      value={input.value.toString()}
+      onChange={input.onChange}
+      error={input.value ? (isValidPhoneNumber(input.value) ? undefined : 'Invalid phone number') : 'Phone number required'} />
+      {touched && ((error && <span className={"error-on-input"}>{error}</span>) || (warning && <span>{warning}</span>))}
+    </div>
+    
   )
 }
+
 
 
 export const renderField = ({ input, placeholder, type, disabled, meta: { touched, error, warning } }) => (
@@ -112,6 +120,7 @@ export const renderCitiesList = ({ input, className, data, label, meta: { touche
 }
 
 
+
   export const renderDateTimePicker = ({ input: { onChange, value }, className, label, showTime, min, meta: { touched, error, warning } }) => {
     return (<div>
       <div>
@@ -131,10 +140,13 @@ export const renderCitiesList = ({ input, className, data, label, meta: { touche
     }
 
   export const renderDateTimePickerDown = ({ input: { onChange, value }, className, label, showTime, min, meta: { touched, error, warning } }) => {
+  //   console.log("in renderDateTimePickerDown",input.value);
+  // {console.log(typeof(input.value))}
     return (<div>
       <div>
         <label>{label}</label>
         <DateTimePicker
+          // {...input}
           placeholder="Date de départ"
           dropDown={true}
           className={className}
@@ -147,3 +159,22 @@ export const renderCitiesList = ({ input, className, data, label, meta: { touche
         {touched && ((error && <span className={"error-on-input"}>{error}</span>) || (warning && <span>{warning}</span>))}
       </div></div>);
     }
+
+
+  //   export const renderDateTimePickerDown= ({ input: { onChange, value }, input, label, showTime, min, meta: { touched, error, warning } }) => {
+  //     console.log("in renderDateTimePickerDown",value);
+  // {console.log(typeof(value))}
+  //     return (<div>
+  //       <div>
+  //         <label>{label}</label>
+  //         <DateTimePicker
+  //         // {...input}
+  //       onChange={onChange}
+  //       format="YYYY-MM-DD"
+  //       time={showTime}
+  //       min={min}
+  //       value={!value ? null : value}
+  //     />
+  //   {touched && ((error && <span className={"error-on-input"}>{error}</span>) || (warning && <span>{warning}</span>))}
+  // </div></div>);
+  //   }

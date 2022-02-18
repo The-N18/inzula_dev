@@ -2,6 +2,7 @@ from .models import Product, ProductImage, BookingRequest, Notif, PriceProposal,
 from rest_framework import serializers
 from trip.serializers import TripSerializer
 from userprofile.serializers import CitySerializer
+import datetime
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
@@ -32,14 +33,35 @@ class BookingRequestSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
     trip = TripSerializer()
     request_by_username = serializers.SerializerMethodField()
+    booking_status = serializers.SerializerMethodField()
+
     class Meta:
         model = BookingRequest
         fields = ["request_by", "request_by_username", "trip", "product",
-        "confirmed_by_sender", "made_on", "collector_id", "pk", "status"]
+        "confirmed_by_sender", "made_on", "collector_id", "pk", "status","booking_status"]
 
     def get_request_by_username(self, obj):
         if obj.request_by is not None:
             return obj.request_by.user.username
+        return ""
+    
+    def get_booking_status(self,obj):
+        if obj.status == "del":
+            # result["detail"] = "BOOKING_ALREADY_DELIVERED"
+            return 'expired'
+        today = datetime.datetime.now().date()
+        print('BookingRequestSerializer today',today,type(today))
+        booking_date = obj.product.arrival_date
+        if(type(booking_date) is str):
+            date_time_obj = datetime.datetime.strptime(booking_date, '%Y-%m-%d')
+            booking_date = date_time_obj.date()
+            # print("yo",date_time_obj,type(date_time_obj))
+
+        print('BookingRequestSerializer booking_date',booking_date,type(booking_date))
+        delta = booking_date - today
+        if delta.days <= 1:
+            # result["detail"] = "TOO_LATE_TO_CANCEL"
+            return 'expired'
         return ""
 
 class NotifSerializer(serializers.ModelSerializer):
@@ -63,16 +85,28 @@ class NotifListSerializer(serializers.ModelSerializer):
     booking_request = serializers.SerializerMethodField()
     proposal = serializers.SerializerMethodField()
     creator_username = serializers.SerializerMethodField()
+    creator_profile_pic = serializers.SerializerMethodField()
 
     class Meta:
         model = Notif
         fields = ["created_by", "trip", "booking_request",
-        "status", "type", "created_on", "pk", "proposal", "creator_username"]
+        "status", "type", "created_on", "pk", "proposal", "creator_username","creator_profile_pic"]
     
     def get_creator_username(self, obj):
         if obj.created_by is not None:
             return obj.created_by.user.username
         return None
+    
+    def get_creator_profile_pic(self, obj):
+        if obj.created_by is not None:
+            profile_pic = obj.created_by.profile_pic
+            profile_pic_url = None
+            print(profile_pic)
+            if profile_pic:
+                profile_pic_url = profile_pic.url
+            return profile_pic_url
+        return None
+    
 
     def get_trip(self, obj):
         dct = {

@@ -15,8 +15,10 @@ import { openModalSelectReservations } from "../../store/actions/selectReservati
 import {FormattedMessage, FormattedDate} from 'react-intl'
 import { openDeleteTripConfirm, setTripDeleteTripConfirm } from "../../store/actions/deleteTripConfirm";
 import { updateTripOpenModal } from "../../store/actions/updateTripModal";
-import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
+import { NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import {openCompleteProfileModal} from "../../store/actions/completeProfileModal";
+import { getInitialSelectableReservations } from "../../store/actions/selectableUserReservations";
+import { createNotif } from "../../store/actions/appConfig";
 
 import $ from 'jquery';
 window.jQuery = $;
@@ -30,22 +32,28 @@ class TripCard extends React.Component {
 
   handleBook = () => {
     console.log("in handle book")
-    const {trip_id, authenticated} = this.props;
+    const {user_id, trip_id, authenticated} = this.props;
     if(authenticated) {
       if(isProfileComplete(localStorage)) {
         this.props.openReservationsList(trip_id);
+        this.props.getInitialSelectableUserReservations(user_id, trip_id)
+
         $("#selectReservations").modal("show");
       } else {
         this.props.openCompleteProfileModal();
+        
       }
       
     } else {
-      createNotification({
-        message: 'Please login to book this trip.',
-        type: NOTIFICATION_TYPE_SUCCESS,
-        duration: 30000,
-        canDismiss: true,
-      });
+      this.props.createNotif("booking_request.login_msg", "Please login to have the possibility to book.", NOTIFICATION_TYPE_WARNING);
+      // this.props.openLoginModal();
+      $("#login").modal("show");
+      // createNotification({
+      //   message: 'Please login to book this trip.',
+      //   type: NOTIFICATION_TYPE_SUCCESS,
+      //   duration: 30000,
+      //   canDismiss: true,
+      // });
     }
   }
 
@@ -134,6 +142,7 @@ class TripCard extends React.Component {
 const mapStateToProps = state => {
   return {
     authenticated: state.auth.token !== null,
+    user_id: state.userInfo.userId,
   };
 };
 
@@ -145,6 +154,8 @@ const mapDispatchToProps = dispatch => {
     openDeleteTripConfirm: () => dispatch(openDeleteTripConfirm()),
     setTripDeleteTripConfirm: (tripId) => dispatch(setTripDeleteTripConfirm(tripId)),
     updateTripOpenModal: (tripInfo, pk) => dispatch(updateTripOpenModal(tripInfo, pk)),
+    getInitialSelectableUserReservations: (user_id, trip_id) => dispatch(getInitialSelectableReservations(user_id, trip_id)),
+    createNotif: (key, default_text, type) => dispatch(createNotif(key, default_text, type)),
   };
 };
 

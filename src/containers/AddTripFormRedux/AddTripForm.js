@@ -105,8 +105,8 @@ class AddTripForm extends React.Component {
   }
 
   handleResetModal = ()=>{
-    const {reset}=this.props;
-    reset();
+    const {reset,initialize}=this.props;
+    initialize()
   }
 
 
@@ -228,4 +228,4 @@ const afterSubmit = (result, dispatch) => dispatch(reset('add_trip'));
 export default withRouter(connect(
     mapStateToProps,
     mapDispatchToProps
-)(reduxForm({ form: "add_trip", onSubmitSuccess: afterSubmit, validate})(AddTripForm)));
+)(reduxForm({ form: "add_trip", onSubmitSuccess: afterSubmit, destroyOnUnmount:false, enableReinitialize: true, validate})(AddTripForm)));

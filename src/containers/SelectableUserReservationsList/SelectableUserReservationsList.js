@@ -38,8 +38,13 @@ class SelectableUserReservationsList extends React.Component {
   }
 
   componentDidMount = () => {
-    const { user_id, tripId } = this.props;
-    this.props.getInitialSelectableUserReservations(user_id, tripId);
+    // const { user_id, tripId } = this.props;
+    // this.props.getInitialSelectableUserReservations(user_id, tripId);
+    // $('#selectReservations').on('show.bs.modal', function () {
+    //   this.props.getInitialSelectableUserReservations(this.props.user_id, this.props.tripId);
+    //   $("#selectReservations").off('show.bs.modal');
+    // }.bind(this));
+  
     window.addEventListener('resize', this.handleScreenSize, false);
     this.handleScreenSize();
 
@@ -69,7 +74,7 @@ class SelectableUserReservationsList extends React.Component {
     return (
       <React.Fragment>
         {reservations.length === 0 ? <div><FormattedMessage
-          id="user_reservations.no_reservations"
+          id="user_reservations.no_reservations_matching"
           defaultMessage="You have not created any reservations."
         /></div> : <React.Fragment>
             <div className="dashboard-list-box with-icons">

@@ -154,8 +154,10 @@ class SelectableUserBookingsRequestListView(generics.ListAPIView):
         trip_id = self.request.query_params.get('trip_id', None)
         if trip_id is not None:
             trip = Trip.objects.get(pk=trip_id)
-            date_range_start = trip.depart_date - datetime.timedelta(days=14)
-            date_range_end = trip.depart_date + datetime.timedelta(days=14)
+            date_range_start = trip.depart_date - datetime.timedelta(days=5)
+            date_range_end = trip.depart_date + datetime.timedelta(days=5)
+            print("trip.depart_date",trip.depart_date,user_id,trip_id)
+            print("date_range_start",date_range_start)
             products = products.filter(arrival_date__range=[date_range_start, date_range_end], departure_location=trip.departure_location, destination_location=trip.destination_location)
         queryset = self.model.objects.filter(confirmed_by_sender=False, product__in=products)
         if user_id is not None:
@@ -576,7 +578,9 @@ class BookingRequestDetail(APIView):
                 for item in pictures:
                     img = ProductImage(image=item, product=product)
                     img.save()
+            print('BookingRequestDetail serializer1')
             serializer = BookingRequestSerializer(booking_request)
+            # print('BookingRequestDetail serializer2',serializer)
             return Response(serializer.data,
                             status=status.HTTP_200_OK)
 
@@ -638,8 +642,8 @@ class BookingRequestSearchView(generics.ListAPIView):
         start_date = None
         if arrDate != "":
             start_date = datetime.datetime.strptime(arrDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
-            date_range_start = start_date - datetime.timedelta(days=14)
-            date_range_end = start_date + datetime.timedelta(days=14)
+            date_range_start = start_date - datetime.timedelta(days=5)
+            date_range_end = start_date + datetime.timedelta(days=5)
             products = products.filter(arrival_date__range=[date_range_start, date_range_end])
         if departure_location:
             products = products.filter(departure_location__pk=departure_location)
@@ -741,6 +745,7 @@ class DeclineBooking(APIView):
     def post(self, request, format=None):
         with transaction.atomic():
             booking_request = BookingRequest.objects.get(pk=request.data['bookingId'])
+            print('DeclineBooking booking_request',booking_request)
             booking_request.confirmed_by_sender = False
             booking_request.status = 'cre'
             # create notification
@@ -768,12 +773,17 @@ class CancelBooking(APIView):
             booking_request = BookingRequest.objects.get(pk=request.data['bookingId'])
             result = {"detail": 'ok'}
             if booking_request.status == "del":
+                print("CancelBooking booking_request.status == del")
                 result["detail"] = "BOOKING_ALREADY_DELIVERED"
                 return Response(result, status=status.HTTP_200_OK)
             today = datetime.datetime.now().date()
+            print("BOOKING DATE TODAY",today)
             booking_date = booking_request.product.arrival_date
+            print("BOOKING DATE booking_date",booking_date)
             delta = booking_date - today
+            print("BOOKING DATE DELTA",delta)
             if delta.days <= 1:
+                print("CancelBooking delta.days <= 1")
                 result["detail"] = "TOO_LATE_TO_CANCEL"
                 return Response(result, status=status.HTTP_200_OK)
             booking_request.confirmed_by_sender = False

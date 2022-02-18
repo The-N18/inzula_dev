@@ -17,11 +17,16 @@ export const clearUserInfo = () => {
     country: null,
     user_type: null,
     sex: null,
-    profileType: "sender",
+    profileType: null,
   };
 };
 
 export const setUserInfo = (userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country, user_type, sex, id_document) => {
+  // localStorage.setItem('profile_type',user_type)
+  // if(updateProfile){
+  //   localStorage.setItem('profile_type',user_type)
+  // }
+
   return {
     type: actionTypes.SET_USER_INFO,
     userId: userId,
@@ -38,7 +43,7 @@ export const setUserInfo = (userId, username, userProfileId, first_name, last_na
     country: country,
     user_type: user_type,
     sex: sex,
-    profileType: user_type,
+    profileType: localStorage.getItem("profile_type")?localStorage.getItem("profile_type"):user_type,
     profileData: {
       first_name: first_name,
       last_name: last_name,
@@ -55,6 +60,7 @@ export const setUserInfo = (userId, username, userProfileId, first_name, last_na
 };
 
 export const toggleProfileType = (profileType) => {
+  profileType === "sender" ? localStorage.setItem("profile_type","sender"): localStorage.setItem("profile_type","carrier");
   return {
     type: actionTypes.TOGGLE_PROFILE_TYPE,
     profileType: profileType,

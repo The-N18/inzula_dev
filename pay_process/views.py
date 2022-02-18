@@ -38,6 +38,9 @@ class PayForBooking(CreateAPIView):
             cardExpirationDate = request.data['cardExpirationDate']
             cardCvx = request.data['cardCvx']
 
+            # for booking in BookingRequest.objects.filter(pk__in=[int(i) for i in selectedBookingIds]):
+            #             print('IN PayForBooking for',booking)
+
             # user
             user = User.objects.get(pk=userId)
             userprofile = user.profile
@@ -169,12 +172,15 @@ class PayForBooking(CreateAPIView):
 
                     # change the status of all bookings and create notifications
                     for booking in BookingRequest.objects.filter(pk__in=[int(i) for i in selectedBookingIds]):
+                        print('IN PayForBooking for',booking)
                         booking.status = 'boo'
                         booking.trip = Trip.objects.get(pk=tripId)
+                        booking.product.amount_paid = booking.product.proposed_price
+                        booking.product.charges_paid = booking.product.proposed_price * 0.25
                         if uses_discount:
                             booking.product.amount_paid = ((100-discount_percentage) * booking.product.proposed_price)/100
                             booking.product.charges_paid = ((100-discount_percentage) * booking.product.proposed_price * 0.25)/100
-                            booking.product.save()
+                        booking.product.save()
                         booking.save()
                         # generate notifications
                         Notif.objects.create(trip=booking.trip,
@@ -200,6 +206,11 @@ class PayForBookingCardId(CreateAPIView):
             tripId = request.data['tripId']
             selectedBookingIds = request.data['selectedBookingIds']
             cardId = request.data['cardId']
+
+        # for booking in BookingRequest.objects.filter(pk__in=[int(i) for i in selectedBookingIds]):
+        #     print('IN PayForBookingCardId for',booking.product.amount_paid)
+
+            print('IN PayForBookingCardId ',cardId)
 
             #users
             user = User.objects.get(pk=userId)
@@ -313,10 +324,13 @@ class PayForBookingCardId(CreateAPIView):
                     for booking in BookingRequest.objects.filter(pk__in=[int(i) for i in selectedBookingIds]):
                         booking.status = 'boo'
                         booking.trip = Trip.objects.get(pk=tripId)
+                        booking.product.amount_paid = booking.product.proposed_price
+                        booking.product.charges_paid = booking.product.proposed_price * 0.25
                         if uses_discount:
                             booking.product.amount_paid = ((100-discount_percentage) * booking.product.proposed_price)/100
                             booking.product.charges_paid = ((100-discount_percentage) * booking.product.proposed_price * 0.25)/100
-                            booking.product.save()
+                            
+                        booking.product.save()
                         booking.save()
                         # generate notifications
                         Notif.objects.create(trip=booking.trip,
@@ -335,7 +349,11 @@ class PayForBookingCardId(CreateAPIView):
 def refund_charges(booking, in_decline):
     with transaction.atomic():
         booking_amt = booking.product.amount_paid
+        print('refund_charges booking_amt',booking_amt)
+
         charges_amount = booking.product.charges_paid
+        print('refund_charges charges_amount',charges_amount)
+        
         total_amt = charges_amount + booking_amt
         amount_to_deduce_from_charges = (booking.product.amount_paid*0.03)+ 1.7
         amount_to_refund = 0.0
@@ -346,6 +364,8 @@ def refund_charges(booking, in_decline):
         if in_decline:
             amount_to_refund = total_amt * 100
         userprofile_to_refund = booking.request_by
+
+        print('refund_charges userprofile_to_refund',userprofile_to_refund)
 
         # Get natural user to refund
         recipient_nat_user_id = userprofile_to_refund.nat_user_id
@@ -366,6 +386,8 @@ def refund_charges(booking, in_decline):
             recipient_natural_user.save()
         userprofile_to_refund.nat_user_id = recipient_natural_user.id
         userprofile_to_refund.save()
+
+        print('refund_charges recipient_natural_user',recipient_nat_user_id,recipient_natural_user)
 
         # get user wallet
         if userprofile_to_refund.wallet_id is None:
@@ -412,6 +434,7 @@ def refund_charges(booking, in_decline):
 
         inzula_wallet = Wallet(id=admin_user.wallet_id)
 
+        print('refund_charges amount_to_refund',amount_to_refund)
         # transfer funds from inzula wallet to user wallet
         if amount_to_refund != 0.0:
             transfer = Transfer(author=inzula_user,
@@ -1120,11 +1143,15 @@ class RefundAmount(APIView):
         }
         if bookingId != 0:
             booking_request = BookingRequest.objects.get(pk=bookingId)
+            print('RefundAmount booking_request',booking_request)
             br_price = booking_request.product.amount_paid
+            print('RefundAmount br_price',br_price)
             charges = booking_request.product.charges_paid
+            print('RefundAmount charges',charges)
             br_price_and_charges = charges + br_price
             amount_to_refund = br_price_and_charges - ((float(br_price) * 0.03) + 1.7)
-            if amount_to_refund >= float(br_price_and_charges):
+            # if amount_to_refund >= float(br_price_and_charges):
+            if amount_to_refund <= 0:
                 amount_to_refund = 0.0
             result["amt"] = amount_to_refund
             return Response(result, status=status.HTTP_200_OK)

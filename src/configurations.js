@@ -70,6 +70,9 @@ export const isProfileComplete = (localstorage) => {
   if(id_document !=="" && id_document !== null && token !== "" && uname !== "" && fname !== "" && lname !== "" && phone !== "" && phone !== null && phone !== "undefined" && phone !== "0" && passp !== ""  && passp !== null  && passp !== "undefined" && ctry !== "" && ctry !== "undefined" && ctry !== null && sex !== "" && sex !== "undefined" && sex !== null) {
     return true;
   }
+  localStorage.setItem("completeProfile","true")
+  const win = window.open("/dashboard/profile", "_blank");
+  win.focus();
   return false;
 }
 

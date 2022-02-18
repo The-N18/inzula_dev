@@ -16,31 +16,42 @@ import {renderField} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
 import CSRFToken from "../../containers/CSRFToken";
 import {FormattedMessage} from 'react-intl'
+import {NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
+import { createNotif } from "../../store/actions/appConfig";
 import $ from "jquery";
 
 class PaymentFormModal extends React.Component {
 
   submitForm = (val) => {
     const {userId, tripId, selectedBookingIds} = this.props;
+    const actualYear = parseInt(new Date().getFullYear().toString().substr(-2));
+    const actualMonth = parseInt(("0" + (new Date().getMonth() + 1)).slice(-2));
+
+    if((val['exp_date_yy'] < actualYear)||(val['exp_date_yy'] == actualYear && val['exp_date_mm'] < actualMonth)){
+      this.props.createNotif("paymentmodal.card_expired", "Your card has expired", NOTIFICATION_TYPE_ERROR);
+      throw 'Your card has expired';
+    }
+
+
     const values = {
       'cardNumber': val['card_number'],
       'cardExpirationDate': val['exp_date_mm'] + val['exp_date_yy'],
       'cardCvx': val['cvc'],
       'userId': userId,
       'tripId': tripId,
-      'selectedBookingIds': selectedBookingIds
+      'selectedBookingIds': selectedBookingIds,
     }
     this.props.payForBooking(values);
     // this.props.getInitialCardData(values);
   }
 
   handleClosePaymentFormModal = () => {
-    const {reset}=this.props;
+    const {reset,initialize}=this.props;
 
     $('#paymentForm').off('hidden.bs.modal')
     $('#paymentForm').on('hidden.bs.modal', function () {
       $('#selectCreditCard').modal("show");
-      reset();
+      initialize();
     });
     $('#paymentForm').modal('hide');
     this.props.closePaymentFormModal();
@@ -189,6 +200,7 @@ const mapDispatchToProps = dispatch => {
     payInInzulaWallet: (values) => dispatch(payInInzulaWallet(values)),
     getInitialCardData: (values) => dispatch(getInitialCardData(values)),
     payForBooking: (values) => dispatch(payForBooking(values)),
+    createNotif: (key, default_text, type) => dispatch(createNotif(key, default_text, type)),
   };
 };
 
@@ -202,7 +214,10 @@ const afterSubmit = (result, dispatch) => dispatch(reset('payment_form_modal'));
 
 PaymentFormModalConnected = reduxForm ({
   form: 'payment_form_modal',
-  onSubmitSuccess: afterSubmit, validate
+  destroyOnUnmount:false,
+  enableReinitialize: true,
+  onSubmitSuccess: afterSubmit,
+  validate
 }) (PaymentFormModalConnected);
 
 export default PaymentFormModalConnected;

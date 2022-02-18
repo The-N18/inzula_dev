@@ -23,6 +23,7 @@ import { openDeleteAccount } from "../../store/actions/deleteAccount";
 import {userTypeOptions, userTypeOptionsFr, sexOptions, sexOptionsFr} from "../../utils/options";
 import Files from 'react-files';
 import 'react-phone-number-input/style.css';
+import { openCompleteProfileModal } from "../../store/actions/completeProfileModal";
 
 
 
@@ -90,6 +91,12 @@ class ProfileTab extends React.Component {
   render () {
     const {handleSubmit, loading, deleteLoading, username, invalid, date_joined, profile_pic, passport_number, phone_number, email, lang, id_document} = this.props;
     const {passport} = this.state;
+    const completeProfile = localStorage.getItem("completeProfile");
+
+    if(completeProfile === "true"){
+      console.log("IN ProfileTab completeProfile",completeProfile)
+      this.props.openCompleteProfileModal();
+    }
     return (
       <React.Fragment>
         <div className="dashboard-content">
@@ -291,7 +298,8 @@ const mapStateToProps = state => {
     phone_number: state.userInfo.phone_number,
     profile_pic: state.userInfo.profile_pic,
     id_document: state.userInfo.id_document,
-    initialValues: state.userInfo.profileData
+    initialValues: state.userInfo.profileData,
+    completeProfile: state.completeProfileModal.completeProfile
   };
 };
 
@@ -299,7 +307,8 @@ const mapDispatchToProps = dispatch => {
   return {
     updateProfile: (first_name, last_name, phone_number, email, country, passport_number, profile_pic, user_type, sex, passport_file) =>
       dispatch(updateUserProfile(first_name, last_name, phone_number, email, country, passport_number, profile_pic, user_type, sex, passport_file)),
-    openDeleteAccount: () => dispatch(openDeleteAccount())
+    openDeleteAccount: () => dispatch(openDeleteAccount()),
+    openCompleteProfileModal: () => dispatch(openCompleteProfileModal())
   };
 };
 

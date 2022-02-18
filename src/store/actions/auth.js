@@ -77,6 +77,7 @@ export const logoutAction = () => {
   localStorage.removeItem("userId");
   localStorage.removeItem("userProfileId");
   localStorage.removeItem("username");
+  localStorage.removeItem("completeProfile");
   return {
     type: actionTypes.AUTH_LOGOUT
   };
@@ -96,6 +97,8 @@ export const logout = expirationTime => {
   localStorage.removeItem("user_type");
   localStorage.removeItem("sex");
   localStorage.removeItem("id_document");
+  localStorage.removeItem("completeProfile");
+  localStorage.removeItem("profile_type");
   return dispatch => {
       type: actionTypes.AUTH_LOGOUT,
       setUserInfo(null, null, null, null, null, null, null, null, null, null, null, null)
@@ -157,6 +160,8 @@ export const checkAuthTimeout = expirationTime => {
          localStorage.setItem("user_type", user_type);
          localStorage.setItem("sex", sex);
          localStorage.setItem("date_joined", date_joined);
+         localStorage.setItem("completeProfile","false")
+         window.location.href = '/';
          dispatch(authSuccess(token));
          dispatch(setUserInfo(userId, username, userProfileId, first_name, last_name, email, date_joined, phone_number, profile_pic, passport_number, country, user_type, sex, id_document));
          dispatch(checkAuthTimeout(AUTH_TIMEOUT));

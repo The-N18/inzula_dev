@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Field, reduxForm, reset} from 'redux-form';
+import {Field, initialize, reduxForm, reset} from 'redux-form';
 import styles from './signup.css';
 import {
   Segment,
@@ -54,15 +54,15 @@ class RegistrationForm extends Component {
   }
 
   handleResetModal = ()=>{
-    const {reset}=this.props;
-    reset();
+    const {reset,initialize}=this.props;
+    initialize();
   }
 
   render () {
     const {handleSubmit, token, loading, invalid, discountText, open, lang} = this.props;
-    if (token) {
-      return <Redirect to="/" />;
-    }
+    // if (token) {
+    //   return <Redirect to="/" />;
+    // }
     return (
       <div className="login-form text-center">
         <form>
@@ -170,10 +170,11 @@ let RegistrationFormConnected = withRouter(connect(
   mapDispatchToProps
 )(RegistrationForm));
 
-const afterSubmit = (result, dispatch) => dispatch(reset('signup'));
+const afterSubmit = (result, dispatch) => dispatch(initialize('signup'));
 
 RegistrationFormConnected = reduxForm ({
   form: 'signup', onSubmitSuccess: afterSubmit,
+  destroyOnUnmount:false, enableReinitialize: true,
   validate
 }) (RegistrationFormConnected);
 

@@ -20,7 +20,7 @@ import {renderField, renderDateTimePickerDown, renderPhoneNumber, renderDropdown
 import { validate } from "./validation";
 import { sizeOptions, sizeOptionsFr, categoryOptions, categoryOptionsFr, weightOptions, weightOptionsFr, valueOptions, valueOptionsFr, calculateMinPrice } from "../../utils/options";
 import {FormattedMessage} from 'react-intl'
-import {openCompleteProfileModal} from "../../store/actions/completeProfileModal";
+import {openCompleteProfileModal, setCompleteProfileTrue} from "../../store/actions/completeProfileModal";
 
 
 class SendPackage extends React.Component {
@@ -44,8 +44,8 @@ class SendPackage extends React.Component {
   }
 
   handleResetModal = ()=>{
-    const {reset}=this.props;
-    reset()
+    const {reset,initialize}=this.props;
+    initialize()
     if(this.state.activeStep === 2) {
       this.setState({ activeStep: 1});
     }
@@ -110,7 +110,9 @@ class SendPackage extends React.Component {
 
           this.handleResetModal()
       } else {
-        this.props.openCompleteProfileModal();
+        
+        // this.props.openCompleteProfileModal();
+        
       }
     }
   };
@@ -424,11 +426,7 @@ class SendPackage extends React.Component {
                             id="add_booking.rec_phone_number_field"
                             defaultMessage="Reciever's phone number"
                           /></label>
-                        {/* <Field
-                          name="recipient_phone_number"
-                          type="number"
-                          component={renderField}
-                        /> */}
+
                         <Field
                           type="text"
                           name="recipient_phone_number"
@@ -589,8 +587,9 @@ const mapDispatchToProps = dispatch => {
     openCompleteProfileModal: () => dispatch(openCompleteProfileModal()),
     addRequest: (tripId, created_by, pictures, departure_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, destination_location, recipient_name,
     recipient_phone_number, terms_conditions, user_agreement) => dispatch(bookingAddition(tripId, created_by, pictures, departure_location, product_description, product_name, product_category, product_weight, product_size, product_value, proposed_price, delivery_date, destination_location, recipient_name,
-    recipient_phone_number, terms_conditions, user_agreement)),
+    recipient_phone_number, terms_conditions, user_agreement,true)),
     createNotification: (config) => {dispatch(createNotification(config))},
+    setCompleteProfileTrue: () => dispatch(setCompleteProfileTrue())
   };
 };
 
@@ -618,4 +617,4 @@ SendPackage.propTypes = {
 export default withRouter(connect(
     mapStateToProps,
     mapDispatchToProps
-)(reduxForm({ form: "send_package", enableReinitialize: true, validate })(SendPackage)));
+)(reduxForm({ form: "send_package", destroyOnUnmount:false, enableReinitialize: true, validate })(SendPackage)));

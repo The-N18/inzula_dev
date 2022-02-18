@@ -1,12 +1,13 @@
 import React from "react";
-import {
-  Button,
-  Modal
-} from "semantic-ui-react";
+// import {
+//   Button,
+//   Modal
+// } from "semantic-ui-react";
 import { connect } from "react-redux";
 // import styles from './validatebooking.css';
 import { openValidateBooking, closeValidateBooking, validateBooking } from "../../store/actions/validateBooking";
 import {FormattedMessage} from 'react-intl'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 class ValidateBooking extends React.Component {
 
@@ -19,39 +20,44 @@ class ValidateBooking extends React.Component {
   render() {
     const { open } = this.props;
     return (
-      <Modal
-      closeIcon
-        centered={false}
-        open={open}
-        onClose={() => this.props.closeValidateBooking()}
-        onOpen={() => this.props.openValidateBooking()}
-        size='tiny'
+
+
+      <Modal 
+        isOpen={open} 
+        onOpened={() => this.props.openValidateBooking()}
+        onClosed={() => this.props.closeValidateBooking()}
+        size="sm"
       >
-      <Modal.Header><FormattedMessage
-        id="validate_booking.title"
-        defaultMessage="Validate booking"
-      /></Modal.Header>
-      <Modal.Content>
-        <p><FormattedMessage
-          id="validate_booking.question"
-          defaultMessage="Are you sure you want to validate this booking?"
-        /></p>
-      </Modal.Content>
-      <Modal.Actions>
-        <Button negative onClick={() => this.props.closeValidateBooking()}>
-        <FormattedMessage
-          id="validate_booking.no"
-          defaultMessage="No"
-        />
-        </Button>
-        <Button positive onClick={this.handleDelete.bind(this)}>
-        <FormattedMessage
-          id="validate_booking.yes"
-          defaultMessage="Yes"
-        />
-        </Button>
-      </Modal.Actions>
-    </Modal>
+        <ModalHeader toggle={() => this.props.closeCompleteProfileModal()}>
+          <FormattedMessage
+            id="validate_booking.title"
+            defaultMessage="Validate booking"
+          />
+        </ModalHeader>
+        <ModalBody>
+          <p>
+            <FormattedMessage
+              id="validate_booking.question"
+              defaultMessage="Are you sure you want to validate this booking?"
+            />
+          </p>
+        </ModalBody>
+        <ModalFooter>
+          <Button variant="contained" color="success" onClick={this.handleDelete.bind(this)}>
+            <FormattedMessage
+              id="validate_booking.yes"
+              defaultMessage="Yes"
+            />
+          </Button>
+          <Button variant="contained" color="danger" onClick={() => this.props.closeValidateBooking()}>
+            <FormattedMessage
+              id="validate_booking.no"
+              defaultMessage="No"
+            />
+          </Button>
+        </ModalFooter>
+      </Modal>
+
     );
   }
 }

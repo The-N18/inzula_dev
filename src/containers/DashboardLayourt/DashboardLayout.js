@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useRouteMatch, useLocation, Redirect } from "react-router-dom";
 import {
     Message,
@@ -29,16 +29,46 @@ function DashboardLayout(props) {
 
     console.log("URLLLL",url);
 
-    if (token === null || token === "") {
-        return <Redirect to="/" />;
-      }
+    // if (token === null || token === "") {
+    //     return <Redirect to="/" />;
+    //   }
+
+    useEffect(() => {
+        // code to run on component mount
+        console.log("IN use Effect")
+
+        // props.toggleProfileType(profileType === "sender" ? "carrier" : "sender");
+        
+        // $("financeDropdown").click(function(){
+        //     if(location.pathname=='/dashboard/my-transactions'){
+        //         console.log("IN toggleFinanceDropdown IF")
+        //         $('#financeDropdown').addClass('active');
+        //     }else{
+        //         console.log("IN toggleFinanceDropdown ELSE")
+        //         // $('#financeDropdown').toggleClass('active');
+
+        //         if($('#financeDropdown').hasClass('active')){
+        //             $('#financeDropdown').removeClass('active');
+        //         }else{
+        //             $('#financeDropdown').addClass('active');
+        //         }
+        //     }
+                
+        //   });
+
+        
+      }, [])
 
     const handleRadioChange = (e, data) => {
         const {profileType, activeIndex} = props;
-        if(profileType === "carrier" && activeIndex === 4) {
-          props.setActiveIndex(0);
+        if(profileType === "carrier" && location.pathname=='/dashboard/my-reservations') {
+        //   props.setActiveIndex(0);
+        props.history.push('/dashboard/profile')
+          
         }
         props.toggleProfileType(profileType === "sender" ? "carrier" : "sender");
+        
+
       };
     
     const logoutUtil = () => {
@@ -50,10 +80,20 @@ function DashboardLayout(props) {
       }
 
     const toggleFinanceDropdown = () => {
+        console.log("IN toggleFinanceDropdown")
         if(location.pathname=='/dashboard/my-transactions'){
+            console.log("IN toggleFinanceDropdown IF")
             $('#financeDropdown').addClass('active');
         }else{
-            $('#financeDropdown').toggleClass('active');
+            console.log("IN toggleFinanceDropdown ELSE")
+            // $('#financeDropdown').toggleClass('active');
+
+            if($('#financeDropdown').hasClass('active')){
+                $('#financeDropdown').removeClass('active');
+            }else{
+                $('#financeDropdown').addClass('active');
+            }
+            // $('#financeDropdown').addClass('active');
         }
         
     }
@@ -133,7 +173,7 @@ function DashboardLayout(props) {
                                     <Link to={`${url}/my-bookings`}><li className={location.pathname=='/dashboard/my-bookings'&& "active"}><a ><i className="sl sl-icon-layers" /> {profileType === "sender"?"Mes colis":"Mes voyages"}</a></li></Link>
                                     <Link to={`${url}/alerts`}><li className={location.pathname=='/dashboard/alerts'&& "active"}><a ><i class="sl sl-icon-star"></i>Alertes</a></li></Link>
                                     {/* <li><a href="dashboard-history.html"><i class="fa fa-list-ul"></i>Finances</a></li>  fas fa-exclamation-circle*/}
-                                    <li  id="financeDropdown" onClick={toggleFinanceDropdown}><a><i className="fa fa-list-ul" />Finances</a>
+                                    <li  id="financeDropdown" onClick={toggleFinanceDropdown} ><a><i className="fa fa-list-ul" />Finances</a>
                                         <ul><li><a href="/dashboard/my-transactions"><i className="sl sl-icon-plus" /> Mes transactions</a></li></ul>
                                         <ul><li><a href="dashboard-add-new.html"><i className="sl sl-icon-directions" /> Transfert de fonds</a></li></ul>
                                         <ul><li><a href="dashboard-add-new.html"><i className="sl sl-icon-credit-card" /> Mes moyens de paiement</a></li></ul>
@@ -167,6 +207,7 @@ function DashboardLayout(props) {
     const mapStateToProps = state => {
         return {
         token: state.auth.token,
+        // token: localStorage.getItem("token"),
         loading: state.auth.loading,
         deleteLoading: state.auth.deleteLoading,
         first_name: state.userInfo.first_name,

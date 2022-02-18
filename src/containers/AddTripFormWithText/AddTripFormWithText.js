@@ -83,7 +83,7 @@ class AddTripFormWithText extends React.Component {
               <div className="col-lg-7 col-sm-12">
                 <div className="about-content">
                   {/*<h4 class="mb-1 white font-weight-normal">Comment ça marche ?</h4>*/}
-                  <a href="#" className="per-btn">
+                  <a onClick={()=>{this.props.history.push('/how-does-it-work')}} className="per-btn">
                     <span className="white">Comment ca marche</span><i className="fa fa-arrow-right white" />
                   </a><br /><br />
                   <h2 className="white">Gagnez du temps ! Vérifiez les demandes d’expéditions disponibles sur le site.</h2>

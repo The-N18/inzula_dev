@@ -1,12 +1,13 @@
 import React from "react";
-import {
-  Button,
-  Modal
-} from "semantic-ui-react";
+// import {
+//   Button,
+//   Modal
+// } from "semantic-ui-react";
 import { connect } from "react-redux";
 // import styles from './declinebooking.css';
 import {FormattedMessage} from 'react-intl'
 import { openDeclineBooking, closeDeclineBooking, declineBooking } from "../../store/actions/declineBooking";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 class DeclineBooking extends React.Component {
 
@@ -19,43 +20,43 @@ class DeclineBooking extends React.Component {
   render() {
     const { open } = this.props;
     return (
-      <Modal
-      closeIcon
-        centered={false}
-        open={open}
-        onClose={() => this.props.closeDeclineBooking()}
-        onOpen={() => this.props.openDeclineBooking()}
-        size='tiny'
+
+      <Modal 
+        isOpen={open} 
+        onOpened={() => this.props.openDeclineBooking()}
+        onClosed={() => this.props.closeDeclineBooking()}
+        size="sm"
       >
-      <Modal.Header>
-      <FormattedMessage
-              id="decline_booking.title"
-              defaultMessage="Decline booking"
-            />
-            </Modal.Header>
-      <Modal.Content>
-        <p>
-        <FormattedMessage
+        <ModalHeader toggle={() => this.props.closeCompleteProfileModal()}>
+          <FormattedMessage
+            id="decline_booking.title"
+            defaultMessage="Decline booking"
+          />
+        </ModalHeader>
+        <ModalBody>
+          <p>
+            <FormattedMessage
               id="decline_booking.msg"
               defaultMessage="Are you sure you want to decline this booking?"
             />
-            </p>
-      </Modal.Content>
-      <Modal.Actions>
-        <Button negative onClick={() => this.props.closeDeclineBooking()}>
-        <FormattedMessage
-              id="decline_booking.no"
-              defaultMessage="No"
-            />
-        </Button>
-        <Button positive onClick={this.handleDelete.bind(this)}>
-        <FormattedMessage
+          </p>
+        </ModalBody>
+        <ModalFooter>
+          <Button variant="contained" color="success" onClick={this.handleDelete.bind(this)}>
+            <FormattedMessage
               id="decline_booking.yes"
               defaultMessage="Yes"
             />
-        </Button>
-      </Modal.Actions>
-    </Modal>
+          </Button>
+          <Button variant="contained" color="danger" onClick={() => this.props.closeDeclineBooking()}>
+            <FormattedMessage
+              id="decline_booking.no"
+              defaultMessage="No"
+            />
+          </Button>
+        </ModalFooter>
+      </Modal>
+
     );
   }
 }

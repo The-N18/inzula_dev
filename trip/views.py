@@ -149,8 +149,8 @@ class TripSearchView(generics.ListAPIView):
             trips = trips.filter(destination_location__pk=destination_location)
         if arrDate != "":
             start_date = datetime.datetime.strptime(arrDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
-            date_range_start = start_date - datetime.timedelta(days=14)
-            date_range_end = start_date + datetime.timedelta(days=14)
+            date_range_start = start_date - datetime.timedelta(days=5)
+            date_range_end = start_date + datetime.timedelta(days=5)
             trips = trips.filter(depart_date__range=[date_range_start, date_range_end])
         return trips.order_by('-depart_date')
 

@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import PropTypes from "prop-types";
-import {Field, reduxForm} from 'redux-form';
+import {Field, reduxForm, formValueSelector} from 'redux-form';
 import {
   Button,
   Grid,
@@ -77,8 +77,8 @@ class CompleteProfileForm extends React.Component {
                 </Header>
                 <form onSubmit={handleSubmit(this.submitForm)}>
                   <Segment basic>
-                    <CSRFToken/>
-                    <DjangoCSRFToken/>
+                    {/* <CSRFToken/>
+                    <DjangoCSRFToken/> */}
                     <div>
                       <label htmlFor="first_name">
                         <FormattedMessage
@@ -137,7 +137,7 @@ class CompleteProfileForm extends React.Component {
                       name="phone_number"
                       component={renderPhoneNumber}
                     />
-                    <div>
+                    {/* <div>
                       <label htmlFor="country">
                         <FormattedMessage
                           id="profile_tab.country"
@@ -151,7 +151,8 @@ class CompleteProfileForm extends React.Component {
                           component={renderDropdownList}
                           data={countries}
                           valueField="value"
-                          textField="text" />
+                          textField="text" /> */}
+                          {/* <input type="text" placeholder="YO1" /> */}
                     <div>
                       <label htmlFor="country">
                         <FormattedMessage
@@ -187,6 +188,7 @@ class CompleteProfileForm extends React.Component {
                         minFileSize={0}
                         clickable
                       >
+                        
                         <Button
                           className={"buttoncolor-passport"}
                           size="small"
@@ -201,6 +203,7 @@ class CompleteProfileForm extends React.Component {
                       </Files>
                       </div>
                     </div>
+                    {/* <input type="text" placeholder="YO2" /> */}
                     <Button
                       className={"buttoncolor"}
                       size="large"
@@ -223,6 +226,8 @@ class CompleteProfileForm extends React.Component {
     );
   }
 }
+
+const selector = formValueSelector('complete_profile_form');
 
 const mapStateToProps = state => {
   return {

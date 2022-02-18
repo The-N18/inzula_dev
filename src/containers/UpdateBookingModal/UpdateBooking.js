@@ -14,7 +14,7 @@ import { backend_url } from "../../configurations";
 import ImageUploader from 'react-images-upload';
 import {createNotification} from 'react-redux-notify';
 import {Field, reset, reduxForm, formValueSelector} from 'redux-form';
-import {renderField, renderDateTimePicker, renderDropdownList, renderCitiesList} from "../../containers/ReduxForm/renderField";
+import {renderField, renderDateTimePicker, renderDropdownList, renderCitiesList, renderDateTimePickerDown} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
 import { updateBooking } from "../../store/actions/addBooking";
 import { updateBookingOpenModal, updateBookingCloseModal } from "../../store/actions/updateBookingModal";
@@ -302,7 +302,7 @@ class UpdateBooking extends React.Component {
                         <Field
                           name="delivery_date"
                           showTime={false}
-                          component={renderDateTimePicker}
+                          component={renderDateTimePickerDown}
                           min={new Date()}
                         />
                     </div>

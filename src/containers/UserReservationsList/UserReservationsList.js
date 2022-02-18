@@ -113,8 +113,8 @@ class UserReservationsList extends React.Component {
                       <th>Ville de départ</th>
                       <th>Ville d'arrivée</th>
                       <th>Détail</th>
-                      <th>Modifier</th>
-                      <th>Supprimer</th>
+                      <th></th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -128,6 +128,7 @@ class UserReservationsList extends React.Component {
                         recipient_phone_number={item["product"]["recipient_phone_number"]}
                         request_by_username={item["request_by_username"]}
                         status={item["status"]}
+                        booking_status = {item["booking_status"]}
                         arrival_date={item["product"]["arrival_date"]}
                         description={item["product"]["description"]}
                         departure_location={item["product"]["departure_location"]}

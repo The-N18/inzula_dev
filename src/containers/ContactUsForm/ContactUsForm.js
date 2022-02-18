@@ -81,9 +81,9 @@ class ContactUsForm extends React.Component {
   render() {
     const { first_name, last_name, username, email, password1, password2 } = this.state;
     const { error, loading, token } = this.props;
-    if (token) {
-      return <Redirect to="/" />;
-    }
+    // if (token) {
+    //   return <Redirect to="/" />;
+    // }
     return (
       <Segment style={{ padding: "2em 0em" }} vertical>
       <Grid

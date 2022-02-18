@@ -40,7 +40,7 @@ export const addBookingFail = error => {
 export const bookingAddition = (tripId, created_by, pictures, departure_location, product_description,
   product_name, product_category, product_weight, product_size, product_value, proposed_price,
   delivery_date, destination_location, recipient_name,
-recipient_phone_number, terms_conditions, user_agreement) => {
+recipient_phone_number, terms_conditions, user_agreement, inSelectBookingModal=false) => {
   const userProfileId = localStorage.getItem("userProfileId");
   const userId = localStorage.getItem("userId");
   const config = {
@@ -83,11 +83,15 @@ recipient_phone_number, terms_conditions, user_agreement) => {
 
         // dispatch(closeModal());
         $("#sendPackage").modal("hide");
-        $("#sendPackage").on('hidden.bs.modal', function (e) {
-         console.log("HIDDEN");
-         $("#sendPackage").off('hidden.bs.modal');
-         $('.modal-backdrop').remove()  
-       })
+
+        if(inSelectBookingModal==false){
+          $("#sendPackage").on('hidden.bs.modal', function (e) {
+            console.log("HIDDEN");
+            $("#sendPackage").off('hidden.bs.modal');
+            $('.modal-backdrop').remove()  
+          })
+        }
+        
 
         dispatch(getInitialReservations(userProfileId));
         dispatch(getInitialSelectableReservations(userId, tripId));

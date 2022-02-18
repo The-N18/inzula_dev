@@ -1,12 +1,14 @@
 import React from "react";
-import {
-  Button,
-  Modal
-} from "semantic-ui-react";
+// import {
+//   Button,
+//   Modal
+// } from "semantic-ui-react";
 import { connect } from "react-redux";
 // import styles from './cancelbooking.css';
 import { openCancelBooking, closeCancelBooking, cancelBooking, getRefundAmt } from "../../store/actions/cancelBooking";
 import {FormattedMessage} from 'react-intl'
+
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 class CancelBooking extends React.Component {
 
@@ -26,48 +28,52 @@ class CancelBooking extends React.Component {
   render() {
     const { open, refundAmt } = this.props;
     return (
-      <Modal
-      closeIcon
-        centered={false}
-        open={open}
-        onClose={() => this.props.closeCancelBooking()}
-        onOpen={() => this.props.openCancelBooking()}
-        size='tiny'
+
+
+      <Modal 
+        isOpen={open} 
+        onOpened={() => this.props.openCancelBooking()}
+        onClosed={() => this.props.closeCancelBooking()}
+        size="sm"
       >
-      <Modal.Header>
-      <FormattedMessage
-              id="cancel_booking.title"
-              defaultMessage="Cancel booking"
-            />
-            </Modal.Header>
-      <Modal.Content>
-      <span>
-        <FormattedMessage
+        <ModalHeader toggle={() => this.props.closeCompleteProfileModal()}>
+          <FormattedMessage
+            id="cancel_booking.title"
+            defaultMessage="Cancel booking"
+          />
+        </ModalHeader>
+        <ModalBody>
+          <span>
+            <FormattedMessage
               id="cancel_booking.msg"
               defaultMessage="Are you sure you want to cancel this booking?"
-            /></span>
-        <br/>
-        <span>
-        <FormattedMessage
-          id="confirm_cancel_modal.msg"
-          values={{ amount: `${refundAmt}` }}
-        /></span>
-      </Modal.Content>
-      <Modal.Actions>
-        <Button negative onClick={() => this.props.closeCancelBooking()}>
-          <FormattedMessage
-              id="cancel_booking.no"
-              defaultMessage="No"
             />
-        </Button>
-        <Button positive onClick={this.handleCancel.bind(this)}>
-        <FormattedMessage
+          </span>
+          <br/>
+          <span>
+            <FormattedMessage
+              id="confirm_cancel_modal.msg"
+              values={{ amount: `${refundAmt}` }}
+            />
+          </span>
+        </ModalBody>
+        <ModalFooter>
+          <Button variant="contained" color="success" onClick={this.handleCancel.bind(this)}>
+            <FormattedMessage
               id="cancel_booking.yes"
               defaultMessage="Yes"
             />
-        </Button>
-      </Modal.Actions>
-    </Modal>
+          </Button>
+          <Button variant="contained" color="danger" onClick={() => this.props.closeCancelBooking()}>
+            <FormattedMessage
+              id="cancel_booking.no"
+              defaultMessage="No"
+            />
+          </Button>
+        </ModalFooter>
+      </Modal>
+
+
     );
   }
 }

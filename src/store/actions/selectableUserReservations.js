@@ -43,6 +43,7 @@ export const getReservationsFail = error => {
 export const getInitialSelectableReservations = (user_id, tripId) => {
   return dispatch => {
     dispatch(getReservationsStart());
+    console.log("IN getInitialSelectableReservations",user_id,tripId)
     axios
       .get(api_url() + "/bookings/selectable_bookings_list", {
             params: {user_id: user_id, trip_id: tripId}

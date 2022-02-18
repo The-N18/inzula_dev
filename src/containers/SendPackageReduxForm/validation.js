@@ -1,5 +1,6 @@
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
+import { isValidPhoneNumber } from 'react-phone-number-input';
 
 export const validate = values => {
   const errors = {}
@@ -51,8 +52,8 @@ export const validate = values => {
   }
   if (!values.recipient_phone_number) {
     errors.recipient_phone_number = 'Required';
-  } else if (isNaN(Number(values.recipient_phone_number))) {
-    errors.recipient_phone_number = 'Must be a number';
+  }else if(!isValidPhoneNumber(values.recipient_phone_number)){
+    errors.recipient_phone_number = 'Invalid phone number'
   }
   return errors;
 }

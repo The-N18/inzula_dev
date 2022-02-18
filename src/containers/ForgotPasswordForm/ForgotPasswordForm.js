@@ -38,9 +38,9 @@ class ForgotPasswordForm extends Component {
 
   render () {
     const {handleSubmit, token, loading, invalid, open} = this.props;
-    if (token) {
-      return <Redirect to="/" />;
-    }
+    // if (token) {
+    //   return <Redirect to="/" />;
+    // }
     return (
       <Modal
       closeIcon

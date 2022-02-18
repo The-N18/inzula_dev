@@ -45,15 +45,15 @@ class LoginForm extends Component {
   }
 
   handleResetModal = ()=>{
-    const {reset}=this.props;
-    reset();
+    const {reset,initialize}=this.props;
+    initialize();
   }
 
   render () {
     const {handleSubmit, token, loading, pristine, reset, submitting, invalid, open} = this.props;
-    if (token) {
-      return <Redirect to="/" />;
-    }
+    // if (token) {
+    //   return <Redirect to="/" />;
+    // }
     return (
       <div className="login-form">
         <form>
@@ -111,6 +111,7 @@ let LoginFormConnected = connect(
 
 LoginFormConnected = reduxForm ({
   form: 'login',
+  destroyOnUnmount:false, enableReinitialize: true,
   validate
 }) (LoginFormConnected);
 

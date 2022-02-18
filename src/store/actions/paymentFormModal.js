@@ -6,6 +6,7 @@ import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR} 
 import { closeModal } from "./selectReservationsModal";
 import  { closeSelectCreditCard } from "./selectCreditCardModal";
 import {closePaymentOptions} from "./paymentOptionsModal";
+import $ from "jquery"
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
 
@@ -135,6 +136,14 @@ export const payForBooking = (values) => {
         dispatch(closeSelectCreditCard());
         dispatch(closePaymentOptions());
         dispatch(endPay());
+
+        $('#selectReservations').off('hidden.bs.modal');
+        $('#sendPackage').off('hidden.bs.modal');
+        $('#confirmReservationPrice').off('hidden.bs.modal');
+        $('#paymentOptions').off('hidden.bs.modal');
+        $('#selectCreditCard').off('hidden.bs.modal');
+        $("#paymentForm").modal("hide");
+
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: 'Your payment has been processed successfully.',
@@ -170,6 +179,14 @@ export const payForBookingWithCardId = (values) => {
         dispatch(closeSelectCreditCard());
         dispatch(closePaymentOptions());
         dispatch(endPay());
+
+        $('#selectReservations').off('hidden.bs.modal');
+        $('#sendPackage').off('hidden.bs.modal');
+        $('#confirmReservationPrice').off('hidden.bs.modal');
+        $('#paymentOptions').off('hidden.bs.modal');
+        $('#selectCreditCard').off('hidden.bs.modal');
+        $("#selectCreditCard").modal("hide");
+
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(createNotification({
           message: 'Your payment has been processed successfully.',

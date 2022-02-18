@@ -13,13 +13,15 @@ const initialState = {
   profile_pic: null,
   passport_number: null,
   country: null,
-  profileType: "sender",
+  profileType: localStorage.getItem("profile_type")?localStorage.getItem("profile_type"):null,
+  // profileType: 'carrier',
   user_type: null,
   sex: null,
   profileData: {}
 };
 
 const setUserInfo = (state, action) => {
+  console.log('setUserInfo reducer',action.profileType)
   return updateObject(state, {
     userId: action.userId,
     userProfileId: action.userProfileId,
@@ -35,7 +37,7 @@ const setUserInfo = (state, action) => {
     country: action.country,
     user_type: action.user_type,
     sex: action.sex,
-    profileType: action.user_type,
+    profileType: action.profileType,
     profileData: {
       first_name: action.first_name,
       last_name: action.last_name,
@@ -70,7 +72,7 @@ const clearUserInfo = (state, action) => {
     profile_pic: null,
     passport_number: null,
     country: null,
-    profileType: "sender",
+    profileType: null,
     user_type: null,
     sex: null,
     profileData: {}

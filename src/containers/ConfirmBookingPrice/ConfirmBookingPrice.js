@@ -28,6 +28,7 @@ class ConfirmBookingPrice extends React.Component {
 
   confirmPaymentPrice = () => {
     const {bookingId, tripId, userId, price } = this.props;
+    console.log('confirmPaymentPrice IIIIIINFOOO',bookingId, tripId, userId, price )
     this.props.setBookingRequestInfo(bookingId, tripId, userId, price, true);
     this.props.closeConfirmBookingPrice();
     // this.props.openPaymentFormModal();
@@ -104,7 +105,8 @@ const mapStateToProps = state => {
   return {
     open: state.confirmBookingPrice.open,
     bookingId: state.confirmBookingPrice.bookingId,
-    tripId: state.confirmBookingPrice.tripId,
+    // tripId: state.confirmBookingPrice.tripId,
+    tripId: state.selectReservationsModal.tripId,
     price: state.confirmBookingPrice.price,
     selectedBookingIds: state.selectReservationsModal.selected,
     paymentAmountConfirmed: state.confirmBookingPrice.paymentAmountConfirmed,

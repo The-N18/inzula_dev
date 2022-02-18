@@ -83,7 +83,9 @@ class CarrierNotifsList extends React.Component {
                 trip_des_loc={item["trip"]["des_loc"] || ''}
                 trip_dep_date={item["trip"]["dep_date"] || ''}
                 offer_price={item["proposal"]["price"] || ''}
-                img={item["created_by"]["profile_pic"] === null ? '' : item["created_by"]["profile_pic"]}
+                // img={item["created_by"]["profile_pic"] === null ? '' : item["created_by"]["profile_pic"]}
+                img={item["creator_profile_pic"] === null ? '' : item["creator_profile_pic"]}
+                created_by={item['created_by']}
               />
             ))}
           </div>

@@ -1,5 +1,6 @@
 export const validate = values => {
   const errors = {}
+  // const actualYear = parseInt(new Date().getFullYear().toString().substr(-2));
   if (!values.price) {
     errors.price = '*Required'
   } else if (values.price.length > 5) {
@@ -27,7 +28,10 @@ export const validate = values => {
     errors.exp_date_mm = 'Must be 2 digits'
   } else if (isNaN(Number(values.exp_date_mm))) {
     errors.exp_date_mm = 'Must be a number'
+  } else if(12<parseInt(values.exp_date_mm)|| parseInt(values.exp_date_mm)<1){
+    errors.exp_date_mm = 'Enter a valid month'
   }
+
   if (!values.exp_date_yy) {
     errors.exp_date_yy = '*Required'
   } else if (values.exp_date_yy.length > 2 || values.exp_date_yy.length < 2) {
@@ -35,13 +39,18 @@ export const validate = values => {
   } else if (isNaN(Number(values.exp_date_yy))) {
     errors.exp_date_yy = 'Must be a number'
   }
+  // else if(parseInt(values.exp_date_yy) < actualYear){
+  //   errors.exp_date_yy = 'Enter a valid year'
+  // }
+
   if (!values.cvc) {
     errors.cvc = '*Required'
   } else if (values.cvc.length > 3 || values.cvc.length < 3) {
-    errors.cvc = 'Must be 2 digits'
+    errors.cvc = 'Must be 3 digits'
   } else if (isNaN(Number(values.cvc))) {
     errors.cvc = 'Must be a number'
   }
+
   return errors
 }
 

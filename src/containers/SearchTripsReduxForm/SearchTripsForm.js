@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Container,
-  Button,
   Header,
   Segment,
   Divider,
@@ -20,6 +19,7 @@ import $ from "jquery";
 import {FormattedMessage} from 'react-intl'
 import {NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import { openLoginParentModal } from "../../store/actions/loginParentModal";
+import { Button} from 'reactstrap';
 // import 'react-widgets/dist/css/react-widgets.css';
 
 class SearchTripsForm extends React.Component {
@@ -29,8 +29,15 @@ class SearchTripsForm extends React.Component {
     isTablet: false
   }
 
+  handleResetFields = ()=>{
+    const {reset,initialize}=this.props;
+    initialize();
+    
+  }
+
   submitForm = (val) => {
     const { user_id, next_url, count } = this.props;
+    console.log("SearchTripsForm submitForm",next_url)
     const departureLocation = val['departure_location'] ? val['departure_location']['pk'] : null;
     const destinationLocation = val['destination_location'] ? val['destination_location']['pk'] : null;
     this.props.findTrip(departureLocation, destinationLocation, val['travel_date'], user_id, next_url, count);
@@ -143,6 +150,11 @@ class SearchTripsForm extends React.Component {
                     <div className="form-group m-0 w-100">
                       <a  className={`nir-btn ${loading?'disabled':''}`} onClick={handleSubmit(this.submitForm)} ><i className="fa fa-search" /> Rechercher</a>
                     </div>
+                  </div>
+                  <div className="col-lg">
+                    <Button variant="contained" color="success" onClick={this.handleResetFields}>
+                      Réinitialiser
+                    </Button>
                   </div>                      
                 </div>
               </div>
@@ -247,4 +259,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(reduxForm({ form: "search_trips" })(SearchTripsForm));
+)(reduxForm({ form: "search_trips",destroyOnUnmount:false, enableReinitialize: true })(SearchTripsForm));

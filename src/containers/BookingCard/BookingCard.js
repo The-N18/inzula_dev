@@ -217,7 +217,7 @@ class BookingCard extends React.Component {
     const {pk, title, description, images,
       arrival_date, departure_location, selectable, editable, recipient_phone_number, recipient_name,
       destination_location, weight, space, price, product_category, request_by_username,
-      proposed_price, validate_decline, can_propose, lang, status, confirmed_by_sender, isCancleClicked} = this.props;
+      proposed_price, validate_decline, can_propose, lang, status, booking_status, confirmed_by_sender, isCancleClicked} = this.props;
     const colored = validate_decline ? confirmed_by_sender ? 'green' : 'orange' : '';
       console.log("BOOOOOOOOOOX3",isCancleClicked)
     return (
@@ -281,7 +281,7 @@ class BookingCard extends React.Component {
                     <a onClick={this.deleteBooking.bind(this)}><i class="fa fa-trash-alt text-danger" aria-hidden="true"></i></a>
                 </td>
 
-                {status === "boo" || status === "awa" ? <td>
+                {/* {status === "boo" || status === "awa" ? <td>
                       <Button size="mini"
                         color='orange'
                         className={"white-trash"}
@@ -291,7 +291,7 @@ class BookingCard extends React.Component {
                         defaultMessage="Cancel"
                       />
                       </Button>
-                    </td> : ''}
+                    </td> : ''} */}
             </React.Fragment> : ''}
 
             {editable && status !== "del" && status !== "cre" ? <React.Fragment>
@@ -300,6 +300,7 @@ class BookingCard extends React.Component {
                         color='orange'
                         className={"white-trash"}
                         onClick={this.cancelBooking.bind(this)}
+                        disabled= {booking_status=="expired"}
                       ><FormattedMessage
                         id="booking_card.cancel_booking"
                         defaultMessage="Cancel"
