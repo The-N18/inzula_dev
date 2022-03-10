@@ -4,6 +4,7 @@ import { api_url, AUTH_TIMEOUT } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import $ from "jquery";
+import { closeSelectProposalTrip } from "./SelectProposalTripModal";
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -21,19 +22,28 @@ export const setBookingRequestId = (bookingId) => {
   };
 };
 
+export const setProposedPrice = (proposedPrice) => {
+  return {
+    type: actionTypes.PROPOSE_PRICE_ON_BOOKING_SET_PROPOSED_PRICE,
+    proposedPrice: proposedPrice,
+  };
+};
+
+
 export const closeProposePriceOnBooking = () => {
   return {
     type: actionTypes.PROPOSE_PRICE_ON_BOOKING_CLOSE_MODAL,
   };
 };
 
-export const proposePriceOnBooking = (bookingId, userId, price) => {
+export const proposePriceOnBooking = (bookingId, userId, price, proposedTripId) => {
   return dispatch => {
     axios
       .post(api_url() + "/bookings/propose_price", {
         booking_id: bookingId,
         user_id: userId,
         price: price,
+        proposedTripId
       })
       .then(res => {
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
@@ -86,9 +96,12 @@ export const proposePriceOnBooking = (bookingId, userId, price) => {
             duration: 10000,
             canDismiss: true,
           }));
+          dispatch(closeProposePriceOnBooking());
+          dispatch(closeSelectProposalTrip());
+          $("#proposePriceOnBooking").modal("hide");
+          $("#selectProposalTripModal").modal("hide");
+          localStorage.removeItem("minProposalPrice");
         }
-        dispatch(closeProposePriceOnBooking());
-        $("#proposePriceOnBooking").modal("hide")
       })
       .catch(err => {
         dispatch(createNotification({

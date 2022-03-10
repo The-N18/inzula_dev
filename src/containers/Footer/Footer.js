@@ -48,7 +48,7 @@ class Footer extends React.Component {
               <div className="row">
                 <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-4">
                   <div className="footer-about bg-white p-4">
-                    <img src="images/inzula_fr.png" alt="" />
+                    <img src="/static/images/inzula_fr.png" alt="" />
                     <p className="mt-3">
                       Plate-forme digitale et collaborative mettant en relation des expéditeurs de colis avec des voyageurs souhaitant amortir leurs frais de voyages via leurs kgs disponibles!
                     </p>

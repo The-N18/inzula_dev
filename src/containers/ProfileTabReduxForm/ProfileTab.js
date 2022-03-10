@@ -110,7 +110,7 @@ class ProfileTab extends React.Component {
                     {/* Avatar */}
                     <div className="edit-profile-photo">
                       {/* <img src="/images/user-avatar.jpg" alt="" /> */}
-                      <img ref={this.imgUploadPreviewRef} src="/images/user-avatar.jpg"  alt="Preview" />
+                      <img ref={this.imgUploadPreviewRef} src="/static/images/user-avatar.jpg"  alt="Preview" />
                       <div className="change-photo-btn">
                         <div className="photoUpload">
                           <span><i className="fa fa-upload" /> Importer Photo</span>

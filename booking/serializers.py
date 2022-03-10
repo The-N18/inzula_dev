@@ -34,11 +34,14 @@ class BookingRequestSerializer(serializers.ModelSerializer):
     trip = TripSerializer()
     request_by_username = serializers.SerializerMethodField()
     booking_status = serializers.SerializerMethodField()
+    is_proposed = serializers.SerializerMethodField()
+    proposed_by = serializers.SerializerMethodField()
+    
 
     class Meta:
         model = BookingRequest
         fields = ["request_by", "request_by_username", "trip", "product",
-        "confirmed_by_sender", "made_on", "collector_id", "pk", "status","booking_status"]
+        "confirmed_by_sender", "made_on", "collector_id", "pk", "status", "booking_status", "is_proposed", "proposed_by"]
 
     def get_request_by_username(self, obj):
         if obj.request_by is not None:
@@ -63,6 +66,29 @@ class BookingRequestSerializer(serializers.ModelSerializer):
             # result["detail"] = "TOO_LATE_TO_CANCEL"
             return 'expired'
         return ""
+
+    def get_is_proposed(self,obj):
+        # proposals = list(PriceProposal.objects.filter(booking_request=obj.pk))
+        proposalsQueryset = PriceProposal.objects.filter(booking_request=obj.pk)
+        proposals = list(proposalsQueryset.values())
+        print("BookingRequestSerializer proposals",proposals)
+        numb_of_proposals = len(proposals) 
+        print("BookingRequestSerializer numb_of_proposals",numb_of_proposals)
+        
+        if(numb_of_proposals!=0):
+            return True
+        return False
+    
+    def get_proposed_by(self,obj):
+        proposalsQueryset = PriceProposal.objects.filter(booking_request=obj.pk)
+        proposals = list(proposalsQueryset.values())
+        print("BookingRequestSerializer get_proposed_by proposals",proposals)
+
+        proposed_by = [i['request_by_id'] for i in proposals]
+        print("BookingRequestSerializer proposed_by",proposed_by)
+        
+        return proposed_by
+    
 
 class NotifSerializer(serializers.ModelSerializer):
     trip = TripSerializer()
@@ -153,7 +179,7 @@ class PriceProposalListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PriceProposal
-        fields = ["request_by", "price", "booking_request"]
+        fields = ["request_by", "price", "booking_request", "pk"]
 
     def get_request_by(self, obj):
         dct = {

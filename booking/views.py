@@ -289,6 +289,28 @@ class NotifCreateView(CreateAPIView):
                     status=notif_status)
             return Response(status=status.HTTP_204_NO_CONTENT)
 
+class CarrierNotifsListView(generics.ListAPIView):
+    """
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+
+    """
+    serializer_class = NotifListSerializer
+    model = serializer_class.Meta.model
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        user_id = self.request.query_params.get('user_id', None)
+        queryset = self.model.objects.all()
+        # bookings_by_user = BookingRequest.objects.filter(request_by=user_id)
+        trips_by_user = Trip.objects.filter(created_by=user_id)
+        if user_id is not None:
+            queryset = queryset.exclude(created_by=user_id)
+            queryset = queryset.exclude(status="seen")
+            queryset = queryset.exclude(Q(type="product_delivered"))
+            queryset = queryset.filter(trip__in=trips_by_user)
+        return queryset.order_by('-created_on')
+
 
 
 class PriceProposalCreateView(CreateAPIView):
@@ -309,11 +331,12 @@ class PriceProposalCreateView(CreateAPIView):
             return TokenSerializer(user.auth_token).data
 
     def create(self, request, *args, **kwargs):
+        print("IN PriceProposalCreateView create",request.data["booking_id"],request.data["user_id"],request.data["price"],request.data["proposedTripId"])
         with transaction.atomic():
             booking_request = BookingRequest.objects.get(pk=request.data["booking_id"])
             request_by = UserProfile.objects.get(user=request.data["user_id"])
-            date_range_start = booking_request.product.arrival_date - datetime.timedelta(days=14)
-            date_range_end = booking_request.product.arrival_date + datetime.timedelta(days=14)
+            date_range_start = booking_request.product.arrival_date - datetime.timedelta(days=5)
+            date_range_end = booking_request.product.arrival_date + datetime.timedelta(days=5)
             trips = Trip.objects.filter(departure_location=booking_request.product.departure_location,
                                         destination_location=booking_request.product.destination_location,
                                         depart_date__range=[date_range_start, date_range_end])
@@ -328,15 +351,15 @@ class PriceProposalCreateView(CreateAPIView):
             if not trips:
                 return Response({"info": "NO_CORRESPONDING_TRIP"}, status=status.HTTP_200_OK)
             price = request.data["price"]
-            price_proposal = PriceProposal.objects.create(booking_request=booking_request,
-            request_by=request_by,
-            price=price)
-            notification = Notif.objects.create(trip=None,
-            booking_request=booking_request,
-            price_proposal=price_proposal,
-            created_by=request_by,
-            type='offer_rec',
-            status='unseen')
+            # price_proposal = PriceProposal.objects.create(booking_request=booking_request,
+            # request_by=request_by,
+            # price=price)
+            # notification = Notif.objects.create(trip=None,
+            # booking_request=booking_request,
+            # price_proposal=price_proposal,
+            # created_by=request_by,
+            # type='offer_rec',
+            # status='unseen')
             return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -635,13 +658,19 @@ class BookingRequestSearchView(generics.ListAPIView):
         departure_location = self.request.query_params.get('departure_location', '')
         destination_location = self.request.query_params.get('destination_location', '')
         arrDate = self.request.query_params.get('travel_date', '')
+        today = datetime.datetime.now().date()
         products = Product.objects.all()
+
+        print('INBookingRequestSearchView arrDate',arrDate)
+        products = products.exclude(arrival_date__lt=today)
+        
         if user_id != '':
             user_profile = User.objects.get(pk=int(user_id)).profile
             products = products.exclude(created_by=user_profile)
         start_date = None
         if arrDate != "":
             start_date = datetime.datetime.strptime(arrDate, "%Y-%m-%dT%H:%M:%S.%fZ").date()
+            print('INBookingRequestSearchView start_date',start_date)
             date_range_start = start_date - datetime.timedelta(days=5)
             date_range_end = start_date + datetime.timedelta(days=5)
             products = products.filter(arrival_date__range=[date_range_start, date_range_end])
@@ -671,6 +700,63 @@ class BookingRequestSearchView(generics.ListAPIView):
             products = products.filter(q_objects)
         queryset = self.model.objects.filter(product__in=products)
         return queryset.order_by('-product')
+
+
+
+class PriceProposalListView(generics.ListAPIView):
+    serializer_class = PriceProposalListSerializer
+    model = serializer_class.Meta.model
+    # pagination_class = SearchResultsSetPagination
+
+    def get_queryset(self):
+        booking_id = self.request.query_params.get('booking_id', '')
+        # products = Product.objects.all()
+
+        print('in priceProposalListView booking_id',booking_id)
+    
+        queryset = self.model.objects.filter(booking_request=booking_id)
+
+        print('in priceProposalListView queryset',queryset)
+
+        return queryset.order_by('-pk')
+
+class ProposedPriceAPIView(APIView):
+    """
+    Retrieve, update or delete a booking_request instance.
+    """
+    def get_object(self, pk):
+        try:
+            return BookingRequest.objects.get(pk=pk)
+        except BookingRequest.DoesNotExist:
+            raise Http404
+
+    def delete(self, request, pk, format=None):
+        
+        proposalsQueryset = PriceProposal.objects.filter(request_by=request.query_params.get('userProfileId'),booking_request=request.query_params.get('booking_id'))
+        proposalsList = list(proposalsQueryset)
+        print("In ProposedPriceAPIView",request.query_params.get('booking_id'),request.query_params.get('userProfileId'),proposalsList)
+        proposalsList[0].delete()
+        # booking_request = self.get_object(pk)
+        # if booking_request.confirmed_by_sender or booking_request.status in ['boo', 'con', 'awa', 'col', 'del']:
+        #     return Response({'detail': 'You cannot delete a booking at this stage.'}, status=status.HTTP_200_OK)
+        # # booking_request.delete()
+        return Response({'detail': 'ok'}, status=status.HTTP_200_OK)
+
+class PriceProposalAPIView(APIView):
+    """
+    Retrieve, update or delete a booking_request instance.
+    """
+    def get_object(self, pk):
+        try:
+            return PriceProposal.objects.get(pk=pk)
+        except PriceProposal.DoesNotExist:
+            raise Http404
+
+    def delete(self, request, pk, format=None):
+        print("In PriceProposalAPIView",pk)
+        price_proposal = self.get_object(pk)
+        price_proposal.delete()
+        return Response({'detail': 'ok'}, status=status.HTTP_200_OK)
 
 
 class BookingRequestsTotalPrice(APIView):

@@ -125,6 +125,7 @@ export const payToWallet = (values) => {
 
 export const payForBooking = (values) => {
   return dispatch => {
+
     dispatch(startPay());
     axios
       .post(api_url() + "/pay/PayForBooking", values)
@@ -253,6 +254,13 @@ export const payForBookingWithWalletFunds = (values) => {
             canDismiss: true,
           }));
         } else {
+          $('#selectReservations').off('hidden.bs.modal');
+          $('#sendPackage').off('hidden.bs.modal');
+          $('#confirmReservationPrice').off('hidden.bs.modal');
+          $('#paymentOptions').off('hidden.bs.modal');
+          $('#selectCreditCard').off('hidden.bs.modal');
+          $("#paymentOptions").modal("hide");
+
           dispatch(closePaymentFormModal());
           dispatch(closeModal());
           dispatch(closePaymentOptions());

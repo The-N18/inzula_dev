@@ -46,6 +46,7 @@ import AddTripModal from "../../containers/AddTripModal/AddTripModal";
 
 import $ from "jquery";
 import BookingDetailsModal from "../BookingDetailsModal/BookingDetailsModal";
+import SelectProposalTripModal from "../SelectProposalTripModal/SelectProposalTripModal";
 
 window.jQuery = $;
 
@@ -217,6 +218,7 @@ class CustomLayout extends React.Component {
 
     return (
       <div>
+      <SelectProposalTripModal />
       <SignupParentModal />
       <LoginParentModal />
       <BookingDetailsModal/>
@@ -255,8 +257,8 @@ class CustomLayout extends React.Component {
                   {/* Brand and toggle get grouped for better mobile display */}
                   <div className="navbar-header">
                     <a className="navbar-brand">
-                      <img src="/images/inzula_fr.png" alt="image" />
-                      <img src="/images/inzula_fr.png" alt="image" />
+                      <img src="/static/images/inzula_fr.png" alt="image" />
+                      <img src="/static/images/inzula_fr.png" alt="image" />
                     </a>
                   </div>
                   {/* Collect the nav links, forms, and other content for toggling */}

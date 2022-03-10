@@ -6,23 +6,73 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 // import styles from './proposepriceonbooking.css';
-import { openProposePriceOnBooking, closeProposePriceOnBooking, proposePriceOnBooking } from "../../store/actions/proposePriceOnBooking";
+import { openProposePriceOnBooking, closeProposePriceOnBooking, proposePriceOnBooking, setProposedPrice } from "../../store/actions/proposePriceOnBooking";
 import {Field, reset, reduxForm} from 'redux-form';
 import {renderField} from "../../containers/ReduxForm/renderField";
 import { validate } from "./validation";
 import {FormattedMessage} from 'react-intl'
 
 import $ from "jquery";
+import { calculateMinPrice } from "../../utils/options";
+import { openSelectProposalTrip } from "../../store/actions/SelectProposalTripModal";
 
 class ProposePriceOnBooking extends React.Component {
 
-  submitForm = (val) => {
-    const {userId, bookingId} = this.props;
-    this.props.proposePrice(bookingId, userId, val['price']);
+  componentDidUpdate(prevProps) {
+    if (prevProps.open === false && this.props.open === true) {
+      this.getMinProposalPrice();
+    }
+  }
+
+
+  openSelectProposalTripModal = (val) => {
+
+    $('#proposePriceOnBooking').off('hidden.bs.modal')
+    $('#selectProposalTripModal').off('hidden.bs.modal')
+    $('#proposePriceOnBooking').on('hidden.bs.modal', function () {
+      $('#selectProposalTripModal').modal("show");
+    });
+    $('#proposePriceOnBooking').modal('hide');
+    this.props.setProposedPrice(parseFloat(val['price']));
+    this.props.openSelectProposalTrip();
+    // this.props.closeProposePriceOnBooking();
+  }
+
+  closeProposePriceOnBooking = () => {
+    $('#proposePriceOnBooking').off('hidden.bs.modal');
+    $('#selectProposalTripModal').off('hidden.bs.modal');
+    $('#proposePriceOnBooking').modal('hide');
+    this.props.closeProposePriceOnBooking();
+    localStorage.removeItem("minProposalPrice");
+    this.handleResetModal();
+  }
+
+  handleResetModal = ()=>{
+    const {reset,initialize}=this.props;
+    initialize();
+    
+  }
+
+  getMinProposalPrice = () => {
+    const { bookingId, bookings } = this.props;
+    console.log("IN getMinProposalPrice",bookings, bookingId);
+
+    const selectedBooking = bookings.find(x => x.pk === bookingId);
+    var minPrice = null;
+
+    minPrice = calculateMinPrice(
+      selectedBooking["product"]["weight"],
+      selectedBooking["product"]["space"],
+      selectedBooking["product"]["product_category"],
+      selectedBooking["product"]["price"],
+      true
+    )
+
+    localStorage.setItem("minProposalPrice",minPrice);
   }
 
   render() {
-    const { open, handleSubmit } = this.props;
+    const { open, handleSubmit, invalid } = this.props;
     return (
 
       <div className="modal fade"  id="proposePriceOnBooking" tabIndex={-1} role="dialog" aria-hidden="true" data-backdrop="static"  data-keyboard="false">
@@ -41,10 +91,10 @@ class ProposePriceOnBooking extends React.Component {
                 <p>
                   <FormattedMessage
                     id="propose_price.sub_title"
-                    defaultMessage="Enter the amount you propose to carry this product"
+                    defaultMessage="Enter the amount you propose to carry this product (In euros)"
                   />
                 </p>
-                <form onSubmit={handleSubmit(this.submitForm)}>
+                <form onSubmit={handleSubmit(this.openSelectProposalTripModal)}>
                   <Field
                     name="price"
                     component="input"
@@ -53,10 +103,10 @@ class ProposePriceOnBooking extends React.Component {
                     label="Price"
                     component={renderField}
                   />
-                  <Button positive type="submit">
+                  <Button positive type="submit" disabled={invalid}>
                   <FormattedMessage
                     id="propose_price.propose_price"
-                    defaultMessage="Propose price (euros)"
+                    defaultMessage="Validate"
                   />
                   </Button>
                 </form>
@@ -64,7 +114,7 @@ class ProposePriceOnBooking extends React.Component {
               
             </div>
             <div class="modal-footer">
-            <Button negative onClick={() => {$("#proposePriceOnBooking").modal("hide"); this.props.closeProposePriceOnBooking()}}>
+            <Button negative onClick={this.closeProposePriceOnBooking.bind(this)}>
               <FormattedMessage
                 id="propose_price.cancel"
                 defaultMessage="Cancel"
@@ -84,6 +134,7 @@ const mapStateToProps = state => {
     open: state.proposePriceOnBooking.open,
     bookingId: state.proposePriceOnBooking.bookingId,
     userId: state.userInfo.userId,
+    bookings: state.searchBookings.bookings,
   };
 };
 
@@ -91,7 +142,8 @@ const mapDispatchToProps = dispatch => {
   return {
     openProposePriceOnBooking: () => dispatch(openProposePriceOnBooking()),
     closeProposePriceOnBooking: () => dispatch(closeProposePriceOnBooking()),
-    proposePrice: (bookingId, userId, price) => dispatch(proposePriceOnBooking(bookingId, userId, price)),
+    setProposedPrice: (proposedPrice) => dispatch(setProposedPrice(proposedPrice)),
+    openSelectProposalTrip: () => dispatch(openSelectProposalTrip()),
   };
 };
 
@@ -108,7 +160,10 @@ let ProposePriceOnBookingConnected = connect(
 const afterSubmit = (result, dispatch) => dispatch(reset('propose_price'));
 
 ProposePriceOnBookingConnected = reduxForm ({
-  form: 'propose_price', onSubmitSuccess: afterSubmit,
+  form: 'propose_price',
+  onSubmitSuccess: afterSubmit,
+  destroyOnUnmount:false,
+  enableReinitialize: true,
   validate
 }) (ProposePriceOnBookingConnected);
 

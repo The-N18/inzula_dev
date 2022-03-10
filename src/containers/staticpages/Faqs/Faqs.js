@@ -37,7 +37,7 @@ class Faqs extends React.Component {
     return (
       <React.Fragment>
         {/* BreadCrumb Starts */}
-        <section className="breadcrumb-main pb-0" style={{backgroundImage: 'url(images/question.jpg)'}}>
+        <section className="breadcrumb-main pb-0" style={{backgroundImage: 'url(/static/images/question.jpg)'}}>
           <div className="breadcrumb-outer pt-10">
             <div className="container">
               <div className="breadcrumb-content d-md-flex align-items-center pt-10">
@@ -344,7 +344,7 @@ class Faqs extends React.Component {
                       </div>
                       <div className="accrodion-content" style={{display: 'none'}}>
                         <div className="inner">
-                          <p>Dans ce cas, il est nécessaire que l'annonceur nous prévienne par e-mail à contact@cocolis.fr et ce, dès que possible.<br />
+                          <p>Dans ce cas, il est nécessaire que l'annonceur nous prévienne par e-mail à contact@inzula.fr et ce, dès que possible.<br />
                             L'annonce sera alors remise en ligne dans les mêmes conditions que si le porteur avait lui-même annulé et bénéficiera des mêmes conditions de remboursement.
                           </p>
                         </div>{/* /.inner */}
@@ -825,7 +825,7 @@ class Faqs extends React.Component {
         </section>
         {/* About detail Ends */}
         {/* Call To Action Starts */}
-        <section className="call-to-action pb-10" style={{backgroundImage: 'url(images/question.jpg)'}}>
+        <section className="call-to-action pb-10" style={{backgroundImage: 'url(/static/images/question.jpg)'}}>
           <div className="container">
             <div className="section-title section-title-w text-center w-75 mx-auto mb-5 pb-2">
               <h2 className="mb-2 white">Do You Have Any <span>Questions?</span></h2>

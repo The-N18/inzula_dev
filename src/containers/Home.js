@@ -122,9 +122,9 @@ render(){
       <HomeTextVideo/>
       {/* section 2 starts */}
       {/* banner starts */}
-      <section id="search_trips_section" className="banner overflow-hidden" style={{backgroundImage: 'url(images/flights/travel1.jpg)'}}>
+      <section id="search_trips_section" className="banner overflow-hidden" style={{backgroundImage: 'url(/static/images/flights/travel1.jpg)'}}>
         <div className="banner-main">
-          <div className="banner-image" style={{backgroundImage: 'url(images/flights/travel1.jpg)'}} />
+          <div className="banner-image" style={{backgroundImage: 'url(/static/images/flights/travel1.jpg)'}} />
           <div className="banner-content">
             <h1 className="white mb-2">Avec INZULA, la sérénité et la facilité à garder le contact avec vos proches!</h1>
             <p className="white mb-4">Soyez à votre aise et serein en expédiant avec nous !!</p>
@@ -138,7 +138,7 @@ render(){
       {/* banner ends */}
       <SearchTripsForm/>
       {/* How it works Starts */}
-      <section className="trending destination bg-grey pb-6 pt-9" style={{backgroundImage: 'url(images/bg/bg4.jpg)'}}>
+      <section className="trending destination bg-grey pb-6 pt-9" style={{backgroundImage: 'url(/static/images/bg/bg4.jpg)'}}>
         <div className="container">
           <div className="section-title section-title-w text-center mb-5 pb-2 w-50 mx-auto">
             <h2 className="m-0 ">Comment <strong><span className="pink">INZULA fonctionne ?</span></strong></h2>
@@ -158,7 +158,7 @@ render(){
                   <div className="col-lg-3 col-md-6 p-1">
                     <div className="trend-item">
                       <div className="trend-image">
-                        <img src="images/howitworks/expediteur1.png" alt="image" />
+                        <img src="/static/images/howitworks/expediteur1.png" alt="image" />
                       </div>
                       <div className="trend-content-main">
                         <div className="trend-content">
@@ -179,7 +179,7 @@ render(){
                   <div className="col-lg-3 col-md-6 p-1">
                     <div className="trend-item">
                       <div className="trend-image">
-                        <img src="images/howitworks/expediteur2.png" alt="image" />
+                        <img src="/static/images/howitworks/expediteur2.png" alt="image" />
                       </div>
                       <div className="trend-content-main">
                         <div className="trend-content">
@@ -198,7 +198,7 @@ render(){
                   <div className="col-lg-3 col-md-6 p-1">
                     <div className="trend-item">
                       <div className="trend-image">
-                        <img src="images/howitworks/expediteur3.png" alt="image" />
+                        <img src="/static/images/howitworks/expediteur3.png" alt="image" />
                       </div>
                       <div className="trend-content-main">
                         <div className="trend-content">
@@ -223,7 +223,7 @@ render(){
                   <div className="col-lg-3 col-md-6 p-1">
                     <div className="trend-item">
                       <div className="trend-image">
-                        <img src="images/howitworks/expediteur4.png" alt="image" />
+                        <img src="/static/images/howitworks/expediteur4.png" alt="image" />
                       </div>
                       <div className="trend-content-main">
                         <div className="trend-content">
@@ -254,7 +254,7 @@ render(){
                   <div className="col-lg-3 col-md-6 p-1">
                     <div className="trend-item">
                       <div className="trend-image">
-                        <img src="images/howitworks/transporteur1.png" alt="image" />
+                        <img src="/static/images/howitworks/transporteur1.png" alt="image" />
                       </div>
                       <div className="trend-content-main">
                         <div className="trend-content">
@@ -275,7 +275,7 @@ render(){
                   <div className="col-lg-3 col-md-6 p-1">
                     <div className="trend-item">
                       <div className="trend-image">
-                        <img src="images/howitworks/transporteur2.png" alt="image" />
+                        <img src="/static/images/howitworks/transporteur2.png" alt="image" />
                       </div>
                       <div className="trend-content-main">
                         <div className="trend-content">
@@ -301,7 +301,7 @@ render(){
                   <div className="col-lg-3 col-md-6 p-1">
                     <div className="trend-item">
                       <div className="trend-image">
-                        <img src="images/howitworks/transporteur3.png" alt="image" />
+                        <img src="/static/images/howitworks/transporteur3.png" alt="image" />
                         <br/>
                       </div>
                       <div className="trend-content-main">
@@ -329,7 +329,7 @@ render(){
                   <div className="col-lg-3 col-md-6 p-1">
                     <div className="trend-item">
                       <div className="trend-image">
-                        <img src="images/howitworks/transporteur4.png" alt="image" />
+                        <img src="/static/images/howitworks/transporteur4.png" alt="image" />
                       </div>
                       <div className="trend-content-main">
                         <div className="trend-content">
@@ -364,82 +364,82 @@ render(){
                 
                   <div className="client-logo item">
                     <a href="#">
-                      <img src="images/payments/amex.png" alt="" />
+                      <img src="/static/images/payments/amex.png" alt="" />
                     </a>
                   </div>
                   <div className="client-logo item">
                     <a href="#">
-                      <img src="images/payments/Mastercard.svg" alt="" />
+                      <img src="/static/images/payments/Mastercard.svg" alt="" />
                     </a>
                   </div>
                   <div className="client-logo item">
                     <a href="#">
-                      <img src="images/payments/paypallogo.png" alt="" />
+                      <img src="/static/images/payments/paypallogo.png" alt="" />
                     </a>
                   </div>
                   <div className="client-logo item">
                     <a href="#">
-                      <img src="images/payments/visa.png" alt="" />
+                      <img src="/static/images/payments/visa.png" alt="" />
                     </a>
                   </div>
                   <div className="client-logo item">
                     <a href="#">
-                      <img src="images/payments/orange.png" alt="" />
+                      <img src="/static/images/payments/orange.png" alt="" />
                     </a>
                   </div>
                   <div className="client-logo item">
                     <a href="#">
-                      <img src="images/payments/mtn.png" alt="" />
+                      <img src="/static/images/payments/mtn.png" alt="" />
                     </a>
                   </div>
                   <div className="client-logo item">
                     <a href="#">
-                      <img src="images/payments/moneygram.png" alt="" />
+                      <img src="/static/images/payments/moneygram.png" alt="" />
                     </a>
                   </div>
                   <div className="client-logo item">
                     <a href="#">
-                      <img src="images/payments/WU.png" alt="" />
+                      <img src="/static/images/payments/WU.png" alt="" />
                     </a>
                   </div>
                   <div className="client-logo item">
                     <a href="#">
-                      <img src="images/payments/amex.png" alt="" />
+                      <img src="/static/images/payments/amex.png" alt="" />
                     </a>
                   </div>
                   <div className="client-logo item">
                     <a href="#">
-                      <img src="images/payments/Mastercard.svg" alt="" />
+                      <img src="/static/images/payments/Mastercard.svg" alt="" />
                     </a>
                   </div>
                   <div className="client-logo item">
                     <a href="#">
-                      <img src="images/payments/paypallogo.png" alt="" />
+                      <img src="/static/images/payments/paypallogo.png" alt="" />
                     </a>
                   </div>
                   <div className="client-logo item">
                     <a href="#">
-                      <img src="images/payments/visa.png" alt="" />
+                      <img src="/static/images/payments/visa.png" alt="" />
                     </a>
                   </div>
                   <div className="client-logo item">
                     <a href="#">
-                      <img src="images/payments/orange.png" alt="" />
+                      <img src="/static/images/payments/orange.png" alt="" />
                     </a>
                   </div>
                   <div className="client-logo item">
                     <a href="#">
-                      <img src="images/payments/mtn.png" alt="" />
+                      <img src="/static/images/payments/mtn.png" alt="" />
                     </a>
                   </div>
                   <div className="client-logo item">
                     <a href="#">
-                      <img src="images/payments/moneygram.png" alt="" />
+                      <img src="/static/images/payments/moneygram.png" alt="" />
                     </a>
                   </div>
                   <div className="client-logo item">
                     <a href="#">
-                      <img src="images/payments/WU.png" alt="" />
+                      <img src="/static/images/payments/WU.png" alt="" />
                     </a>
                   </div>
               {/* </div> */}

@@ -117,7 +117,7 @@ function DashboardLayout(props) {
                         <div className="author-news mb-3">
                             <div className="author-news-content text-center p-3">
                                 <div className="author-thumb mt-0">
-                                    <img src={profile_pic !== null && profile_pic !== "null" ? get_img_url(profile_pic) : '/images/team/img1.jpg'} alt="author" />
+                                    <img src={profile_pic !== null && profile_pic !== "null" ? get_img_url(profile_pic) : '/static/images/team/img1.jpg'} alt="author" />
                                 </div>
                                 <div className="author-content pt-2 p-0">
                                     <h3 className="mb-1 white"><a href="#" className="white">{username}</a></h3>

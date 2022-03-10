@@ -76,7 +76,7 @@ class AddTripFormWithText extends React.Component {
 
 
       {/* about-us starts */}
-      <section className="about-us pb-0" style={{backgroundImage: 'url(images/travels/transporterbg.png)'}}>
+      <section className="about-us pb-0" style={{backgroundImage: 'url(/static/images/travels/transporterbg.png)'}}>
         <div className="container">
           <div className="about-image-box">
             <div className="row">
@@ -161,7 +161,7 @@ class AddTripFormWithText extends React.Component {
             {/* <div className="row team-slider">  */}
             <div className="slider-item">
               <div className="slider-image">
-                <img src="images/travels/cameroun1.png" alt="image" />
+                <img src="/static/images/travels/cameroun1.png" alt="image" />
               </div>
               <div className="slider-content">
                 <h6 className="font-weight-normal"><i className="fa fa-map-marker-alt" /> Cameroun</h6>
@@ -174,7 +174,7 @@ class AddTripFormWithText extends React.Component {
             </div>
             <div className="slider-item">
               <div className="slider-image">
-                <img src="images/travels/rwanda1.png" alt="image" />
+                <img src="/static/images/travels/rwanda1.png" alt="image" />
               </div>
               <div className="slider-content">
                 <h6 className="font-weight-normal"><i className="fa fa-map-marker-alt" /> Rwanda</h6>
@@ -187,7 +187,7 @@ class AddTripFormWithText extends React.Component {
             </div>
             <div className="slider-item">
               <div className="slider-image">
-                <img src="images/travels/ghana1.png" alt="image" />
+                <img src="/static/images/travels/ghana1.png" alt="image" />
               </div>
               <div className="slider-content">
                 <h6 className="font-weight-normal"><i className="fa fa-map-marker-alt" /> Ghana</h6>
@@ -200,7 +200,7 @@ class AddTripFormWithText extends React.Component {
             </div>
             <div className="slider-item">
               <div className="slider-image">
-                <img src="images/travels/senegal1.png" alt="image" />
+                <img src="/static/images/travels/senegal1.png" alt="image" />
               </div>
               <div className="slider-content">
                 <h6 className="font-weight-normal"><i className="fa fa-map-marker-alt" /> Senegal</h6>
@@ -213,7 +213,7 @@ class AddTripFormWithText extends React.Component {
             </div>
             <div className="slider-item">
               <div className="slider-image">
-                <img src="images/travels/namibie1.png" alt="image" />
+                <img src="/static/images/travels/namibie1.png" alt="image" />
               </div>
               <div className="slider-content">
                 <h6 className="font-weight-normal"><i className="fa fa-map-marker-alt" /> Namibie</h6>

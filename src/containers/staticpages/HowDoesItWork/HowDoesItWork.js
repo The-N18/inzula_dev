@@ -37,9 +37,9 @@ class HowDoesItWork extends React.Component {
 
         {/* section 1 starts */}
         {/* banner starts */}
-        <section className="banner overflow-hidden" style={{backgroundImage: 'url(/images/howitworks/howItWorks1.png)'}}>
+        <section className="banner overflow-hidden" style={{backgroundImage: 'url(/static/images/howitworks/howItWorks1.png)'}}>
           <div className="banner-main">
-            <div className="banner-image" style={{backgroundImage: 'url(/images/howitworks/howItWorks1.svg)'}} />
+            <div className="banner-image" style={{backgroundImage: 'url(/static/images/howitworks/howItWorks1.svg)'}} />
             <div className="banner-content">
               <h1 className="white mb-2">Avec INZULA, la sérénité et la facilité à garder le contact avec vos proches!</h1>
               <p className="white mb-4">Soyez à votre aise et serein en expédiant avec nous !!</p>
@@ -51,7 +51,7 @@ class HowDoesItWork extends React.Component {
         {/* banner ends */}
         {/* section 1 ends */}
         {/* section 2 starts */}
-        <section className=" call-to-action call-to-action1 pb-6 pt-10" style={{backgroundImage: 'url(images/slider/12.jpg)'}}>
+        <section className=" call-to-action call-to-action1 pb-6 pt-10" style={{backgroundImage: 'url(/static/images/slider/12.jpg)'}}>
           <div className="call-main">
             <div className="container">
               <div className="row d-flex align-items-center justify-content-between">
@@ -59,7 +59,7 @@ class HowDoesItWork extends React.Component {
                   <div className="video-button">
                     {/*<div class="call-button text-center">*/}
                     <video width="100%" controls>
-                      <source src="images/howitworks/HowToShipFR.mp4" type="video/mp4" />
+                      <source src="/static/images/howitworks/HowToShipFR.mp4" type="video/mp4" />
                     </video>
                   </div>
                   <div className="video-figure" />
@@ -95,14 +95,14 @@ class HowDoesItWork extends React.Component {
         </section>
         {/* section 2 ends */}
         {/* section 3 starts */}
-        <section className=" call-to-action call-to-action1 pb-6 pt-10" style={{backgroundImage: 'url(images/slider/12.jpg)'}}>
+        <section className=" call-to-action call-to-action1 pb-6 pt-10" style={{backgroundImage: 'url(/static/images/slider/12.jpg)'}}>
           <div className="call-main">
             <div className="container">
               <div className="row d-flex align-items-center justify-content-between">
                 <div className="col-lg-6 mb-4">
                   <div className="video-button">
                     <video width="100%" controls>
-                      <source src="images/howitworks/HowtoTravelFR.mp4" type="video/mp4" />
+                      <source src="/static/images/howitworks/HowtoTravelFR.mp4" type="video/mp4" />
                     </video>
                   </div>
                   <div className="video-figure" />

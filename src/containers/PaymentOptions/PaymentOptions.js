@@ -14,7 +14,28 @@ import { payForBookingWithPaypal , payForBookingWithWalletFunds} from "../../sto
 import {FormattedMessage} from 'react-intl'
 import $ from 'jquery';
 
+
+import {selectSingleCard} from "../../store/actions/selectCreditCardModal";
+import { openPaymentFormModal} from "../../store/actions/paymentFormModal";
+
 class PaymentOptions extends React.Component {
+
+
+  payWithNewCard = () => {
+
+    $('#paymentOptions').off('hidden.bs.modal')
+    $('#paymentOptions').on('hidden.bs.modal', function () {
+      $('#paymentForm').modal("show");
+    });
+    $('#paymentOptions').modal('hide');
+    this.props.openPaymentFormModal();
+    this.props.selectSingleCard(null);
+  }
+
+
+
+
+
 
   payWithCreditCard = () => {
     $('#paymentOptions').off('hidden.bs.modal')
@@ -68,7 +89,7 @@ class PaymentOptions extends React.Component {
                   id="pay_choices.select"
                   defaultMessage="Select your method of payment."
                 /></p>
-                <PaymentMethodCard type="credit_card" onclick={this.payWithCreditCard.bind(this)} />
+                <PaymentMethodCard type="credit_card" onclick={this.payWithNewCard.bind(this)} />
                 {/* <PaymentMethodCard type="paypal" onclick={this.payWithPaypal.bind(this)} /> */}
                 <PaymentMethodCard type="wallet" onclick={this.payWithWalletFunds.bind(this)} />
               </Container>
@@ -106,7 +127,11 @@ const mapDispatchToProps = dispatch => {
     closePaymentOptions: () => dispatch(closePaymentOptions()),
     openSelectCreditCard: () => dispatch(openSelectCreditCard()),
     payForBookingWithPaypal: (values) => dispatch(payForBookingWithPaypal(values)),
-    payForBookingWithWalletFunds: (values) => dispatch(payForBookingWithWalletFunds(values))
+    payForBookingWithWalletFunds: (values) => dispatch(payForBookingWithWalletFunds(values)),
+
+
+    openPaymentFormModal: () => dispatch(openPaymentFormModal()),
+    selectSingleCard: (cardId) => dispatch(selectSingleCard(cardId)),
   };
 };
 

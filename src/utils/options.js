@@ -169,7 +169,7 @@ export const tripTypeOptions = [
     {value: 'one_way_trip', label: 'One way trip'}
 ];
 
-export const calculateMinPrice = (weight, size, category, value) => {
+export const calculateMinPrice = (weight, size, category, value, carrierProposal=false) => {
   const size_coefficients = {
     's': 1,
     'm': 2,
@@ -204,10 +204,10 @@ export const calculateMinPrice = (weight, size, category, value) => {
     'misc': 0.4
   };
   let min_price = 0;
-  let w = weight ? weight_coefficients[weight['value']] : 0;
-  let s = size ? size_coefficients[size['value']] : 0;
-  let v = value ? value_coefficients[value['value']] : 0;
-  let c = category ? category_coefficients[category['value']] : 0;
+  let w = weight ? carrierProposal ? weight_coefficients[weight] : weight_coefficients[weight['value']] : 0;
+  let s = size ? carrierProposal ? size_coefficients[size] : size_coefficients[size['value']] : 0;
+  let v = value ? carrierProposal ? value_coefficients[value] : value_coefficients[value['value']] : 0;
+  let c = category ? carrierProposal ? category_coefficients[category] : category_coefficients[category['value']] : 0;
   min_price = w*(10*((0.95*s) + (0.05*v)));
   min_price = Math.round(min_price * 10) / 10
   return min_price;

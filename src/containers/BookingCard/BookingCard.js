@@ -131,6 +131,7 @@ class BookingCard extends React.Component {
   }
 
   proposePriceOnBooking = () => {
+    console.log("IN proposePriceOnBooking");
     const {pk, authenticated} = this.props;
     if(authenticated) {
       this.props.setBookingRequestId(pk);

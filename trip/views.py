@@ -45,6 +45,41 @@ class TripsListView(generics.ListAPIView):
             logger.info('IN TRIP LIST VIEW PRINT'+ str(queryset))
         return queryset.order_by('-depart_date')
 
+class CarrierProposalTripListView(generics.ListAPIView):
+    """
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+
+    """
+    serializer_class = TripSerializer
+    model = serializer_class.Meta.model
+    permission_classes = [permissions.AllowAny]
+    print('IN CarrierProposalTripListView PRINT1')
+
+    def get_queryset(self):
+        user_id = self.request.query_params.get('user_id', None)
+        booking_id = self.request.query_params.get('booking_id', None)
+
+        booking_request = BookingRequest.objects.get(pk=booking_id)
+
+        # request_by = UserProfile.objects.get(user=user_id)
+        today = datetime.datetime.now().date()
+
+        queryset = self.model.objects.all()
+        queryset = queryset.exclude(depart_date__lt=today)
+
+        date_range_start = booking_request.product.arrival_date - datetime.timedelta(days=5)
+        date_range_end = booking_request.product.arrival_date + datetime.timedelta(days=5)
+        queryset = queryset.filter(departure_location=booking_request.product.departure_location,
+                                    destination_location=booking_request.product.destination_location,
+                                    depart_date__range=[date_range_start, date_range_end])
+        
+        if user_id is not None:
+            queryset = queryset.filter(created_by=user_id)
+            print('IN CarrierProposalTripListView PRINT2')
+            logger.info('IN CarrierProposalTripListView PRINT'+ str(queryset))
+        return queryset.order_by('-depart_date')
+
 
 @api_view(['POST', 'GET'])
 @ensure_csrf_cookie
@@ -140,6 +175,9 @@ class TripSearchView(generics.ListAPIView):
         arrDate = self.request.query_params.get('travel_date', '')
         user_id = self.request.query_params.get('user_id', '')
         trips = Trip.objects.all()
+        today = datetime.datetime.now().date()
+        trips = trips.exclude(depart_date__lt=(today + datetime.timedelta(days=2)))
+        print("IN TripSearchView arrDate",trips,today)
         if user_id != '':
             user_profile = User.objects.get(pk=int(user_id)).profile
             trips = trips.exclude(created_by=user_profile)

@@ -37,6 +37,10 @@ class PayForBooking(CreateAPIView):
             cardNumber = request.data['cardNumber']
             cardExpirationDate = request.data['cardExpirationDate']
             cardCvx = request.data['cardCvx']
+            isCarrierProposition = request.data['isCarrierProposition']
+            carrierProposedPrice = request.data['carrierProposedPrice']
+
+            booking_amount = 0
 
             # for booking in BookingRequest.objects.filter(pk__in=[int(i) for i in selectedBookingIds]):
             #             print('IN PayForBooking for',booking)
@@ -49,9 +53,15 @@ class PayForBooking(CreateAPIView):
             percentage_promo = None
 
             # get price to pay
-            booking_requests = BookingRequest.objects.filter(pk__in=selectedBookingIds)
-            booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
-            booking_amount = booking_requests_price['product__proposed_price__sum']
+            
+            if isCarrierProposition:
+                booking_amount = carrierProposedPrice
+            else:
+                booking_requests = BookingRequest.objects.filter(pk__in=selectedBookingIds)
+                booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
+                booking_amount = booking_requests_price['product__proposed_price__sum']
+
+
             if Discount.objects.filter(userprofile=userprofile).exists():
                 discount = Discount.objects.filter(userprofile=userprofile).first()
                 percentage_promo = discount.percentage_promo
@@ -95,6 +105,7 @@ class PayForBooking(CreateAPIView):
             # Register card for user
             card_registration = CardRegistration(user=natural_user, currency='EUR')
             card_registration.save()
+            
 
             cardInfo = {
             'accessKeyRef': card_registration.access_key,
@@ -1179,6 +1190,7 @@ class UserCards(APIView):
         return Response(result, status=status.HTTP_200_OK)
 
 
+        
 def deliverPaymentToCarrier(booking_request_id):
     booking_request = BookingRequest.objects.get(pk=booking_request_id)
     trip = booking_request.trip

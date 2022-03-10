@@ -19,6 +19,7 @@ import {FormattedMessage} from 'react-intl'
 import {NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
 import { createNotif } from "../../store/actions/appConfig";
 import $ from "jquery";
+// import { checkIfPaymentCardExists } from "../../store/actions/confirmSavePaymentCard";
 
 class PaymentFormModal extends React.Component {
 
@@ -41,20 +42,32 @@ class PaymentFormModal extends React.Component {
       'tripId': tripId,
       'selectedBookingIds': selectedBookingIds,
     }
-    this.props.payForBooking(values);
+
+    // checkIfPaymentCardExists(values);
+    // this.props.payForBooking(values);
     // this.props.getInitialCardData(values);
   }
 
   handleClosePaymentFormModal = () => {
     const {reset,initialize}=this.props;
 
+    // $('#paymentForm').off('hidden.bs.modal')
+    // $('#paymentForm').on('hidden.bs.modal', function () {
+    //   $('#selectCreditCard').modal("show");
+    //   initialize();
+    // });
+    // $('#paymentForm').modal('hide');
+    // this.props.closePaymentFormModal();
+
     $('#paymentForm').off('hidden.bs.modal')
     $('#paymentForm').on('hidden.bs.modal', function () {
-      $('#selectCreditCard').modal("show");
+      $('#paymentOptions').modal("show");
       initialize();
     });
     $('#paymentForm').modal('hide');
     this.props.closePaymentFormModal();
+
+    
   }
 
   render() {
@@ -201,6 +214,7 @@ const mapDispatchToProps = dispatch => {
     getInitialCardData: (values) => dispatch(getInitialCardData(values)),
     payForBooking: (values) => dispatch(payForBooking(values)),
     createNotif: (key, default_text, type) => dispatch(createNotif(key, default_text, type)),
+    // checkIfPaymentCardExists: (values) => dispatch(checkIfPaymentCardExists(values))
   };
 };
 

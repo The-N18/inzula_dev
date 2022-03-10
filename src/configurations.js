@@ -1,8 +1,8 @@
 export const DEBUG = true;
 //export const BACKEND_HOST_ADDRESS = DEBUG ? '127.0.0.1' : '35.181.124.82';
-export const BACKEND_HOST_ADDRESS = DEBUG ? '127.0.0.1' : 'd1g0ix8w0r103u.cloudfront.net';
+export const BACKEND_HOST_ADDRESS = DEBUG ? '127.0.0.1' : '15.188.32.228';
 export const BACKEND_HOST_PORT = '8000';
-export const BACKEND_HTTP_PROTOCOL = DEBUG ? 'http' : 'https';
+export const BACKEND_HTTP_PROTOCOL = DEBUG ? 'http' : 'http';
 export const AUTH_TIMEOUT = 3600;
 
 export const GOOGLE_CLIENT_ID = "1018467540475-2dsdk3lijubc8ln26ooa63lg83dsa8fm.apps.googleusercontent.com"
