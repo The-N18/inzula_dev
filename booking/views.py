@@ -335,6 +335,8 @@ class PriceProposalCreateView(CreateAPIView):
         with transaction.atomic():
             booking_request = BookingRequest.objects.get(pk=request.data["booking_id"])
             request_by = UserProfile.objects.get(user=request.data["user_id"])
+            proposed_trip = Trip.objects.get(pk=request.data["proposedTripId"])
+            print("proposed_trip",proposed_trip,request_by)
             date_range_start = booking_request.product.arrival_date - datetime.timedelta(days=5)
             date_range_end = booking_request.product.arrival_date + datetime.timedelta(days=5)
             trips = Trip.objects.filter(departure_location=booking_request.product.departure_location,
@@ -351,15 +353,20 @@ class PriceProposalCreateView(CreateAPIView):
             if not trips:
                 return Response({"info": "NO_CORRESPONDING_TRIP"}, status=status.HTTP_200_OK)
             price = request.data["price"]
-            # price_proposal = PriceProposal.objects.create(booking_request=booking_request,
-            # request_by=request_by,
-            # price=price)
+            price_proposal = PriceProposal.objects.create(booking_request=booking_request,
+            request_by=request_by,
+            price=price,
+            trip=proposed_trip
+            )
+
+            print("price_proposal",price_proposal)
             # notification = Notif.objects.create(trip=None,
             # booking_request=booking_request,
             # price_proposal=price_proposal,
             # created_by=request_by,
             # type='offer_rec',
             # status='unseen')
+            # print("notification",notification)
             return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -732,9 +739,9 @@ class ProposedPriceAPIView(APIView):
 
     def delete(self, request, pk, format=None):
         
-        proposalsQueryset = PriceProposal.objects.filter(request_by=request.query_params.get('userProfileId'),booking_request=request.query_params.get('booking_id'))
+        proposalsQueryset = PriceProposal.objects.filter(request_by=request.query_params.get('userProfileId'),booking_request=request.query_params.get('bookingId'))
         proposalsList = list(proposalsQueryset)
-        print("In ProposedPriceAPIView",request.query_params.get('booking_id'),request.query_params.get('userProfileId'),proposalsList)
+        print("In ProposedPriceAPIView",request.query_params.get('bookingId'),request.query_params.get('userProfileId'),proposalsList)
         proposalsList[0].delete()
         # booking_request = self.get_object(pk)
         # if booking_request.confirmed_by_sender or booking_request.status in ['boo', 'con', 'awa', 'col', 'del']:

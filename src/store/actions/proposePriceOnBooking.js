@@ -5,6 +5,7 @@ import {checkAuthTimeout} from "./auth";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import $ from "jquery";
 import { closeSelectProposalTrip } from "./SelectProposalTripModal";
+import { searchBookings } from "./searchBookings";
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -101,6 +102,7 @@ export const proposePriceOnBooking = (bookingId, userId, price, proposedTripId) 
           $("#proposePriceOnBooking").modal("hide");
           $("#selectProposalTripModal").modal("hide");
           localStorage.removeItem("minProposalPrice");
+          dispatch(searchBookings("", "", "", "", "", "", "", userId, "", ""))
         }
       })
       .catch(err => {

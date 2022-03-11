@@ -47,6 +47,8 @@ import AddTripModal from "../../containers/AddTripModal/AddTripModal";
 import $ from "jquery";
 import BookingDetailsModal from "../BookingDetailsModal/BookingDetailsModal";
 import SelectProposalTripModal from "../SelectProposalTripModal/SelectProposalTripModal";
+import CanclePriceProposalConfirm from "../CanclePriceProposalConfirm/CanclePriceProposalConfirm";
+import SelectPriceProposalModal from "../SelectPriceProposalModal/SelectPriceProposalModal";
 
 window.jQuery = $;
 
@@ -218,12 +220,14 @@ class CustomLayout extends React.Component {
 
     return (
       <div>
+      <SelectPriceProposalModal />
+      <CanclePriceProposalConfirm />
       <SelectProposalTripModal />
       <SignupParentModal />
       <LoginParentModal />
       <BookingDetailsModal/>
       <ForgotPasswordModal />
-      <DeleteBookingConfirm />
+      {/* <DeleteBookingConfirm /> */}
       <DeleteTripConfirm />
       <UpdateTripForm />
       <UpdateBooking />

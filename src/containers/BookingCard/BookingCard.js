@@ -27,6 +27,8 @@ import { Carousel } from "react-responsive-carousel";
 import 'react-responsive-carousel/lib/styles/carousel.css';
 
 import $ from 'jquery';
+import { openCanclePriceProposalConfirm, setCancleProposalBookingId } from "../../store/actions/CanclePriceProposalConfirm";
+import { openSelectPriceProposal } from "../../store/actions/SelectPriceProposalModal";
 window.jQuery = $;
 require('bootstrap');
 
@@ -91,7 +93,14 @@ class BookingCard extends React.Component {
     this.props.openValidateBooking();
   }
 
-  declineBooking = () => {
+  openCanclePriceProposalConfirm = () => {
+    const {pk} = this.props;
+    console.log("openCanclePriceProposalConfirm",pk)
+    this.props.setCancleProposalBookingId(pk)
+    this.props.openCanclePriceProposalConfirm(true);
+  }
+
+  canclePriceProposal = () => {
     const {pk} = this.props;
     this.props.setBookingDeclineBooking(pk);
     this.props.openDeclineBooking();
@@ -212,13 +221,20 @@ class BookingCard extends React.Component {
     
   }
 
+  openSelectPriceProposal = () => {
+    const {pk} = this.props
+
+    $('#selectPriceProposalModal').modal("show");
+    this.props.openSelectPriceProposal(pk)
+  }
+
 
   render() {
 
-    const {pk, title, description, images,
+    const {pk, title, connectedUserId, description, images,
       arrival_date, departure_location, selectable, editable, recipient_phone_number, recipient_name,
       destination_location, weight, space, price, product_category, request_by_username,
-      proposed_price, validate_decline, can_propose, lang, status, booking_status, confirmed_by_sender, isCancleClicked} = this.props;
+      proposed_price, validate_decline, can_propose, is_proposed, proposed_by, lang, status, booking_status, confirmed_by_sender, isCancleClicked} = this.props;
     const colored = validate_decline ? confirmed_by_sender ? 'green' : 'orange' : '';
       console.log("BOOOOOOOOOOX3",isCancleClicked)
     return (
@@ -271,10 +287,29 @@ class BookingCard extends React.Component {
           </td> : ''}
 
 
-          {can_propose ? <td><Segment compact basic className={"sub-btn-style"}>
+          {can_propose && !proposed_by.includes(parseInt(connectedUserId)) ? <td><Segment compact basic className={"sub-btn-style"}>
           <Button color='blue' icon='money' className={"white-trash"} onClick={this.proposePriceOnBooking.bind(this)}/>
             </Segment></td> : ''}
+
+          {can_propose && proposed_by.includes(parseInt(connectedUserId)) ? 
+            <td>
+              <Button size="mini"
+                color='orange'
+                className={"white-trash"}
+                onClick={this.openCanclePriceProposalConfirm.bind(this)}
+              ><FormattedMessage
+                id="booking_card.cancel_booking"
+                defaultMessage="Cancel"
+              />
+              </Button>
+            </td>: ''}
+
+            
+
             {editable && status !== "boo" && status !== "awa" && status !== "col" && status !== "del" ? <React.Fragment>
+                {is_proposed ? <td>
+                      <a onClick={this.openSelectPriceProposal.bind(this)}><i class="fa fa-money" aria-hidden="true"></i></a>
+                    </td> : ''}
                 <td>
                   <a onClick={this.updateBooking.bind(this)}><i class="fa fa-pencil-square-o text-success" aria-hidden="true"></i></a>
                 </td>
@@ -367,7 +402,8 @@ const mapStateToProps = state => {
     selected: state.selectReservationsModal.selected,
     isCancleClicked: state.selectReservationsModal.isCancleClicked,
     authenticated: state.auth.token !== null,
-    lang: state.appConfig.lang
+    lang: state.appConfig.lang,
+    connectedUserId: state.userInfo.userId
   };
 };
 
@@ -387,6 +423,9 @@ const mapDispatchToProps = dispatch => {
     setBookingRequestId: (bookingId) => dispatch(setBookingRequestId(bookingId)),
     updateBookingOpenModal: (bookingInfo, pk) => dispatch(updateBookingOpenModal(bookingInfo, pk)),
     setBookingDeleteBookingConfirm: (bookingId) => dispatch(setBookingDeleteBookingConfirm(bookingId)),
+    openCanclePriceProposalConfirm: (isCancle) => dispatch(openCanclePriceProposalConfirm(isCancle)),
+    setCancleProposalBookingId: (bookingId) => dispatch(setCancleProposalBookingId(bookingId)),
+    openSelectPriceProposal: (bookingId) => dispatch(openSelectPriceProposal(bookingId)),
   };
 };
 

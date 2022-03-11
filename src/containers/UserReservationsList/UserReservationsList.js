@@ -141,6 +141,8 @@ class UserReservationsList extends React.Component {
                         product_details={item["product"]}
                         img={item["product"]["images"].length === 0 ? '' : item["product"]["images"][0]['image']}
                         images={buildImagesLinkList(item["product"]["images"])}
+                        is_proposed = {item["is_proposed"]}
+                        propose_by = {item["propose_by"]}
                         editable={editable}/>
                 ))}
 

@@ -57,6 +57,8 @@ import selectCreditCardModalReducer from "./store/reducers/selectCreditCardModal
 import productDeliveryModalReducer from "./store/reducers/productDeliveryModal";
 import verifyYourEmailReducer from "./store/reducers/verifyYourEmail";
 import selectProposalTripModalReducer from "./store/reducers/SelectProposalTripModal";
+import canclePriceProposalConfirmReducer from "./store/reducers/CanclePriceProposalConfirm";
+import selectPriceProposalModalReducer from "./store/reducers/SelectPriceProposalModal";
 import { reducer as formReducer } from 'redux-form'
 import axios from 'axios';
 import MessengerCustomerChat from 'react-messenger-customer-chat';
@@ -115,7 +117,9 @@ const rootReducer = combineReducers({
   completeProfileModal: completeProfileModalReducer,
   productDeliveryModal: productDeliveryModalReducer,
   verifyYourEmail: verifyYourEmailReducer,
-  selectProposalTripModal: selectProposalTripModalReducer
+  selectProposalTripModal: selectProposalTripModalReducer,
+  canclePriceProposalConfirm: canclePriceProposalConfirmReducer,
+  selectPriceProposalModal: selectPriceProposalModalReducer,
   
 });
 

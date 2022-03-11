@@ -31,7 +31,7 @@ class DeleteBookingConfirm extends React.Component {
         scrollable
 
       >
-        <ModalHeader toggle={() => this.props.closeCompleteProfileModal()}>
+        <ModalHeader toggle={() => this.props.closeDeleteBookingConfirm()}>
           <FormattedMessage
             id="delete_booking.title"
             defaultMessage="Delete Booking"

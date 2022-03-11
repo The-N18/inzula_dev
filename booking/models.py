@@ -147,10 +147,10 @@ class PriceProposal(models.Model):
     price = models.CharField(max_length=50, null=False, blank=False)
     request_by = models.ForeignKey(UserProfile, on_delete=models.PROTECT, related_name='+')
     booking_request = models.ForeignKey(BookingRequest, on_delete=models.CASCADE, related_name='+')
-    # trip = models.ForeignKey(Trip, on_delete=models.PROTECT, related_name='+', null=False, blank=False)
+    trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='+', null=False, blank=False)
 
     def __str__(self):
-        return self.price
+        return str(self.price)
 
 
 class Codes(models.Model):

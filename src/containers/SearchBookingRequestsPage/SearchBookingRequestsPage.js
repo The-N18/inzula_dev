@@ -344,6 +344,8 @@ class SearchBookingRequestsPage extends React.Component {
                           product_details={item["product"]}
                           img={item["product"]["images"].length === 0 ? '' : item["product"]["images"][0]['image']}
                           images={buildImagesLinkList(item["product"]["images"])}
+                          is_proposed = {item["is_proposed"]}
+                          proposed_by = {item["proposed_by"]}
                           editable={false}
                           selectable={false}
                           can_propose />
