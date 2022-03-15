@@ -3,6 +3,9 @@ import * as actionTypes from "./actionTypes";
 import { api_url, AUTH_TIMEOUT } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
 import {createNotification, NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
+import { closeCanclePriceProposalConfirm } from "./CanclePriceProposalConfirm";
+import $ from "jquery";
+import { getInitialReservations } from "./userReservations";
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -51,6 +54,7 @@ export const getProposalsFail = error => {
 
 
 export const getProposals = (booking_id) => {
+  const userId = localStorage.getItem("userProfileId");
   return dispatch => {
     dispatch(getProposalsStart());
     axios
@@ -62,6 +66,16 @@ export const getProposals = (booking_id) => {
       .then(res => {
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(getProposalsSuccess(res.data["results"], res.data["next"], res.data["count"]));
+
+        dispatch(closeCanclePriceProposalConfirm());
+
+        if(res.data["results"].length == 0){
+          dispatch(getInitialReservations(userId));
+          $('#selectPriceProposalModal').off('hidden.bs.modal');
+          $('#selectPriceProposalModal').modal('hide');
+          dispatch(closeSelectPriceProposal());
+        }
+
       })
       .catch(err => {
         dispatch(getProposalsFail(err));

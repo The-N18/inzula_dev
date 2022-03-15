@@ -24,7 +24,7 @@ import $ from "jquery";
 class PaymentFormModal extends React.Component {
 
   submitForm = (val) => {
-    const {userId, tripId, selectedBookingIds} = this.props;
+    const {userId, tripId, selectedBookingIds,isProposedPrice,confirmBookingPriceTripId,bookingId,price} = this.props;
     const actualYear = parseInt(new Date().getFullYear().toString().substr(-2));
     const actualMonth = parseInt(("0" + (new Date().getMonth() + 1)).slice(-2));
 
@@ -34,7 +34,7 @@ class PaymentFormModal extends React.Component {
     }
 
 
-    const values = {
+    var values = {
       'cardNumber': val['card_number'],
       'cardExpirationDate': val['exp_date_mm'] + val['exp_date_yy'],
       'cardCvx': val['cvc'],
@@ -43,8 +43,15 @@ class PaymentFormModal extends React.Component {
       'selectedBookingIds': selectedBookingIds,
     }
 
+    if(isProposedPrice){
+      values.tripId = confirmBookingPriceTripId;
+      values.selectedBookingIds = [bookingId];
+      values.isCarrierProposition = true;
+      values.carrierProposedPrice = price;
+    }
+
     // checkIfPaymentCardExists(values);
-    // this.props.payForBooking(values);
+    this.props.payForBooking(values);
     // this.props.getInitialCardData(values);
   }
 
@@ -198,7 +205,9 @@ const mapStateToProps = state => {
     open: state.paymentFormModal.open,
     loading: state.paymentFormModal.loading,
     bookingId: state.confirmBookingPrice.bookingId,
+    isProposedPrice: state.confirmBookingPrice.isProposedPrice,
     tripId: state.selectReservationsModal.tripId,
+    confirmBookingPriceTripId: state.confirmBookingPrice.tripId,
     selectedBookingIds: state.selectReservationsModal.selected,
     userId: state.userInfo.userId,
     price: state.confirmBookingPrice.price,

@@ -7,12 +7,14 @@ const initialState = {
   tripId: null,
   userId: null,
   price: null,
-  paymentAmountConfirmed: false
+  paymentAmountConfirmed: false,
+  isProposedPrice: false
 };
 
 const openConfirmBookingPrice = (state, action) => {
   return updateObject(state, {
     open: true,
+    isProposedPrice: action.isProposedPrice
   });
 };
 

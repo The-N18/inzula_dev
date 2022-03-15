@@ -3,7 +3,7 @@ import { updateObject } from "../utility";
 
 const initialState = {
   open: false,
-  priceProposalId: 0,
+  // priceProposalId: 0,
   bookingId: null,
   isCancle: false
 };
@@ -16,11 +16,11 @@ const openCanclePriceProposalConfirm = (state, action) => {
   });
 };
 
-const setPriceProposalId = (state, action) => {
-  return updateObject(state, {
-    priceProposalId: action.priceProposalId,
-  });
-};
+// const setPriceProposalId = (state, action) => {
+//   return updateObject(state, {
+//     priceProposalId: action.priceProposalId,
+//   });
+// };
 
 const setCancleProposalBookingId = (state, action) => {
   return updateObject(state, {
@@ -37,8 +37,8 @@ const closeCanclePriceProposalConfirm = (state, action) => {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.CANCLE_PRICE_PROPOSAL_CONFIRM_SET_PRICE_PROPOSAL_ID:
-      return setPriceProposalId(state, action);
+    // case actionTypes.CANCLE_PRICE_PROPOSAL_CONFIRM_SET_PRICE_PROPOSAL_ID:
+    //   return setPriceProposalId(state, action);
     case actionTypes.CANCLE_PRICE_PROPOSAL_CONFIRM_SET_BOOKING_ID:
       return setCancleProposalBookingId(state, action);
     case actionTypes.CANCLE_PRICE_PROPOSAL_CONFIRM_CLOSE_MODAL:

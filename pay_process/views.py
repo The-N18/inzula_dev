@@ -55,6 +55,7 @@ class PayForBooking(CreateAPIView):
             # get price to pay
             
             if isCarrierProposition:
+                print("In isCarrierProposition", isCarrierProposition,carrierProposedPrice,selectedBookingIds,tripId)
                 booking_amount = carrierProposedPrice
             else:
                 booking_requests = BookingRequest.objects.filter(pk__in=selectedBookingIds)
@@ -186,11 +187,24 @@ class PayForBooking(CreateAPIView):
                         print('IN PayForBooking for',booking)
                         booking.status = 'boo'
                         booking.trip = Trip.objects.get(pk=tripId)
-                        booking.product.amount_paid = booking.product.proposed_price
-                        booking.product.charges_paid = booking.product.proposed_price * 0.25
+
+                        if isCarrierProposition:
+                            print("In isCarrierProposition2")
+                            booking.product.amount_paid = carrierProposedPrice
+                            booking.product.charges_paid = carrierProposedPrice * 0.25
+                        else:
+                            booking.product.amount_paid = booking.product.proposed_price
+                            booking.product.charges_paid = booking.product.proposed_price * 0.25
+
                         if uses_discount:
-                            booking.product.amount_paid = ((100-discount_percentage) * booking.product.proposed_price)/100
-                            booking.product.charges_paid = ((100-discount_percentage) * booking.product.proposed_price * 0.25)/100
+                            if isCarrierProposition:
+                                print("In isCarrierProposition3")
+                                booking.product.amount_paid = ((100-discount_percentage) * carrierProposedPrice)/100
+                                booking.product.charges_paid = ((100-discount_percentage) * carrierProposedPrice * 0.25)/100
+                            else:
+                                booking.product.amount_paid = ((100-discount_percentage) * booking.product.proposed_price)/100
+                                booking.product.charges_paid = ((100-discount_percentage) * booking.product.proposed_price * 0.25)/100
+                            
                         booking.product.save()
                         booking.save()
                         # generate notifications

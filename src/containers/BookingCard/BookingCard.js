@@ -93,6 +93,12 @@ class BookingCard extends React.Component {
     this.props.openValidateBooking();
   }
 
+  declineBooking = () => {
+    const {pk} = this.props;
+    this.props.setBookingDeclineBooking(pk);
+    this.props.openDeclineBooking();
+  }
+
   openCanclePriceProposalConfirm = () => {
     const {pk} = this.props;
     console.log("openCanclePriceProposalConfirm",pk)

@@ -10,7 +10,8 @@ import { openConfirmBookingPrice,
          closeConfirmBookingPrice,
          setBookingRequestInfo,
          getBookingTotalPrice,
-         createWalletUser } from "../../store/actions/confirmBookingPrice";
+         createWalletUser, 
+         setPrice} from "../../store/actions/confirmBookingPrice";
 import {reduxForm} from 'redux-form';
 import { validate } from "./validation";
 import { bookTrip } from "../../store/actions/selectReservationsModal";
@@ -27,9 +28,17 @@ class ConfirmBookingPrice extends React.Component {
   }
 
   confirmPaymentPrice = () => {
-    const {bookingId, tripId, userId, price } = this.props;
+    const {bookingId, tripId, userId, price , isProposedPrice, priceProposals, selectedProposalId, selectProposalBookingId} = this.props;
+    
+    if(!isProposedPrice){
+      this.props.setBookingRequestInfo(bookingId, tripId, userId, price, true);
+    }else{
+      const selectedProposal = priceProposals.find(x => x.pk === selectedProposalId);
+      this.props.setBookingRequestInfo(selectProposalBookingId, selectedProposal.trip, userId, parseFloat(selectedProposal.price), true);
+    }
+    
     console.log('confirmPaymentPrice IIIIIINFOOO',bookingId, tripId, userId, price )
-    this.props.setBookingRequestInfo(bookingId, tripId, userId, price, true);
+
     this.props.closeConfirmBookingPrice();
     // this.props.openPaymentFormModal();
     this.props.createWalletUser(userId);
@@ -43,18 +52,39 @@ class ConfirmBookingPrice extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    const {isProposedPrice,priceProposals,selectedProposalId} = this.props;
+
     if (prevProps.open === false && this.props.open === true) {
-      this.props.getBookingTotalPrice(this.props.selectedBookingIds,this.props.userId);
+      if(!isProposedPrice){
+        this.props.getBookingTotalPrice(this.props.selectedBookingIds,this.props.userId);
+      }else{
+        const selectedProposal = priceProposals.find(x => x.pk === selectedProposalId);
+        console.log("selectedProposalId",selectedProposalId)
+        this.props.setPrice(parseFloat(selectedProposal.price));
+        
+      }
+
     }
   }
 
   handleDeclineReservation = () => {
-    $('#confirmReservationPrice').off('hidden.bs.modal');
-    $('#confirmReservationPrice').on('hidden.bs.modal', function () {
-      $('#selectReservations').modal("show");
-    });
-    $('#confirmReservationPrice').modal('hide');
-    this.props.closeConfirmBookingPrice();
+    const {isProposedPrice} = this.props;
+
+    if(!isProposedPrice){
+      $('#confirmReservationPrice').off('hidden.bs.modal');
+      $('#confirmReservationPrice').on('hidden.bs.modal', function () {
+        $('#selectReservations').modal("show");
+      });
+      $('#confirmReservationPrice').modal('hide');
+      this.props.closeConfirmBookingPrice();
+    }else{
+      $('#confirmReservationPrice').off('hidden.bs.modal');
+      $('#confirmReservationPrice').on('hidden.bs.modal', function () {
+        $('#selectPriceProposalModal').modal('show')
+      });
+      $("#confirmReservationPrice").modal("hide");
+      this.props.closeConfirmBookingPrice();
+    }
   }
 
   render() {
@@ -111,6 +141,10 @@ const mapStateToProps = state => {
     selectedBookingIds: state.selectReservationsModal.selected,
     paymentAmountConfirmed: state.confirmBookingPrice.paymentAmountConfirmed,
     userId: state.userInfo.userId,
+    isProposedPrice: state.confirmBookingPrice.isProposedPrice,
+    priceProposals: state.selectPriceProposalModal.priceProposals,
+    selectedProposalId: state.selectPriceProposalModal.selectedProposalId,
+    selectProposalBookingId: state.selectPriceProposalModal.bookingId,
   };
 };
 
@@ -124,6 +158,7 @@ const mapDispatchToProps = dispatch => {
     getBookingTotalPrice: (selected, userId) => dispatch(getBookingTotalPrice(selected, userId)),
     createWalletUser: (userId) => dispatch(createWalletUser(userId)),
     openPaymentOptions: () => dispatch(openPaymentOptions()),
+    setPrice: (price) => dispatch(setPrice(price))
   };
 };
 

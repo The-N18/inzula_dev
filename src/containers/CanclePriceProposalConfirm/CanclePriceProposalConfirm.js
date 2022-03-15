@@ -14,9 +14,9 @@ import { canclePriceProposal, closeCanclePriceProposalConfirm, openCanclePricePr
 class CanclePriceProposalConfirm extends React.Component {
 
   handleDelete = () => {
-    const { isCancle, bookingId, priceProposalID } = this.props;
+    const { isCancle, cancleProposalBookingId, refuseProposalBookingId, selectedProposalId } = this.props;
 
-    isCancle? this.props.canclePriceProposal(bookingId) : this.props.refusePriceProposal(priceProposalID)
+    isCancle? this.props.canclePriceProposal(cancleProposalBookingId) : this.props.refusePriceProposal(selectedProposalId,refuseProposalBookingId)
   }
 
   render() {
@@ -70,8 +70,9 @@ class CanclePriceProposalConfirm extends React.Component {
 const mapStateToProps = state => {
   return {
     open: state.canclePriceProposalConfirm.open,
-    priceProposalID: state.canclePriceProposalConfirm.priceProposalID,
-    bookingId: state.canclePriceProposalConfirm.bookingId,
+    selectedProposalId: state.selectPriceProposalModal.selectedProposalId,
+    cancleProposalBookingId: state.canclePriceProposalConfirm.bookingId,
+    refuseProposalBookingId: state.selectPriceProposalModal.bookingId,
     isCancle: state.canclePriceProposalConfirm.isCancle,
   };
 };
@@ -81,7 +82,7 @@ const mapDispatchToProps = dispatch => {
     openCanclePriceProposalConfirm: (isCancle) => dispatch(openCanclePriceProposalConfirm(isCancle)),
     closeCanclePriceProposalConfirm: () => dispatch(closeCanclePriceProposalConfirm()),
     canclePriceProposal: (bookingId) => dispatch(canclePriceProposal(bookingId)),
-    refusePriceProposal: (priceProposalID) => dispatch(refusePriceProposal(priceProposalID)),
+    refusePriceProposal: (priceProposalId,bookingId) => dispatch(refusePriceProposal(priceProposalId,bookingId)),
   };
 };
  

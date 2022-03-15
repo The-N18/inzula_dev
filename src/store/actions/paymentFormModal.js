@@ -7,6 +7,8 @@ import { closeModal } from "./selectReservationsModal";
 import  { closeSelectCreditCard } from "./selectCreditCardModal";
 import {closePaymentOptions} from "./paymentOptionsModal";
 import $ from "jquery"
+import { closeSelectPriceProposal } from "./SelectPriceProposalModal";
+import { getInitialReservations } from "./userReservations";
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
 
@@ -124,6 +126,7 @@ export const payToWallet = (values) => {
 
 
 export const payForBooking = (values) => {
+  const userId = localStorage.getItem("userProfileId");
   return dispatch => {
 
     dispatch(startPay());
@@ -137,7 +140,10 @@ export const payForBooking = (values) => {
         dispatch(closeSelectCreditCard());
         dispatch(closePaymentOptions());
         dispatch(endPay());
+        dispatch(closeSelectPriceProposal());
+        dispatch(getInitialReservations(userId));
 
+        $('#selectPriceProposal').off('hidden.bs.modal');
         $('#selectReservations').off('hidden.bs.modal');
         $('#sendPackage').off('hidden.bs.modal');
         $('#confirmReservationPrice').off('hidden.bs.modal');

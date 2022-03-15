@@ -41,6 +41,7 @@ export const getReservationsFail = error => {
 };
 
 export const getInitialReservations = (user_id) => {
+  console.log("IN getInitialReservations",user_id)
   return dispatch => {
     dispatch(getReservationsStart());
     axios

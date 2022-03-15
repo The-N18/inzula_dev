@@ -9,8 +9,9 @@ import { connect } from "react-redux";
 import $ from "jquery";
 import {FormattedMessage} from 'react-intl'
 import { closeSelectPriceProposal, getProposals, openSelectPriceProposal, selectSingleProposal } from "../../store/actions/SelectPriceProposalModal";
-import { openCanclePriceProposalConfirm, refusePriceProposal, setPriceProposalId } from "../../store/actions/CanclePriceProposalConfirm";
+import { openCanclePriceProposalConfirm } from "../../store/actions/CanclePriceProposalConfirm";
 import PriceProposalCard from "../PriceProposalCard/PriceProposalCard";
+import { openConfirmBookingPrice } from "../../store/actions/confirmBookingPrice";
 
 
 class SelectPriceProposalModal extends React.Component {
@@ -57,7 +58,8 @@ class SelectPriceProposalModal extends React.Component {
   }
 
   openRefusePriceProposalConfirm = () => {
-    this.props.setPriceProposalId(this.props.selectedProposalId);
+    // this.props.setPriceProposalId(this.props.selectedProposalId);
+    this.props.openRefusePriceProposalConfirm();
   }
 
 
@@ -85,9 +87,14 @@ class SelectPriceProposalModal extends React.Component {
     this.props.closeSelectPriceProposal();
   }
 
-  proposePrice = () => {
-    const {userId, bookingId, proposedPrice, proposedTripId} = this.props;
-    this.props.proposePrice(bookingId, userId, proposedPrice, proposedTripId);
+  openConfirmBookingPrice = () => {
+    // const {userId, bookingId, proposedPrice, proposedTripId} = this.props;
+    this.props.openConfirmBookingPrice(true);
+    $('#selectPriceProposalModal').off('hidden.bs.modal');
+    $('#selectPriceProposalModal').on('hidden.bs.modal', function () {
+      $('#confirmReservationPrice').modal('show')
+    });
+    $("#selectPriceProposalModal").modal("hide");
   }
 
   render() {
@@ -140,7 +147,7 @@ class SelectPriceProposalModal extends React.Component {
             </Segment>
           </div>
           <div class="modal-footer">
-            <Button color='green' onClick={this.proposePrice.bind(this)} disabled={selectedProposalId === null || loading}>
+            <Button color='green' onClick={this.openConfirmBookingPrice.bind(this)} disabled={selectedProposalId === null || loading}>
               {/* <FormattedMessage
                 id="select_credit_card.pay"
                 defaultMessage="Pay"
@@ -182,7 +189,8 @@ const mapDispatchToProps = dispatch => {
     selectSingleProposal: (selectedProposalId) => dispatch(selectSingleProposal(selectedProposalId)),
     closeSelectPriceProposal : () => dispatch(closeSelectPriceProposal()),
     openRefusePriceProposalConfirm: () => dispatch(openCanclePriceProposalConfirm()),
-    setPriceProposalId: () => dispatch(setPriceProposalId()),
+    openConfirmBookingPrice: (isProposedPrice) => dispatch(openConfirmBookingPrice(isProposedPrice))
+    // setPriceProposalId: () => dispatch(setPriceProposalId()),
   };
 };
 

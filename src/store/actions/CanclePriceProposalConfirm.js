@@ -4,6 +4,7 @@ import { api_url, AUTH_TIMEOUT } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
 import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
 import { searchBookings } from "./searchBookings";
+import { getProposals } from "./SelectPriceProposalModal";
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -16,12 +17,12 @@ export const openCanclePriceProposalConfirm = (isCancle=false) => {
   };
 };
 
-export const setPriceProposalId = (priceProposalId) => {
-  return {
-    type: actionTypes.CANCLE_PRICE_PROPOSAL_CONFIRM_SET_PRICE_PROPOSAL_ID,
-    priceProposalId: priceProposalId,
-  };
-};
+// export const setPriceProposalId = (priceProposalId) => {
+//   return {
+//     type: actionTypes.CANCLE_PRICE_PROPOSAL_CONFIRM_SET_PRICE_PROPOSAL_ID,
+//     priceProposalId: priceProposalId,
+//   };
+// };
 
 export const setCancleProposalBookingId = (bookingId) => {
   return {
@@ -66,8 +67,9 @@ export const canclePriceProposal = (bookingId) => {
   };
 }
 
-export const refusePriceProposal = (priceProposalId) => {
+export const refusePriceProposal = (priceProposalId,bookingId) => {
   const userProfileId = localStorage.getItem("userProfileId");
+  console.log("In refusePriceProposal priceProposalId",priceProposalId,bookingId)
   const config = {
             headers: { 'content-type': 'multipart/form-data' }
           };
@@ -82,6 +84,7 @@ export const refusePriceProposal = (priceProposalId) => {
           duration: 10000,
           canDismiss: true,
         }));
+        dispatch(getProposals(bookingId))
         // dispatch(searchBookings("", "", "", "", "", "", "", userProfileId, "", ""))
       })
       .catch(err => {

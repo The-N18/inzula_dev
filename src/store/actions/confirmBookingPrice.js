@@ -8,9 +8,10 @@ import {createNotification, NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
 
-export const openConfirmBookingPrice = () => {
+export const openConfirmBookingPrice = (isProposedPrice=false) => {
   return {
-    type: actionTypes.CONFIRM_BOOKING_PRICE_OPEN_MODAL
+    type: actionTypes.CONFIRM_BOOKING_PRICE_OPEN_MODAL,
+    isProposedPrice: isProposedPrice
   };
 };
 

@@ -179,7 +179,7 @@ class PriceProposalListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PriceProposal
-        fields = ["request_by", "price", "booking_request", "pk"]
+        fields = ["request_by", "price", "booking_request", "pk", "trip"]
 
     def get_request_by(self, obj):
         dct = {
