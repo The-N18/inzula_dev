@@ -1,3 +1,5 @@
+import { isValidPhoneNumber } from 'react-phone-number-input';
+
 export const validate = values => {
   const errors = {}
   if (!values.terms_conditions) {
@@ -48,9 +50,13 @@ export const validate = values => {
   }
   if (!values.recipient_phone_number) {
     errors.recipient_phone_number = 'Required';
-  } else if (isNaN(Number(values.recipient_phone_number))) {
-    errors.recipient_phone_number = 'Must be a number';
+  }else if(!isValidPhoneNumber(values.recipient_phone_number)){
+    errors.recipient_phone_number = 'Invalid phone number'
   }
+
+  // else if (isNaN(Number(values.recipient_phone_number))) {
+  //   errors.recipient_phone_number = 'Must be a number';
+  // }
   return errors
 }
 

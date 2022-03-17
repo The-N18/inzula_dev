@@ -44,6 +44,7 @@ export const msg = {
   'booking_card.recipient_phone_number': "Nr. du destinataire:",
   'booking_card.recipient_name': "Nom du destinataire:",
   'booking_card.username': "Nom d'utilisateur:",
+  'booking_card.login_msg': "Connectez-vous pour pouvoir faire une proposition",
   'booking_request.login_msg': "Connectez-vous pour pouvoir faire une réservation",
   'footer.who_we_are': "Qui nous sommes",
   'footer.how_it_works': "Comment ça marche ?",

@@ -41,7 +41,8 @@ class UserReservationsList extends React.Component {
   }
 
   componentDidMount = () => {
-    const { user_id } = this.props;
+    // const { user_id } = this.props;
+    const user_id = localStorage.getItem("userProfileId");
     this.props.getInitialUserReservations(user_id);
     window.addEventListener('resize', this.handleScreenSize, false);
     this.handleScreenSize();

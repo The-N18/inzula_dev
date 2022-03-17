@@ -36,7 +36,8 @@ class UserTripsList extends React.Component {
   }
 
   componentDidMount = () => {
-    const { user_id, next_url, count } = this.props;
+    const { next_url, count } = this.props;
+    const user_id = localStorage.getItem("userProfileId");
     this.props.getInitialUserTrips(user_id, next_url, count);
     window.addEventListener('resize', this.handleScreenSize, false);
     this.handleScreenSize();

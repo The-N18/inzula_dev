@@ -18,6 +18,7 @@ import { updateTripOpenModal } from "../../store/actions/updateTripModal";
 import { NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import {openCompleteProfileModal} from "../../store/actions/completeProfileModal";
 import { getInitialSelectableReservations } from "../../store/actions/selectableUserReservations";
+import { openLoginParentModal } from "../../store/actions/loginParentModal";
 import { createNotif } from "../../store/actions/appConfig";
 
 import $ from 'jquery';
@@ -46,7 +47,7 @@ class TripCard extends React.Component {
       
     } else {
       this.props.createNotif("booking_request.login_msg", "Please login to have the possibility to book.", NOTIFICATION_TYPE_WARNING);
-      // this.props.openLoginModal();
+      this.props.openLoginModal();
       $("#login").modal("show");
       // createNotification({
       //   message: 'Please login to book this trip.',
@@ -155,6 +156,7 @@ const mapDispatchToProps = dispatch => {
     setTripDeleteTripConfirm: (tripId) => dispatch(setTripDeleteTripConfirm(tripId)),
     updateTripOpenModal: (tripInfo, pk) => dispatch(updateTripOpenModal(tripInfo, pk)),
     getInitialSelectableUserReservations: (user_id, trip_id) => dispatch(getInitialSelectableReservations(user_id, trip_id)),
+    openLoginModal: () => dispatch(openLoginParentModal()),
     createNotif: (key, default_text, type) => dispatch(createNotif(key, default_text, type)),
   };
 };

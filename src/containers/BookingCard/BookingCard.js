@@ -18,7 +18,7 @@ import { setBookingRequestId, openProposePriceOnBooking } from "../../store/acti
 import {FormattedMessage, FormattedDate} from 'react-intl'
 import { updateBookingOpenModal } from "../../store/actions/updateBookingModal";
 import { optionToText, sizeOptions, sizeOptionsFr, categoryOptions, categoryOptionsFr, weightOptions, weightOptionsFr, valueOptions, valueOptionsFr } from "../../utils/options";
-import {createNotification, NOTIFICATION_TYPE_SUCCESS} from 'react-redux-notify';
+import {createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_WARNING} from 'react-redux-notify';
 import { openDeclineBooking, setBookingDeclineBooking } from "../../store/actions/declineBooking";
 import { openValidateBooking, setBookingValidateBooking } from "../../store/actions/validateBooking";
 import { openCancelBooking, setBookingCancelBooking, getRefundAmt } from "../../store/actions/cancelBooking";
@@ -29,6 +29,8 @@ import 'react-responsive-carousel/lib/styles/carousel.css';
 import $ from 'jquery';
 import { openCanclePriceProposalConfirm, setCancleProposalBookingId } from "../../store/actions/CanclePriceProposalConfirm";
 import { openSelectPriceProposal } from "../../store/actions/SelectPriceProposalModal";
+import { createNotif } from "../../store/actions/appConfig";
+import { openLoginParentModal } from "../../store/actions/loginParentModal";
 window.jQuery = $;
 require('bootstrap');
 
@@ -153,12 +155,9 @@ class BookingCard extends React.Component {
       this.props.openProposePriceOnBooking();
       $("#proposePriceOnBooking").modal("show");
     } else {
-      createNotification({
-        message: 'Please login to propose a price on this request.',
-        type: NOTIFICATION_TYPE_SUCCESS,
-        duration: 30000,
-        canDismiss: true,
-      });
+      this.props.createNotif("booking_card.login_msg", "Please login to propose a price on this request.", NOTIFICATION_TYPE_WARNING);
+      this.props.openLoginModal();
+      $("#login").modal("show");
     }
 
   }
@@ -432,6 +431,8 @@ const mapDispatchToProps = dispatch => {
     openCanclePriceProposalConfirm: (isCancle) => dispatch(openCanclePriceProposalConfirm(isCancle)),
     setCancleProposalBookingId: (bookingId) => dispatch(setCancleProposalBookingId(bookingId)),
     openSelectPriceProposal: (bookingId) => dispatch(openSelectPriceProposal(bookingId)),
+    openLoginModal: () => dispatch(openLoginParentModal()),
+    createNotif: (key, default_text, type) => dispatch(createNotif(key, default_text, type)),
   };
 };
 
