@@ -56,7 +56,8 @@ window.jQuery = $;
 class CustomLayout extends React.Component {
 
   state = {
-    isMobile: false
+    isMobile: false,
+    load:true
   }
 
 
@@ -102,6 +103,17 @@ class CustomLayout extends React.Component {
     window.addEventListener('scroll', this.handleScroll, false);
     window.addEventListener('resize', this.handleScreenSize, false);
     this.handleScreenSize();
+
+    this.setState({
+      load:false
+    })
+
+    // setTimeout(()=>{
+    //   this.setState({
+    //     load:false
+    //   })
+    // }, 5000)
+
 
     // BACK TO TOP -------------
     $(document).on('click', '#back-to-top, .back-to-top', () => {
@@ -248,7 +260,9 @@ class CustomLayout extends React.Component {
       <VerifyYourEmailModal />
       <Notify position={"BottomLeft"}/>
         {/* Preloader */}
-       
+          <div id="preloader" style={{display:this.state.load?'block':'none'}}>
+            <div id="status"></div>
+          </div>
         {/* Preloader Ends */}
 
         {/* header starts */}
