@@ -13,38 +13,33 @@ class TransactionCard extends React.Component {
 
   render() {
 
-    const {type, creation_date, debited_funds, id} = this.props;
+    const {type, creation_date, debited_funds, id, transaction_type, status} = this.props;
     return (
-      <Card raised fluid centered className={"transaction-card"}>
-        <Card.Content>
-          <Card.Header>
-            <span><FormattedMessage
-              id="transaction_card.payin"
-              defaultMessage="Transaction executed: "
-            />{id}</span>
-          </Card.Header>
-          <Card.Description>
-            {creation_date !== "" ? <span><FormattedMessage
-              id="transaction_card.creation_date"
-              defaultMessage="Creation Date: "
-            />
+      
+      <tr>
+          <td> {id} </td>
+          <td> {creation_date !== "" ? <span>
             <FormattedDate
               value={creation_date}
               year="numeric"
               month="long"
               day="numeric"
               weekday="long"
+            /></span> : ''}
+          </td>
+          <td> {creation_date !== "" ? <FormattedDate
+              value={creation_date}
               hour='numeric'
               minute='numeric'
               second='numeric'
-            /> | </span> : ''}
-            {debited_funds !== "" ? <b><FormattedMessage
-              id="transaction_card.debited_funds"
-              defaultMessage="Debited funds: "
-            />{formatFunds(debited_funds)}</b> : ''}
-          </Card.Description>
-        </Card.Content>
-      </Card>
+            /> : ''} </td>
+          <td> {formatFunds(debited_funds)} </td>
+          <td> {transaction_type} </td>
+          {status=="SUCCEEDED"?<td> Succès </td>:""}
+          {status=="FAILED"?<td> Echec </td>:""}
+          
+        
+      </tr>
     );
   }
 }

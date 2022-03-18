@@ -34,8 +34,11 @@ class OutgoingFinancialTransactionsList extends React.Component {
   }
 
   componentDidMount = () => {
-    const { user_id } = this.props;
-    this.props.getInitialUserTransactions(user_id);
+    // const { user_id } = this.props;
+    const user_id = localStorage.getItem('userProfileId');
+    const email = localStorage.getItem('email');
+
+    this.props.getInitialUserTransactions(user_id,email);
     window.addEventListener('resize', this.handleScreenSize, false);
     this.handleScreenSize();
     }
@@ -61,40 +64,53 @@ class OutgoingFinancialTransactionsList extends React.Component {
     const { transactions } = this.props;
     return (
       <Segment basic className={"profile-tab-section"}>
-      {transactions.length === 0 ? <div><FormattedMessage
+        {transactions.length === 0 ? <div><FormattedMessage
         id="outgoing_user_transactions.no_transactions"
         defaultMessage="You have not made any transactions yet."
-      /></div> : <div
-        id="scrollableDiv"
-        style={{
-          height: 600,
-          overflow: 'auto',
-        }}
-      >
-      {transactions.map((item, index) => (
-        <div style={{
-          height: this.getDivHeight.bind(this),
-          margin: 6,
-          padding: 8
-        }} key={index}>
-          <TransactionCard
-            status={item["status"]}
-            id={item["id"]}
-            result_code={item["result_code"]}
-            result_message={item["result_message"]}
-            type={item["type"]}
-            nature={item["nature"]}
-            creation_date={item["creation_date"]}
-            debited_funds={item["debited_funds"]}
-            credited_funds={item["credited_funds"]}
-            fees={item["fees"]}
-            execution_date={item["execution_date"]}
-            author={item["author"]}
-            credited_user={item["credited_user"]}/>
-            </div>
-          ))}
-      </div>}
+      /></div> : <React.Fragment>
+            <div className="dashboard-list-box with-icons">
+              <div className="dashboard-title">
+                <h4 className="mb-0">Liste de mes transactions</h4>
+                <p className="mb-0">Vous retrouvez ici la liste de vos transactions</p>
+              </div>
+              <div className="table-responsive table-desi">
+                <table className="basic-table table table-hover">
+                  <thead>
+                    <tr>
+                      <th>N°</th>
+                      <th>Jour</th>
+                      <th>Heure</th>
+                      <th>Montant</th>
+                      <th>Type</th>
+                      <th>Statut</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {transactions.map((item, index) => (
+                      <TransactionCard
+                        status={item["status"]}
+                        id={item["id"]}
+                        result_code={item["result_code"]}
+                        result_message={item["result_message"]}
+                        type={item["type"]}
+                        nature={item["nature"]}
+                        creation_date={item["creation_date"]}
+                        debited_funds={item["debited_funds"]}
+                        credited_funds={item["credited_funds"]}
+                        fees={item["fees"]}
+                        execution_date={item["execution_date"]}
+                        author={item["author"]}
+                        credited_user={item["credited_user"]}
+                        transaction_type={item["transaction_type"]}/>
+                ))}
 
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            </React.Fragment>
+          }
       </Segment>
     );
   }
@@ -114,7 +130,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getUserTransactions: (user_id, next_url, count) => dispatch(getTransactions(user_id, next_url, count)),
-    getInitialUserTransactions: (user_id) => dispatch(getInitialTransactions(user_id)),
+    getInitialUserTransactions: (user_id,email) => dispatch(getInitialTransactions(user_id,email)),
   };
 };
 

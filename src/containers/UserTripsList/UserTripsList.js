@@ -96,7 +96,6 @@ class UserTripsList extends React.Component {
           <table className="basic-table table table-hover">
             <thead>
               <tr>
-                <th></th>
                 <th>Nom</th>
                 <th>Date de départ</th>
                 <th>Ville de départ</th>

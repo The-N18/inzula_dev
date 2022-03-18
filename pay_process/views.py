@@ -1015,17 +1015,19 @@ class OutgoingUserTransactions(APIView):
         if nat_user_id is not None:
             natural_user = NaturalUser.get(nat_user_id)
 
-            transactions = Transaction.all(user_id=natural_user.get_pk(),
-            status='SUCCEEDED',
-            type='TRANSFER',
-            credited_user_id=admin_natural_user.get_pk(),
-            sort='CreationDate:desc')
-            # if userprofile.wallet_id is not None:
-            #     user_wallet = Wallet(id=userprofile.wallet_id)
-            #     transactions = user_wallet.transactions.all(status='SUCCEEDED',
-            #                                         type='TRANSFER',
-            #                                         sort='CreationDate:desc')
-            serializer = TransactionSerializer(transactions, many=True)
+            # transactions = Transaction.all(user_id=natural_user.get_pk(),status='SUCCEEDED',type='TRANSFER',credited_user_id=admin_natural_user.get_pk(),sort='CreationDate:desc')
+            # transactions = Transaction.all(user_id=natural_user.get_pk(),
+            # status='SUCCEEDED',
+            # type='TRANSFER',
+            # credited_user_id=admin_natural_user.get_pk(),
+            # sort='CreationDate:desc')
+
+            if userprofile.wallet_id is not None:
+                user_wallet = Wallet(id=userprofile.wallet_id)
+                transactions = user_wallet.transactions.all(status='SUCCEEDED',
+                                                    type='TRANSFER',
+                                                    sort='CreationDate:desc')
+            serializer = TransactionSerializer(transactions, context={'request': request}, many=True)
             jsonResults = JSONRenderer().render(serializer.data)
             result['transactions'] = json.loads(jsonResults)
             return Response(result, status=status.HTTP_200_OK)

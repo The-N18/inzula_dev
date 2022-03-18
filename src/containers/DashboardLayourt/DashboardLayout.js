@@ -98,6 +98,32 @@ function DashboardLayout(props) {
         
     }
 
+    const handleMenuNavigation = () => {
+        console.log("IN handleMenuNavigation")
+
+        $('#financeDropdown').removeClass('active')
+
+        if(location.pathname=='/dashboard/profile'){
+            $('#financeDropdown').removeClass('active');
+        }else if(location.pathname=='/dashboard/my-bookings'){
+            $('#financeDropdown').removeClass('active');
+        }else if(location.pathname=='/dashboard/alerts'){
+            $('#financeDropdown').removeClass('active');
+        }else if(location.pathname=='/dashboard/my-reservations'){
+            $('#financeDropdown').removeClass('active');
+        }
+    }
+
+    const navigateTo = (route) => {
+        console.log("IN NAVIGATE TO")
+        props.history.push(route);
+        toggleFinanceDropdown();
+
+    }
+
+
+        
+
     return (
         <div>
             {/* BreadCrumb Starts */}  
@@ -169,16 +195,17 @@ function DashboardLayout(props) {
                         <div className="dashboard-nav">
                             <div className="dashboard-nav-inner">
                                 <ul>
-                                    <Link to={`${url}/profile`}><li className={location.pathname=='/dashboard/profile'&& "active"}><a ><i className="sl sl-icon-user" /> Profil</a></li></Link>
-                                    <Link to={`${url}/my-bookings`}><li className={location.pathname=='/dashboard/my-bookings'&& "active"}><a ><i className="sl sl-icon-layers" /> {profileType === "sender"?"Mes colis":"Mes voyages"}</a></li></Link>
-                                    <Link to={`${url}/alerts`}><li className={location.pathname=='/dashboard/alerts'&& "active"}><a ><i class="sl sl-icon-star"></i>Alertes</a></li></Link>
+                                    <Link to={`${url}/profile`}><li className={location.pathname=='/dashboard/profile'&& "active"} onClick={handleMenuNavigation}><a ><i className="sl sl-icon-user" /> Profil</a></li></Link>
+                                    <Link to={`${url}/my-bookings`}><li className={location.pathname=='/dashboard/my-bookings'&& "active"} onClick={handleMenuNavigation}><a ><i className="sl sl-icon-layers" /> {profileType === "sender"?"Mes colis":"Mes voyages"}</a></li></Link>
+                                    <Link to={`${url}/alerts`}><li className={location.pathname=='/dashboard/alerts'&& "active"} onClick={handleMenuNavigation}><a ><i class="sl sl-icon-star"></i>Alertes</a></li></Link>
                                     {/* <li><a href="dashboard-history.html"><i class="fa fa-list-ul"></i>Finances</a></li>  fas fa-exclamation-circle*/}
                                     <li  id="financeDropdown" onClick={toggleFinanceDropdown} ><a><i className="fa fa-list-ul" />Finances</a>
-                                        <ul><li><a href="/dashboard/my-transactions"><i className="sl sl-icon-plus" /> Mes transactions</a></li></ul>
-                                        <ul><li><a href="dashboard-add-new.html"><i className="sl sl-icon-directions" /> Transfert de fonds</a></li></ul>
-                                        <ul><li><a href="dashboard-add-new.html"><i className="sl sl-icon-credit-card" /> Mes moyens de paiement</a></li></ul>
+                                        {/* <ul><Link to={`${url}/my-transactions`}><li><a ><i className="sl sl-icon-plus" /> Mes transactions</a></li></Link></ul> */}
+                                        <ul><li onClick={() => navigateTo('/dashboard/my-transactions')}><a ><i className="sl sl-icon-plus" /> Mes transactions</a></li></ul>
+                                        <ul><li><a href="#"><i className="sl sl-icon-directions" /> Transfert de fonds</a></li></ul>
+                                        <ul><li><a href="#"><i className="sl sl-icon-credit-card" /> Mes moyens de paiement</a></li></ul>
                                     </li>
-                                    {profileType === "carrier"?<Link to={`${url}/my-reservations`}><li className={location.pathname=='/dashboard/my-reservations'&& "active"}><a ><i className="sl sl-icon-notebook" /> Réservations sur mes voyages</a></li></Link>:""}
+                                    {profileType === "carrier"?<Link to={`${url}/my-reservations`}><li className={location.pathname=='/dashboard/my-reservations'&& "active"} onClick={handleMenuNavigation}><a ><i className="sl sl-icon-notebook" /> Réservations sur mes voyages</a></li></Link>:""}
                                     <li><a onClick={logoutUtil}><i className="sl sl-icon-power" /> Deconnexion</a></li>
 
 

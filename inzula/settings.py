@@ -26,9 +26,9 @@ SECRET_KEY = 'cx7rnzp$skop_mg6h+xy2o6^$6ltn^_7oi5+p*f@b5cg4d*od#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-MANUAL_DEBUG = True
+MANUAL_DEBUG = False
 
-ALLOWED_HOSTS = ['dkx1b8wlo613w.cloudfront.net', 'inzula.app', 'www.inzula.app', '13.37.205.134', 'localhost', '127.0.0.1', '15.188.61.65', 'd1g0ix8w0r103u.cloudfront.net']
+ALLOWED_HOSTS = ['dkx1b8wlo613w.cloudfront.net', 'inzula.app', 'www.inzula.app', '13.37.205.134', 'localhost', '127.0.0.1', '15.188.61.65', 'd1g0ix8w0r103u.cloudfront.net', '15.188.32.228']
 
 
 # Application definition

@@ -17,6 +17,19 @@ class TransactionSerializer(serializers.Serializer):
     author = serializers.CharField(max_length=200)
     credited_user = serializers.CharField(max_length=200, allow_null=True)
 
+    transaction_type = serializers.SerializerMethodField()
+
+    def get_transaction_type(self, obj):
+        request = self.context.get('request', None)
+        print("request",request.data['email'],obj.author,obj.credited_user,type(request.data['email']),type(obj.author))
+        if str(obj.author) == request.data['email']:
+            print("get_transaction_type if")
+            return "Sortante"
+
+        if str(obj.credited_user) == request.data['email']:
+            print("get_transaction_type else")
+            return "Entrante"
+
 class CardSerializer(serializers.Serializer):
     id = serializers.CharField(max_length=200)
     creation_date = serializers.CharField(max_length=200)

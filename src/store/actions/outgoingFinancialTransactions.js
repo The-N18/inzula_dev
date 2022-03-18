@@ -40,16 +40,18 @@ export const getTransactionsFail = error => {
   };
 };
 
-export const getInitialTransactions = (user_id) => {
+export const getInitialTransactions = (user_id,email) => {
+  
   return dispatch => {
     dispatch(getTransactionsStart());
     axios
       .post(api_url() + "/pay/outgoingUserTransactions",
-            {user_id: user_id}
+            {user_id: user_id,email: email}
           )
       .then(res => {
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(getInitialTransactionsSuccess(res.data["transactions"], '', ''));
+        console.log("In outgoingFinancialTransactions getInitialTransactions",user_id,res.data["transactions"]);
       })
       .catch(err => {
         dispatch(getTransactionsFail(err));

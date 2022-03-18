@@ -4,6 +4,7 @@ import ProfileTab from "./containers/ProfileTabReduxForm/ProfileTab";
 import SenderCarrierNotifsList from "./containers/SenderCarrierNotifsList/SenderCarrierNotifsList";
 import TripsReservationsList from "./containers/TripsReservationsList/TripsReservationsList";
 import UserBookingsList from "./containers/UserBookingsList/UserBookingsList";
+import OutgoingFinancialTransactionsList from "./containers/OutgoingFinancialTransactionsList/OutgoingFinancialTransactionsList";
 import ProtectedRoute from "./protected_route";
 
 const DashboardRouter = () => {
@@ -22,11 +23,9 @@ const DashboardRouter = () => {
             {/* <Route path={`${path}/alerts`} component={SenderCarrierNotifsList} /> */}
             <ProtectedRoute path={`${path}/my-reservations`} component={UserBookingsList}></ProtectedRoute>
             {/* <Route path={`${path}/my-reservations`} component={UserBookingsList} /> */}
+            <ProtectedRoute path={`${path}/my-transactions`} component={OutgoingFinancialTransactionsList}></ProtectedRoute>
             <Route path="*" component={() => "404 NOT FOUND"} />
         </Switch>
-         
-
-        
     );
 }
 
