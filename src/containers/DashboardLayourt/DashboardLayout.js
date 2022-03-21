@@ -81,7 +81,9 @@ function DashboardLayout(props) {
 
     const toggleFinanceDropdown = () => {
         console.log("IN toggleFinanceDropdown")
-        if(location.pathname=='/dashboard/my-transactions'){
+        if(location.pathname=='/dashboard/my-transactions' || 
+        location.pathname=='/dashboard/fund-deposit' ||
+        location.pathname=='/dashboard/funds-withdrawal'){
             console.log("IN toggleFinanceDropdown IF")
             $('#financeDropdown').addClass('active');
         }else{
@@ -202,7 +204,8 @@ function DashboardLayout(props) {
                                     <li  id="financeDropdown" onClick={toggleFinanceDropdown} ><a><i className="fa fa-list-ul" />Finances</a>
                                         {/* <ul><Link to={`${url}/my-transactions`}><li><a ><i className="sl sl-icon-plus" /> Mes transactions</a></li></Link></ul> */}
                                         <ul><li onClick={() => navigateTo('/dashboard/my-transactions')}><a ><i className="sl sl-icon-plus" /> Mes transactions</a></li></ul>
-                                        <ul><li><a href="#"><i className="sl sl-icon-directions" /> Transfert de fonds</a></li></ul>
+                                        <ul><li onClick={() => navigateTo('/dashboard/fund-deposit')}><a ><i className="fa fa-arrow-right" aria-hidden="true" /> Dépots de fonds</a></li></ul>
+                                        <ul><li onClick={() => navigateTo('/dashboard/funds-withdrawal')}><a ><i className="fa fa-arrow-left" aria-hidden="true" /> retraits de fonds</a></li></ul>
                                         <ul><li><a href="#"><i className="sl sl-icon-credit-card" /> Mes moyens de paiement</a></li></ul>
                                     </li>
                                     {profileType === "carrier"?<Link to={`${url}/my-reservations`}><li className={location.pathname=='/dashboard/my-reservations'&& "active"} onClick={handleMenuNavigation}><a ><i className="sl sl-icon-notebook" /> Réservations sur mes voyages</a></li></Link>:""}

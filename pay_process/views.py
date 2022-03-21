@@ -13,7 +13,7 @@ from .serializers import TransactionSerializer, CardSerializer
 from rest_framework.renderers import JSONRenderer
 import json
 from django.db import transaction
-from booking.models import BookingRequest, Notif
+from booking.models import BookingRequest, Notif, PriceProposal
 from trip.models import Trip
 from rest_framework.generics import CreateAPIView, ListAPIView, GenericAPIView
 from rest_auth.registration.app_settings import register_permission_classes
@@ -53,11 +53,16 @@ class PayForBooking(CreateAPIView):
             percentage_promo = None
 
             # get price to pay
-            
+
+            print("In PayForBooking")
+
             if isCarrierProposition:
-                print("In isCarrierProposition", isCarrierProposition,carrierProposedPrice,selectedBookingIds,tripId)
+                print("In isCarrierProposition if", isCarrierProposition,carrierProposedPrice,selectedBookingIds,tripId)
                 booking_amount = carrierProposedPrice
             else:
+
+                print("In isCarrierProposition else", isCarrierProposition,carrierProposedPrice,selectedBookingIds,tripId)
+
                 booking_requests = BookingRequest.objects.filter(pk__in=selectedBookingIds)
                 booking_requests_price = booking_requests.aggregate(Sum('product__proposed_price'))
                 booking_amount = booking_requests_price['product__proposed_price__sum']
@@ -192,6 +197,10 @@ class PayForBooking(CreateAPIView):
                             print("In isCarrierProposition2")
                             booking.product.amount_paid = carrierProposedPrice
                             booking.product.charges_paid = carrierProposedPrice * 0.25
+
+                            PriceProposal.objects.filter(booking_request=booking).delete()
+                            # booking.product.proposed_price = carrierProposedPrice
+
                         else:
                             booking.product.amount_paid = booking.product.proposed_price
                             booking.product.charges_paid = booking.product.proposed_price * 0.25
@@ -215,6 +224,8 @@ class PayForBooking(CreateAPIView):
                         created_on=timezone.now(),
                         type='payment_for_booking',
                         status='unseen')
+
+                    
                     result = {
                     }
                     return Response(result, status=status.HTTP_200_OK)
@@ -1053,7 +1064,7 @@ class WithdrawalUserTransactions(APIView):
             type='PAYOUT',
             sort='CreationDate:desc')
 
-            serializer = TransactionSerializer(transactions, many=True)
+            serializer = TransactionSerializer(transactions, context={'request': request}, many=True)
             jsonResults = JSONRenderer().render(serializer.data)
             result['transactions'] = json.loads(jsonResults)
             return Response(result, status=status.HTTP_200_OK)
@@ -1064,7 +1075,10 @@ class DepositUserTransactions(APIView):
 
     def post(self, request, format=None):
         # get user from user id
+        print("IN DepositUserTransactions",request)
         userId = request.data['user_id']
+
+        print("IN DepositUserTransactions2",userId)
 
         result = {
         'transactions': []
@@ -1078,7 +1092,7 @@ class DepositUserTransactions(APIView):
             status='SUCCEEDED',
             type='PAYIN',
             sort='CreationDate:desc')
-            serializer = TransactionSerializer(transactions, many=True)
+            serializer = TransactionSerializer(transactions, context={'request': request}, many=True)
             jsonResults = JSONRenderer().render(serializer.data)
             result['transactions'] = json.loads(jsonResults)
             return Response(result, status=status.HTTP_200_OK)

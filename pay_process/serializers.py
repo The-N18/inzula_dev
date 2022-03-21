@@ -21,14 +21,26 @@ class TransactionSerializer(serializers.Serializer):
 
     def get_transaction_type(self, obj):
         request = self.context.get('request', None)
-        print("request",request.data['email'],obj.author,obj.credited_user,type(request.data['email']),type(obj.author))
-        if str(obj.author) == request.data['email']:
-            print("get_transaction_type if")
-            return "Sortante"
+        # print("request",request.data['email'],obj.author,obj.credited_user,type(request.data['email']),type(obj.author))
+        print("request",request.data['user_id'],obj.type,type(obj.type))
+        if obj.type == "TRANSFER":
+            if str(obj.author) == request.data['email']:
+                print("get_transaction_type if1")
+                return "Sortante"
 
-        if str(obj.credited_user) == request.data['email']:
-            print("get_transaction_type else")
-            return "Entrante"
+            if str(obj.credited_user) == request.data['email']:
+                print("get_transaction_type if2")
+                return "Entrante"
+        else:
+            if str(obj.type) == 'PAYIN':
+                print("get_transaction_type else1")
+                return "Dépôt"
+
+            if str(obj.type) == 'PAYOUT':
+                print("get_transaction_type else2")
+                return "Retrait"
+
+        return ""
 
 class CardSerializer(serializers.Serializer):
     id = serializers.CharField(max_length=200)

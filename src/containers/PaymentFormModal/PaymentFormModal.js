@@ -41,6 +41,8 @@ class PaymentFormModal extends React.Component {
       'userId': userId,
       'tripId': tripId,
       'selectedBookingIds': selectedBookingIds,
+      'isCarrierProposition': false,
+      'carrierProposedPrice': null
     }
 
     if(isProposedPrice){

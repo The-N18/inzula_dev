@@ -126,6 +126,7 @@ export const payToWallet = (values) => {
 
 
 export const payForBooking = (values) => {
+  console.log("In payForBooking action",values)
   const userId = localStorage.getItem("userProfileId");
   return dispatch => {
 

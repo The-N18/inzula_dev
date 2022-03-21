@@ -669,8 +669,16 @@ class BookingRequestSearchView(generics.ListAPIView):
         products = Product.objects.all()
 
         print('INBookingRequestSearchView arrDate',arrDate)
+
+        for booking in BookingRequest.objects.filter(status='del'):
+            print('INBookingRequestSearchView for',booking.product.pk,type(booking.product.pk),booking.status)
+            products = products.exclude(pk=booking.product.pk)
+
+        
         products = products.exclude(arrival_date__lt=today)
         
+        print('INBookingRequestSearchView products',products)
+
         if user_id != '':
             user_profile = User.objects.get(pk=int(user_id)).profile
             products = products.exclude(created_by=user_profile)
