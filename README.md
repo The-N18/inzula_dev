@@ -5,13 +5,17 @@
 # Terminology
 + Django – The backend framework used
 
++ React – The frontend framework used
+
 + DjangoRestFramework - The module that provides interfaces to create REST APIs
 
 + MySQL, PostgreSQL, SQLite
 
 + SQL – when referring to SQL
 
-+ Python – the programming language used
++ Python – the programming language used for backend
+
++ JavaScript – the programming language used for frontend
 
 + model – Django class that interacts with database tables
 
@@ -55,7 +59,7 @@ This folder contains the gunicorn script that is run on the remote server to sta
 `npm install`
 - node_modules: This is a folder that contains all the node modules installed in your project.
 - staticfiles: This folder is generated after successfull execution of the command  
-`python3 manage.py collectstatic`.  
+`python3 manage.py collectstatic` on Linux or `python manage.py collectstatic` on Windows.  
 It collect static files in the build repository and makes it available to the application after deployment, given that we do not run any node server on the production server.
 - static: contains static files we use in our application. This folder is not automatically generated.
 - public: This folder contains the one and only index.html file used by our application. Hence the name SPA.
@@ -69,7 +73,7 @@ command is successfully run. This folder contains a compressed version of all ou
     + store/actions: Contains actions made on store variables and API calls to the backend.
     + store/reducers: Contains store variables.
     + utils/options: Contains the items listed in select fields, with their translations
-    + routes.js: Contains all the url routes that are managed on the frontend.
+    + routes.js and dashboardRoutes.js: Contain all the url routes that are managed on the frontend.
     + index.js: Contains all the redux stores that the components use. This does a mapping between the files that define the stores and the store names throughout the application.
     + App.js: Application entry file that wraps the entire application with the internationalisation messages. If you remove this wrapper, internationalisation/transaltion is broken.
     + configurations.js: Contains debug Configuration of the app and other helper functions.
@@ -87,10 +91,10 @@ To run locally, do the following:
 + Clone the repo  
 `git clone https://tenteeglobal@bitbucket.org/tenteeglobal/inzula.git`
 + Add environment variables to the virtualenvironment's script  
-`vi env/bin/activate`  
+`vi env/bin/activate` on Linux or edit `env\Scripts\activate.bat` on Windows  
 Environment variables to add are in the DIT document
 + Activate the virtual environment  
-`source env/bin/activate`
+`source env/bin/activate` on Linux or `env\Scripts\activate` on Windows
 + Switch to the proper node version (if you have many node installations)  
 If you use nvm(node version manager)  
 `nvm use v10.9.0`
@@ -115,20 +119,18 @@ on line 1, set
 `export const DEBUG = false;`  
 to   
 `export const DEBUG = true;`
-+ Change the backend's database to sqlite  
-Make sure lines  
-`123 to 128`  
-are uncommented, and  
-`lines 130 to 139`  
-are commented.
++ Install postgreSQL if not already installed and create a database named
+`inzuladb`
+With a user named `inzula` and password `inzula`
+Django will connect to that database
 + Make migrations  
-`python3 manage.py makemigrations`  
+`python3 manage.py makemigrations` on Linux or  `python manage.py makemigrations` on Windows
 + Migrations  
-`python3 manage.py migrate`  
+`python3 manage.py migrate` on Linux or  `python manage.py migrate` on Windows
 + Run the frontend  
-`PUBLIC_URL=http://localhost:8000 npm run start`  
+`PUBLIC_URL=http://localhost:8000 npm run start` on Linux or  `npm run start` on Windows
 + Run the backend  
-`python3 manage.py runserver`
+`python3 manage.py runserver` on Linux or  `python manage.py runserver` on Windows
 + Open your browser and go to  
 `localhost:3000`
 + Enjoy!
@@ -147,116 +149,36 @@ on line 27, set
 `MANUAL_DEBUG = True`  
 to  
 `MANUAL_DEBUG = False`
-+ Switch the backend database to postgres settings
-Make sure lines  
-`123 to 128`  
-are commented, and  
-`lines 130 to 139`  
-are not commented.
 + build the frontend
     - to build for the production server, run  
-`PUBLIC_URL=https://dkx1b8wlo613w.cloudfront.net npm run build`
+`PUBLIC_URL=https://dkx1b8wlo613w.cloudfront.net npm run build` on Linux
+`set PUBLIC_URL=https://dkx1b8wlo613w.cloudfront.net&&npm run build` on Windows
     - to build for the build server, run  
-`PUBLIC_URL=https://d1g0ix8w0r103u.cloudfront.net npm run build`
+`PUBLIC_URL=http://15.188.32.228 npm run build` on Linux
+`set PUBLIC_URL=http://15.188.32.228&&npm run build` on Windows
 + Collectstatic files on the backend
 Once the build is over, run  
-`python3 manage.py collectstatic`
+`python3 manage.py collectstatic` on Linux or `python manage.py collectstatic` on Windows
 + Push your code with git  
     - `git add .`  
     - `git commit -am <COMMIT_MSG>`  
-    - `git pull origin develop`
+    - `git push origin frontEndMigration`
 + Notice the newly created build and staticfile directories created
 Done!
 
 # Deploy
 + SSH into the server  
 For the production server; run   
-`ssh -i inzula-infra.pem ubuntu@15.237.97.243`  
+`ssh -i inzula-infra.pem ubuntu@15.188.61.65`  
 For the build server; run   
-`ssh -i inzula-infra.pem ubuntu@15.188.61.65`
+`ssh -i inzula-infra.pem ubuntu@15.188.32.228`
+You can also use Putty or MobaXTerm
 + cd to the project directory  
 `cd projects/inzula`
 + Activate the virtual environment  
 `source ../env/bin/activate`
 + pull the latest changes  
-`git pull`
+`git pull origin <Branch name>`
 + restart the gunicorn deamon  
 `./bin/gunicorn_start.sh`  
 Done!
-
-# To build in test server
-+ Check the branch name. You should be in the `test` branch  
-  `git branch` helps you do that
-+ Make your changes
-+ assuming you are in the directory named `inzula`, run  
-`./bin/build_in_test_server.sh`
-+ Then run this command  
-`rm -rf /home/ubuntu/projects/inzula/build/ && rm -rf /home/ubuntu/projects/inzula/staticfiles/ && PUBLIC_URL=https://d1g0ix8w0r103u.cloudfront.net npm run build && python3 /home/ubuntu/projects/inzula/manage.py collectstatic --noinput && ./bin/gunicorn_start.sh`  
-This will delete the build files, rebuild the project and launch the server. You will know that it has run successfully when you see a return of the sort  
-`[2021-02-07 01:58:22 +0000] [86671] [INFO] Starting gunicorn 19.9.0
-[2021-02-07 01:58:22 +0000] [86671] [DEBUG] Arbiter booted
-[2021-02-07 01:58:22 +0000] [86671] [INFO] Listening at: unix:/home/ubuntu/projects/env/run/gunicorn.sock (86671)
-[2021-02-07 01:58:22 +0000] [86671] [INFO] Using worker: sync
-/usr/lib/python3.8/os.py:1023: RuntimeWarning: line buffering (buffering=1) isn't supported in binary mode, the default buffer size will be used
-  return io.open(fd, *args, **kwargs)
-[2021-02-07 01:58:22 +0000] [86675] [INFO] Booting worker with pid: 86675
-[2021-02-07 01:58:22 +0000] [86676] [INFO] Booting worker with pid: 86676
-[2021-02-07 01:58:22 +0000] [86677] [INFO] Booting worker with pid: 86677
-[2021-02-07 01:58:23 +0000] [86671] [DEBUG] 3 workers`
-
-# Push build from test to prod server
-After the build, do
-+ `git add .`
-+ `git commit -am "<COMMIT_MSG>"`
-+ `git push origin test`
-+ `git checkout prod`
-+ `git pull`
-+ `git merge test`
-+  Run file  
-`./bin/test_to_prod_build.sh`
-+ Then push to prod  
-`git add .`
-+ `git commit -am "<COMMIT_MSG>"`
-+ `git push origin prod`
-+ Switch back to the `test` branch  
-`git checkout test`
-+ Login in prod server and restart as mentionned in the steps above.
-
-# Build in prod server
-+ Check the branch name. You should be in the `prod` branch  
-  `git branch` helps you do that
-+ Make your changes
-+ assuming you are in the directory named `inzula`, run  
-`./bin/build_in_prod_server.sh`
-+ Then run this command  
-`rm -rf /home/ubuntu/projects/inzula/build/ && rm -rf /home/ubuntu/projects/inzula/staticfiles/ && PUBLIC_URL=https://dkx1b8wlo613w.cloudfront.net npm run build && python3 /home/ubuntu/projects/inzula/manage.py collectstatic --noinput && ./bin/gunicorn_start.sh`  
-This will delete the build files, rebuild the project and launch the server. You will know that it has run successfully when you see a return of the sort  
-`[2021-02-07 01:58:22 +0000] [86671] [INFO] Starting gunicorn 19.9.0
-[2021-02-07 01:58:22 +0000] [86671] [DEBUG] Arbiter booted
-[2021-02-07 01:58:22 +0000] [86671] [INFO] Listening at: unix:/home/ubuntu/projects/env/run/gunicorn.sock (86671)
-[2021-02-07 01:58:22 +0000] [86671] [INFO] Using worker: sync
-/usr/lib/python3.8/os.py:1023: RuntimeWarning: line buffering (buffering=1) isn't supported in binary mode, the default buffer size will be used
-  return io.open(fd, *args, **kwargs)
-[2021-02-07 01:58:22 +0000] [86675] [INFO] Booting worker with pid: 86675
-[2021-02-07 01:58:22 +0000] [86676] [INFO] Booting worker with pid: 86676
-[2021-02-07 01:58:22 +0000] [86677] [INFO] Booting worker with pid: 86677
-[2021-02-07 01:58:23 +0000] [86671] [DEBUG] 3 workers`
-
-# Push build from prod to test server
-After the build, do
-+ `git add .`
-+ `git commit -am "<COMMIT_MSG>"`
-+ `git push origin prod`
-+ `git checkout test`
-+ `git pull`
-+ `git merge prod`
-+  Run file  
-`./bin/prod_to_test_build.sh`
-+ Then push to prod  
-`git add .`
-+ `git commit -am "<COMMIT_MSG>"`
-+ `git push origin test`
-+ Switch back to the `prod` branch  
-`git checkout prod`
-+ Login in test server and restart as mentionned in the steps above.
-

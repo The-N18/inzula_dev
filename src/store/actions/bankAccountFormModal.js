@@ -3,6 +3,7 @@ import * as actionTypes from "./actionTypes";
 import { api_url, AUTH_TIMEOUT } from "../../configurations";
 import {checkAuthTimeout} from "./auth";
 import {createNotification, NOTIFICATION_TYPE_ERROR} from 'react-redux-notify';
+import $ from 'jquery';
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -95,6 +96,8 @@ export const cashout = (values) => {
       .then(res => {
         dispatch(checkAuthTimeout(AUTH_TIMEOUT));
         dispatch(getCashoutSuccess());
+        $('#bankAccountForm').modal('hide');
+        dispatch(closeBankAccountFormModal());
       })
       .catch(err => {
         dispatch(getCashoutFail(err));

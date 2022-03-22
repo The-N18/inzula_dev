@@ -51,6 +51,7 @@ class MyFunds extends React.Component {
 
   openCashoutModal = () => {
     this.props.openBankAccountFormModal();
+    $('#bankAccountForm').modal('show');
   }
 
   render() {

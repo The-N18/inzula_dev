@@ -8,6 +8,7 @@ import OutgoingFinancialTransactionsList from "./containers/OutgoingFinancialTra
 import DepositFinancialTransactionsList from "./containers/DepositFinancialTransactionsList/DepositFinancialTransactionsList";
 import ProtectedRoute from "./protected_route";
 import WithdrawalFinancialTransactionsList from "./containers/WithdrawalFinancialTransactionsList/WithdrawalFinancialTransactionsList";
+import MyFunds from "./containers/MyFunds/MyFunds";
 
 
 const DashboardRouter = () => {
@@ -29,6 +30,8 @@ const DashboardRouter = () => {
             <ProtectedRoute path={`${path}/my-transactions`} component={OutgoingFinancialTransactionsList}></ProtectedRoute>
             <ProtectedRoute path={`${path}/fund-deposit`} component={DepositFinancialTransactionsList}></ProtectedRoute>
             <ProtectedRoute path={`${path}/funds-withdrawal`} component={WithdrawalFinancialTransactionsList}></ProtectedRoute>
+            <ProtectedRoute path={`${path}/my-funds`} component={MyFunds}></ProtectedRoute>
+
             <Route path="*" component={() => "404 NOT FOUND"} />
         </Switch>
     );
