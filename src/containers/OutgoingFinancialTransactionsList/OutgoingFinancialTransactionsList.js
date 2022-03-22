@@ -61,13 +61,19 @@ class OutgoingFinancialTransactionsList extends React.Component {
   }
 
   render() {
-    const { transactions } = this.props;
+    const { transactions, loading } = this.props;
     return (
       <Segment basic className={"profile-tab-section"}>
-        {transactions.length === 0 ? <div><FormattedMessage
+        {/* Preloader */}
+        <div id="preloader" style={{display:loading?'block':'none'}}>
+            <div id="status"></div>
+          </div>
+        {/* Preloader Ends */}
+
+        {transactions.length === 0 ? !loading?<div><FormattedMessage
         id="outgoing_user_transactions.no_transactions"
         defaultMessage="You have not made any transactions yet."
-      /></div> : <React.Fragment>
+      /></div>:"" : <React.Fragment>
             <div className="dashboard-list-box with-icons">
               <div className="dashboard-title">
                 <h4 className="mb-0">Liste de mes transactions</h4>
@@ -118,7 +124,7 @@ class OutgoingFinancialTransactionsList extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    loading: state.auth.loading,
+    loading: state.outgoingFinancialTransactions.loading,
     error: state.auth.error,
     user_id: state.userInfo.userId,
     transactions: state.outgoingFinancialTransactions.transactions,

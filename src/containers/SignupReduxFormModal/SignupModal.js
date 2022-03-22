@@ -64,6 +64,13 @@ class RegistrationForm extends Component {
     //   return <Redirect to="/" />;
     // }
     return (
+      <React.Fragment>
+        {/* Preloader */}
+          <div id="preloader" style={{display:loading?'block':'none'}}>
+            <div id="status"></div>
+          </div>
+        {/* Preloader Ends */}
+
       <div className="login-form text-center">
         <form>
           <Field
@@ -137,6 +144,7 @@ class RegistrationForm extends Component {
            J'ai lu et je m'engage à respecter les<a onClick={this.handleOnTermsClick.bind(this)} className style={{color: '#a10115'}}> règles de bienveillance</a> du site et j'accepte l'utilisation des cookies
         </div>
       </div>
+      </React.Fragment>
     );
   }
 }

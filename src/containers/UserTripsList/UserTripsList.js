@@ -75,7 +75,7 @@ class UserTripsList extends React.Component {
       {trips.length === 0 ? <div><FormattedMessage
         id="user_trips.no_trips"
         defaultMessage="You have not created any trips."
-      />
+      />&nbsp;&nbsp;
       <Button color='green' onClick={this.handleOpenAddTripModal.bind(this)}>
             <FormattedMessage
               id="user_trips.add_trip"

@@ -36,6 +36,7 @@ function DashboardLayout(props) {
     useEffect(() => {
         // code to run on component mount
         console.log("IN use Effect")
+        // toggleFinanceDropdown()
 
         // props.toggleProfileType(profileType === "sender" ? "carrier" : "sender");
         

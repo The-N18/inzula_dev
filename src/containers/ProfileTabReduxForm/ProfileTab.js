@@ -246,7 +246,10 @@ class ProfileTab extends React.Component {
             </div>
           </div>
         </div>
-        <div className="dashboard-form mb-4">
+
+      {/*TO BE IPLEMENTED]*/}
+      
+        {/* <div className="dashboard-form mb-4">
           <div className="dashboard-password">
             <h4>Modifier le mot de passe</h4>
             <form>
@@ -277,7 +280,7 @@ class ProfileTab extends React.Component {
               </div>
             </form>
           </div>
-        </div>
+        </div> */}
       </React.Fragment>
     );
   }

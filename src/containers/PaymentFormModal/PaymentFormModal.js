@@ -82,6 +82,13 @@ class PaymentFormModal extends React.Component {
   render() {
     const { open, handleSubmit, price, invalid, loading } = this.props;
     return (
+      <React.Fragment>
+
+      {/* Preloader */}
+        <div id="preloader" style={{display:loading?'block':'none'}}>
+          <div id="status"></div>
+        </div>
+      {/* Preloader Ends */}
 
       <div className="modal fade"  id="paymentForm" tabIndex={-1} role="dialog" aria-hidden="true" data-backdrop="static"  data-keyboard="false">
       <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
@@ -187,7 +194,7 @@ class PaymentFormModal extends React.Component {
             </Container>
           </div>
           <div class="modal-footer">
-            <Button negative onClick={this.handleClosePaymentFormModal.bind(this)}>
+            <Button negative onClick={this.handleClosePaymentFormModal.bind(this)} disabled={loading}>
               <FormattedMessage
                 id="payment_form.cancel"
                 defaultMessage="Cancel"
@@ -197,6 +204,8 @@ class PaymentFormModal extends React.Component {
         </div>
       </div>
     </div>
+
+    </React.Fragment>
 
     );
   }

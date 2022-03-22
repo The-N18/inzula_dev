@@ -293,7 +293,7 @@ class BookingCard extends React.Component {
 
 
           {can_propose && !proposed_by.includes(parseInt(connectedUserId)) ? <td><Segment compact basic className={"sub-btn-style"}>
-          <Button color='blue' icon='money' className={"white-trash"} onClick={this.proposePriceOnBooking.bind(this)}/>
+          <Button color='blue' icon='money' className={styles["booking-card-validate-button"]} onClick={this.proposePriceOnBooking.bind(this)}/>
             </Segment></td> : ''}
 
           {can_propose && proposed_by.includes(parseInt(connectedUserId)) ? 
@@ -322,17 +322,6 @@ class BookingCard extends React.Component {
                     <a onClick={this.deleteBooking.bind(this)}><i class="fa fa-trash-alt text-danger" aria-hidden="true"></i></a>
                 </td>
 
-                {/* {status === "boo" || status === "awa" ? <td>
-                      <Button size="mini"
-                        color='orange'
-                        className={"white-trash"}
-                        onClick={this.cancelBooking.bind(this)}
-                      ><FormattedMessage
-                        id="booking_card.cancel_booking"
-                        defaultMessage="Cancel"
-                      />
-                      </Button>
-                    </td> : ''} */}
             </React.Fragment> : ''}
 
             {editable && status !== "del" && status !== "cre" ? <React.Fragment>
@@ -351,13 +340,15 @@ class BookingCard extends React.Component {
         
               </React.Fragment> : ''}
 
+            {editable && status == "del"?<td style={{color:"green"}}>Livré</td>:""}
+
             {validate_decline ? <React.Fragment mobile={2} tablet={2} computer={2}>
                 <td>
                   <Button size="mini"
                     color='blue'
-                    className={"booking-card-delete-button"}
+                    className={styles["booking-card-validate-button"]}
                     onClick={this.validateBooking.bind(this)}
-                    disabled={confirmed_by_sender || status === "awa" || status === "del"}
+                    disabled={confirmed_by_sender || status === "awa" || status === "del" || booking_status=="expired"}
                   ><FormattedMessage
                     id="booking_card.validate"
                     defaultMessage="Validate"
@@ -369,7 +360,7 @@ class BookingCard extends React.Component {
                 {confirmed_by_sender ? <td>
                     <Button size="mini"
                       color='blue'
-                      className={"booking-card-delete-button"}
+                      className={styles["booking-card-validate-button"]}
                       onClick={this.productDelivered.bind(this)}
                       disabled={status === "del"}
                       ><FormattedMessage
@@ -384,7 +375,7 @@ class BookingCard extends React.Component {
                     color='orange'
                     className={"white-trash"}
                     onClick={this.declineBooking.bind(this)}
-                    disabled={status === "del"}
+                    disabled={status === "del" || booking_status=="expired"}
                   ><FormattedMessage
                     id="booking_card.decline"
                     defaultMessage="Decline"

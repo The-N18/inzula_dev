@@ -86,7 +86,7 @@ class UserReservationsList extends React.Component {
         {reservations.length === 0 ? <div><FormattedMessage
           id="user_reservations.no_reservations"
           defaultMessage="You have not created any reservations."
-        />
+        />&nbsp;&nbsp;
         <Button color='green' onClick={this.handleOpenSendPackageModal.bind(this)}>
               <FormattedMessage
                 id="user_reservations.add_booking"

@@ -55,6 +55,12 @@ class LoginForm extends Component {
     //   return <Redirect to="/" />;
     // }
     return (
+      <React.Fragment>
+      {/* Preloader */}
+        <div id="preloader" style={{display:loading?'block':'none'}}>
+          <div id="status"></div>
+        </div>
+      {/* Preloader Ends */}
       <div className="login-form">
         <form>
           <Field
@@ -79,6 +85,7 @@ class LoginForm extends Component {
           <input type="checkbox" /> Se souvenir de moi | <a href="#" className>Mot de passe oublié ?</a>
         </div>
       </div>
+      </React.Fragment>
 
     );
   }

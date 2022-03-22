@@ -58,15 +58,21 @@ class DepositFinancialTransactionsList extends React.Component {
   }
 
   render() {
-    const { transactions } = this.props;
+    const { transactions, loading } = this.props;
     return (
 
 
       <Segment basic className={"profile-tab-section"}>
-        {transactions.length === 0 ? <div><FormattedMessage
+        {/* Preloader */}
+        <div id="preloader" style={{display:loading?'block':'none'}}>
+            <div id="status"></div>
+          </div>
+        {/* Preloader Ends */}
+
+        {transactions.length === 0 ? !loading?<div><FormattedMessage
         id="deposit_user_transactions.no_transactions"
         defaultMessage="You do not have any deposits transactions yet."
-      /></div> : <React.Fragment>
+      /></div>:"" : <React.Fragment>
             <div className="dashboard-list-box with-icons">
               <div className="dashboard-title">
                 <h4 className="mb-0">Liste de mes dépots de fonds</h4>
@@ -118,7 +124,7 @@ class DepositFinancialTransactionsList extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    loading: state.auth.loading,
+    loading: state.depositFinancialTransactions.loading,
     error: state.auth.error,
     user_id: state.userInfo.userId,
     transactions: state.depositFinancialTransactions.transactions,

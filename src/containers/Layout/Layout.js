@@ -112,7 +112,7 @@ class CustomLayout extends React.Component {
     //   this.setState({
     //     load:false
     //   })
-    // }, 5000)
+    // }, 10000)
 
 
     // BACK TO TOP -------------
