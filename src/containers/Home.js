@@ -279,7 +279,7 @@ render(){
                       </div>
                       <div className="trend-content-main">
                         <div className="trend-content">
-                          <h4><a href="#">2- Rencontrez l’expéditeur</a></h4>
+                          <h4><a href="#">2- Rencontrez l’expéditeur<br/><br/></a></h4>
                           <br/>
                         </div>
                         <div className="trend-last-main">

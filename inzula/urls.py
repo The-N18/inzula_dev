@@ -48,6 +48,7 @@ urlpatterns = [
     path('transport/', index, name='index'),
     path('dispatch/', index, name='index'),
     path('faqs/', index, name='index'),
+    path('how-does-it-work/', index, name='index'),
     path('insurance/', index, name='index'),
     path('legal/', index, name='index'),
     path('transparency/', index, name='index'),
