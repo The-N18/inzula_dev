@@ -101,7 +101,7 @@ class TripCard extends React.Component {
               <Image centered src={!no_book || img ? get_img_url(img) : backend_url() + '/static/images/default_trips_image.jpg'} verticalAlign="middle" size="tiny" className={"trip-card-img"}/>
             </span>
           </td>
-          <td>{creator_user_name}</td>
+          {/* <td>{creator_user_name}</td> */}
           <td>
             {depart_date ? <FormattedDate
                 value={depart_date}

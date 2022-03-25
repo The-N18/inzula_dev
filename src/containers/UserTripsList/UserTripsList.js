@@ -100,8 +100,8 @@ class UserTripsList extends React.Component {
                 <th>Date de départ</th>
                 <th>Ville de départ</th>
                 <th>Ville d'arrivée</th>
-                <th>Modifier</th>
-                <th>Supprimer</th>
+                {/* <th>Modifier</th>
+                <th>Supprimer</th> */}
               </tr>
             </thead>
             <tbody>

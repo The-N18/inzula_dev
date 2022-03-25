@@ -97,7 +97,12 @@ class SearchTripsForm extends React.Component {
           <div className="form-main">
             <div className="container-fluid">
               <div className="form-content"> 
-                <h3 className="form-title text-center d-inline white">Trouvez un voyage</h3>
+                <h3 className="form-title text-center d-inline white">
+                  <FormattedMessage
+                    id="Search_trips.find_trip"
+                    defaultMessage=""
+                  />
+                </h3>
                 <div className="row d-flex align-items-center justify-content-between">
                   <div className="col-lg">
                     <div className="form-group pr-4 m-0">
@@ -144,8 +149,10 @@ class SearchTripsForm extends React.Component {
                       <div className="input-box">
                         {/* <i className="fa fa-calendar" />
                         <input id="date-range0" type="text" placeholder="Date du voyage" /> */}
+                        <br/>
                         <Field
                           name="travel_date"
+                          placeHolder={lang === "en" ? "Departure date" : "Date de départ"}
                           showTime={false}
                           component={renderDateTimePicker}
                         />
@@ -165,7 +172,12 @@ class SearchTripsForm extends React.Component {
                           </div> */}      
                   <div className="col-lg">
                     <div className="form-group m-0 w-100">
-                      <a  className={`nir-btn ${loading?'disabled':''}`} onClick={handleSubmit(this.submitForm)} ><i className="fa fa-search" /> Rechercher</a>
+                      <a  className={`nir-btn ${loading?'disabled':''}`} onClick={handleSubmit(this.submitForm)} ><i className="fa fa-search" />
+                        <FormattedMessage
+                          id="search_trips.search_btn"
+                          defaultMessage=""
+                        />
+                      </a>
                     </div>
                   </div>                      
                 </div>
@@ -181,8 +193,18 @@ class SearchTripsForm extends React.Component {
           </div>
           <div className="cta-horizon pt-4 pb-2" style={{backgroundColor: '#a10115'}}>
             <div className="container d-md-flex align-items-center justify-content-between">
-              <h4 className="mb-2 white">Impossible de trouver le bon voyageur ? Enregistrez votre colis pour être contacté rapidement.</h4>
-              <a className="nir-btn-black" onClick={this.handleOpenSendPackageModal.bind(this)} >Expédier</a>
+              <h4 className="mb-2 white">
+                <FormattedMessage
+                  id="search_trips.cant_find_trip"
+                  defaultMessage=""
+                />
+              </h4>
+              <a className="nir-btn-black" onClick={this.handleOpenSendPackageModal.bind(this)} >
+                <FormattedMessage
+                  id="search_trips.click_book_request"
+                  defaultMessage=""
+                />
+              </a>
             </div>
           </div>
           {/*find travel end */}

@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { setLang } from "../../store/actions/appConfig";
-// import styles from './languageswitcherselector.css';
+import styles from './languageswitcherselector.css';
 import { backend_url } from "../../configurations";
 
 

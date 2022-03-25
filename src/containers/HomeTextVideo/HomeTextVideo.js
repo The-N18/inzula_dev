@@ -26,14 +26,39 @@ class HomeTextVideo extends React.Component {
             <div className="row d-flex align-items-center justify-content-between">
               <div className="col-lg-6 mb-4 col-sm-12">
                 <div className="action-content"><br /><br /><br /><br />
-                  <h4 className="mb-1 blue font-weight-normal">Avec Inzula</h4>
-                  <h2>Votre covalisage collaboratif sécurisé et à prix abordable dans le monde!</h2>
-                  <p className="mb-3">Expédiez des colis à des proches  <strong>à bas coût! Faites-vous de l’argent en voyageant !</strong>
-                    <br />INZULA connecte des voyageurs voulant amortir leurs frais de voyages via leur kgs disponibles et des personnes souhaitant expédier à bas coût</p>
+                  <h4 className="mb-1 blue font-weight-normal">
+                    <FormattedMessage
+                      id="home_text_video.with_inzula"
+                      defaultMessage="With Inzula"
+                    />
+                  </h4>
+                  <h2>
+                    <FormattedMessage
+                      id="home_text_video.your_copacking"
+                      defaultMessage=""
+                    />
+                  </h2>
+                  <p className="mb-3">
+                    <FormattedMessage
+                      id="home_text_video.send_parcels"
+                      values={{ strong: (value) => <strong>{value}<br/></strong>}}
+                      defaultMessage=""
+                    />
+                  </p>
                   <Link to="search_trips_section" spy={true} smooth={true}>
-                    <a  className="nir-btn" style={{margin: '0.5rem'}}>Expédiez avec INZULA</a>
+                    <a  className="nir-btn" style={{margin: '0.5rem'}}>
+                      <FormattedMessage
+                        id="home_text_video.ship_now"
+                        defaultMessage=""
+                      />
+                    </a>
                   </Link>
-                  <a  onClick={this.handleOnClick.bind(this, '/transport')} className="nir-btn" style={{margin: '0.5rem'}}>Voyagez avec INZULA</a>
+                  <a  onClick={this.handleOnClick.bind(this, '/transport')} className="nir-btn" style={{margin: '0.5rem'}}>
+                   <FormattedMessage
+                      id="home_text_video.earn_money"
+                      defaultMessage=""
+                    />
+                  </a>
                 </div> 
               </div>
               <div className="col-lg-6 mb-4">

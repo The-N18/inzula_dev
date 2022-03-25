@@ -50,12 +50,27 @@ class Footer extends React.Component {
                   <div className="footer-about bg-white p-4">
                     <img src="/static/images/inzula_fr.png" alt="" />
                     <p className="mt-3">
-                      Plate-forme digitale et collaborative mettant en relation des expéditeurs de colis avec des voyageurs souhaitant amortir leurs frais de voyages via leurs kgs disponibles!
+                    <FormattedMessage
+                      id="footer.plateform_desc"
+                      defaultMessage=""
+                    />
                     </p>
                     <ul>
                       <li><strong>Whatsapp:</strong> +33 7 82 29 45 91</li>
-                      <li><strong>Email:</strong> inzula.pro@gmail.com</li>
-                      <li><strong>Website:</strong> www.inzula.app</li>
+                      <li>
+                      <FormattedMessage
+                        id="footer.email"
+                        values={{strong: (value) => <strong>{value}</strong>}}
+                        defaultMessage=""
+                      />
+                      </li>
+                      <li>
+                      <FormattedMessage
+                        id="footer.website"
+                        values={{strong: (value) => <strong>{value}</strong>}}
+                        defaultMessage=""
+                      />
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -63,10 +78,25 @@ class Footer extends React.Component {
                   <div className="footer-links">
                     <h4 className="white">Entreprise</h4>
                     <ul>
-                      <li><a href="about-us.html">Qui sommes nous?</a></li>
+                      <li><a href="about-us.html">
+                      <FormattedMessage
+                        id="footer.who_are_we"
+                        defaultMessage=""
+                      />
+                      </a></li>
                       <li><a href="#">Blog</a></li>
-                      <li><a href="#">Informations legales</a></li>
-                      <li><a href="#">Contactez-nous</a></li>
+                      <li><a href="#">
+                      <FormattedMessage
+                        id="footer.legal"
+                        defaultMessage=""
+                      />
+                        </a></li>
+                      <li><a href="#">
+                      <FormattedMessage
+                        id="footer.contact"
+                        defaultMessage=""
+                      />
+                        </a></li>
                     </ul>
                   </div>
                 </div>
@@ -74,9 +104,19 @@ class Footer extends React.Component {
                   <div className="footer-links">
                     <h4 className="white">Services</h4>
                     <ul>
-                      <li><a onClick={()=>{this.props.history.push('/how-does-it-work')}}>Comment ça marche?</a></li>
+                      <li><a onClick={()=>{this.props.history.push('/how-does-it-work')}}>
+                      <FormattedMessage
+                        id="footer.how_it_works"
+                        defaultMessage=""
+                      />
+                        </a></li>
                       <li><a onClick={()=>{this.props.history.push('/faqs')}}>FAQ</a></li>
-                      <li><a href="#">Assurance</a></li>
+                      <li><a href="#">
+                      <FormattedMessage
+                        id="footer.insurance"
+                        defaultMessage=""
+                      />
+                        </a></li>
                       <li><a href="#">Charte de bonne conduite</a></li>
                     </ul>
                   </div>

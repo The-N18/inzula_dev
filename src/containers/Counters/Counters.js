@@ -38,8 +38,19 @@ class Counters extends React.Component {
         <div className="container">
           <div className="section-title text-center mb-5 pb-2 w-50 mx-auto">
             <br />
-            <h2 className="m-0">Rejoignez notre  <span>Grande communauté</span></h2>
-            <p className="mb-0">Nous sommes présents sur plusieurs réseaux sociaux – rejoignez nous sur celui de votre choix</p>
+            <h2 className="m-0">
+              <FormattedMessage
+                  id="home_community.title"
+                  values={{span: (value) => <span>{value}</span>}}
+                  defaultMessage=""
+                />
+            </h2>
+            <p className="mb-0">
+              <FormattedMessage
+                  id="home_community.subtitle"
+                  defaultMessage=""
+                />
+            </p>
           </div></div>
         {/* Counter */}
         <section className="counter-main pt-0 pb-6">
@@ -57,7 +68,12 @@ class Counters extends React.Component {
                       <CountUp start={0} end={this.state.didViewCountUp ? 561 : 0} duration={2} />
                     </VisibilitySensor>
                     </h3>
-                    <h4 className="m-0 white">Heureux Inzula’s peps</h4>
+                    <h4 className="m-0 white">
+                    <FormattedMessage
+                      id="home_community.facebook"
+                      defaultMessage=""
+                    />
+                    </h4>
                   </div>    
                 </div>
                 <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb-4">
@@ -66,7 +82,12 @@ class Counters extends React.Component {
                     <h3 className="value mb-0 white">
                       <CountUp start={0} end={this.state.didViewCountUp ? 250 : 0} duration={2} />
                     </h3>
-                    <h4 className="m-0 white">Incroyables whatsapeurs</h4>
+                    <h4 className="m-0 white">
+                    <FormattedMessage
+                      id="home_community.whatsapp"
+                      defaultMessage=""
+                    />
+                    </h4>
                   </div>    
                 </div>
                 <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb-4">
@@ -75,7 +96,12 @@ class Counters extends React.Component {
                     <h3 className="value mb-0 white">
                       <CountUp start={0} end={this.state.didViewCountUp ? 103 : 0} duration={2} />
                     </h3>
-                    <h4 className="m-0 white">Au courant en temps réel</h4>
+                    <h4 className="m-0 white">
+                    <FormattedMessage
+                      id="home_community.live"
+                      defaultMessage=""
+                    />
+                      </h4>
                   </div>    
                 </div>
                 <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb-4">
@@ -84,7 +110,12 @@ class Counters extends React.Component {
                     <h3 className="value mb-0 white">
                       <CountUp start={0} end={this.state.didViewCountUp ? 76 : 0} duration={2} />
                     </h3>
-                    <h4 className="m-0 white">D’un fort soutien </h4>
+                    <h4 className="m-0 white">
+                    <FormattedMessage
+                      id="home_community.support"
+                      defaultMessage=""
+                    />
+                    </h4>
                   </div>    
                 </div>
               </div>

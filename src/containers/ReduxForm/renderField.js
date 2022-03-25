@@ -121,12 +121,12 @@ export const renderCitiesList = ({ input, className, data, label, meta: { touche
 
 
 
-  export const renderDateTimePicker = ({ input: { onChange, value }, className, label, showTime, min, meta: { touched, error, warning } }) => {
+  export const renderDateTimePicker = ({ input: { onChange, value }, className, placeHolder, showTime, min, meta: { touched, error, warning } }) => {
     return (<div>
       <div>
-        <label>{label}</label>
+        {/* <label>{label}</label> */}
         <DateTimePicker
-          placeholder="Date de départ"
+          placeholder={placeHolder}
           dropUp={true}
           className={className}
           onChange={onChange}
@@ -139,15 +139,15 @@ export const renderCitiesList = ({ input, className, data, label, meta: { touche
       </div></div>);
     }
 
-  export const renderDateTimePickerDown = ({ input: { onChange, value }, className, label, showTime, min, meta: { touched, error, warning } }) => {
+  export const renderDateTimePickerDown = ({ input: { onChange, value }, className, placeHolder, showTime, min, meta: { touched, error, warning } }) => {
   //   console.log("in renderDateTimePickerDown",input.value);
   // {console.log(typeof(input.value))}
     return (<div>
       <div>
-        <label>{label}</label>
+        {/* <label>{label}</label> */}
         <DateTimePicker
           // {...input}
-          placeholder="Date de départ"
+          placeholder={placeHolder}
           dropDown={true}
           className={className}
           onChange={onChange}

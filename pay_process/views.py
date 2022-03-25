@@ -757,13 +757,15 @@ class Cashout(CreateAPIView):
         # get user from user id
         with transaction.atomic():
             userId = request.data['userId']
-            amount = request.data['amount']
+            amount = float(request.data['amount']) * 100
             acc_owner_name = request.data['account_owner_name']
             acc_owner_address = request.data['account_owner_address']
             acc_owner_postal_code = request.data['account_owner_postal_code']
-            acc_owner_country = request.data['account_owner_country']
+            acc_owner_country = request.data['account_owner_country']["value"]
             account_iban = request.data['account_IBAN']
             account_bic = request.data['account_BIC']
+
+            print("In Cashout values",acc_owner_address,acc_owner_country,account_iban,amount)
 
             # Get natural user
             user = User.objects.get(pk=userId)
@@ -801,13 +803,17 @@ class Cashout(CreateAPIView):
                               user_id=nat_user_id,
                               type="IBAN",
                               owner_address=Address(address_line_1=acc_owner_address, address_line_2='',
-                              postal_code=acc_owner_postal_code, country=acc_owner_country),
+                              postal_code=acc_owner_postal_code, country=acc_owner_country, city='Paris'),
                               iban=account_iban,
                               bic=account_bic)
             bankaccount_iban.save()
 
+            
+
             # get user wallet
             user_wallet = Wallet(id=userprofile.wallet_id)
+
+            print("In Cashout2",acc_owner_address,acc_owner_country)
 
             # Cashout: Pay from wallet to bank account
             payout = BankWirePayOut(author=natural_user,

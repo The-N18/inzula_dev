@@ -194,39 +194,18 @@ class CustomLayout extends React.Component {
 
     let mobileMenu = (
       <ul className="nav navbar-nav" id="responsive-menu">
-        <li className={location=='/'&& "active"}><a onClick={this.handleOnClick.bind(this, '/')} >Expediez</a></li>
-        <li className={location=='/transport'&& "active"}><a onClick={this.handleOnClick.bind(this, '/transport')}>Transportez</a></li>
-        {/* <li><a className={"pad-13"}>
-          <Image bordered circular size='small' className={"profile-image"} onClick={this.handleOnProfileClick.bind(this)} src={profile_pic !== null && profile_pic !== "null" ? get_img_url(profile_pic) : backend_url() + '/static/images/user_avatar.png'} />
-        </a></li> */}
-
-        {/* <li><a onClick={this.handleOnProfileClick.bind(this)}>
-        <FormattedMessage
-          id="layout.profile"
-          defaultMessage="Profile"
-        />
+        <li className={location=='/'&& "active"}><a onClick={this.handleOnClick.bind(this, '/')} >
+          <FormattedMessage
+            id="layout.dispatch"
+            defaultMessage="Dispatch"
+          />
         </a></li>
-        <li><a onClick={this.handleOnReservationClick.bind(this)}>
-        {profileType === "sender" ? <FormattedMessage
-          id="layout.booking"
-          defaultMessage="Reservation"
-        /> : <FormattedMessage
-          id="layout.trips"
-          defaultMessage="Trips"
-        />}
+        <li className={location=='/transport'&& "active"}><a onClick={this.handleOnClick.bind(this, '/transport')}>
+          <FormattedMessage
+            id="layout.transport"
+            defaultMessage="Transport"
+          />
         </a></li>
-        <li><a onClick={this.handleOnAlertClick.bind(this)}>
-        <FormattedMessage
-          id="layout.alerts"
-          defaultMessage="Alerts"
-        />
-        </a></li>
-        <li><a onClick={this.handleOnFinanceClick.bind(this)}>
-        <FormattedMessage
-          id="layout.finances"
-          defaultMessage="Finances"
-        />
-        </a></li> */}
       </ul>
     );
 
@@ -279,15 +258,38 @@ class CustomLayout extends React.Component {
                       <img src="/static/images/inzula_fr.png" alt="image" />
                     </a>
                   </div>
+                  <div className="navbar-lang">
+                    <LanguageSwitcherSelector/>
+                  </div>
                   {/* Collect the nav links, forms, and other content for toggling */}
                   <div className="navbar-collapse1 d-flex align-items-center" id="bs-example-navbar-collapse-1">
                       {authenticated ? (mobileMenu) :
                         (
                         <ul className="nav navbar-nav" id="responsive-menu">
-                          <li className={location=='/'&& "active"}><a  onClick={this.handleOnClick.bind(this, '/')}>Expediez</a></li>
-                          <li className={location=='/transport'&& "active"}><a  onClick={this.handleOnClick.bind(this, '/transport')}>Transportez</a></li>
-                          <li><a  className="mr-2" data-toggle="modal" data-target="#register"><i className="icon-user mr-1" /> Je m'inscris</a></li>
-                          <li><a  data-toggle="modal" data-target="#login"><i className="icon-login mr-1" /> Je me connecte</a></li>
+                          <li className={location=='/'&& "active"}><a  onClick={this.handleOnClick.bind(this, '/')}>
+                            <FormattedMessage
+                              id="layout.dispatch"
+                              defaultMessage="Dispatch"
+                            />
+                          </a></li>
+                          <li className={location=='/transport'&& "active"}><a  onClick={this.handleOnClick.bind(this, '/transport')}>
+                            <FormattedMessage
+                              id="layout.transport"
+                              defaultMessage="Transport"
+                            />
+                          </a></li>
+                          <li><a  className="mr-2" data-toggle="modal" data-target="#register"><i className="icon-user mr-1" />
+                            <FormattedMessage
+                                id="layout.signup"
+                                defaultMessage="signup"
+                              />
+                          </a></li>
+                          <li><a  data-toggle="modal" data-target="#login"><i className="icon-login mr-1" /> 
+                            <FormattedMessage
+                                  id="layout.login"
+                                  defaultMessage="login"
+                                />
+                          </a></li>
                         </ul>
                       )}
                     

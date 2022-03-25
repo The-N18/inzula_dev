@@ -14,6 +14,7 @@ import SearchTripsForm from "../containers/SearchTripsReduxFormDummy/SearchTrips
 import SelectReservationsModal from "../containers/SelectReservationsModal/SelectReservationsModal";
 import Counters from "./Counters/Counters";
 import Slider from "react-slick";
+import {FormattedMessage} from 'react-intl'
 
 const getWidth = () => {
   const isSSR = typeof window === "undefined";
@@ -126,10 +127,25 @@ render(){
         <div className="banner-main">
           <div className="banner-image" style={{backgroundImage: 'url(/static/images/flights/travel1.jpg)'}} />
           <div className="banner-content">
-            <h1 className="white mb-2">Avec INZULA, la sérénité et la facilité à garder le contact avec vos proches!</h1>
-            <p className="white mb-4">Soyez à votre aise et serein en expédiant avec nous !!</p>
+            <h1 className="white mb-2">
+              <FormattedMessage
+                id="home_search_trips_section.title"
+                defaultMessage=""
+              />
+            </h1>
+            <p className="white mb-4">
+              <FormattedMessage
+                id="home_search_trips_section.subtitle"
+                defaultMessage=""
+              />
+            </p>
             <a onClick={()=>{this.props.history.push('/how-does-it-work')}} className="per-btn">
-              <span className="white">Comment ca marche</span><i className="fa fa-arrow-right white" />
+              <span className="white">
+                <FormattedMessage
+                  id="home_search_trips_section.how_it_works"
+                  defaultMessage=""
+                />
+              </span><i className="fa fa-arrow-right white" />
             </a><br /><br /><br /><br />
           </div>
         </div>
@@ -141,15 +157,44 @@ render(){
       <section className="trending destination bg-grey pb-6 pt-9" style={{backgroundImage: 'url(/static/images/bg/bg4.jpg)'}}>
         <div className="container">
           <div className="section-title section-title-w text-center mb-5 pb-2 w-50 mx-auto">
-            <h2 className="m-0 ">Comment <strong><span className="pink">INZULA fonctionne ?</span></strong></h2>
-            <p className="mb-0 "><strong>Expédiez</strong> à bas coûts et de sereinement un colis à vos proches via notre communauté.</p>
-            <p className="mb-0 "><strong>Financez</strong> votre voyage en transportant des colis de particuliers souhaitant faire des économies</p>
+            <h2 className="m-0 ">
+              <FormattedMessage
+                  id="how_inzula_works.title"
+                  values={{ span:(value) => <span  className='pink'>{value}</span> ,
+                    strong: (value) => <strong>{value}</strong>}}
+                  defaultMessage=""
+                />
+            </h2>
+            <p className="mb-0 ">
+                <FormattedMessage
+                  id="how_inzula_works.subtitle1"
+                  values={{strong: (value) => <strong>{value}</strong>}}
+                  defaultMessage=""
+                />
+            </p>
+            <p className="mb-0 ">
+                <FormattedMessage
+                  id="how_inzula_works.subtitle2"
+                  values={{strong: (value) => <strong>{value}</strong>}}
+                  defaultMessage=""
+                />
+            </p>
           </div>  
           <div className="trend-box">
             <div className="price-navtab text-center mb-4">
               <ul className="nav nav-tabs">
-                <li className="active"><a data-toggle="tab" href="#expediteur">Expediteur</a></li>
-                <li><a data-toggle="tab" href="#transporteur">Transporteur</a></li>
+                <li className="active"><a data-toggle="tab" href="#expediteur">
+                  <FormattedMessage
+                    id="how_inzula_works.sender"
+                    defaultMessage=""
+                  />
+                </a></li>
+                <li><a data-toggle="tab" href="#transporteur">
+                  <FormattedMessage
+                    id="how_inzula_works.carrier"
+                    defaultMessage=""
+                  />
+                </a></li>
               </ul>
             </div>
             <div className="tab-content">
@@ -162,13 +207,22 @@ render(){
                       </div>
                       <div className="trend-content-main">
                         <div className="trend-content">
-                          <h4><a href="#">1 - Dites nous en plus sur votre colis</a></h4>
+                          <h4><a href="#">
+                            <FormattedMessage
+                              id="how_inzula_works.tell_pkg"
+                              defaultMessage=""
+                            />
+                          </a></h4>
                           <br/>
                         </div>
                         <div className="trend-last-main">
                           <div className={`${styles['how-it-works-text']}`}>
-                            <p className="mb-0 trend-para">Pour commencer, créez votre profil et renseignez le maximum d’informations sur le colis que vous souhaitez expédier.
-                              Une estimation du coût du transport du colis vous sera proposée sur la plateforme.</p>
+                            <p className="mb-0 trend-para">
+                              <FormattedMessage
+                                id="how_inzula_works.tell_pkg_desc"
+                                defaultMessage=""
+                              />
+                            </p>
                           </div>
                           <div className="trend-last d-flex align-items-center justify-content-between">
                           </div>
@@ -183,11 +237,22 @@ render(){
                       </div>
                       <div className="trend-content-main">
                         <div className="trend-content">
-                          <h4><a href="#">2- Attendez que des transporteurs vous fassent des offres</a></h4>
+                          <h4><a href="#">
+                            <FormattedMessage
+                              id="how_inzula_works.wait_carr"
+                              values={{span: (value) => <span>{value}<br/><br/></span>}}
+                              defaultMessage=""
+                            />
+                          </a></h4>
                         </div>
                         <div className="trend-last-main">
                           <div className={`${styles['how-it-works-text']}`}>
-                            <p className="mb-0 trend-para">Une fois que vous aurez publié votre offre, nous là partagerons avec notre communauté. Les voyageurs intéressés par cette destination vous feront des offres de transport de colis.</p>
+                            <p className="mb-0 trend-para">
+                              <FormattedMessage
+                                id="how_inzula_works.wait_carr_desc"
+                                defaultMessage=""
+                              />
+                            </p>
                           </div>
                           <div className="trend-last d-flex align-items-center justify-content-between">
                           </div>
@@ -202,17 +267,23 @@ render(){
                       </div>
                       <div className="trend-content-main">
                         <div className="trend-content">
-                          <h4><a href="#">3 - Convenez d’un montant de récompense avec le voyageur</a></h4>
+                          <h4><a href="#">
+                            <FormattedMessage
+                                id="how_inzula_works.reward_carr"
+                                values={{span: (value) => <span>{value}<br/><br/></span>}}
+                                defaultMessage=""
+                              />
+                           </a></h4>
                         </div>
                         <div className="trend-last-main">
                           <div className={`${styles['how-it-works-text']}`}>
-                            <p className="mb-0 trend-para">INZULA calculera automatiquement tous les frais applicables incluant :</p>
-                            <ul className={`${styles['how-it-works-ul']}`}>
-                              <li>le montant convenu</li>
-                              <li>les  frais d’assurance du colis</li>
-                              <li>les frais de gestion de la plateforme</li>
-                            </ul><br />
-                            <p className="mb-0 trend-para">Ces frais seront à régler sur la plateforme</p>
+                            <FormattedMessage
+                              id="how_inzula_works.reward_carr_desc"
+                              values={{li: (value) => <li>{value}</li>,
+                                ul:(value) => <ul className={`${styles['how-it-works-ul']}`}>{value}<br/></ul>,
+                                p: (value) => <p className="mb-0 trend-para">{value}</p>}}
+                              defaultMessage=""
+                            />
                           </div>
                           <div className="trend-last d-flex align-items-center justify-content-between">
                           </div>
@@ -227,20 +298,24 @@ render(){
                       </div>
                       <div className="trend-content-main">
                         <div className="trend-content">
-                          <h4><a href="#">4- Convenez d’un lieu pour rencontrer le voyageur</a></h4>
+                          <h4><a href="#">
+                            <FormattedMessage
+                              id="how_inzula_works.meet_carr"
+                              values={{span: (value) => <span>{value}<br/><br/></span>}}
+                              defaultMessage=""
+                            />
+                            </a></h4>
                         </div>
                         <div className="trend-last-main">
                           <div className={`${styles['how-it-works-text']}`}>
-                            <p className="mb-0 trend-para">Après avoir régler sur le site, remettez votre colis au voyageur. 
-                              Durant la remise du colis, pensez bien :
-                            </p>
-                            <ul className={`${styles['how-it-works-ul']}`}>
-                              <li>à vous prendre en photo avec le transporteur</li>
-                              <li>à vérifier la pièce d’identité de celui à qui vous remettez le colis</li>
-                              <li>confirmer la remise du colis au voyageur à notre équipe.</li>
-                            </ul>
-                          </div>
-                          
+                            <FormattedMessage
+                              id="how_inzula_works.meet_carr_desc"
+                              values={{li: (value) => <li>{value}</li>,
+                                ul:(value) => <ul className={`${styles['how-it-works-ul']}`}>{value}<br/></ul>,
+                                p: (value) => <p className="mb-0 trend-para">{value}</p>}}
+                              defaultMessage=""
+                            />
+                          </div> 
                           <div className="trend-last d-flex align-items-center justify-content-between">
                           </div>
                         </div>
@@ -258,13 +333,21 @@ render(){
                       </div>
                       <div className="trend-content-main">
                         <div className="trend-content">
-                          <h4><a href="#">1 - Trouve une demande d'expédition et fais une offre</a></h4>
+                          <h4><a href="#">
+                            <FormattedMessage
+                                id="how_inzula_works.find_request"
+                                defaultMessage=""
+                              />
+                           </a></h4>
                         </div>
                         <div className="trend-last-main">
                           <div className={`${styles['how-it-works-text']}`}>
-                            <p className="mb-0 trend-para">Trouvez une demande d'expédition qui correspond à votre prochain voyage.
-                              Faites une offre et proposez le montant que l'expéditeur vous paierait pour la livraison du colis.
-                              Si vous ne trouvez aucune demande, enregistrez votre vol pour être mis en relation avec un futur expéditeur.</p><br /><br />
+                            <p className="mb-0 trend-para">
+                              <FormattedMessage
+                                  id="how_inzula_works.find_request_desc"
+                                  defaultMessage=""
+                                />
+                            </p><br /><br />
                           </div>
                           <div className="trend-last d-flex align-items-center justify-content-between">
                           </div>
@@ -279,18 +362,23 @@ render(){
                       </div>
                       <div className="trend-content-main">
                         <div className="trend-content">
-                          <h4><a href="#">2- Rencontrez l’expéditeur<br/><br/></a></h4>
+                          <h4><a href="#">
+                            <FormattedMessage
+                                id="how_inzula_works.place"
+                                defaultMessage=""
+                              />
+                            <br/><br/></a></h4>
                           <br/>
                         </div>
                         <div className="trend-last-main">
                           <div className={`${styles['how-it-works-text']}`}>
-                            <p className="mb-0 trend-para">Une fois la transaction réglée, convenez d’un rdv pour récupérer le colis au voyageur. Durant le retrait du colis, pensez bien : 
-                            </p>
-                            <ul className={`${styles['how-it-works-ul']}`}>
-                              <li>à vous prendre en photo avec l’expéditeur</li>
-                              <li>à vérifier la pièce d’identité de celui à qui vous récupérez  le colis</li>
-                              <li>confirmer le retrait du colis  à notre équipe.</li>
-                            </ul>
+                            <FormattedMessage
+                              id="how_inzula_works.place_desc"
+                              values={{li: (value) => <li>{value}</li>,
+                                ul:(value) => <ul className={`${styles['how-it-works-ul']}`}>{value}</ul>,
+                                p: (value) => <p className="mb-0 trend-para">{value}</p>}}
+                              defaultMessage=""
+                            />
                           </div>
                           <div className="trend-last d-flex align-items-center justify-content-between">
                           </div>
@@ -306,19 +394,23 @@ render(){
                       </div>
                       <div className="trend-content-main">
                         <div className="trend-content">
-                          <h4><a href="#">3 – Livrez le colis  au destinataire</a></h4>
+                          <h4><a href="#">
+                            <FormattedMessage
+                                id="how_inzula_works.sender_title"
+                                defaultMessage=""
+                              />
+                          </a></h4>
                           <br/>
                         </div>
                         <div className="trend-last-main">
                           <div className={`${styles['how-it-works-text']}`}>
-                            <p className="mb-0 trend-para">Une fois à destination, contactez le destinataire du colis pour le livrer le colis. 
-                              Durant le retrait du colis, pensez bien à : 
-                            </p>
-                            <ul className={`${styles['how-it-works-ul']}`}>
-                              <li>rendre une photo de vous avec ce dernier pour certifier la livraison</li>
-                              <li>prendre une photo de la pièce d’identité du destinataire.</li>
-                              <li>Récupérer le code qui vous donnera accès à votre paiement sur la plateforme</li>
-                            </ul>
+                            <FormattedMessage
+                              id="how_inzula_works.sender_desc"
+                              values={{li: (value) => <li>{value}</li>,
+                                ul:(value) => <ul className={`${styles['how-it-works-ul']}`}>{value}</ul>,
+                                p: (value) => <p className="mb-0 trend-para">{value}</p>}}
+                              defaultMessage=""
+                            />
                           </div>
                           <div className="trend-last d-flex align-items-center justify-content-between">
                           </div>
@@ -333,12 +425,23 @@ render(){
                       </div>
                       <div className="trend-content-main">
                         <div className="trend-content">
-                          <h4><a href="#">4- Recevez votre paiement</a></h4>
+                          <h4><a href="#">
+                            <FormattedMessage
+                              id="how_inzula_works.pay"
+                              values={{span: (value) => <span>{value}<br/><br/></span>}}
+                              defaultMessage=""
+                            />
+                          </a></h4>
                           <br/>
                         </div>
                         <div className="trend-last-main">
                           <div className={`${styles['how-it-works-text']}`}>
-                            <p className="mb-0 trend-para">Une fois le code d’accès récupéré au destinataire du colis, Saisis le sur la plateforme et reçois le paiement sous 7 jrs ouvrables.</p><br /><br /><br /><br /><br /><br /><br /><br /><br />
+                            <p className="mb-0 trend-para">
+                              <FormattedMessage
+                                id="how_inzula_works.pay_desc"
+                                defaultMessage=""
+                              />
+                            </p><br /><br /><br /><br /><br /><br /><br /><br /><br />
                           </div>
                           <div className="trend-last d-flex align-items-center justify-content-between">
                           </div>
@@ -453,10 +556,30 @@ render(){
           <section className="featured-us bg-grey pb-6">
             <div className="container">
               <div className="section-title text-center mb-5 pb-2 w-50 mx-auto">
-                <h4 className="mb-0 pink">Notre promesse</h4>
-                <h2 className="m-0">Fiers de vous proposer <span>Un service</span></h2>
-                <p className="mb-0">Pour l’expéditeur c'est un moyen facile et serein de rester en contact avec ses proches.<br />
-                  Pour le voyageur, vous vous faites facilement de l'argent en parcourant le monde.</p>
+                <h4 className="mb-0 pink">
+                  <FormattedMessage
+                    id="home_service.promise"
+                    defaultMessage=""
+                  />
+                </h4>
+                <h2 className="m-0">
+                <FormattedMessage
+                  id="home_service.title"
+                  values={{span: (value) => <span>{value}</span>}}
+                  defaultMessage=""
+                />
+                </h2>
+                <p className="mb-0">
+                  <FormattedMessage
+                    id="home_service.subtitle1"
+                    defaultMessage=""
+                  />
+                  <br />
+                  <FormattedMessage
+                    id="home_service.subtitle2"
+                    defaultMessage=""
+                  />
+                  </p>
               </div>
               <div className="featured-us-box">
                 <div className="row">
@@ -466,8 +589,18 @@ render(){
                         <i className="fa fa-laugh-beam pink" />
                       </div>
                       <div className="featured-us-content w-100">
-                        <h4 className="mb-1 text-uppercase"><a href="#">Pratique</a></h4>
-                        <p className="mb-0">Trouvez rapidement et facilement un covalisage à proximité parmi les destinations proposées</p>
+                        <h4 className="mb-1 text-uppercase"><a href="#">
+                        <FormattedMessage
+                          id="home_service.customer_service"
+                          defaultMessage=""
+                        />
+                          </a></h4>
+                        <p className="mb-0">
+                        <FormattedMessage
+                          id="home_service.customer_service_desc"
+                          defaultMessage=""
+                        />
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -477,8 +610,18 @@ render(){
                         <i className="fa fa-hand-holding-usd pink" />
                       </div>
                       <div className="featured-us-content w-100">
-                        <h4 className="mb-1 text-uppercase"><a href="#">Avec divers moyens de paiment</a></h4>
-                        <p className="mb-0">Afin de vous faciliter la vie, nous acceptons divers moyens de paiements incluant Visa, MasterCard, Orange Money, Western Union d’autres options à venir</p>
+                        <h4 className="mb-1 text-uppercase"><a href="#">
+                        <FormattedMessage
+                          id="home_service.pay_methods"
+                          defaultMessage=""
+                        />
+                          </a></h4>
+                        <p className="mb-0">
+                        <FormattedMessage
+                          id="home_service.pay_methods_desc"
+                          defaultMessage=""
+                        />
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -488,8 +631,18 @@ render(){
                         <i className="fa fa-piggy-bank pink" />
                       </div>
                       <div className="featured-us-content w-100">
-                        <h4 className="mb-1 text-uppercase"><a href="#">Economique</a></h4>
-                        <p className="mb-0">Envoyez vos colis partout dans le monde à bas prix</p>
+                        <h4 className="mb-1 text-uppercase"><a href="#">
+                        <FormattedMessage
+                          id="home_service.eco"
+                          defaultMessage=""
+                        />
+                          </a></h4>
+                        <p className="mb-0">
+                        <FormattedMessage
+                          id="home_service.eco_desc"
+                          defaultMessage=""
+                        />
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -501,8 +654,18 @@ render(){
                         <i className="fa fa-user-check pink" />
                       </div>
                       <div className="featured-us-content w-100">
-                        <h4 className="mb-1 text-uppercase"><a href="#">Communauté d'utilisateurs vérifiés</a></h4>
-                        <p className="mb-0">INZULA c’est plus qu’une plateforme, c’est une communauté. Nous connaissons chacun de nos membres. Comment? Nous vérifions profils, avis, identité et billet d’avion. Vous savez ainsi avec qui vous échangez</p>
+                        <h4 className="mb-1 text-uppercase"><a href="#">
+                        <FormattedMessage
+                          id="home_service.user_comm"
+                          defaultMessage=""
+                        />
+                          </a></h4>
+                        <p className="mb-0">
+                        <FormattedMessage
+                          id="home_service.user_comm_desc"
+                          defaultMessage=""
+                        />
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -512,8 +675,18 @@ render(){
                         <i className="fa fa-shield-alt pink" />
                       </div>
                       <div className="featured-us-content w-100">
-                        <h4 className="mb-1 text-uppercase"><a href="#">Sécurité</a></h4>
-                        <p className="mb-0">Une assurance protection de vos biens est systématiquement proposé en fonction de la valeur déclarative des biens que vous souhaitez expédier</p>
+                        <h4 className="mb-1 text-uppercase"><a href="#">
+                        <FormattedMessage
+                          id="home_service.security"
+                          defaultMessage=""
+                        />
+                          </a></h4>
+                        <p className="mb-0">
+                        <FormattedMessage
+                          id="home_service.security_desc"
+                          defaultMessage=""
+                        />
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -523,8 +696,18 @@ render(){
                         <i className="fas fa-headset pink" />
                       </div>
                       <div className="featured-us-content w-100">
-                        <h4 className="mb-1 text-uppercase"><a href="#">Un service client disponible</a></h4>
-                        <p className="mb-0">Un numéro Whatsapp à votre disposition pour répondre à toutes vos questions sur nos services et vos transactions.</p>
+                        <h4 className="mb-1 text-uppercase"><a href="#">
+                        <FormattedMessage
+                          id="home_service.customer_support"
+                          defaultMessage=""
+                        />
+                          </a></h4>
+                        <p className="mb-0">
+                        <FormattedMessage
+                          id="home_service.customer_support_desc"
+                          defaultMessage=""
+                        />
+                        </p>
                       </div>
                     </div>
                   </div>
