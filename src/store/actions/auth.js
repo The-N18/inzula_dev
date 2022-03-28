@@ -186,6 +186,7 @@ export const checkAuthTimeout = expirationTime => {
          dispatch(closeLoginParentModal());
        })
        .catch(err => {
+         console.log("IN authLogin Catch",err);
          dispatch(authFail(err));
          dispatch(createNotification({
            message: "Login failed. Please check your username and password.",

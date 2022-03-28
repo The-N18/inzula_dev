@@ -173,6 +173,7 @@ class AddTripForm extends React.Component {
                         <input id="date-range0" type="text" placeholder="Date de départ" /> */}
                         <Field
                           name="depart_date"
+                          placeHolder={lang === "en" ? "Departure date" : "Date de départ"}
                           showTime={false}
                           component={isModal?renderDateTimePickerDown:renderDateTimePickerDown}
                           min={new Date()}
@@ -182,7 +183,7 @@ class AddTripForm extends React.Component {
                   </div>
                   <div className="col-lg-12">
                     <div className="form-group m-0 w-100 text-center">
-                      <a href="#" className={`nir-btn ${invalid?'disabled':''}`} onClick={handleSubmit(this.submitForm)}><i className="fa fa-search" />Ajoutez votre voyage</a>
+                      <a href="#" className={`hover-white nir-btn ${invalid?'disabled':''}`} onClick={handleSubmit(this.submitForm)}>Ajoutez votre voyage</a>
                     </div>
                   </div>
                 </div>

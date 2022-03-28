@@ -1,4 +1,4 @@
-.transportpge {
+/* .transportpge {
   width: auto !important;
 }
 
@@ -6,4 +6,10 @@
   margin: 0px auto !important;
   display: block !important;
   margin-top: 10px !important;
+} */
+
+
+.date-picker{
+  position: relative!important;
+  top: -11px!important;
 }

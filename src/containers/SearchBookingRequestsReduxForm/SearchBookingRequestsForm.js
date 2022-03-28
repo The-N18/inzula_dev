@@ -7,7 +7,7 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { searchBookings } from "../../store/actions/searchBookings";
-// import styles from './searchbookingrequestsform.css';
+import styles from './searchbookingrequestsform.module.css';
 // import 'rc-slider/assets/index.css';
 // import 'react-widgets/dist/css/react-widgets.css';
 import { Field, reduxForm } from 'redux-form'
@@ -60,7 +60,7 @@ class SearchBookingRequestsForm extends React.Component {
     const { handleSubmit, lang } = this.props;
     return (
       <div className="form-main">
-        <div className="container">
+        <div className="container" style={{zIndex:2}}>
           <div className="form-content w-100"> 
             <h3 className="form-title text-center d-inline white">Trouvez un colis à expédier</h3>
             <div className="d-lg-flex align-items-center justify-content-between">
@@ -108,13 +108,15 @@ class SearchBookingRequestsForm extends React.Component {
                   <input id="date-range1" type="text" placeholder="Date du voyage" /> */}
                   <Field
                     name="travel_date"
+                    placeHolder={lang === "en" ? "Departure date" : "Date de départ"}
                     showTime={false}
+                    className={`${styles["date-picker"]}`}
                     component={renderDateTimePicker}
                   />
                 </div>                            
               </div>
               <div className="form-group m-0">
-                <a  onClick={handleSubmit(this.submitForm)} className="nir-btn w-100"><i className="fa fa-search" /> Rechercher</a>
+                <a  onClick={handleSubmit(this.submitForm)} className="hover-white nir-btn w-100"><i className="fa fa-search" /> Rechercher</a>
               </div>
             </div>
           </div>

@@ -43,14 +43,15 @@
   display: inline-block;
   border-radius: 0px;
   box-shadow: 0px 0px 0px 4px rgba(255, 255, 255, 0.1); }
-  .nir-btn:hover{
-    background: #A10115;
-    transition: all ease-in-out 0.5s;
-    color: #fff; }
+
+.nir-btn:hover{
+  background: #A10115;
+  transition: all ease-in-out 0.5s;
+}
 
 .date-picker{
-  position: relative;
-  top: -20px;
+  position: relative!important;
+  top: 0px!important;
 }
 
 .reset-button{

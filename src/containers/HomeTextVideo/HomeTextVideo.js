@@ -46,14 +46,14 @@ class HomeTextVideo extends React.Component {
                     />
                   </p>
                   <Link to="search_trips_section" spy={true} smooth={true}>
-                    <a  className="nir-btn" style={{margin: '0.5rem'}}>
+                    <a  className="nir-btn hover-white" style={{margin: '0.5rem'}}>
                       <FormattedMessage
                         id="home_text_video.ship_now"
                         defaultMessage=""
                       />
                     </a>
                   </Link>
-                  <a  onClick={this.handleOnClick.bind(this, '/transport')} className="nir-btn" style={{margin: '0.5rem'}}>
+                  <a  onClick={this.handleOnClick.bind(this, '/transport')} className="nir-btn hover-white" style={{margin: '0.5rem'}}>
                    <FormattedMessage
                       id="home_text_video.earn_money"
                       defaultMessage=""

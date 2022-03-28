@@ -177,6 +177,7 @@ class SearchBookingRequestsPage extends React.Component {
                     </label>
                       <Field
                         name="travel_date"
+                        placeHolder={lang === "en" ? "Departure date" : "Date de départ"}
                         className={`${styles["date-picker"]}`}
                         showTime={false}
                         component={renderDateTimePickerDown}
@@ -281,7 +282,7 @@ class SearchBookingRequestsPage extends React.Component {
                     </div> */}
                     <br/><br/>
                     <div className="d-flex align-items-center justify-content-center">
-                        <a  onClick={handleSubmit(this.submitForm)} className={`${styles["nir-btn"]} w-100`}><i className="fa fa-search" /> Rechercher</a>
+                        <a  onClick={handleSubmit(this.submitForm)} className={`nir-btn hover-white ${styles["nir-btn"]} w-100`}><i className="fa fa-search" /> Rechercher</a>
                         <Button variant="contained" color="success" className={`${styles['reset-button']}`} onClick={this.handleResetFields}>
                           Réinitialiser
                         </Button>

@@ -124,7 +124,7 @@ export const renderCitiesList = ({ input, className, data, label, meta: { touche
   export const renderDateTimePicker = ({ input: { onChange, value }, className, placeHolder, showTime, min, meta: { touched, error, warning } }) => {
     return (<div>
       <div>
-        {/* <label>{label}</label> */}
+        {/* <label>{""}</label> */}
         <DateTimePicker
           placeholder={placeHolder}
           dropUp={true}
@@ -144,7 +144,7 @@ export const renderCitiesList = ({ input, className, data, label, meta: { touche
   // {console.log(typeof(input.value))}
     return (<div>
       <div>
-        {/* <label>{label}</label> */}
+        {/* <label>{" "}</label> */}
         <DateTimePicker
           // {...input}
           placeholder={placeHolder}

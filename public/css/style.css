@@ -1931,6 +1931,13 @@ nav.navbar.navbar-default.navbar-sticky-in .logo-black {
 .navbar-sticky-in .nir-btn:hover {
   color: #162241; }
 
+.nir-btn.hover-white:hover, .nir-btn-black.hover-white:hover{
+  color: #fff!important;
+}
+/* .hover-white:hover{
+  color: #fff!important;
+} */
+
 /*Fullpage search*/
 .search-wrapper {
   position: relative;
@@ -2821,12 +2828,12 @@ nav.navbar.navbar-default.navbar-sticky-in .logo-black {
         display: block;
         color: #162241; }
       .trending.destination .trend-box ul.nav.nav-tabs li:focus a, .trending.destination .trend-box ul.nav.nav-tabs li:hover a {
-        color: #fff;
+        color: #fff!important;
         background-color: #A10115;
         transition: all ease-in-out 0.5s;
         border-color: #A10115; }
     .trending.destination .trend-box ul.nav.nav-tabs li.active a {
-      color: #fff;
+      color: #fff!important;
       background-color: #A10115;
       transition: all ease-in-out 0.5s;
       opacity: 1;

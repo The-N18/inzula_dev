@@ -8,7 +8,7 @@ import {
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { searchTrips } from "../../store/actions/searchTrips";
-// import styles from './searchtripsform.css';
+import styles from './searchtripsform.module.css';
 import { withRouter } from "react-router-dom";
 import { openModal, closeModal } from "../../store/actions/sendPackageModal";
 import { createNotif } from "../../store/actions/appConfig";
@@ -154,6 +154,7 @@ class SearchTripsForm extends React.Component {
                           name="travel_date"
                           placeHolder={lang === "en" ? "Departure date" : "Date de départ"}
                           showTime={false}
+                          className={`${styles["date-picker"]}`}
                           component={renderDateTimePicker}
                         />
                       </div>   
@@ -172,7 +173,7 @@ class SearchTripsForm extends React.Component {
                           </div> */}      
                   <div className="col-lg">
                     <div className="form-group m-0 w-100">
-                      <a  className={`nir-btn ${loading?'disabled':''}`} onClick={handleSubmit(this.submitForm)} ><i className="fa fa-search" />
+                      <a  className={`hover-white nir-btn ${loading?'disabled':''}`} onClick={handleSubmit(this.submitForm)} ><i className="fa fa-search" />
                         <FormattedMessage
                           id="search_trips.search_btn"
                           defaultMessage=""
@@ -199,7 +200,7 @@ class SearchTripsForm extends React.Component {
                   defaultMessage=""
                 />
               </h4>
-              <a className="nir-btn-black" onClick={this.handleOpenSendPackageModal.bind(this)} >
+              <a className="nir-btn-black hover-white" onClick={this.handleOpenSendPackageModal.bind(this)} >
                 <FormattedMessage
                   id="search_trips.click_book_request"
                   defaultMessage=""

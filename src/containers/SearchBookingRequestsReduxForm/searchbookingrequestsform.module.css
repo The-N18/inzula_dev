@@ -1,4 +1,10 @@
-.transportpge {
+.date-picker{
+  position: relative!important;
+  top: 0px!important;
+}
+
+
+/* .transportpge {
   width: auto !important;
 }
 
@@ -22,7 +28,12 @@
 
 .select-item {
   text-align: left !important;
-}
+} */
+
+
+
+
+
 
 /* .custom-field-search{
   background-color: red;

@@ -140,7 +140,9 @@ class SearchTripsForm extends React.Component {
                       <div className="input-box">
                         <Field
                           name="travel_date"
+                          placeHolder={lang === "en" ? "Departure date" : "Date de départ"}
                           showTime={false}
+                          className={`${styles["date-picker"]}`}
                           component={renderDateTimePickerDown}
                         />
                       </div>   
@@ -148,7 +150,7 @@ class SearchTripsForm extends React.Component {
                   </div>     
                   <div className="col-lg">
                     <div className="form-group m-0 w-100">
-                      <a  className={`nir-btn ${loading?'disabled':''}`} onClick={handleSubmit(this.submitForm)} ><i className="fa fa-search" /> Rechercher</a>
+                      <a  className={`hover-white nir-btn ${loading?'disabled':''}`} onClick={handleSubmit(this.submitForm)} ><i className="fa fa-search" /> Rechercher</a>
                     </div>
                   </div>
                   <div className="col-lg">
@@ -212,7 +214,7 @@ class SearchTripsForm extends React.Component {
             <div className="cta-horizon pt-4 pb-2" style={{backgroundColor: '#a10115'}}>
             <div className="container d-md-flex align-items-center justify-content-between">
               <h4 className="mb-2 white">Impossible de trouver le bon voyageur ? Enregistrez votre colis pour être contacté rapidement.</h4>
-              <a className="nir-btn-black" onClick={this.handleOpenSendPackageModal.bind(this)} >Expédier</a>
+              <a className="nir-btn-black hover-white" onClick={this.handleOpenSendPackageModal.bind(this)} >Expédier</a>
             </div>
           </div>
           </Header>
